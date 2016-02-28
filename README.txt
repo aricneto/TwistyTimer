@@ -1,3 +1,15 @@
+# Twisty Timer #  
+
+Twisty timer is a material design twisty puzzle timer for Android. It uses the TNoodle library to generate scramble sequences for all current official speedsolving puzzles.  
+
+This is my first ever app, so the code has a fair number or workarounds. If you manage to fix one of them, or if you would like to add a new feature, just send a pull request.  
+
+Special thanks to Prisma Puzzle Timer, TNoodle and PlusTimer for being my inspirations to create this project :).
+
+
+
+# License (GNU GPL v3) #
+
 Copyright (C) 2016  Ariovaldo Neto
 
     This program is free software: you can redistribute it and/or modify
