@@ -191,21 +191,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Adding new solve
     public void addSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        if (solve.getTime() != 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_TYPE, solve.getPuzzle());
-        values.put(KEY_SUBTYPE, solve.getSubtype());
-        values.put(KEY_TIME, solve.getTime());
-        values.put(KEY_DATE, solve.getDate());
-        values.put(KEY_SCRAMBLE, solve.getScramble());
-        values.put(KEY_PENALTY, solve.getPenalty());
-        values.put(KEY_COMMENT, solve.getComment());
-        values.put(KEY_HISTORY, solve.isHistory());
+            ContentValues values = new ContentValues();
+            values.put(KEY_TYPE, solve.getPuzzle());
+            values.put(KEY_SUBTYPE, solve.getSubtype());
+            values.put(KEY_TIME, solve.getTime());
+            values.put(KEY_DATE, solve.getDate());
+            values.put(KEY_SCRAMBLE, solve.getScramble());
+            values.put(KEY_PENALTY, solve.getPenalty());
+            values.put(KEY_COMMENT, solve.getComment());
+            values.put(KEY_HISTORY, solve.isHistory());
 
-        // Inserting Row
-        db.insert(TABLE_TIMES, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(TABLE_TIMES, null, values);
+            db.close(); // Closing database connection
+        }
     }
 
     /**
@@ -331,11 +333,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param best    True if you want the best time, false if worse
      * @param session True if time should be from this session
      * @param puzzle  The puzzle name in database
-     * @param type    The puzzle type in database
+     * @param subtype The puzzle subtype (category) in database
      *
      * @return The time
      */
-    public int getBestOrWorstTime(boolean best, boolean session, String puzzle, String type) {
+    public int getBestOrWorstTime(boolean best, boolean session, String puzzle, String subtype) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
         int time = 0;
@@ -357,7 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                             + PuzzleUtils.PENALTY_DNF;
 
         cursor = db.rawQuery("SELECT " + minOrMax + " FROM " + TABLE_TIMES + sqlSelection,
-                new String[] { puzzle, type });
+                new String[] { puzzle, subtype });
         cursor.moveToFirst();
 
         if (cursor.getCount() != 0)

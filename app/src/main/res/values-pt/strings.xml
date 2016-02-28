@@ -55,7 +55,7 @@
     <string name="saved_to">Salvo para</string>
     <string name="scramble_text_tap_hint">Toque aqui para ver o embaralhamento</string>
     <string name="task_remove">Remover</string>
-    <string name="graph_stats_title">Estatísticas</string>
+    <string name="graph_stats_title">Estat.</string>
     <string name="graph_card_global">Melhor</string>
     <string name="graph_card_session">Sessão</string>
     <string name="graph_card_refresh_text">Toque para carregar as estatísticas</string>
@@ -137,8 +137,8 @@
     <string name="pagerEnabledTitle">Deslizamento entre abas</string>
     <string name="testers">Testadores</string>
     <string name="testers_content">Muito obrigado a estas pessoas por ajudarem durante o estado alfa do app:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
-    <string name="list_options_item_from_history">Mover para sessão</string>
-    <string name="list_options_item_history">Mover para histórico</string>
+    <string name="list_options_item_from_history">Desarquivar</string>
+    <string name="list_options_item_history">Arquivar</string>
     <string name="selected_list">Selecionados</string>
     <string name="remove_session_title">Remover todas as soluções desta sessão?</string>
     <string name="advanced_pref_summary">AVISO: Mudar as configurações a seguir pode causar alguns problemas de clipping. MUDE APENAS SE VOCÊ SOUBER O QUE ESTIVER FAZENDO</string>
@@ -153,7 +153,7 @@
     <string name="action_clear">Limpar</string>
     <string name="enable_advanced">Ativar configurações avançadas</string>
     <string name="detail_text_avg">Md5:\nMd12:\nMd50:\nMd100:</string>
-    <string name="detail_text_plus">Média de 5:\nMédia de 12:\nMédia de 50:\nMédia de 100:\nMédia de 1000\nMédia:\nMelhor:\nPior:\nTotal:</string>
+    <string name="detail_text_plus">Md5:\nMd12:\nMd50:\nMd100:\nMd1000\nMédia:\nMelhor:\nPior:\nTotal:</string>
     <string name="detail_text_more">Média:\nMelhor:\nPior:\nTotal:</string>
 
 </resources>

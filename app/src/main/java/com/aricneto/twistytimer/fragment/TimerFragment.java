@@ -303,7 +303,7 @@ public class TimerFragment extends BaseFragment {
         commentButton.setOnClickListener(buttonClickListener);
 
         // Preferences //
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 

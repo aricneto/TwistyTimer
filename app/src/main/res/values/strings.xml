@@ -151,8 +151,8 @@
     <string name="pagerEnabledSummary">If this setting is disabled, you\'ll have to tap the tabs to switch between them.</string>
     <string name="testers">Testers</string>
     <string name="testers_content">Huge thanks to these people for providing valuable feedback during the alpha state of the app:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
-    <string name="list_options_item_history">Move to history</string>
-    <string name="list_options_item_from_history">Move to session</string>
+    <string name="list_options_item_history">Archive</string>
+    <string name="list_options_item_from_history">Unarchive</string>
     <string name="selected_list">Selected</string>
     <string name="remove_session_title">Remove all solves from this session?</string>
     <string name="remove_session_confirmation_content">You will not be able to undo this action.</string>
