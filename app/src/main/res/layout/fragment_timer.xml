@@ -1,0 +1,228 @@
+<RelativeLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?mainColorBackground"
+    android:keepScreenOn="true"
+
+    tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
+
+    <!-- The margin is there so that opening the drawer doesn't start the timer -->
+    <FrameLayout
+        android:id="@+id/startTimerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="24dp" />
+
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/rippleBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        app:rb_color="?colorAccent"
+        app:rb_duration="3000"
+        app:rb_radius="64dp"
+        app:rb_rippleAmount="1"
+        app:rb_scale="10" />
+
+    <TextView
+        android:id="@+id/scrambleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Generating..."
+        android:textColor="?colorTimerText"
+        tools:text="Scramble:\n\n1	3R' 3F2 U' 2U' 2R' 2U' 3D2 L2 U 2D' R2 2B' D B' D 2L 2U' R' F' 2L F' 2D L 3F2 L' 2L 3L' R2 U' 2D' F2 3F' 2L' 2F' 2B' 3U 2F 3F2 L 3L' R 2U D' 3B 2D' 2L' R' 3D2 2R' 3U2 3B 3U' 3F 3B B2 2R D 3B2 3L2 3D' 2R' 2U F D' 3B' L' 2R2 R F2 2F2 3F 3B 2B' B' L R2 3B L 2L2 3L U' 3U2 3F 3D R D 2L B' U 3L' 3U2 3F' L U 2F2 B2 2L2 3F2 2L2 3D2" />
+
+    <com.aricneto.twistytimer.layout.ChronometerMilli
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="0.00"
+        android:textColor="?colorTimerText"
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/inspectionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/inspection"
+        android:textAllCaps="true"
+        android:textColor="?colorTimerText"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/congratsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:drawablePadding="16dp"
+        android:gravity="center"
+        android:text="@string/personal_best_message"
+        android:textColor="?colorTimerText"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/quick_action_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete_white_24dp"
+            android:tint="?colorTimerText" />
+
+        <ImageView
+            android:id="@+id/button_dnf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/dnf"
+            android:tint="?colorTimerText" />
+
+        <ImageView
+            android:id="@+id/button_plustwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/plustwo"
+            android:tint="?colorTimerText" />
+
+        <ImageView
+            android:id="@+id/button_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_comment_white_24dp"
+            android:tint="?colorTimerText" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/sessionDetailTextAvg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="right"
+            android:text="@string/detail_text_avg"
+            android:textColor="?colorTimerDetailText"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sessionDetailTimesAvg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="left"
+            android:text="--\n--\n--\n--"
+            android:textColor="?colorTimerDetailText"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sessionDetailTextMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:gravity="right"
+            android:text="@string/detail_text_more"
+            android:textColor="?colorTimerDetailText"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sessionDetailTimesMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="left"
+            android:text="--\n--\n--\n--"
+            android:textColor="?colorTimerDetailText"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/scrambleImg"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_alignBottom="@id/detailLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/detailLayout"
+        android:layout_marginLeft="16dp"
+        tools:background="@color/red_material" />
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progressSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="16dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:mpb_progressStyle="circular"
+        tools:background="@color/md_blue_500"
+        tools:visibility="visible" />
+
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/history_to"
+        android:title="@string/list_options_item_history" />
+    <item
+        android:id="@+id/share"
+        android:title="@string/list_options_item_share" />
+    <item
+        android:id="@+id/remove"
+        android:title="@string/task_remove" />
+</menu>

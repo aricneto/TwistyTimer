@@ -1,0 +1,172 @@
+<resources>
+    <string name="app_name" translatable="false">Twisty Timer</string>
+
+    <string name="cube_222">2x2x2 Cube</string>
+    <string name="cube_333">3x3x3 Cube</string>
+    <string name="cube_444">4x4x4 Cube</string>
+    <string name="cube_555">5x5x5 Cube</string>
+    <string name="cube_clock" translatable="false">Rubik\'s Clock</string>
+    <string name="cube_mega" translatable="false">Megaminx</string>
+    <string name="cube_pyra" translatable="false">Pyraminx</string>
+    <string name="cube_skewb" translatable="false">Skewb</string>
+    <string name="cube_sq1" translatable="false">Square-1</string>
+
+
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_about">About and feedback</string>
+
+
+    <string-array name="array_penalties">
+        <item>@string/no_penalty</item>
+        <item>+2</item>
+        <item>DNF</item>
+    </string-array>
+
+    <string name="list_empty_state_message">Nothing here yet!\nTap the switch at the top of the screen to see your history.</string>
+
+    <string name="no_penalty">No penalty</string>
+    <string name="generating_scramble">Generating scramble…\nSubsequent scrambles will generate faster</string>
+    <string name="enter_type_name">Enter category name</string>
+    <string name="select_solve_type">Select category</string>
+    <string name="type">Category</string>
+    <string name="scramble_action">Scramble</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="list_options_item_share">Share</string>
+    <string name="task_remove">Remove</string>
+
+    <string name="action_cancel">Cancel</string>
+    <string name="detail_text_plus">Ao5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
+    <string name="delete_dialog_confirmation_title">Remove solve?</string>
+    <string name="delete_dialog_confirmation_button">Remove</string>
+    <string name="delete_dialog_cancel_button">Cancel</string>
+    <string name="cube_666">6x6x6 Cube</string>
+    <string name="cube_777">7x7x7 Cube</string>
+    <string name="select_penalty">Select penalty</string>
+    <string name="inspection">Inspection</string>
+    <string name="add_time">Add time</string>
+    <string name="add_time_hint" translatable="false">00:00.00</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
+    <string name="remove_subtype_title">Select category to remove</string>
+    <string name="remove_subtype_confirmation">Remove category?</string>
+    <string name="remove_subtype_confirmation_content">Are you sure you want to remove the solve category</string>
+    <string name="remove_subtype_confirmation_content_continuation">This will also remove all solves under that category</string>
+    <string name="edit_comment">Edit comment</string>
+    <string name="action_done">Done</string>
+    <string name="added_comment">Comment added</string>
+    <string name="inspection_time">Inspection time</string>
+    <string name="add_comment">Add comment</string>
+    <string name="list_empty_state_message_history">Nothing here yet!\nAll your old solves will be stored here.</string>
+    <string name="drawer_title_timer">Timer</string>
+    <string name="drawer_title_other">Other</string>
+    <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best.</string>
+    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far!</string>
+    <string name="scramble_text_tap_hint">Tap here to see scramble</string>
+    <string name="action_ok">OK</string>
+    <string name="saved_to">Saved to</string>
+    <string name="drawer_title_export">Export times</string>
+    <string name="drawer_title_changeTheme">App theme</string>
+    <string name="graph_stats_title">Stats</string>
+    <string name="graph_card_global">Best</string>
+    <string name="graph_card_session">Session</string>
+    <string name="graph_card_refresh_text">Tap to load statistics</string>
+    <string name="graph_mean">Mean</string>
+    <string name="color_indigo">Indigo</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_red">Red</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_black">Black</string>
+    <string name="w_new_subtype">New</string>
+    <string name="action_rename">Rename</string>
+    <string name="enter_new_name_dialog">Enter new name</string>
+    <string name="rename_subtype_title">Select a category to rename</string>
+    <string name="backgroundEnabledSummary">Tint the timer background with the primary color</string>
+    <string name="backgroundEnabledTitle">Colored background</string>
+    <string name="holdEnabledSummary">Hold the timer for 0.5 seconds to start</string>
+    <string name="holdEnabledTitle">Hold to start</string>
+    <string name="bestSolveEnabledSummary">Alert when you get a personal best</string>
+    <string name="bestSolveEnabledTitle">Best time alert</string>
+    <string name="worstSolveEnabledSummary">Alert when you get a personal worst</string>
+    <string name="worstSolveEnabledTitle">Worst time alert</string>
+    <string name="buttonsEnabledSummary">Show the buttons that appear under the timer after a solve</string>
+    <string name="buttonsEnabledTitle">Quick action buttons</string>
+    <string name="scrambleImageEnabledSummary">Show an image of the scramble on the timer</string>
+    <string name="scrambleImageEnabledTitle">Scramble image</string>
+    <string name="sessionStatsEnabledSummary">Show current session statistics on the timer</string>
+    <string name="sessionStatsEnabledTitle">Session stats</string>
+    <string name="prefTitleInspection">Inspection</string>
+    <string name="inspectionEnabledTitle">Inspection</string>
+    <string name="inspectionTimeTitle">Inspection time (seconds)</string>
+    <string name="timerPrefTitle">Timer</string>
+    <string name="inspectionTimeSummary">Default time: 15 seconds</string>
+    <string name="drawer_title_reference">Reference</string>
+    <string name="drawer_title_oll" translatable="false">OLL</string>
+    <string name="edit_algorithm">Edit algorithms</string>
+    <string name="dialog_set_progress">Set progress</string>
+    <string name="action_update">Update</string>
+    <string name="dialog_revert_title_confirmation">Reset algorithms</string>
+    <string name="dialog_revert_content_confirmation">Reset the algorithms for this case back to the default?</string>
+    <string name="action_reset">Reset</string>
+    <string name="drawer_title_pll" translatable="false">PLL</string>
+    <string name="scrambleEnabledSummary">Generate scramble sequences for the puzzles</string>
+    <string name="scrambleEnabledTitle">Generate scrambles</string>
+    <string name="timerAppearancePrefTitle">Timer appearance</string>
+    <string name="millisecondsEnabledSummary">Shows decimals when timing a solve</string>
+    <string name="millisecondsEnabledTitle">Show decimals</string>
+    <string name="title_activity_about">About and feedback</string>
+    <string name="action_donate">Donate</string>
+    <string name="send_email_title">Send feedback with…</string>
+    <string name="license">License</string>
+    <string name="contact">Contact</string>
+    <string name="rate_app">Rate this app on Google Play</string>
+    <string name="rate_dialog_title">Hey there!</string>
+    <string name="rate_dialog_content">If you are enjoying Twisty Timer, please take a moment to rate it in the Google Play Store!.\nThanks for your support :).</string>
+    <string name="rate_dialog_positive">Rate</string>
+    <string name="rate_dialog_negative">Don\'t show again</string>
+    <string name="drawer_title_changeColorScheme">Color scheme</string>
+    <string name="reset_colorscheme">Reset color scheme to default?</string>
+    <string name="action_reset_colorscheme">Reset</string>
+    <string name="choose_donation_amount">Choose an amount to donate</string>
+
+    <string name="donation_tier1">1 USD</string>
+    <string name="donation_tier2">2 USD</string>
+    <string name="donation_tier3">3 USD</string>
+    <string name="donation_tier4">5 USD</string>
+    <string name="color_green">Green</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_deepPurple">Deep Purple</string>
+    <string name="color_blueGray">Blue Gray</string>
+    <string name="sent_to_session">Moved to session</string>
+    <string name="sent_to_history">Moved to history</string>
+    <string name="move_solves_to_history">Move solves to history?</string>
+    <string name="move_solves_to_history_content">You\'ll be able to acess them by tapping the history switch</string>
+    <string name="action_move">Move</string>
+    <string name="invalid_time">Invalid time</string>
+    <string name="pagerEnabledTitle">Allow swiping between tabs</string>
+    <string name="pagerEnabledSummary">If this setting is disabled, you\'ll have to tap the tabs to switch between them.</string>
+    <string name="testers">Testers</string>
+    <string name="testers_content">Huge thanks to these people for providing valuable feedback during the alpha state of the app:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
+    <string name="list_options_item_history">Move to history</string>
+    <string name="list_options_item_from_history">Move to session</string>
+    <string name="selected_list">Selected</string>
+    <string name="remove_session_title">Remove all solves from this session?</string>
+    <string name="remove_session_confirmation_content">You will not be able to undo this action.</string>
+    <string name="listPrefTitle">Solve list</string>
+    <string name="clearEnabledTitle">Show \"Clear\" button</string>
+    <string name="clearEnabledSummary">The \"Clear\" button is shown in the time list, and lets you remove all solves from the current session</string>
+    <string name="advanced_pref_title">Advanced</string>
+    <string name="advanced_pref_summary">WARNING: Changing the following settings may cause some clipping issues. ONLY CHANGE THEM IF YOU KNOW WHAT YOU\'RE DOING</string>
+    <string name="timer_text_size">Timer text size</string>
+    <string name="timer_text_offset">Timer text offset</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_archive">Archive</string>
+    <string name="enable_advanced">Enable advanced settings</string>
+    <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
+    <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
+
+</resources>

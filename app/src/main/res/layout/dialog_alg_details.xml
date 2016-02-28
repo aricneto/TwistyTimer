@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentTop="true"
+            android:indeterminate="false"
+            android:progress="50"
+            android:visibility="visible"
+            app:mpb_showTrack="false"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false" />
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="OLL 21" />
+
+        <include
+            android:id="@+id/divider01"
+            layout="@layout/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/nameText"
+            android:layout_marginTop="8dp" />
+
+        <include
+            android:id="@+id/cube"
+            layout="@layout/item_3x3cube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider01"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp" />
+
+        <ImageView
+            android:id="@+id/pll_arrows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider01"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="26dp"
+            android:visibility="gone"
+            tools:src="@drawable/pll_h_perm" />
+
+        <TextView
+            android:id="@+id/algText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cube"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="4sp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:text="R U2 R2 U' R U' R' U2 F R F'
+y R' F R U R U' R2 F' R2 U' R' U R U R'
+r U2 R2 F R F' U2 r' F R F'
+R' U2 R2 U R' U R U2 y R' F' R" />
+
+        <include
+            android:id="@+id/divider02"
+            layout="@layout/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/algText"
+            android:layout_marginTop="16dp" />
+
+        <ImageView
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/divider02"
+            android:layout_marginTop="8dp"
+            android:alpha="0.70"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:src="@drawable/ic_mode_edit_black_18dp" />
+
+        <ImageView
+            android:id="@+id/progressButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider02"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/editButton"
+            android:alpha="0.70"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_percent_black_18dp" />
+
+        <ImageView
+            android:id="@+id/revertButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/divider02"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:alpha="0.70"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_cached_black_18dp" />
+
+    </RelativeLayout>
+
+</ScrollView>

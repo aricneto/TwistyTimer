@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="color" name="colorBackgroundList"/>
+    <attr format="color" name="colorTimerText"/>
+    <attr format="color" name="colorTimerDetailText"/>
+    <attr format="color" name="colorItemListText"/>
+    <attr format="color" name="colorItemListBackgroundSelected"/>
+    <attr format="color" name="colorItemListBackground"/>
+    <attr format="color" name="mainColorBackground"/>
+</resources>

@@ -1,0 +1,38 @@
+<resources>
+    <!--
+        Check Android Theme colors for color reference:
+        https://developer.android.com/training/material/images/ThemeColors.png
+
+        Refer also to Color palette for the UI colors you should use:
+        http://www.google.com/design/spec/style/color.html#color-ui-color-palette
+    -->
+
+    <!-- MAIN APP COLORS -->
+    <color name="primaryColor">#3F51B5</color>
+
+    <!-- CUBE COLORS -->
+    <color name="cube_grey">#9E9E9E</color>
+    <color name="cube_yellow">#FDD835</color>
+
+    <!-- BLACK/WHITE COLORS -->
+    <color name="black_divider">#1F000000</color>
+    <color name="black_secondary_icon">#b4000000</color>
+    <color name="black_secondary">#95000000</color>
+    <color name="black_text">#DE000000</color>
+    <color name="white_text">#FFFFFFFF</color>
+    <color name="white_secondary_icon">#B3FFFFFF</color>
+
+    <!-- FAB/ACTIONS -->
+    <color name="accentColor">#FF1744</color>
+    <color name="accentDarkColor">#D50000</color>
+
+    <!-- TEXT -->
+
+
+    <color name="red_material">#F44336</color>
+
+    <color name="yellow_material_700">#FBC02D</color>
+
+    <color name="materialGray">#EEEEEE</color>
+
+</resources>

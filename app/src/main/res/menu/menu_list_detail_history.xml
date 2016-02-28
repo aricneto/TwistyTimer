@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.aricneto.twistify.ui.activity.ListDetailActivity">
+    <item
+        android:id="@+id/history_from"
+        android:title="@string/list_options_item_from_history" />
+    <item
+        android:id="@+id/share"
+        android:title="@string/list_options_item_share" />
+    <item
+        android:id="@+id/remove"
+        android:title="@string/task_remove" />
+</menu>

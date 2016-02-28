@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<notices>
+    <notice>
+        <name>MPAndroidChart</name>
+        <url>https://github.com/PhilJay/MPAndroidChart</url>
+        <copyright>Copyright 2016 Philipp Jahoda</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Material Color Picker Dialog</name>
+        <url>https://github.com/Pes8/android-material-color-picker-dialog</url>
+        <copyright>Copyright (c) 2015 Simone Pessotto (http://www.simonepessotto.it)
+</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>AndroidSVG</name>
+        <url>https://github.com/BigBadaboom/androidsvg</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Material Preferences</name>
+        <url>https://github.com/jenzz/Android-MaterialPreference</url>
+        <copyright>Copyright (c) 2015 Jens Driller</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>Material Drawer</name>
+        <url>https://github.com/mikepenz/MaterialDrawer</url>
+        <copyright>Copyright 2016 Mike Penz</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>FAB</name>
+        <url>https://github.com/Clans/FloatingActionButton</url>
+        <copyright>Copyright 2015 Dmytro Tarianyk</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Discrete Seekbar</name>
+        <url>https://github.com/AnderWeb/discreteSeekBar</url>
+        <copyright>Copyright 2014 Gustavo Claramunt (Ander Webbs)</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Observable ScrollView</name>
+        <url>https://github.com/ksoichiro/Android-ObservableScrollView</url>
+        <copyright>Copyright 2014 Soichiro Kashima</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Butterknife</name>
+        <url>http://jakewharton.github.io/butterknife/</url>
+        <copyright>Copyright 2013 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>material-dialogs</name>
+        <url>https://github.com/afollestad/material-dialogs</url>
+        <copyright>Copyright (c) 2015 Aidan Michael Follestad</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
+        <url>http://psdev.de/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+            <name>TNoodle</name>
+            <url>https://github.com/cubing/tnoodle</url>
+            <copyright>Copyright 2016 WCA</copyright>
+            <license>GNU General Public License 3.0</license>
+        </notice>
+</notices>

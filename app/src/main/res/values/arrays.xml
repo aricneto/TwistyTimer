@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="donation_tiers">
+        <item>@string/donation_tier1</item>
+        <item>@string/donation_tier2</item>
+        <item>@string/donation_tier3</item>
+        <item>@string/donation_tier4</item>
+    </string-array>
+</resources>

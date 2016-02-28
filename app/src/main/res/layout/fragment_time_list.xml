@@ -1,0 +1,113 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorBackgroundList"
+    android:orientation="vertical"
+    tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/send_to_history_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/clear_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_delete_black_18dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/action_clear"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+
+            <include
+                android:id="@+id/divider01"
+                layout="@layout/view_divider"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- The spacer makes the item center -->
+
+            <TextView
+                android:id="@+id/archive_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_timer_sand_black_18dp"
+                android:drawableRight="@drawable/spacer_18dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/action_archive" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/send_to_history_card"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:drawSelectorOnTop="true"
+        android:paddingTop="8dp" />
+
+
+    <ImageView
+        android:id="@+id/nothing_here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/nothere2"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/nothing_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nothing_here"
+        android:alpha="0.80"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/list_empty_state_message"
+        android:textColor="?android:textColorPrimaryInverse"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_addTime"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="16dp"
+        android:src="@drawable/fab_add"
+        fab:fab_colorNormal="?attr/colorAccent"
+        fab:fab_colorPressed="?attr/colorAccent"
+        fab:fab_size="normal" />
+
+
+</RelativeLayout>

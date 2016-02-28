@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_backgroundEnabled"
+        android:key="backgroundEnabled"
+        android:summary="@string/backgroundEnabledSummary"
+        android:title="@string/backgroundEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_millisecondsEnabled"
+        android:key="millisecondsEnabled"
+        android:summary="@string/millisecondsEnabledSummary"
+        android:title="@string/millisecondsEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_buttonEnabled"
+        android:key="scrambleImageEnabled"
+        android:summary="@string/scrambleImageEnabledSummary"
+        android:title="@string/scrambleImageEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_buttonEnabled"
+        android:key="sessionStatsEnabled"
+        android:summary="@string/sessionStatsEnabledSummary"
+        android:title="@string/sessionStatsEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_buttonEnabled"
+        android:key="buttonsEnabled"
+        android:summary="@string/buttonsEnabledSummary"
+        android:title="@string/buttonsEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_bestSolve"
+        android:key="bestSolveEnabled"
+        android:summary="@string/bestSolveEnabledSummary"
+        android:title="@string/bestSolveEnabledTitle" />
+
+    <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_worstSolve"
+        android:key="worstSolveEnabled"
+        android:summary="@string/worstSolveEnabledSummary"
+        android:title="@string/worstSolveEnabledTitle" />
+
+    <com.jenzz.materialpreference.PreferenceCategory
+        android:title="@string/advanced_pref_title">
+
+        <com.jenzz.materialpreference.Preference
+            android:selectable="false"
+            android:summary="@string/advanced_pref_summary" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:title="@string/enable_advanced"
+            android:defaultValue="@bool/defaultAdvancedEnabled"
+            android:key="enableAdvanced" />
+
+        <com.jenzz.materialpreference.Preference
+            android:defaultValue="@integer/defaultTimeTextSize"
+            android:key="timerTextSize"
+            android:title="@string/timer_text_size"
+            android:dependency="enableAdvanced"/>
+
+        <com.jenzz.materialpreference.Preference
+            android:defaultValue="@integer/defaultTimeTextOffset"
+            android:key="timerTextOffset"
+            android:title="@string/timer_text_offset"
+            android:dependency="enableAdvanced"/>
+
+    </com.jenzz.materialpreference.PreferenceCategory>
+
+</PreferenceScreen>

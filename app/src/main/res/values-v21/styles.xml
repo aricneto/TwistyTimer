@@ -1,0 +1,251 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/md_indigo_500</item>
+        <item name="colorPrimaryDark">@color/md_indigo_700</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="mainColorBackground">@color/md_indigo_700</item>
+        <item name="colorTimerText">@color/white_text</item>
+        <item name="android:textColorPrimaryInverse">@color/black_text</item>
+        <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
+        <item name="colorBackgroundList">@color/materialGray</item>
+        <item name="colorItemListText">@color/black_text</item>
+        <item name="colorItemListBackground">@color/white_text</item>
+        <item name="colorTimerDetailText">@color/white_secondary_icon</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">?colorPrimary</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="android:actionModeStyle">@style/DefaultTheme.ActionMode</item>
+        <item name="actionModeStyle">@style/DefaultTheme.ActionMode</item>
+
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
+        <item name="android:statusBarColor">@color/md_indigo_700</item>
+
+        <item name="md_positive_color">@color/accentColor</item>
+        <item name="md_negative_color">@color/black_secondary_icon</item>
+        <item name="md_widget_color">@color/accentDarkColor</item>
+
+    </style>
+
+
+
+    <style name="DefaultTheme.NoBackground" parent="DefaultTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="PinkTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_pink_700</item>
+        <item name="colorPrimary">@color/md_pink_500</item>
+        <item name="colorPrimaryDark">@color/md_pink_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_pink_200</item>
+        <item name="android:statusBarColor">@color/md_pink_700</item>
+    </style>
+
+    <style name="PinkTheme.NoBackground" parent="PinkTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="PurpleTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_purple_700</item>
+        <item name="colorPrimary">@color/md_purple_500</item>
+        <item name="colorPrimaryDark">@color/md_purple_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_purple_200</item>
+        <item name="android:statusBarColor">@color/md_purple_700</item>
+    </style>
+
+    <style name="PurpleTheme.NoBackground" parent="PurpleTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="TealTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_teal_700</item>
+        <item name="colorPrimary">@color/md_teal_500</item>
+        <item name="colorPrimaryDark">@color/md_teal_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_teal_200</item>
+        <item name="android:statusBarColor">@color/md_teal_700</item>
+    </style>
+
+    <style name="TealTheme.NoBackground" parent="TealTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="RedTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_red_700</item>
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorPrimaryDark">@color/md_red_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_red_200</item>
+        <item name="android:statusBarColor">@color/md_red_700</item>
+    </style>
+
+    <style name="RedTheme.NoBackground" parent="RedTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BrownTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_brown_700</item>
+        <item name="colorPrimary">@color/md_brown_500</item>
+        <item name="colorPrimaryDark">@color/md_brown_700</item>
+        <item name="colorAccent">@color/md_deep_orange_400</item>
+        <item name="md_positive_color">@color/md_deep_orange_400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_brown_200</item>
+        <item name="android:statusBarColor">@color/md_brown_700</item>
+    </style>
+
+    <style name="BrownTheme.NoBackground" parent="BrownTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlueTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_blue_700</item>
+        <item name="colorPrimary">@color/md_blue_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_700</item>
+        <item name="colorAccent">@color/md_deep_orange_A400</item>
+        <item name="md_positive_color">@color/md_deep_orange_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_blue_200</item>
+        <item name="android:statusBarColor">@color/md_blue_700</item>
+    </style>
+
+    <style name="BlueTheme.NoBackground" parent="BlueTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlackTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_black_1000</item>
+        <item name="colorPrimary">@color/md_black_1000</item>
+        <item name="colorPrimaryDark">@color/md_black_1000</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="android:statusBarColor">@color/md_black_1000</item>
+        <item name="colorTimerText">@android:color/white</item>
+        <item name="colorBackgroundList">@color/md_black_1000</item>
+        <item name="android:textColorPrimaryInverse">@color/white_text</item>
+        <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
+        <item name="colorItemListText">@color/white_text</item>
+        <item name="colorItemListBackground">@color/md_grey_800</item>
+    </style>
+
+    <style name="BlackTheme.NoBackground" parent="BlackTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="GreenTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_green_700</item>
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorPrimaryDark">@color/md_green_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_green_200</item>
+        <item name="android:statusBarColor">@color/md_green_700</item>
+    </style>
+
+    <style name="GreenTheme.NoBackground" parent="GreenTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="OrangeTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_deep_orange_700</item>
+        <item name="colorPrimary">@color/md_deep_orange_500</item>
+        <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
+        <item name="colorAccent">@color/md_green_A400</item>
+        <item name="md_positive_color">@color/md_green_700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_deep_orange_200</item>
+        <item name="android:statusBarColor">@color/md_deep_orange_700</item>
+    </style>
+
+    <style name="OrangeTheme.NoBackground" parent="OrangeTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="DeepPurpleTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_deep_purple_700</item>
+        <item name="colorPrimary">@color/md_deep_purple_500</item>
+        <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_deep_purple_200</item>
+        <item name="android:statusBarColor">@color/md_deep_purple_700</item>
+    </style>
+
+    <style name="DeepPurpleTheme.NoBackground" parent="DeepPurpleTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlueGrayTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_blue_grey_700</item>
+        <item name="colorPrimary">@color/md_blue_grey_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_grey_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_blue_grey_200</item>
+        <item name="android:statusBarColor">@color/md_blue_grey_700</item>
+    </style>
+
+    <style name="BlueGrayTheme.NoBackground" parent="BlueGrayTheme">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+
+
+
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="ToolBarStyle">
+        <item name="android:elevation">@dimen/toolbar_elevation</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ToolBarStyle.NoElevation">
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="Widget.Tarefa.Header.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+        <item name="overlapAnchor">true</item>
+        <item name="android:overlapAnchor">true</item>
+    </style>
+
+</resources>

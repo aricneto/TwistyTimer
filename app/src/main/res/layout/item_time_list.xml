@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/card"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="0dp"
+    app:cardBackgroundColor="?colorItemListBackground">
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/timeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
+            android:textColor="?colorItemListText"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="1:26.95" />
+
+        <TextView
+            android:id="@+id/penaltyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="4dp"
+            android:textColor="@color/red_material"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="+2" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:text="sex, 15 jun"
+            android:textColor="?colorItemListText"
+            android:textSize="10sp"
+            android:textStyle="normal" />
+
+        <ImageView
+            android:id="@+id/commentIcon"
+            tools:visibility="visible"
+            android:alpha="0.80"
+            android:visibility="gone"
+            android:layout_width="12dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_comment_black_18dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="4dp"
+            android:tint="?colorItemListText"
+            android:paddingBottom="4dp"/>
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
