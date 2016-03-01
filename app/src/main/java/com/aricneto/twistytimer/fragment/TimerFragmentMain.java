@@ -363,7 +363,7 @@ public class TimerFragmentMain extends BaseFragment {
                 .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        db.addSolve(new Solve(0, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                        db.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
                         historyChecked = false; // Resets the checked state of the switch
                         currentPuzzleSubtype = input.toString();
                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
