@@ -155,5 +155,6 @@
     <string name="detail_text_avg">Md5:\nMd12:\nMd50:\nMd100:</string>
     <string name="detail_text_plus">Md5:\nMd12:\nMd50:\nMd100:\nMd1000\nMédia:\nMelhor:\nPior:\nTotal:</string>
     <string name="detail_text_more">Média:\nMelhor:\nPior:\nTotal:</string>
+    <string name="donation_thanks">Obrigado por doar :)</string>
 
 </resources>

@@ -101,7 +101,7 @@ public class TimerFragmentMain extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
                 switch (intent.getStringExtra("action")) {
-                    case "TIMER STARTED": // This was taken from PlusTimer
+                    case "TIMER STARTED": // This was taken from PlusTimer (thanks :D)
                         viewPager.setPagingEnabled(false);
                         activateTabLayout(false);
                         originalContentHeight = viewPager.getHeight();

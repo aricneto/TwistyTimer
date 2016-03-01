@@ -291,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         /*
          * Called when requested PRODUCT ID was successfully purchased
          */
-        // TODO: THANK THE USER FOR DONATING
         bp.consumePurchase(productId);
     }
 
