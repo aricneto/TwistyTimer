@@ -169,5 +169,6 @@
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
     <string name="donation_thanks">Thank you for donating :)</string>
+    <string name="source">Source</string>
 
 </resources>

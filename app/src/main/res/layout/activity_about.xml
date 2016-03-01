@@ -66,52 +66,77 @@
         android:text="@string/rate_app"
         android:textSize="14sp" />
 
-    <TextView
-        android:layout_marginTop="16dp"
-        android:textColor="@color/white_text"
-        android:padding="8dp"
-        android:id="@+id/feedbackButton"
+    <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/contact"
-        android:drawableLeft="@drawable/ic_email_white_18dp"
-        android:gravity="center"
-        android:drawablePadding="8dp"
-        android:layout_below="@id/rateButton"
-        android:layout_centerHorizontal="true"
-        android:textSize="14sp" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rateButton"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true">
 
-    <TextView
-        android:layout_marginTop="16dp"
-        android:textColor="@color/white_text"
-        android:padding="8dp"
-        android:id="@+id/licenseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:drawableLeft="@drawable/ic_account_balance_white_18dp"
-        android:gravity="center"
-        android:drawablePadding="8dp"
-        android:layout_below="@id/feedbackButton"
-        android:layout_centerHorizontal="true"
-        android:text="@string/license"
-        android:textSize="14sp" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:layout_marginTop="16dp"
-        android:textColor="@color/white_text"
-        android:padding="8dp"
-        android:id="@+id/testersButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:drawableLeft="@drawable/ic_bug_report_white_18dp"
-        android:gravity="center"
-        android:drawablePadding="8dp"
-        android:layout_below="@id/licenseButton"
-        android:layout_centerHorizontal="true"
-        android:text="@string/testers"
-        android:textSize="14sp" />
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/feedbackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact"
+                android:drawableLeft="@drawable/ic_email_white_18dp"
+                android:gravity="center"
+                android:drawablePadding="8dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/licenseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:drawableLeft="@drawable/ic_account_balance_white_18dp"
+                android:gravity="center"
+                android:drawablePadding="8dp"
+                android:text="@string/license"
+                android:textSize="14sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/testersButton"
+                android:drawableLeft="@drawable/ic_bug_report_white_18dp"
+                android:gravity="center"
+                android:drawablePadding="8dp"
+                android:text="@string/testers"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/sourceButton"
+                android:drawableLeft="@drawable/ic_github_circle_white_18dp"
+                android:gravity="center"
+                android:layout_marginLeft="32dp"
+                android:drawablePadding="8dp"
+                android:text="@string/source"
+                android:textSize="14sp"
+                android:layout_column="0" />
+
+        </TableRow>
+
+    </TableLayout>
 
 
 </RelativeLayout>

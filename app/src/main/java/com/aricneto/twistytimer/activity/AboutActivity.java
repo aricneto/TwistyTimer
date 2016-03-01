@@ -28,6 +28,7 @@ public class AboutActivity extends AppCompatActivity {
     @Bind(R.id.feedbackButton) TextView feedbackButton;
     @Bind(R.id.licenseButton)  TextView licenseButton;
     @Bind(R.id.testersButton)  TextView testersButton;
+    @Bind(R.id.sourceButton)   TextView sourceButton;
     @Bind(R.id.appVersion)     TextView appVersion;
 
     Activity activity;
@@ -62,6 +63,10 @@ public class AboutActivity extends AppCompatActivity {
                             .positiveText(R.string.action_ok)
                             .show();
                     break;
+                case R.id.sourceButton:
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/aricneto/TwistyTimer"));
+                    startActivity(browserIntent);
+                    break;
             }
         }
     };
@@ -95,6 +100,7 @@ public class AboutActivity extends AppCompatActivity {
         licenseButton.setOnClickListener(clickListener);
         rateButton.setOnClickListener(clickListener);
         testersButton.setOnClickListener(clickListener);
+        sourceButton.setOnClickListener(clickListener);
 
     }
 }
