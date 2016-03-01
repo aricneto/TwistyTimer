@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.util.TypedValue;
@@ -102,16 +101,16 @@ public class TimerFragment extends BaseFragment {
     private int      mShortAnimationDuration;
     private Animator mCurrentAnimator;
 
-    @Bind(R.id.sessionDetailTimesAvg) TextView detailTimesAvg;
+    @Bind(R.id.sessionDetailTimesAvg)  TextView detailTimesAvg;
     @Bind(R.id.sessionDetailTimesMore) TextView detailTimesMore;
-    @Bind(R.id.detailLayout) View detailLayout;
+    @Bind(R.id.detailLayout)           View     detailLayout;
 
-    @Bind(R.id.chronometer)        ChronometerMilli    chronometer;
-    @Bind(R.id.scrambleText)       TextView            scrambleText;
-    @Bind(R.id.scrambleImg)        ImageView           scrambleImg;
-    @Bind(R.id.expanded_image)     ImageView           expandedImageView;
-    @Bind(R.id.inspectionText)     TextView            inspectionText;
-    @Bind(R.id.progressSpinner)    MaterialProgressBar progressSpinner;
+    @Bind(R.id.chronometer)     ChronometerMilli    chronometer;
+    @Bind(R.id.scrambleText)    TextView            scrambleText;
+    @Bind(R.id.scrambleImg)     ImageView           scrambleImg;
+    @Bind(R.id.expanded_image)  ImageView           expandedImageView;
+    @Bind(R.id.inspectionText)  TextView            inspectionText;
+    @Bind(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
     @Bind(R.id.button_delete)        ImageView        deleteButton;
     @Bind(R.id.button_dnf)           ImageView        dnfButton;
@@ -133,6 +132,7 @@ public class TimerFragment extends BaseFragment {
     private boolean bestSolveEnabled;
     private boolean scrambleEnabled;
     private boolean holdEnabled;
+    private boolean startCueEnabled;
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -327,6 +327,7 @@ public class TimerFragment extends BaseFragment {
         holdEnabled = sharedPreferences.getBoolean("holdEnabled", false);
         scrambleEnabled = sharedPreferences.getBoolean("scrambleEnabled", true);
         backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", false);
+        startCueEnabled = sharedPreferences.getBoolean("startCue", true);
 
 
         if (scrambleEnabled) {
@@ -389,7 +390,7 @@ public class TimerFragment extends BaseFragment {
         holdRunnable = new Runnable() {
             public void run() {
                 isReady = true;
-                chronometer.setTextColor(ContextCompat.getColor(getContext(), R.color.md_green_A400));
+                chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
                 if (! inspectionEnabled)
                     hideToolbar();
             }
@@ -402,7 +403,6 @@ public class TimerFragment extends BaseFragment {
 
                 if (animationDone) {
 
-
                     if (countingDown) {
 
                         switch (motionEvent.getAction()) {
@@ -410,6 +410,11 @@ public class TimerFragment extends BaseFragment {
                                 if (holdEnabled && inspectionEnabled) {
                                     if (! isLocked)
                                         holdHandler.postDelayed(holdRunnable, 500);
+                                } else {
+                                    if (! isLocked) {
+                                        if (startCueEnabled)
+                                            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
+                                    }
                                 }
                                 return true;
                             case MotionEvent.ACTION_UP:
@@ -446,11 +451,17 @@ public class TimerFragment extends BaseFragment {
 
                                 if (holdingDNF) {
                                     holdingDNF = false;
+                                    chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
                                 }
 
                                 if (holdEnabled && ! inspectionEnabled) {
                                     if (! isLocked)
                                         holdHandler.postDelayed(holdRunnable, 500);
+                                } else if (! holdEnabled && ! inspectionEnabled) {
+                                    if (! isLocked) {
+                                        if (startCueEnabled)
+                                            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
+                                    }
                                 }
 
                                 return true;
@@ -680,8 +691,10 @@ public class TimerFragment extends BaseFragment {
      * Starts the chronometer
      */
     private void startChronometer() {
-        if (chronometer != null)
+        if (chronometer != null) {
             chronometer.start();
+            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
+        }
         if (scrambleEnabled) {
             currentScramble = realScramble;
             generateNewScramble();

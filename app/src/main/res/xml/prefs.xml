@@ -21,14 +21,19 @@
 
         <com.jenzz.materialpreference.Preference
             android:key="timerAppearance"
-            android:title="@string/timerAppearancePrefTitle"
-            />
+            android:title="@string/timerAppearancePrefTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_holdEnabled"
             android:key="holdEnabled"
             android:summary="@string/holdEnabledSummary"
             android:title="@string/holdEnabledTitle" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_startCue"
+            android:key="startCue"
+            android:summary="@string/startCueSummary"
+            android:title="@string/startCueTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_pagerEnabled"

@@ -11,4 +11,5 @@
     <bool name="default_pagerEnabled">true</bool>
     <bool name="default_clearEnabled">false</bool>
     <bool name="defaultAdvancedEnabled">false</bool>
+    <bool name="default_startCue">true</bool>
 </resources>

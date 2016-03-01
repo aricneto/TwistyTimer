@@ -170,5 +170,7 @@
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
     <string name="donation_thanks">Thank you for donating :)</string>
     <string name="source">Source</string>
+    <string name="startCueTitle">Start cue</string>
+    <string name="startCueSummary">Change the text color when the timer is ready to start</string>
 
 </resources>
