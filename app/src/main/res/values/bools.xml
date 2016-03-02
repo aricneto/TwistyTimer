@@ -12,4 +12,5 @@
     <bool name="default_clearEnabled">false</bool>
     <bool name="defaultAdvancedEnabled">false</bool>
     <bool name="default_startCue">true</bool>
+    <bool name="default_large_quickaction">false</bool>
 </resources>

@@ -52,27 +52,33 @@
             android:summary="@string/advanced_pref_summary" />
 
         <com.jenzz.materialpreference.SwitchPreference
-            android:title="@string/enable_advanced"
             android:defaultValue="@bool/defaultAdvancedEnabled"
-            android:key="enableAdvanced" />
+            android:key="enableAdvanced"
+            android:title="@string/enable_advanced" />
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultTimeTextSize"
+            android:dependency="enableAdvanced"
             android:key="timerTextSize"
-            android:title="@string/timer_text_size"
-            android:dependency="enableAdvanced"/>
+            android:title="@string/timer_text_size" />
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultTimeTextOffset"
+            android:dependency="enableAdvanced"
             android:key="timerTextOffset"
-            android:title="@string/timer_text_offset"
-            android:dependency="enableAdvanced"/>
+            android:title="@string/timer_text_offset" />
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultScrambleTextSize"
+            android:dependency="enableAdvanced"
             android:key="scrambleTextSize"
-            android:title="@string/scramble_text_size"
-            android:dependency="enableAdvanced"/>
+            android:title="@string/scramble_text_size" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_large_quickaction"
+            android:dependency="enableAdvanced"
+            android:key="quickActionLarge"
+            android:title="@string/quick_action_button_large_title" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

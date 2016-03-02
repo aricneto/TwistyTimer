@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.util.TypedValue;
@@ -310,14 +311,23 @@ public class TimerFragment extends BaseFragment {
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 
-        final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
-        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 10)) / 10f;
-        final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
         advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
+        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 10)) / 10f;
+        final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
+        final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
+        final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
 
         if (advancedEnabled) {
             chronometer.setTextSize(TypedValue.COMPLEX_UNIT_PX, chronometer.getTextSize() * timerTextSize);
             scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
+
+            if (quickActionLarge) {
+                deleteButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete_white_36dp));
+                commentButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_comment_white_36dp));
+                dnfButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dnflarge));
+                plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
+            }
+
             chronometer.setY(chronometer.getY() - timerTextOffset);
             inspectionText.setY(inspectionText.getY() - timerTextOffset);
             quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);

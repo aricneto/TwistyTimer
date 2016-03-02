@@ -4,4 +4,5 @@
     <integer name="defaultTimeTextSize">10</integer>
     <integer name="defaultTimeTextOffset">0</integer>
     <integer name="defaultScrambleTextSize">10</integer>
+    <integer name="defaultQuickActionButtonSize">10</integer>
 </resources>

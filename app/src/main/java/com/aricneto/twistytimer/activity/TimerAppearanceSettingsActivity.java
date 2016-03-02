@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -61,13 +62,13 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 switch (preference.getKey()) {
                     case "timerTextSize":
-                        createTextSizeDialog("timerTextSize");
+                        createTextSizeDialog(R.string.timer_text_size, "timerTextSize");
                         break;
                     case "timerTextOffset":
                         createOffsetDialog();
                         break;
                     case "scrambleTextSize":
-                        createTextSizeDialog("scrambleTextSize");
+                        createTextSizeDialog(R.string.scramble_text_size, "scrambleTextSize");
                         break;
                 }
                 return false;
@@ -93,7 +94,7 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
 
         }
 
-        private void createTextSizeDialog(final String pref) {
+        private void createTextSizeDialog(@StringRes int title, final String pref) {
             final DiscreteSeekBar seekBar
                     = (DiscreteSeekBar) LayoutInflater.from(getActivity()).inflate(R.layout.dialog_progress, null);
             seekBar.setMin(1);
@@ -107,7 +108,7 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
             });
 
             new MaterialDialog.Builder(getActivity())
-                    .title(R.string.timer_text_size)
+                    .title(title)
                     .customView(seekBar, false)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
