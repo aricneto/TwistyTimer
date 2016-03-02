@@ -151,6 +151,7 @@ public class TimerFragment extends BaseFragment {
                         break;
                     case "SCROLLED PAGE":
                         holdHandler.removeCallbacks(holdRunnable);
+                        chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
                         isReady = false;
                         break;
                     case "TOOLBAR ENDED":
