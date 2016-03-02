@@ -61,10 +61,13 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 switch (preference.getKey()) {
                     case "timerTextSize":
-                        createSeekDialog();
+                        createTextSizeDialog("timerTextSize");
                         break;
                     case "timerTextOffset":
                         createOffsetDialog();
+                        break;
+                    case "scrambleTextSize":
+                        createTextSizeDialog("scrambleTextSize");
                         break;
                 }
                 return false;
@@ -81,19 +84,21 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
             editor = preferences.edit();
 
             final Preference timerTextSize = (Preference) getPreferenceScreen().findPreference("timerTextSize");
+            final Preference scrambleTextSize = (Preference) getPreferenceScreen().findPreference("scrambleTextSize");
             final Preference timerTextOffset = (Preference) getPreferenceScreen().findPreference("timerTextOffset");
 
             timerTextSize.setOnPreferenceClickListener(clickListener);
+            scrambleTextSize.setOnPreferenceClickListener(clickListener);
             timerTextOffset.setOnPreferenceClickListener(clickListener);
 
         }
 
-        private void createSeekDialog() {
+        private void createTextSizeDialog(final String pref) {
             final DiscreteSeekBar seekBar
                     = (DiscreteSeekBar) LayoutInflater.from(getActivity()).inflate(R.layout.dialog_progress, null);
             seekBar.setMin(1);
             seekBar.setMax(30);
-            seekBar.setProgress(preferences.getInt("timerTextSize", 12));
+            seekBar.setProgress(preferences.getInt(pref, 10));
             seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
                 @Override
                 public int transform(int value) {
@@ -110,7 +115,7 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             int seekProgress = seekBar.getProgress();
-                            editor.putInt("timerTextSize", seekProgress);
+                            editor.putInt(pref, seekProgress);
                             editor.apply();
                         }
                     })

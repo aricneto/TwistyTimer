@@ -133,6 +133,8 @@ public class TimerFragment extends BaseFragment {
     private boolean scrambleEnabled;
     private boolean holdEnabled;
     private boolean startCueEnabled;
+    private float scrambleTextSize;
+    private boolean advancedEnabled;
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -162,6 +164,7 @@ public class TimerFragment extends BaseFragment {
     private Runnable       holdRunnable;
     private Handler        holdHandler;
     private CountDownTimer plusTwoCountdown;
+
 
 
     public TimerFragment() {
@@ -308,11 +311,13 @@ public class TimerFragment extends BaseFragment {
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 
         final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
+        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 10)) / 10f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
-        final boolean advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
+        advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
 
         if (advancedEnabled) {
             chronometer.setTextSize(TypedValue.COMPLEX_UNIT_PX, chronometer.getTextSize() * timerTextSize);
+            scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
             chronometer.setY(chronometer.getY() - timerTextOffset);
             inspectionText.setY(inspectionText.getY() - timerTextOffset);
             quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);
@@ -775,41 +780,39 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(final String scramble) {
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                scrambleText.setText(scramble);
-                scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                scrambleText.setClickable(false);
-            } else {
-                scrambleText.setVisibility(View.INVISIBLE);
-                scrambleText.setText(scramble);
-                scrambleText.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (scrambleText != null) {
-                            if (scrambleText.getLineCount() > 1) {
-                                scrambleText.setClickable(true);
-                                scrambleText.setText(R.string.scramble_text_tap_hint);
-                                scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
-                                scrambleText.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        new MaterialDialog.Builder(getContext())
-                                                .content(scramble)
-                                                .positiveText(R.string.action_ok)
-                                                .show();
-                                    }
-                                });
-                            } else {
-                                scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                                scrambleText.setClickable(false);
-                            }
-                            if (! isRunning)
-                                scrambleText.setVisibility(View.VISIBLE);
+            scrambleText.setVisibility(View.INVISIBLE);
+            scrambleText.setText(scramble);
+            scrambleText.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (scrambleText != null) {
+                        Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
+                        Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
+                        if (scrambleRect.intersect(chronometerRect)) {
+                            scrambleText.setClickable(true);
+                            scrambleText.setText(R.string.scramble_text_tap_hint);
+                            scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
+                            scrambleText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                                            .content(scramble)
+                                            .positiveText(R.string.action_ok)
+                                            .build();
+                                    if (advancedEnabled)
+                                        dialog.getContentView().setTextSize(TypedValue.COMPLEX_UNIT_PX, dialog.getContentView().getTextSize() * scrambleTextSize);
+                                    dialog.show();
+                                }
+                            });
+                        } else {
+                            scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                            scrambleText.setClickable(false);
                         }
+                        if (! isRunning)
+                            scrambleText.setVisibility(View.VISIBLE);
                     }
-                });
-
-            }
+                }
+            });
             realScramble = scramble;
             if (scrambleImgEnabled)
                 generateScrambleImage();

@@ -3,4 +3,5 @@
     <integer name="default_inspectionTime">15</integer>
     <integer name="defaultTimeTextSize">10</integer>
     <integer name="defaultTimeTextOffset">0</integer>
+    <integer name="defaultScrambleTextSize">10</integer>
 </resources>

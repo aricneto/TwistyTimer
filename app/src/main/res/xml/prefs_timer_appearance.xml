@@ -68,6 +68,12 @@
             android:title="@string/timer_text_offset"
             android:dependency="enableAdvanced"/>
 
+        <com.jenzz.materialpreference.Preference
+            android:defaultValue="@integer/defaultScrambleTextSize"
+            android:key="scrambleTextSize"
+            android:title="@string/scramble_text_size"
+            android:dependency="enableAdvanced"/>
+
     </com.jenzz.materialpreference.PreferenceCategory>
 
 </PreferenceScreen>

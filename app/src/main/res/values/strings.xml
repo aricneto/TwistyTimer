@@ -172,5 +172,6 @@
     <string name="source">Source</string>
     <string name="startCueTitle">Start cue</string>
     <string name="startCueSummary">Change the text color when the timer is ready to start</string>
+    <string name="scramble_text_size">Scramble text size</string>
 
 </resources>
