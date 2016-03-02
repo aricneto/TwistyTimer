@@ -19,7 +19,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
@@ -314,6 +313,7 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected int[] doInBackground(Void... voids) {
+            int BestAvg3 = handler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg5 = handler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg12 = handler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg100 = handler.getBestAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
@@ -324,6 +324,7 @@ public class TimerGraphFragment extends Fragment {
             int BestWorst = handler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
             int BestSolveCount = handler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
 
+            int SessionAvg3 = handler.getFastAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
             int SessionAvg5 = handler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
             int SessionAvg12 = handler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
             int SessionAvg100 = handler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
@@ -336,13 +337,14 @@ public class TimerGraphFragment extends Fragment {
 
             return new int[] { BestAvg5, BestAvg12, BestAvg100, BestMean, BestBest, BestWorst, BestSolveCount,
                                SessionAvg5, SessionAvg12, SessionAvg100, SessionMean, SessionBest, SessionWorst, SessionSolveCount,
-                               BestAvg50, BestAvg1000, SessionAvg50, SessionAvg1000 };
+                               BestAvg50, BestAvg1000, SessionAvg50, SessionAvg1000, BestAvg3, SessionAvg3 };
         }
 
         @Override
         protected void onPostExecute(int[] times) {
             super.onPostExecute(times);
 
+            String BestAvg3 = PuzzleUtils.convertTimeToString(times[18]);
             String BestAvg5 = PuzzleUtils.convertTimeToString(times[0]);
             String BestAvg12 = PuzzleUtils.convertTimeToString(times[1]);
             String BestAvg50 = PuzzleUtils.convertTimeToString(times[14]);
@@ -352,6 +354,7 @@ public class TimerGraphFragment extends Fragment {
             String BestBest = PuzzleUtils.convertTimeToString(times[4]);
             String BestWorst = PuzzleUtils.convertTimeToString(times[5]);
 
+            String SessionAvg3 = PuzzleUtils.convertTimeToString(times[19]);
             String SessionAvg5 = PuzzleUtils.convertTimeToString(times[7]);
             String SessionAvg12 = PuzzleUtils.convertTimeToString(times[8]);
             String SessionAvg50 = PuzzleUtils.convertTimeToString(times[16]);
@@ -363,7 +366,8 @@ public class TimerGraphFragment extends Fragment {
 
             // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
             personalBestTimes.setText(
-                    BestAvg5 + "\n" +
+                    BestAvg3 + "\n" +
+                            BestAvg5 + "\n" +
                             BestAvg12 + "\n" +
                             BestAvg50 + "\n" +
                             BestAvg100 + "\n" +
@@ -373,7 +377,8 @@ public class TimerGraphFragment extends Fragment {
                             BestWorst + "\n" +
                             times[6]);
             sessionBestTimes.setText(
-                    SessionAvg5 + "\n" +
+                    SessionAvg3 + "\n" +
+                            SessionAvg5 + "\n" +
                             SessionAvg12 + "\n" +
                             SessionAvg50 + "\n" +
                             SessionAvg100 + "\n" +

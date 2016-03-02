@@ -485,7 +485,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { puzzle, type });
 
         if (cursor.getCount() >= n) {
-            cursor = db.rawQuery("SELECT AVG(time) FROM (SELECT * FROM " + TABLE_TIMES + sqlSelection + " LIMIT " + n + ")",
+            cursor = db.rawQuery("SELECT AVG(time) FROM (SELECT * FROM " + TABLE_TIMES + sqlSelection + " ORDER BY date DESC LIMIT " + n + ")",
                     new String[] { puzzle, type });
             if (cursor.moveToFirst())
                 time = cursor.getInt(0);
@@ -554,7 +554,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     }
 
                     if (! (disqualifyDNF && dnfCount > 1)) {
-                        int average = (sum - worst - best) / (n - 2);
+                        int average = Integer.MAX_VALUE;
+
+                        if (n == 3) {
+                            if (dnfCount == 0)
+                                average = sum / 3;
+                        } else
+                            average = (sum - worst - best) / (n - 2);
+
                         if (average < bestAverage)
                             bestAverage = average;
                     }

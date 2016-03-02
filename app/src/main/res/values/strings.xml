@@ -37,7 +37,7 @@
     <string name="task_remove">Remove</string>
 
     <string name="action_cancel">Cancel</string>
-    <string name="detail_text_plus">Ao5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
+    <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
     <string name="delete_dialog_confirmation_title">Remove solve?</string>
     <string name="delete_dialog_confirmation_button">Remove</string>
     <string name="delete_dialog_cancel_button">Cancel</string>
