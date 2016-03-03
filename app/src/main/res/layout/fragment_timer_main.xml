@@ -26,7 +26,10 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="?attr/colorPrimary"
-            android:elevation="@dimen/toolbar_elevation" />
+            android:elevation="@dimen/toolbar_elevation"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"/>
 
     </LinearLayout>
 

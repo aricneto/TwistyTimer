@@ -318,9 +318,10 @@ public class TimerFragment extends BaseFragment {
         final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
 
+        scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
+
         if (advancedEnabled) {
             chronometer.setTextSize(TypedValue.COMPLEX_UNIT_PX, chronometer.getTextSize() * timerTextSize);
-            scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
 
             if (quickActionLarge) {
                 deleteButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete_white_36dp));
@@ -343,7 +344,7 @@ public class TimerFragment extends BaseFragment {
         holdEnabled = sharedPreferences.getBoolean("holdEnabled", false);
         scrambleEnabled = sharedPreferences.getBoolean("scrambleEnabled", true);
         backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", false);
-        startCueEnabled = sharedPreferences.getBoolean("startCue", true);
+        startCueEnabled = sharedPreferences.getBoolean("startCue", false);
 
 
         if (scrambleEnabled) {

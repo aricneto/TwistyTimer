@@ -260,6 +260,7 @@ public class TimerGraphFragment extends Fragment {
             // to create another variable to store it in (remember to remove it from the list in the next step)
             tempPair.second.add(String.valueOf(handler.getMean(! history, currentPuzzle, currentPuzzleSubtype) / 1000));
 
+            // FIXME: database crashing the app
             cursor.close();
             db.close();
             return tempPair;

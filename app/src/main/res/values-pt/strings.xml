@@ -141,7 +141,7 @@
     <string name="list_options_item_history">Arquivar</string>
     <string name="selected_list">Selecionados</string>
     <string name="remove_session_title">Remover todas as soluções desta sessão?</string>
-    <string name="advanced_pref_summary">AVISO: Mudar as configurações a seguir pode causar alguns problemas de clipping. MUDE APENAS SE VOCÊ SOUBER O QUE ESTIVER FAZENDO</string>
+    <string name="advanced_pref_summary">AVISO: MUDAR AS CONFIGURAÇÕES ABAIXO PODE CAUSAR ALGUNS PROBLEMAS DE CLIPPING</string>
     <string name="advanced_pref_title">Avançado</string>
     <string name="clearEnabledSummary">O botão \"Limpar\" aparece na lista de soluções, e deixa você remover todas as soluções da sessão atual</string>
     <string name="clearEnabledTitle">Mostrar o botão \"Limpar\"</string>

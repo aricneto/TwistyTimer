@@ -263,9 +263,7 @@ public class TimerFragmentMain extends BaseFragment {
         viewPagerAdapter = new NavigationAdapter(getFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
-        
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
         tabLayout.setupWithViewPager(viewPager);
         if (tabLayout.getTabCount() == 3) {
             tabLayout.getTabAt(0).setIcon(R.drawable.ic_timer_white_24dp);
@@ -319,7 +317,7 @@ public class TimerFragmentMain extends BaseFragment {
 
     private void activateTabLayout(boolean b) {
         tabStrip.setEnabled(b);
-        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(b);
         }
     }
