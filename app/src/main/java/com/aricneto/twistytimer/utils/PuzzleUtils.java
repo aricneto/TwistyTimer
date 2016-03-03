@@ -117,10 +117,10 @@ public class PuzzleUtils {
         int minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
-            return new DateTime(time).toString("kk':'mm':'ss'.'SS");
+            return new DateTime(time).toString("k':'mm':'ss");
 
         else if (minutes > 0)
-            return new DateTime(time).toString("mm':'ss'.'SS");
+            return new DateTime(time).toString("m':'ss'.'SS");
 
         else
             return new DateTime(time).toString("s'.'SS");

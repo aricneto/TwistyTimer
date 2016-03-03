@@ -178,5 +178,6 @@
     <string name="hideTimeTitle">Hide time when solving</string>
     <string name="hideTimeSummary">The timer will display your time when you finish</string>
     <string name="hideTimeText">Solving</string>
+    <string name="scrambleImageSize_text">Scramble image size</string>
 
 </resources>

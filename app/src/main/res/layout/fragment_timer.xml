@@ -198,10 +198,10 @@
         android:id="@+id/scrambleImg"
         android:layout_width="84dp"
         android:layout_height="84dp"
+        android:scaleType="fitStart"
         android:layout_alignBottom="@id/detailLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@id/detailLayout"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="8dp"
         tools:background="@color/red_material" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -216,7 +216,6 @@
         app:mpb_progressStyle="circular"
         tools:background="@color/md_blue_500"
         tools:visibility="visible" />
-
 
     <ImageView
         android:id="@+id/expanded_image"

@@ -46,6 +46,7 @@ import com.aricneto.twistytimer.adapter.SpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.LockedViewPager;
+import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
@@ -90,9 +91,6 @@ public class TimerFragmentMain extends BaseFragment {
     private String currentPuzzleSubtype = "Normal";
     
     private boolean pagerEnabled;
-    
-    android.support.v4.app.FragmentManager fragmentManagerV4;
-    android.app.FragmentManager            fragmentManager;
     
     private int originalContentHeight;
     // Receives broadcasts from the timer
@@ -181,6 +179,14 @@ public class TimerFragmentMain extends BaseFragment {
                         selectCount -= 1;
                         actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
                         break;
+
+                    case "BACK PRESSED":
+                        if (currentTimerFragmentInstance.isRunning) {
+                            currentTimerFragmentInstance.cancelChronometer();
+                        } else {
+                            Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
+                        }
+                        break;
                 }
             }
         }
@@ -206,8 +212,6 @@ public class TimerFragmentMain extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManagerV4 = getFragmentManager();
-        fragmentManager = getMainFragmentManager();
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
@@ -222,34 +226,6 @@ public class TimerFragmentMain extends BaseFragment {
         
         handleHeaderSpinner();
         setupToolbarForFragment(mToolbar);
-        
-
-        //selectionToolbar.setNavigationIcon(R.drawable.ic_action_arrow_back_white_24);
-        //selectionToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Intent sendIntent = new Intent("TIMELIST");
-        //        sendIntent.putExtra("action", "UNSELECT ALL");
-        //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(sendIntent);
-        //        selectionToolbar.setVisibility(View.GONE);
-        //    }
-        //});
-        //selectionToolbar.inflateMenu(R.menu.menu_list_callback);
-        //selectionToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-        //    @Override
-        //    public boolean onMenuItemClick(MenuItem item) {
-        //        switch (item.getItemId()) {
-        //            case R.id.delete:
-        //                Intent sendIntent = new Intent("TIMELIST");
-        //                sendIntent.putExtra("action", "DELETE SELECTED");
-        //                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(sendIntent);
-        //                selectionToolbar.setVisibility(View.GONE);
-        //                break;
-        //        }
-        //        return false;
-        //    }
-        //});
-        //selectionToolbar.setTitle(selectCount + " Selected");
         
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         pagerEnabled = sharedPreferences.getBoolean("pagerEnabled", true);
@@ -293,9 +269,7 @@ public class TimerFragmentMain extends BaseFragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Intent sendIntent = new Intent("TIMELIST");
-                sendIntent.putExtra("action", "SCROLLED PAGE");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                Broadcaster.broadcast(getActivity(), "TIMELIST", "SCROLLED PAGE");
             }
         });
 
@@ -375,6 +349,7 @@ public class TimerFragmentMain extends BaseFragment {
         final List<String> subtypeList = db.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             subtypeList.add("Normal");
+            db.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         } else if (subtypeList.size() == 1) {
             currentPuzzleSubtype = subtypeList.get(0);
         }

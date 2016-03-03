@@ -70,6 +70,9 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
                     case "scrambleTextSize":
                         createTextSizeDialog(R.string.scramble_text_size, "scrambleTextSize");
                         break;
+                    case "scrambleImageSize":
+                        createTextSizeDialog(R.string.scrambleImageSize_text, "scrambleImageSize");
+                        break;
                 }
                 return false;
             }
@@ -87,10 +90,12 @@ public class TimerAppearanceSettingsActivity extends AppCompatActivity {
             final Preference timerTextSize = (Preference) getPreferenceScreen().findPreference("timerTextSize");
             final Preference scrambleTextSize = (Preference) getPreferenceScreen().findPreference("scrambleTextSize");
             final Preference timerTextOffset = (Preference) getPreferenceScreen().findPreference("timerTextOffset");
+            final Preference scrambleImageSize = (Preference) getPreferenceScreen().findPreference("scrambleImageSize");
 
             timerTextSize.setOnPreferenceClickListener(clickListener);
             scrambleTextSize.setOnPreferenceClickListener(clickListener);
             timerTextOffset.setOnPreferenceClickListener(clickListener);
+            scrambleImageSize.setOnPreferenceClickListener(clickListener);
 
         }
 

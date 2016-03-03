@@ -81,6 +81,12 @@
             android:key="timerTextOffset"
             android:title="@string/timer_text_offset" />
 
+        <com.jenzz.materialpreference.Preference
+            android:defaultValue="false"
+            android:dependency="enableAdvanced"
+            android:key="scrambleImageSize"
+            android:title="@string/scrambleImageSize_text" />
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_large_quickaction"
             android:dependency="enableAdvanced"

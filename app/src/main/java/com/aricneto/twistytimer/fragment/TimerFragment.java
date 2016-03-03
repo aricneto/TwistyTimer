@@ -48,6 +48,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
+import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -84,11 +85,14 @@ public class TimerFragment extends BaseFragment {
     // If the user has holdEnabled and held the DNF at the last second
     boolean holdingDNF;
 
-    // Checks if the chronometer is running
-    boolean isRunning = false;
+    // Checks if the chronometer is running. Has to be public so the main fragment can access it
+    public boolean isRunning = false;
 
     // Locks the chronometer so it doesn't start before a scramble sequence is generated
     boolean isLocked = true;
+
+    // If the chronometer has just been canceled
+    private boolean isCanceled;
 
 
     private ScrambleGenerator generator;
@@ -134,7 +138,7 @@ public class TimerFragment extends BaseFragment {
     private boolean scrambleEnabled;
     private boolean holdEnabled;
     private boolean startCueEnabled;
-    private float scrambleTextSize;
+    private float   scrambleTextSize;
     private boolean advancedEnabled;
 
     // Receives broadcasts from the timer
@@ -166,7 +170,6 @@ public class TimerFragment extends BaseFragment {
     private Runnable       holdRunnable;
     private Handler        holdHandler;
     private CountDownTimer plusTwoCountdown;
-
 
 
     public TimerFragment() {
@@ -316,6 +319,7 @@ public class TimerFragment extends BaseFragment {
         scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 10)) / 10f;
         final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
         final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
+        float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 10)) / 10f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
 
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
@@ -330,9 +334,14 @@ public class TimerFragment extends BaseFragment {
                 plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
             }
 
+            scrambleImg.getLayoutParams().width *= scrambleImageSize;
+            scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(scrambleImageSize);
+
             chronometer.setY(chronometer.getY() - timerTextOffset);
             inspectionText.setY(inspectionText.getY() - timerTextOffset);
             quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);
+        } else {
+            scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
 
 
@@ -393,7 +402,6 @@ public class TimerFragment extends BaseFragment {
                 holdingDNF = true;
                 chronometer.setText("DNF");
                 showToolbar();
-                unlockOrientation(getActivity());
                 chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
                 currentPenalty = PuzzleUtils.PENALTY_DNF;
                 addNewSolve();
@@ -527,10 +535,7 @@ public class TimerFragment extends BaseFragment {
                         }
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && chronometer.getTimeElapsed() >= 80) {
                         animationDone = false;
-                        chronometer.stop();
-                        isRunning = false;
-                        unlockOrientation(getActivity());
-                        showToolbar();
+                        stopChronometer();
                         if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO)
                             chronometer.setText(PuzzleUtils.convertTimeToString((int) chronometer.getTimeElapsed() + 2000) + "+");
                         addNewSolve();
@@ -545,6 +550,39 @@ public class TimerFragment extends BaseFragment {
         updateStats();
 
         return root;
+    }
+
+    /**
+     * Calculates scramble image height multiplier to respect aspect ratio
+     *
+     * @param multiplier the height multiplier (must be the same multiplier as the width)
+     *
+     * @return the height in px
+     */
+    private float calculateScrambleImageHeightMultiplier(float multiplier) {
+        switch (currentPuzzle) {
+            case PuzzleUtils.TYPE_777:
+            case PuzzleUtils.TYPE_666:
+            case PuzzleUtils.TYPE_555:
+            case PuzzleUtils.TYPE_222:
+            case PuzzleUtils.TYPE_444:
+            case PuzzleUtils.TYPE_333:
+                // 3 faces of the cube vertically divided by 4 faces horizontally (it draws the cube like a cross)
+                return (multiplier / 4) * 3;
+            case PuzzleUtils.TYPE_CLOCK:
+                return multiplier / 2;
+            case PuzzleUtils.TYPE_MEGA:
+                return (multiplier / 2);
+            case PuzzleUtils.TYPE_PYRA:
+                // Just pythagoras. Height of an equilateral triangle
+                return (float) (multiplier / Math.sqrt(1.25));
+            case PuzzleUtils.TYPE_SKEWB:
+                // This one is the same as the NxN cubes
+                return (multiplier / 4) * 3;
+            case PuzzleUtils.TYPE_SQUARE1: // Square-1
+                return multiplier;
+        }
+        return multiplier;
     }
 
     private void addNewSolve() {
@@ -562,9 +600,7 @@ public class TimerFragment extends BaseFragment {
 
         updateStats();
 
-        Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME ADDED");
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+        Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
 
         int bestGlobal = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
         int worstGlobal = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
@@ -615,6 +651,7 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void showToolbar() {
+        unlockOrientation(getActivity());
         Intent sendIntent = new Intent("TIMER");
         sendIntent.putExtra("action", "TIMER STOPPED");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
@@ -635,12 +672,13 @@ public class TimerFragment extends BaseFragment {
                     .alpha(1)
                     .setDuration(300);
         }
-        if (buttonsEnabled) {
+        if (buttonsEnabled && ! isCanceled) {
             quickActionButtons.setVisibility(View.VISIBLE);
             quickActionButtons.animate()
                     .alpha(1)
                     .setDuration(300);
         }
+        isCanceled = false;
     }
 
     private void showImage() {
@@ -716,6 +754,26 @@ public class TimerFragment extends BaseFragment {
             currentScramble = realScramble;
             generateNewScramble();
         }
+    }
+
+    /**
+     * Cancels the chronometer (stop it without saving anything
+     */
+    public void cancelChronometer() {
+        chronometer.stop();
+        chronometer.setText("0.00");
+        isRunning = false;
+        isCanceled = true;
+        showToolbar();
+    }
+
+    /**
+     * Stops the chronometer
+     */
+    private void stopChronometer() {
+        chronometer.stop();
+        isRunning = false;
+        showToolbar();
     }
 
     @Override
@@ -838,7 +896,7 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected Drawable doInBackground(Void... voids) {
-            Drawable finalImg = generator.generateImageFromScramble(getContext(), realScramble);
+            Drawable finalImg = generator.generateImageFromScramble(getActivity(), realScramble);
             return finalImg;
         }
 
