@@ -13,4 +13,5 @@
     <bool name="defaultAdvancedEnabled">false</bool>
     <bool name="default_startCue">false</bool>
     <bool name="default_large_quickaction">false</bool>
+    <bool name="default_hideTime">false</bool>
 </resources>

@@ -15,6 +15,13 @@
         android:title="@string/millisecondsEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
+        android:defaultValue="@bool/default_hideTime"
+        android:key="hideTimeEnabled"
+        android:summary="@string/hideTimeSummary"
+        android:title="@string/hideTimeTitle" />
+
+
+    <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_buttonEnabled"
         android:key="scrambleImageEnabled"
         android:summary="@string/scrambleImageEnabledSummary"

@@ -157,5 +157,13 @@
     <string name="detail_text_more">Média:\nMelhor:\nPior:\nTotal:</string>
     <string name="donation_thanks">Obrigado por doar :)</string>
     <string name="source">Source</string>
+    <string name="hideTimeText">Resolvendo</string>
+    <string name="hideTimeSummary">O cronômetro irá mostrar seu tempo quando você terminar</string>
+    <string name="hideTimeTitle">Esconder tempo enquanto resolve</string>
+    <string name="quick_action_button_large_title">Botões de ação rápida grandes</string>
+    <string name="scramble_text_size">Tamanho do texto do embaralhamento</string>
+    <string name="scramble_text_size_summary">Controla o tamanho to texto do embaralhamento</string>
+    <string name="startCueSummary">Mudar a cor do texto quando o cronômetro está prestes a começar</string>
+    <string name="startCueTitle">Sinalização de iniciar</string>
 
 </resources>
