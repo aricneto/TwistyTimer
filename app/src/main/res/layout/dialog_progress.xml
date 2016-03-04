@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+<com.pavelsikun.seekbarpreference.MaterialSeekBarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:dsb_indicatorColor="?colorAccent"
-    app:dsb_indicatorFormatter="%d%%"
-    app:dsb_indicatorTextAppearance="@style/discreteSeekbarTextAppearance"
-    app:dsb_max="20"
-    app:dsb_min="0"
-    app:dsb_progressColor="?colorAccent" />
-
+    app:msbp_interval="10"
+    app:msbp_maxValue="100"
+    app:msbp_measurementUnit="%"
+    app:msbp_minValue="0"
+    app:msbp_title="@string/dialog_set_progress" />

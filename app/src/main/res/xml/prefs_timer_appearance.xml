@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_backgroundEnabled"
@@ -51,11 +52,16 @@
         android:summary="@string/worstSolveEnabledSummary"
         android:title="@string/worstSolveEnabledTitle" />
 
-    <com.jenzz.materialpreference.Preference
+    <com.aricneto.twistytimer.layout.CustomSeekBarPreference
         android:defaultValue="@integer/defaultScrambleTextSize"
         android:key="scrambleTextSize"
+        android:summary="@string/scramble_text_size_summary"
         android:title="@string/scramble_text_size"
-        android:summary="@string/scramble_text_size_summary"/>
+        app:msbp_interval="10"
+        app:msbp_maxValue="300"
+        app:msbp_measurementUnit="%"
+        app:msbp_minValue="10" />
+
 
     <com.jenzz.materialpreference.PreferenceCategory
         android:title="@string/advanced_pref_title">
@@ -69,23 +75,35 @@
             android:key="enableAdvanced"
             android:title="@string/enable_advanced" />
 
-        <com.jenzz.materialpreference.Preference
+        <com.aricneto.twistytimer.layout.CustomSeekBarPreference
             android:defaultValue="@integer/defaultTimeTextSize"
             android:dependency="enableAdvanced"
             android:key="timerTextSize"
-            android:title="@string/timer_text_size" />
+            android:title="@string/timer_text_size"
+            app:msbp_interval="10"
+            app:msbp_maxValue="300"
+            app:msbp_measurementUnit="%"
+            app:msbp_minValue="10" />
 
-        <com.jenzz.materialpreference.Preference
+        <com.aricneto.twistytimer.layout.CustomSeekBarPreference
             android:defaultValue="@integer/defaultTimeTextOffset"
             android:dependency="enableAdvanced"
             android:key="timerTextOffset"
-            android:title="@string/timer_text_offset" />
+            android:title="@string/timer_text_offset"
+            app:msbp_interval="10"
+            app:msbp_maxValue="250"
+            app:msbp_measurementUnit="px"
+            app:msbp_minValue="-250" />
 
-        <com.jenzz.materialpreference.Preference
-            android:defaultValue="false"
+        <com.aricneto.twistytimer.layout.CustomSeekBarPreference
+            android:defaultValue="@integer/defaultScrambleImageSize"
             android:dependency="enableAdvanced"
             android:key="scrambleImageSize"
-            android:title="@string/scrambleImageSize_text" />
+            android:title="@string/scrambleImageSize_text"
+            app:msbp_interval="10"
+            app:msbp_maxValue="300"
+            app:msbp_measurementUnit="%"
+            app:msbp_minValue="10" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_large_quickaction"

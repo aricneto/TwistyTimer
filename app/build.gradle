@@ -34,7 +34,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.android.support:gridlayout-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
-    compile 'org.adw.library:discrete-seekbar:1.0.0'
+    // Seekbar
+    compile 'com.pavelsikun:material-seekbar-preference:0.12.1+'
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
     // Observable scrollview

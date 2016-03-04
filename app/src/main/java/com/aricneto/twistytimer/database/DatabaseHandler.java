@@ -2,9 +2,11 @@ package com.aricneto.twistytimer.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.aricneto.twistytimer.items.Algorithm;
@@ -59,9 +61,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String YEL = "Y";
     private static final String NUL = "N";
 
+    private Context mContext;
 
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     // Database Name
     private static final String DATABASE_NAME = "databaseManager";
@@ -92,6 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     // Creating Tables
@@ -111,6 +115,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         switch (oldVersion) {
             case 6:
                 db.execSQL("ALTER TABLE times ADD COLUMN " + KEY_HISTORY + " BOOLEAN DEFAULT 0");
+            case 8:
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("timerTextSize", sharedPreferences.getInt("timerTextSize", 10) * 10);
+                editor.apply();
         }
 
     }

@@ -183,7 +183,7 @@ public class TimerFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.button_delete:
                     new MaterialDialog.Builder(getContext())
-                            .title(R.string.delete_dialog_confirmation_title)
+                            .content(R.string.delete_dialog_confirmation_title)
                             .positiveText(R.string.delete_dialog_confirmation_button)
                             .negativeText(R.string.delete_dialog_cancel_button)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -315,11 +315,12 @@ public class TimerFragment extends BaseFragment {
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 
+
         advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
-        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 10)) / 10f;
         final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
-        final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 10)) / 10f;
-        float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 10)) / 10f;
+        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
+        final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 100)) / 100f;
+        float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 100)) / 100f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
 
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
