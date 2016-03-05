@@ -66,6 +66,8 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.+'
     // Material color picker
     compile 'com.pes.materialcolorpicker:library:1.0.+'
+    // Sliding Up Panel
+    compile 'com.sothree.slidinguppanel:library:3.2.1'
 
 }
 

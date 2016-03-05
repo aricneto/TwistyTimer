@@ -30,8 +30,14 @@
         </activity>
         <activity android:name="com.aricneto.twistytimer.activity.AboutActivity">
         </activity>
+
+        <receiver
+            android:name="com.aricneto.twistytimer.OnUpgradeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
     </application>
-
-
 
 </manifest>

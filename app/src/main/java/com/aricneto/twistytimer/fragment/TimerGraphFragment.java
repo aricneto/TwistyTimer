@@ -157,7 +157,7 @@ public class TimerGraphFragment extends Fragment {
                         params.height = container.getHeight();
                         lineChartView.setLayoutParams(params);
                         lineChartView.requestLayout();
-                        root.findViewById(R.id.graphScroll).setScrollY(300);
+                        root.findViewById(R.id.graphScroll).setScrollY(params.height/2);
                     }
                 }
             });

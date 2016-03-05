@@ -23,9 +23,11 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -48,11 +50,14 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
+import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
+import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,12 +99,15 @@ public class TimerFragment extends BaseFragment {
     // If the chronometer has just been canceled
     private boolean isCanceled;
 
+    // If the scrambler is done calculating and can calculate a new hint.
+    private boolean canShowHint = false;
 
     private ScrambleGenerator generator;
 
     private GenerateScrambleSequence scrambleGeneratorAsync;
     private GenerateScrambleImage    scrambleImageGenerator;
     private CalculateStats           statCalculatorAsync;
+    private GetOptimalCross          crossCalculator;
 
     private int currentPenalty = PuzzleUtils.NO_PENALTY;
 
@@ -117,6 +125,11 @@ public class TimerFragment extends BaseFragment {
     @Bind(R.id.inspectionText)  TextView            inspectionText;
     @Bind(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
+    @Bind(R.id.hintCard)         CardView            hintCard;
+    @Bind(R.id.panelText)        TextView            panelText;
+    @Bind(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
+    @Bind(R.id.panelSpinnerText) TextView            panelSpinnerText;
+
     @Bind(R.id.button_delete)        ImageView        deleteButton;
     @Bind(R.id.button_dnf)           ImageView        dnfButton;
     @Bind(R.id.button_plustwo)       ImageView        plusTwoButton;
@@ -124,8 +137,9 @@ public class TimerFragment extends BaseFragment {
     @Bind(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
     @Bind(R.id.rippleBackground)     RippleBackground rippleBackground;
 
-    @Bind(R.id.root)             RelativeLayout rootLayout;
-    @Bind(R.id.startTimerLayout) FrameLayout    startTimerLayout;
+    @Bind(R.id.root)             RelativeLayout       rootLayout;
+    @Bind(R.id.startTimerLayout) FrameLayout          startTimerLayout;
+    @Bind(R.id.sliding_layout)   public SlidingUpPanelLayout slidingLayout;
 
     @Bind(R.id.congratsText) TextView congratsText;
 
@@ -140,6 +154,7 @@ public class TimerFragment extends BaseFragment {
     private boolean startCueEnabled;
     private float   scrambleTextSize;
     private boolean advancedEnabled;
+    private boolean showHints;
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -170,6 +185,9 @@ public class TimerFragment extends BaseFragment {
     private Runnable       holdRunnable;
     private Handler        holdHandler;
     private CountDownTimer plusTwoCountdown;
+
+    private RubiksCubeOptimalCross  optimalCross;
+    private RubiksCubeOptimalXCross optimalXCross;
 
 
     public TimerFragment() {
@@ -237,6 +255,18 @@ public class TimerFragment extends BaseFragment {
                     }
                     dialog.show();
                     break;
+                case R.id.hintCard:
+                    if (canShowHint) {
+                        panelText.setVisibility(View.GONE);
+                        panelText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                        panelText.setGravity(Gravity.LEFT);
+                        panelSpinner.setVisibility(View.VISIBLE);
+                        panelSpinnerText.setVisibility(View.VISIBLE);
+                        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        crossCalculator = new GetOptimalCross();
+                        crossCalculator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
+                    break;
             }
         }
     };
@@ -260,6 +290,12 @@ public class TimerFragment extends BaseFragment {
         args.putString(PUZZLE_SUBTYPE, puzzleSubType);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
@@ -309,6 +345,7 @@ public class TimerFragment extends BaseFragment {
         dnfButton.setOnClickListener(buttonClickListener);
         plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
+        hintCard.setOnClickListener(buttonClickListener);
 
         // Preferences //
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -317,8 +354,8 @@ public class TimerFragment extends BaseFragment {
 
 
         advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
-        final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
         scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
+        final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
         final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 100)) / 100f;
         float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 100)) / 100f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
@@ -355,10 +392,16 @@ public class TimerFragment extends BaseFragment {
         scrambleEnabled = sharedPreferences.getBoolean("scrambleEnabled", true);
         backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", false);
         startCueEnabled = sharedPreferences.getBoolean("startCue", false);
+        showHints = sharedPreferences.getBoolean("showHints", true);
 
+        if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+            hintCard.setVisibility(View.VISIBLE);
+            optimalCross = new RubiksCubeOptimalCross(getString(R.string.optimal_cross));
+            optimalXCross = new RubiksCubeOptimalXCross(getString(R.string.optimal_x_cross));
+        }
 
         if (scrambleEnabled) {
-            scrambleGeneratorAsync.execute();
+            scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             scrambleText.setVisibility(View.GONE);
             scrambleImg.setVisibility(View.GONE);
@@ -666,6 +709,9 @@ public class TimerFragment extends BaseFragment {
             scrambleText.setVisibility(View.VISIBLE);
             if (scrambleImgEnabled)
                 showImage();
+            if (showHints) {
+                hintCard.setVisibility(View.VISIBLE);
+            }
         }
         if (sessionStatsEnabled) {
             detailLayout.setVisibility(View.VISIBLE);
@@ -718,6 +764,10 @@ public class TimerFragment extends BaseFragment {
             scrambleText.setVisibility(View.GONE);
             if (scrambleImgEnabled)
                 hideImage();
+            if (showHints) {
+                hintCard.setVisibility(View.GONE);
+
+            }
         }
         if (sessionStatsEnabled) {
             detailLayout.animate()
@@ -777,6 +827,8 @@ public class TimerFragment extends BaseFragment {
         showToolbar();
     }
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -821,7 +873,36 @@ public class TimerFragment extends BaseFragment {
         if (scrambleEnabled) {
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
-            scrambleGeneratorAsync.execute();
+            scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private class GetOptimalCross extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String text = "";
+            text += optimalCross.getTip(realScramble);
+            //text += "\n\n";
+            //text += optimalXCross.getTip(realScramble);
+
+            return text;
+        }
+
+        @Override
+        protected void onPostExecute(String text) {
+            super.onPostExecute(text);
+            if (panelSpinnerText != null && panelText != null && ! isRunning) {
+                panelText.setText(text);
+                panelText.setVisibility(View.VISIBLE);
+                panelSpinner.setVisibility(View.GONE);
+                panelSpinnerText.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -829,6 +910,9 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected void onPreExecute() {
+            if (showHints)
+                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            canShowHint = false;
             scrambleText.setText(R.string.generating_scramble);
             scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             scrambleText.setClickable(false);
@@ -866,13 +950,12 @@ public class TimerFragment extends BaseFragment {
                             scrambleText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                                            .content(scramble)
-                                            .positiveText(R.string.action_ok)
-                                            .build();
-                                    if (advancedEnabled)
-                                        dialog.getContentView().setTextSize(TypedValue.COMPLEX_UNIT_PX, dialog.getContentView().getTextSize() * scrambleTextSize);
-                                    dialog.show();
+                                    panelText.setText(scramble);
+                                    panelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize());
+                                    panelText.setGravity(Gravity.CENTER);
+                                    panelSpinner.setVisibility(View.GONE);
+                                    panelSpinnerText.setVisibility(View.GONE);
+                                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                 }
                             });
                         } else {
@@ -890,6 +973,8 @@ public class TimerFragment extends BaseFragment {
             else
                 progressSpinner.setVisibility(View.GONE);
             isLocked = false;
+
+            canShowHint = true;
         }
     }
 

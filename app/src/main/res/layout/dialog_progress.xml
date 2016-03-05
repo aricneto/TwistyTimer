@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pavelsikun.seekbarpreference.MaterialSeekBarView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.AppCompatSeekBar
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:msbp_interval="10"
-    app:msbp_maxValue="100"
-    app:msbp_measurementUnit="%"
-    app:msbp_minValue="0"
-    app:msbp_title="@string/dialog_set_progress" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:max="100" />

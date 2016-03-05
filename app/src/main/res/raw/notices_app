@@ -44,6 +44,12 @@
         <license>MIT License</license>
     </notice>
     <notice>
+        <name>Prisma Puzzle Timer</name>
+        <url>https://bitbucket.org/walter/puzzle-timer/overview</url>
+        <copyright>Copyright (c) 2010 Walter Souza</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
         <name>Observable ScrollView</name>
         <url>https://github.com/ksoichiro/Android-ObservableScrollView</url>
         <copyright>Copyright 2014 Soichiro Kashima</copyright>

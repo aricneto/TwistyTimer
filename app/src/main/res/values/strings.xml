@@ -180,5 +180,13 @@
     <string name="hideTimeText">…</string>
     <string name="scrambleImageSize_text">Scramble image size</string>
     <string name="action_update_progress">Update progress</string>
+    <string name="panel_swipe_down_to_hide">Swipe down to hide</string>
+    <string name="optimal_cross">Optimal cross on</string>
+    <string name="optimal_x_cross">Optimal extended cross on</string>
+    <string name="loading_hints">Loading hints…</string>
+    <string name="showHintsTitle">Show hints</string>
+    <string name="showHintsSummary">Enables cross hints for the 3x3 puzzle</string>
+    <string name="hint">Hint</string>
+    <string name="whats_new">What\'s new</string>
 
 </resources>

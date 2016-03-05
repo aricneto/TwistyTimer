@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -31,7 +31,6 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.pavelsikun.seekbarpreference.MaterialSeekBarView;
 
 import java.util.HashMap;
 
@@ -90,26 +89,17 @@ public class AlgDialog extends DialogFragment {
                     dialog.show();
                     break;
                 case R.id.progressButton:
-                    final MaterialSeekBarView seekBarView = (MaterialSeekBarView) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
-                    final SeekBar seekBar = (SeekBar) seekBarView.findViewById(com.pavelsikun.seekbarpreference.R.id.seekbar);
-                    EditText seekBarValue = (EditText) seekBarView.findViewById(com.pavelsikun.seekbarpreference.R.id.seekbar_value);
+                    final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
                     seekBar.setProgress(algorithm.getProgress());
-                    seekBarValue.setText(String.valueOf(algorithm.getProgress()));
-
-                    seekBarView.setMinValue(0);
-                    seekBarView.setMaxValue(100);
-                    seekBarView.setInterval(10);
-
-
-
                     new MaterialDialog.Builder(getContext())
-                            .customView(seekBarView, false)
+                            .title(R.string.dialog_set_progress)
+                            .customView(seekBar, false)
                             .positiveText(R.string.action_update)
                             .negativeText(R.string.action_cancel)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    int seekProgress = seekBarView.getCurrentValue();
+                                    int seekProgress = seekBar.getProgress();
                                     algorithm.setProgress(seekProgress);
                                     handler.updateAlgorithmProgress(mId, seekProgress);
                                     progressBar.setProgress(seekProgress);

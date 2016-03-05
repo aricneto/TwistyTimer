@@ -27,6 +27,8 @@
             android:padding="16dp"
             android:textColor="?colorItemListText"
             android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textStyle="bold"
             tools:text="1:26.95" />
 

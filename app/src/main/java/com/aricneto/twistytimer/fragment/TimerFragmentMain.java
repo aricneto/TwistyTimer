@@ -50,6 +50,7 @@ import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +184,9 @@ public class TimerFragmentMain extends BaseFragment {
                     case "BACK PRESSED":
                         if (currentTimerFragmentInstance.isRunning) {
                             currentTimerFragmentInstance.cancelChronometer();
+                        } else if (currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                            currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                         } else {
                             Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
                         }

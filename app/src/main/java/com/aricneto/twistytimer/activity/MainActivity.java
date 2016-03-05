@@ -14,15 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
-import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.SchemeSelectDialogMain;
@@ -336,10 +335,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         if (requestCode == REQUEST_SETTING) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
-            //fragmentManager
-            //        .beginTransaction()
-            //        .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
-            //        .commit();
         }
     }
 
@@ -370,27 +365,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         getMenuInflater().inflate(R.menu.menu_overview, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-/*
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                return true;
-
-            case R.id.debug_add:
-                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "normal", 16578465465l, "R U D", 0));
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "bld", 16578465465l, "R U D", 0));
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "cross", 16578465465l, "R U D", 0));
-                db.close();
-                return true;
-
-        }*/
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
