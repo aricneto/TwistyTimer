@@ -46,9 +46,11 @@ import com.aricneto.twistytimer.adapter.SpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.LockedViewPager;
+import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,7 @@ public class TimerFragmentMain extends BaseFragment {
     private MaterialDialog createSubtypeDialog;
     private MaterialDialog renameSubtypeDialog;
     
-    DatabaseHandler db;
+    DatabaseHandler dbHandler;
 
     ActionMode actionMode;
     
@@ -90,9 +92,6 @@ public class TimerFragmentMain extends BaseFragment {
     private String currentPuzzleSubtype = "Normal";
     
     private boolean pagerEnabled;
-    
-    android.support.v4.app.FragmentManager fragmentManagerV4;
-    android.app.FragmentManager            fragmentManager;
     
     private int originalContentHeight;
     // Receives broadcasts from the timer
@@ -181,6 +180,18 @@ public class TimerFragmentMain extends BaseFragment {
                         selectCount -= 1;
                         actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
                         break;
+
+                    case "BACK PRESSED":
+                        if (currentTimerFragmentInstance.isRunning) {
+                            currentTimerFragmentInstance.cancelChronometer();
+                        } else if (currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING) {
+                            currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                        } else {
+                            Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
+                        }
+                        break;
                 }
             }
         }
@@ -206,8 +217,6 @@ public class TimerFragmentMain extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManagerV4 = getFragmentManager();
-        fragmentManager = getMainFragmentManager();
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
@@ -223,34 +232,6 @@ public class TimerFragmentMain extends BaseFragment {
         handleHeaderSpinner();
         setupToolbarForFragment(mToolbar);
         
-
-        //selectionToolbar.setNavigationIcon(R.drawable.ic_action_arrow_back_white_24);
-        //selectionToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Intent sendIntent = new Intent("TIMELIST");
-        //        sendIntent.putExtra("action", "UNSELECT ALL");
-        //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(sendIntent);
-        //        selectionToolbar.setVisibility(View.GONE);
-        //    }
-        //});
-        //selectionToolbar.inflateMenu(R.menu.menu_list_callback);
-        //selectionToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-        //    @Override
-        //    public boolean onMenuItemClick(MenuItem item) {
-        //        switch (item.getItemId()) {
-        //            case R.id.delete:
-        //                Intent sendIntent = new Intent("TIMELIST");
-        //                sendIntent.putExtra("action", "DELETE SELECTED");
-        //                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(sendIntent);
-        //                selectionToolbar.setVisibility(View.GONE);
-        //                break;
-        //        }
-        //        return false;
-        //    }
-        //});
-        //selectionToolbar.setTitle(selectCount + " Selected");
-        
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         pagerEnabled = sharedPreferences.getBoolean("pagerEnabled", true);
         
@@ -263,9 +244,7 @@ public class TimerFragmentMain extends BaseFragment {
         viewPagerAdapter = new NavigationAdapter(getFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
-        
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
         tabLayout.setupWithViewPager(viewPager);
         if (tabLayout.getTabCount() == 3) {
             tabLayout.getTabAt(0).setIcon(R.drawable.ic_timer_white_24dp);
@@ -275,7 +254,7 @@ public class TimerFragmentMain extends BaseFragment {
 
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
-        db = new DatabaseHandler(getContext());
+        dbHandler = new DatabaseHandler(getContext());
 
         if (savedInstanceState == null) {
             updateCurrentSubtype();
@@ -295,9 +274,7 @@ public class TimerFragmentMain extends BaseFragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Intent sendIntent = new Intent("TIMELIST");
-                sendIntent.putExtra("action", "SCROLLED PAGE");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                Broadcaster.broadcast(getActivity(), "TIMELIST", "SCROLLED PAGE");
             }
         });
 
@@ -319,7 +296,7 @@ public class TimerFragmentMain extends BaseFragment {
 
     private void activateTabLayout(boolean b) {
         tabStrip.setEnabled(b);
-        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(b);
         }
     }
@@ -336,7 +313,7 @@ public class TimerFragmentMain extends BaseFragment {
         super.onDestroy();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         ButterKnife.unbind(this);
-        db.close();
+        dbHandler.closeDB();
     }
 
     private void setupTypeDialogItem() {
@@ -363,7 +340,7 @@ public class TimerFragmentMain extends BaseFragment {
                 .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        db.addSolve(new Solve(0, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
                         historyChecked = false; // Resets the checked state of the switch
                         currentPuzzleSubtype = input.toString();
                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
@@ -374,9 +351,10 @@ public class TimerFragmentMain extends BaseFragment {
                 })
                 .build();
 
-        final List<String> subtypeList = db.getAllSubtypesFromType(currentPuzzle);
+        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             subtypeList.add("Normal");
+            dbHandler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         } else if (subtypeList.size() == 1) {
             currentPuzzleSubtype = subtypeList.get(0);
         }
@@ -398,9 +376,9 @@ public class TimerFragmentMain extends BaseFragment {
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        db.deleteSubtype(currentPuzzle, typeName.toString());
+                                        dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
                                         if (subtypeList.size() > 1) {
-                                            currentPuzzleSubtype = db.getAllSubtypesFromType(currentPuzzle).get(0);
+                                            currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
                                         } else {
                                             currentPuzzleSubtype = "Normal";
                                         }
@@ -429,7 +407,7 @@ public class TimerFragmentMain extends BaseFragment {
                                 .input("", "", false, new MaterialDialog.InputCallback() {
                                     @Override
                                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                                        db.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
+                                        dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
                                         currentPuzzleSubtype = input.toString();
                                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
                                         editor.apply();
@@ -579,7 +557,7 @@ public class TimerFragmentMain extends BaseFragment {
     private void updateCurrentSubtype() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        final List<String> subtypeList = db.getAllSubtypesFromType(currentPuzzle);
+        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             currentPuzzleSubtype = "Normal";
             editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");

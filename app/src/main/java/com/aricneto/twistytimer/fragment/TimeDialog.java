@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
@@ -158,7 +159,7 @@ public class TimeDialog extends DialogFragment {
                             .customView(R.layout.item_scramble_img, false)
                             .show();
                     ImageView imageView = (ImageView) scrambleDialog.getView().findViewById(R.id.scrambleImg);
-                    imageView.setImageDrawable(generator.generateImageFromScramble(getContext(), solve.getScramble()));
+                    imageView.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
                     break;
             }
         }

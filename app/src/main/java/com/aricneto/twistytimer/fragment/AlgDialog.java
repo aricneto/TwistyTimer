@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,6 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.HashMap;
 
@@ -90,16 +89,8 @@ public class AlgDialog extends DialogFragment {
                     dialog.show();
                     break;
                 case R.id.progressButton:
-                    final DiscreteSeekBar seekBar
-                            = (DiscreteSeekBar) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
-                    seekBar.setProgress(algorithm.getProgress() / 5);
-                    seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-                        @Override
-                        public int transform(int value) {
-                            return value * 5;
-                        }
-                    });
-
+                    final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
+                    seekBar.setProgress(algorithm.getProgress());
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.dialog_set_progress)
                             .customView(seekBar, false)
@@ -108,7 +99,7 @@ public class AlgDialog extends DialogFragment {
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    int seekProgress = seekBar.getProgress() * 5;
+                                    int seekProgress = seekBar.getProgress();
                                     algorithm.setProgress(seekProgress);
                                     handler.updateAlgorithmProgress(mId, seekProgress);
                                     progressBar.setProgress(seekProgress);

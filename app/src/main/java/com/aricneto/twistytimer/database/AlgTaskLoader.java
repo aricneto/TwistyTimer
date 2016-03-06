@@ -8,6 +8,7 @@ import android.support.v4.content.CursorLoader;
 public class AlgTaskLoader extends CursorLoader {
 
     String subset;
+    private DatabaseHandler handler;
 
     public AlgTaskLoader(Context context, String subset) {
         super(context);
@@ -18,7 +19,7 @@ public class AlgTaskLoader extends CursorLoader {
 
     @Override
     public Cursor loadInBackground() {
-        DatabaseHandler handler = new DatabaseHandler(getContext());
+        handler = new DatabaseHandler(getContext());
         SQLiteDatabase db = handler.getReadableDatabase();
 
         return db.query(DatabaseHandler.TABLE_ALGS, null,
@@ -28,6 +29,9 @@ public class AlgTaskLoader extends CursorLoader {
 
     @Override
     protected void onStopLoading() {
+        if (handler != null) {
+            handler.closeDB();
+        }
         super.onStopLoading();
     }
 }

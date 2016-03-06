@@ -38,10 +38,10 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Discrete Seekbar</name>
-        <url>https://github.com/AnderWeb/discreteSeekBar</url>
-        <copyright>Copyright 2014 Gustavo Claramunt (Ander Webbs)</copyright>
-        <license>Apache Software License 2.0</license>
+        <name>Prisma Puzzle Timer</name>
+        <url>https://bitbucket.org/walter/puzzle-timer/overview</url>
+        <copyright>Copyright (c) 2010 Walter Souza</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>Observable ScrollView</name>
@@ -68,9 +68,9 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-            <name>TNoodle</name>
-            <url>https://github.com/cubing/tnoodle</url>
-            <copyright>Copyright 2016 WCA</copyright>
-            <license>GNU General Public License 3.0</license>
-        </notice>
+        <name>TNoodle</name>
+        <url>https://github.com/cubing/tnoodle</url>
+        <copyright>Copyright 2016 Jeremy Fleischman</copyright>
+        <license>GNU General Public License 3.0</license>
+    </notice>
 </notices>

@@ -13,11 +13,15 @@ import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.aricneto.twistify.R;
+
 import org.joda.time.DateTime;
 
 public class ChronometerMilli extends TextView {
     @SuppressWarnings("unused")
     private static final String TAG = "Chronometer";
+    private String hideTimeText;
+    private boolean hideTimeEnabled;
 
     public interface OnChronometerTickListener {
 
@@ -55,6 +59,8 @@ public class ChronometerMilli extends TextView {
         mBase = SystemClock.elapsedRealtime();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         millisecondsEnabled = sharedPreferences.getBoolean("millisecondsEnabled", true);
+        hideTimeEnabled = sharedPreferences.getBoolean("hideTimeEnabled", false);
+        hideTimeText = getContext().getString(R.string.hideTimeText);
         //updateText(mBase);
     }
 
@@ -138,7 +144,9 @@ public class ChronometerMilli extends TextView {
 
         String text = "";
 
-        if (millisecondsEnabled) {
+        if (hideTimeEnabled) {
+            text = hideTimeText;
+        } else if (millisecondsEnabled) {
             if (hours > 0)
                 text = new DateTime(timeElapsed).toString("kk':'mm':'ss'.'SS");
 

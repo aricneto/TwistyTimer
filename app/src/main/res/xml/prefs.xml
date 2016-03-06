@@ -21,14 +21,19 @@
 
         <com.jenzz.materialpreference.Preference
             android:key="timerAppearance"
-            android:title="@string/timerAppearancePrefTitle"
-            />
+            android:title="@string/timerAppearancePrefTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_holdEnabled"
             android:key="holdEnabled"
             android:summary="@string/holdEnabledSummary"
             android:title="@string/holdEnabledTitle" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_startCue"
+            android:key="startCue"
+            android:summary="@string/startCueSummary"
+            android:title="@string/startCueTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_pagerEnabled"
@@ -41,6 +46,19 @@
             android:key="scrambleEnabled"
             android:summary="@string/scrambleEnabledSummary"
             android:title="@string/scrambleEnabledTitle" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_showHints"
+            android:key="showHints"
+            android:dependency="scrambleEnabled"
+            android:summary="@string/showHintsSummary"
+            android:title="@string/showHintsTitle" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_showHintsXCross"
+            android:key="showHintsXCross"
+            android:dependency="showHints"
+            android:title="@string/showHintsXCrossTitle" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

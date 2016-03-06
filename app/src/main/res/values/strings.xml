@@ -27,7 +27,7 @@
     <string name="list_empty_state_message">Nothing here yet!\nTap the switch at the top of the screen to see your history.</string>
 
     <string name="no_penalty">No penalty</string>
-    <string name="generating_scramble">Generating scramble…\nSubsequent scrambles will generate faster</string>
+    <string name="generating_scramble">Generating scramble…</string>
     <string name="enter_type_name">Enter category name</string>
     <string name="select_solve_type">Select category</string>
     <string name="type">Category</string>
@@ -37,7 +37,7 @@
     <string name="task_remove">Remove</string>
 
     <string name="action_cancel">Cancel</string>
-    <string name="detail_text_plus">Ao5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
+    <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
     <string name="delete_dialog_confirmation_title">Remove solve?</string>
     <string name="delete_dialog_confirmation_button">Remove</string>
     <string name="delete_dialog_cancel_button">Cancel</string>
@@ -160,7 +160,7 @@
     <string name="clearEnabledTitle">Show \"Clear\" button</string>
     <string name="clearEnabledSummary">The \"Clear\" button is shown in the time list, and lets you remove all solves from the current session</string>
     <string name="advanced_pref_title">Advanced</string>
-    <string name="advanced_pref_summary">WARNING: Changing the following settings may cause some clipping issues. ONLY CHANGE THEM IF YOU KNOW WHAT YOU\'RE DOING</string>
+    <string name="advanced_pref_summary">Changing these settings may cause some clipping issues</string>
     <string name="timer_text_size">Timer text size</string>
     <string name="timer_text_offset">Timer text offset</string>
     <string name="action_clear">Clear</string>
@@ -170,5 +170,31 @@
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
     <string name="donation_thanks">Thank you for donating :)</string>
     <string name="source">Source</string>
+    <string name="startCueTitle">Start cue</string>
+    <string name="startCueSummary">Change text color when the timer is ready to start</string>
+    <string name="scramble_text_size">Scramble text size</string>
+    <string name="quick_action_button_large_title">Large quick action buttons</string>
+    <string name="scramble_text_size_summary">Controls the size of the scramble sequence text show in the timer</string>
+    <string name="hideTimeTitle">Hide time when solving</string>
+    <string name="hideTimeSummary">The timer will display your time when you finish</string>
+    <string name="hideTimeText">…</string>
+    <string name="scrambleImageSize_text">Scramble image size</string>
+    <string name="action_update_progress">Update progress</string>
+    <string name="panel_swipe_down_to_hide">Swipe down to hide</string>
+    <string name="optimal_cross">Optimal cross on</string>
+    <string name="optimal_x_cross">Optimal extended cross on</string>
+    <string name="loading_hints">Loading hints…</string>
+    <string name="showHintsTitle">Show hints</string>
+    <string name="showHintsSummary">Enables cross hints for the 3x3 puzzle</string>
+    <string name="hint">Hint</string>
+    <string name="whats_new">What\'s new</string>
+    <string name="warning">Warning</string>
+    <string name="action_default">Default</string>
+    <string name="scrambleImageSize_summary">Controls the size of the scramble image</string>
+    <string name="timer_text_offset_summary">Controls the position of the timer text</string>
+    <string name="quick_action_button_large_summary">Show bigger quick action buttons (the buttons that appear after a solve)</string>
+    <string name="timer_text_size_summary">Controls the size of the timer text</string>
+    <string name="showHintsXCrossTitle">Show extended cross hints</string>
+    <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
 
 </resources>

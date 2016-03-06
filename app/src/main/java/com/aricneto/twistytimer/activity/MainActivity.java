@@ -1,29 +1,33 @@
 package com.aricneto.twistytimer.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
-import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.ThemeSelectDialog;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
+import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -67,6 +71,20 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         mDrawer.closeDrawer();
     }
 
+
+    private boolean goBack = false;
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getStringExtra("action")) {
+                case "GO BACK":
+                    goBack = true;
+                    onBackPressed();
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeUtils.getCurrentTheme(getBaseContext()));
@@ -88,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         }
 
         handleDrawer(savedInstanceState);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter("ACTIVITY"));
 
     }
 
@@ -141,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                         //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 1000 SOLVES")
                         //        .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
                         //        .withIdentifier(DEBUG_ID)
-//
+                        //
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -168,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                     public void run() {
                                         fragmentManager
                                                 .beginTransaction()
-                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL), "fragment_main")
+                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL), "fragment_algs_oll")
                                                 .commit();
 
                                     }
@@ -181,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                     public void run() {
                                         fragmentManager
                                                 .beginTransaction()
-                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL), "fragment_main")
+                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL), "fragment_algs_pll")
                                                 .commit();
 
                                     }
@@ -316,10 +335,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         if (requestCode == REQUEST_SETTING) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
-            //fragmentManager
-            //        .beginTransaction()
-            //        .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
-            //        .commit();
         }
     }
 
@@ -327,14 +342,21 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     public void onBackPressed() {
         if (mDrawer.isDrawerOpen()) {
             mDrawer.closeDrawer();
-        } else
+        } else if (goBack) {
             super.onBackPressed();
+            goBack = false;
+        } else if (fragmentManager.findFragmentByTag("fragment_main") != null) { // If the main fragment is open
+            Broadcaster.broadcast(this, "TIMER", "BACK PRESSED"); // This broadcast goes to TimerFragmentMain
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onDestroy() {
         if (bp != null)
             bp.release();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
@@ -343,27 +365,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         getMenuInflater().inflate(R.menu.menu_overview, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-/*
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                return true;
-
-            case R.id.debug_add:
-                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "normal", 16578465465l, "R U D", 0));
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "bld", 16578465465l, "R U D", 0));
-                db.addSolve(new Time(6057, PuzzleUtils.TYPE_333, "cross", 16578465465l, "R U D", 0));
-                db.close();
-                return true;
-
-        }*/
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

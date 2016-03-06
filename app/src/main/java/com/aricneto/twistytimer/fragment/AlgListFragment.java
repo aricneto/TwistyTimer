@@ -31,7 +31,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
     private static final int    TASK_LOADER_ID = 14;
     private static final String KEY_SUBSET     = "subset";
 
-    @Bind(R.id.toolbar)         Toolbar             toolbar;
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     private String currentSubset;
 
