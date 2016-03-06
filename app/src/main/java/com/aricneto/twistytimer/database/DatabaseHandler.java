@@ -152,7 +152,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Return alg
         cursor.close();
-        db.close();
         return algorithm;
     }
 
@@ -176,6 +175,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Updating row
         return db.update(TABLE_ALGS, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(id) });
+    }
+
+    public Cursor getAllSolvesFrom(String type, String subtype, boolean history) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlSelection;
+        if (! history)
+            sqlSelection =
+                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                            + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
+        else
+            sqlSelection =
+                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                            + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
+
+        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
 
     /**
@@ -215,7 +230,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             // Inserting Row
             db.insert(TABLE_TIMES, null, values);
-            db.close(); // Closing database connection
         }
     }
 
@@ -283,7 +297,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Return solve
         cursor.close();
-        db.close();
         return solve;
     }
 
@@ -305,9 +318,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        db.close();
         cursor.close();
-
         return subtypesList;
     }
 
@@ -589,10 +600,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // Delete an entry with an id
-    public void deleteFromId(long id) {
+    public int deleteFromId(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(id) });
-        db.close();
+        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(id) });
     }
 
     // Delete entries with an id list
@@ -601,29 +611,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         for (int i = 0; i < idList.size(); i++) {
             db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { Long.toString(idList.get(i)) });
         }
-        db.close();
     }
 
     // Delete entries from session
-    public void deleteAllFromSession(String type, String subtype) {
+    public int deleteAllFromSession(String type, String subtype) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ? AND " + KEY_HISTORY + "=0", new String[] { type, subtype });
-        db.close();
+        return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ? AND " + KEY_HISTORY + "=0", new String[] { type, subtype });
     }
 
     // Delete a single solve
-    public void deleteSolve(Solve solve) {
+    public int deleteSolve(Solve solve) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
-        db.close();
+        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
     }
 
     // Delete a single solve based on timestamp and time
-    public void deleteSolveWithTimestamp(Solve solve) {
+    public int deleteSolveWithTimestamp(Solve solve) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TIMES, KEY_DATE + " = ?",
+        return db.delete(TABLE_TIMES, KEY_DATE + " = ?",
                 new String[] { String.valueOf(solve.getDate()) });
-        db.close();
     }
 
     /**
@@ -631,11 +637,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @param subtype
      */
-    public void deleteSubtype(String type, String subtype) {
+    public int deleteSubtype(String type, String subtype) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ?",
+        return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ?",
                 new String[] { type, subtype });
-        db.close();
     }
 
     /**
@@ -643,12 +648,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @param subtype
      */
-    public void renameSubtype(String type, String subtype, String newName) {
+    public int renameSubtype(String type, String subtype, String newName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_SUBTYPE, newName);
-        db.update(TABLE_TIMES, contentValues, KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=?", new String[] { type, subtype });
-        db.close();
+        return db.update(TABLE_TIMES, contentValues, KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=?", new String[] { type, subtype });
     }
 
 
@@ -777,5 +781,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
 
 }

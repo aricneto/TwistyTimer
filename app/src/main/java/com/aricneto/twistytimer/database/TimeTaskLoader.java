@@ -46,8 +46,9 @@ public class TimeTaskLoader extends CursorLoader {
 
     @Override
     protected void onStopLoading() {
-        //db.close();
-        //handler.close();
+        if (handler != null) {
+            handler.closeDB();
+        }
         super.onStopLoading();
     }
 }

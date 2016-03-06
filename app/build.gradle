@@ -34,8 +34,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.android.support:gridlayout-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
-    // Seekbar
-    compile 'com.pavelsikun:material-seekbar-preference:0.12.1+'
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
     // Observable scrollview
@@ -68,6 +66,7 @@ dependencies {
     compile 'com.pes.materialcolorpicker:library:1.0.+'
     // Sliding Up Panel
     compile 'com.sothree.slidinguppanel:library:3.2.1'
+
 
 }
 

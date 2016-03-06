@@ -54,6 +54,8 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private String currentPuzzle;
     private String currentPuzzleSubtype;
 
+    DatabaseHandler dbHandler;
+
     private TimeCursorAdapter timeCursorAdapter;
     private TimeTaskLoader    timeTaskLoader;
 
@@ -120,6 +122,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
+        dbHandler = new DatabaseHandler(getContext());
     }
 
     @Override
@@ -146,11 +149,8 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                         .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
-                                DatabaseHandler handler = new DatabaseHandler(getContext());
-
                                 int time = PuzzleUtils.parseTime(input.toString());
-
-                                handler.addSolve(new Solve(time, currentPuzzle,
+                                dbHandler.addSolve(new Solve(time, currentPuzzle,
                                         currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
                                 Intent sendIntent = new Intent("TIMELIST");
                                 sendIntent.putExtra("action", "TIME ADDED");
@@ -181,9 +181,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                DatabaseHandler handler = new DatabaseHandler(mContext);
-                                handler.moveAllSolvesToHistory(currentPuzzle, currentPuzzleSubtype);
-                                handler.close();
+                                dbHandler.moveAllSolvesToHistory(currentPuzzle, currentPuzzleSubtype);
                                 Intent sendIntent = new Intent("TIMELIST");
                                 sendIntent.putExtra("action", "MOVED TO HISTORY");
                                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
@@ -206,8 +204,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                DatabaseHandler handler = new DatabaseHandler(mContext);
-                                handler.deleteAllFromSession(currentPuzzle, currentPuzzleSubtype);
+                                dbHandler.deleteAllFromSession(currentPuzzle, currentPuzzleSubtype);
 
                                 resetList();
 
@@ -233,6 +230,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     public void onDestroy() {
         super.onDestroy();
         // To fix memory leaks
+        dbHandler.closeDB();
         ButterKnife.unbind(this);
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mReceiver);
         getLoaderManager().destroyLoader(TASK_LOADER_ID);

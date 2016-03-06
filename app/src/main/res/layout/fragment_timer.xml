@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:keepScreenOn="true"
     app:umanoPanelHeight="0dp"
     app:umanoScrollableView="@+id/scrollPanel"
     app:umanoShadowHeight="4dp">
@@ -15,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?mainColorBackground"
-        android:keepScreenOn="true"
         tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 
         <!-- The margin is there so that opening the drawer doesn't start the timer -->
@@ -36,10 +36,36 @@
             app:rb_rippleAmount="1"
             app:rb_scale="10" />
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/hintCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            app:cardBackgroundColor="?colorPrimaryDark"
+            app:cardElevation="4dp">
+
+            <TextView
+                android:id="@+id/archive_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_lightbulb_outline_white_18dp"
+                android:drawableRight="@drawable/spacer_18dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/hint"
+                android:textColor="@android:color/white" />
+
+
+        </android.support.v7.widget.CardView>
+
         <TextView
             android:id="@+id/scrambleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@id/hintCard"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -47,31 +73,8 @@
             android:gravity="center_horizontal"
             android:text="Generating..."
             android:textColor="?colorTimerText"
+            android:textSize="14sp"
             tools:text="3R' 3F2 U' 2U' 2R' 2U' 3D2 L2 U 2D' R2 2B' D B' D 2L 2U' R' F' 2L F' 2D L 3F2 L' 2L 3L' R2 U' 2D' F2 3F' 2L' 2F' 2B' 3U 2F 3F2 L 3L' R 2U D' 3B 2D' 2L' R' 3D2 2R' 3U2 3B 3U' 3F 3B B2 2R D 3B2 3L2 3D' 2R' 2U F D' 3B' L' 2R2 R F2 2F2 3F 3B 2B' B' L R2 3B L 2L2 3L U' 3U2 3F 3D R D 2L B' U 3L' 3U2 3F' L U 2F2 B2 2L2 3F2 2L2 3D2" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/hintCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/scrambleText"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:cardBackgroundColor="?colorPrimary">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_lightbulb_outline_white_18dp"
-                android:text="@string/hint"
-                android:textColor="@android:color/white"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="12dp" />
-
-        </android.support.v7.widget.CardView>
 
         <com.aricneto.twistytimer.layout.ChronometerMilli
             android:id="@+id/chronometer"
@@ -275,10 +278,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:drawableLeft="@drawable/ic_keyboard_arrow_down_black_18dp"
                 android:drawableRight="@drawable/ic_keyboard_arrow_down_black_18dp"
                 android:gravity="center"
-                android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/panel_swipe_down_to_hide"

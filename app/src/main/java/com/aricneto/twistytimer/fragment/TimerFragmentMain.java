@@ -78,7 +78,7 @@ public class TimerFragmentMain extends BaseFragment {
     private MaterialDialog createSubtypeDialog;
     private MaterialDialog renameSubtypeDialog;
     
-    DatabaseHandler db;
+    DatabaseHandler dbHandler;
 
     ActionMode actionMode;
     
@@ -185,7 +185,8 @@ public class TimerFragmentMain extends BaseFragment {
                         if (currentTimerFragmentInstance.isRunning) {
                             currentTimerFragmentInstance.cancelChronometer();
                         } else if (currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
-                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING) {
                             currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                         } else {
                             Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
@@ -253,7 +254,7 @@ public class TimerFragmentMain extends BaseFragment {
 
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
-        db = new DatabaseHandler(getContext());
+        dbHandler = new DatabaseHandler(getContext());
 
         if (savedInstanceState == null) {
             updateCurrentSubtype();
@@ -312,7 +313,7 @@ public class TimerFragmentMain extends BaseFragment {
         super.onDestroy();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         ButterKnife.unbind(this);
-        db.close();
+        dbHandler.closeDB();
     }
 
     private void setupTypeDialogItem() {
@@ -339,7 +340,7 @@ public class TimerFragmentMain extends BaseFragment {
                 .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        db.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
                         historyChecked = false; // Resets the checked state of the switch
                         currentPuzzleSubtype = input.toString();
                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
@@ -350,10 +351,10 @@ public class TimerFragmentMain extends BaseFragment {
                 })
                 .build();
 
-        final List<String> subtypeList = db.getAllSubtypesFromType(currentPuzzle);
+        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             subtypeList.add("Normal");
-            db.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+            dbHandler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         } else if (subtypeList.size() == 1) {
             currentPuzzleSubtype = subtypeList.get(0);
         }
@@ -375,9 +376,9 @@ public class TimerFragmentMain extends BaseFragment {
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        db.deleteSubtype(currentPuzzle, typeName.toString());
+                                        dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
                                         if (subtypeList.size() > 1) {
-                                            currentPuzzleSubtype = db.getAllSubtypesFromType(currentPuzzle).get(0);
+                                            currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
                                         } else {
                                             currentPuzzleSubtype = "Normal";
                                         }
@@ -406,7 +407,7 @@ public class TimerFragmentMain extends BaseFragment {
                                 .input("", "", false, new MaterialDialog.InputCallback() {
                                     @Override
                                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                                        db.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
+                                        dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
                                         currentPuzzleSubtype = input.toString();
                                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
                                         editor.apply();
@@ -556,7 +557,7 @@ public class TimerFragmentMain extends BaseFragment {
     private void updateCurrentSubtype() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        final List<String> subtypeList = db.getAllSubtypesFromType(currentPuzzle);
+        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             currentPuzzleSubtype = "Normal";
             editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");

@@ -137,9 +137,9 @@ public class TimerFragment extends BaseFragment {
     @Bind(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
     @Bind(R.id.rippleBackground)     RippleBackground rippleBackground;
 
-    @Bind(R.id.root)             RelativeLayout       rootLayout;
-    @Bind(R.id.startTimerLayout) FrameLayout          startTimerLayout;
-    @Bind(R.id.sliding_layout)   public SlidingUpPanelLayout slidingLayout;
+    @Bind(R.id.root)                  RelativeLayout       rootLayout;
+    @Bind(R.id.startTimerLayout)      FrameLayout          startTimerLayout;
+    @Bind(R.id.sliding_layout) public SlidingUpPanelLayout slidingLayout;
 
     @Bind(R.id.congratsText) TextView congratsText;
 
@@ -188,6 +188,7 @@ public class TimerFragment extends BaseFragment {
 
     private RubiksCubeOptimalCross  optimalCross;
     private RubiksCubeOptimalXCross optimalXCross;
+    private SharedPreferences       sharedPreferences;
 
 
     public TimerFragment() {
@@ -348,7 +349,7 @@ public class TimerFragment extends BaseFragment {
         hintCard.setOnClickListener(buttonClickListener);
 
         // Preferences //
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 
@@ -702,15 +703,19 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void showItems() {
-        scrambleImg.setEnabled(true);
-        quickActionButtons.setEnabled(true);
-
         if (scrambleEnabled) {
+            scrambleText.setEnabled(true);
             scrambleText.setVisibility(View.VISIBLE);
-            if (scrambleImgEnabled)
+            if (scrambleImgEnabled) {
+                scrambleImg.setEnabled(true);
                 showImage();
-            if (showHints) {
+            }
+            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+                hintCard.setEnabled(true);
                 hintCard.setVisibility(View.VISIBLE);
+                hintCard.animate()
+                        .alpha(1)
+                        .setDuration(300);
             }
         }
         if (sessionStatsEnabled) {
@@ -720,6 +725,7 @@ public class TimerFragment extends BaseFragment {
                     .setDuration(300);
         }
         if (buttonsEnabled && ! isCanceled) {
+            quickActionButtons.setEnabled(true);
             quickActionButtons.setVisibility(View.VISIBLE);
             quickActionButtons.animate()
                     .alpha(1)
@@ -757,16 +763,25 @@ public class TimerFragment extends BaseFragment {
         congratsText.setVisibility(View.GONE);
         congratsText.setCompoundDrawables(null, null, null, null);
 
-        scrambleImg.setEnabled(false);
-        quickActionButtons.setEnabled(false);
 
         if (scrambleEnabled) {
-            scrambleText.setVisibility(View.GONE);
-            if (scrambleImgEnabled)
+            scrambleText.setEnabled(false);
+            scrambleText.setVisibility(View.INVISIBLE);
+            if (scrambleImgEnabled) {
+                scrambleImg.setEnabled(false);
                 hideImage();
-            if (showHints) {
-                hintCard.setVisibility(View.GONE);
-
+            }
+            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+                hintCard.setEnabled(false);
+                hintCard.animate()
+                        .alpha(0)
+                        .setDuration(300)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                hintCard.setVisibility(View.INVISIBLE);
+                            }
+                        });
             }
         }
         if (sessionStatsEnabled) {
@@ -781,6 +796,7 @@ public class TimerFragment extends BaseFragment {
                     });
         }
         if (buttonsEnabled) {
+            quickActionButtons.setEnabled(false);
             quickActionButtons.animate()
                     .alpha(0)
                     .setDuration(300)
@@ -828,13 +844,12 @@ public class TimerFragment extends BaseFragment {
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         // To fix memory leaks
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
-        dbHandler.close();
+        dbHandler.closeDB();
         ButterKnife.unbind(this);
         scrambleGeneratorAsync.cancel(true);
         statCalculatorAsync.cancel(true);
@@ -910,7 +925,7 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected void onPreExecute() {
-            if (showHints)
+            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled)
                 slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             canShowHint = false;
             scrambleText.setText(R.string.generating_scramble);
@@ -982,7 +997,7 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected Drawable doInBackground(Void... voids) {
-            Drawable finalImg = generator.generateImageFromScramble(getActivity(), realScramble);
+            Drawable finalImg = generator.generateImageFromScramble(sharedPreferences, realScramble);
             return finalImg;
         }
 

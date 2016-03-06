@@ -27,7 +27,7 @@
     <string name="list_empty_state_message">Nothing here yet!\nTap the switch at the top of the screen to see your history.</string>
 
     <string name="no_penalty">No penalty</string>
-    <string name="generating_scramble">Generating scramble…\nSubsequent scrambles will generate faster</string>
+    <string name="generating_scramble">Generating scramble…</string>
     <string name="enter_type_name">Enter category name</string>
     <string name="select_solve_type">Select category</string>
     <string name="type">Category</string>
@@ -160,7 +160,7 @@
     <string name="clearEnabledTitle">Show \"Clear\" button</string>
     <string name="clearEnabledSummary">The \"Clear\" button is shown in the time list, and lets you remove all solves from the current session</string>
     <string name="advanced_pref_title">Advanced</string>
-    <string name="advanced_pref_summary">WARNING: CHANGING THE FOLLOWING SETTINGS MAY CAUSE CLIPPING ISSUES</string>
+    <string name="advanced_pref_summary">Changing these settings may cause some clipping issues</string>
     <string name="timer_text_size">Timer text size</string>
     <string name="timer_text_offset">Timer text offset</string>
     <string name="action_clear">Clear</string>
@@ -188,5 +188,11 @@
     <string name="showHintsSummary">Enables cross hints for the 3x3 puzzle</string>
     <string name="hint">Hint</string>
     <string name="whats_new">What\'s new</string>
+    <string name="warning">Warning</string>
+    <string name="action_default">Default</string>
+    <string name="scrambleImageSize_summary">Controls the size of the scramble image</string>
+    <string name="timer_text_offset_summary">Controls the position of the timer text</string>
+    <string name="quick_action_button_large_summary">Show bigger quick action buttons (the buttons that appear after a solve)</string>
+    <string name="timer_text_size_summary">Controls the size of the timer text</string>
 
 </resources>

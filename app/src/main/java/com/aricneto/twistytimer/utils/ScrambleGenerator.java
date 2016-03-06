@@ -1,10 +1,8 @@
 package com.aricneto.twistytimer.utils;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
-import android.preference.PreferenceManager;
 
 import com.aricneto.twistytimer.puzzle.NbyNCubePuzzle;
 import com.caverock.androidsvg.SVG;
@@ -84,9 +82,8 @@ public class ScrambleGenerator {
      * @return
      */
 
-    public Drawable generateImageFromScramble(Context context, String scramble) {
+    public Drawable generateImageFromScramble(SharedPreferences sp, String scramble) {
         // Getting the color scheme
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String top = sp.getString("cubeTop", "FFFFFF");
         String left = sp.getString("cubeLeft", "FF8B24");
         String front = sp.getString("cubeFront", "02D040");

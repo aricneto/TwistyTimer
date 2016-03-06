@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,7 +70,7 @@ public class TimerGraphFragment extends Fragment {
     @Bind(R.id.divider04)        View rl3;
     @Bind(R.id.sessionBestTitle) View r14;
 
-    DatabaseHandler handler;
+    DatabaseHandler dbHandler;
 
     private boolean history;
 
@@ -125,7 +124,7 @@ public class TimerGraphFragment extends Fragment {
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
-        handler = new DatabaseHandler(getContext());
+        dbHandler = new DatabaseHandler(getContext());
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
         mContext = getContext();
     }
@@ -228,18 +227,7 @@ public class TimerGraphFragment extends Fragment {
 
             Pair<ArrayList<Entry>, ArrayList<String>> tempPair = new Pair<>(yVals, xVals);
 
-            String sqlSelection;
-            if (! history)
-                sqlSelection =
-                        " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                                + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
-            else
-                sqlSelection =
-                        " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                                + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
-
-            SQLiteDatabase db = handler.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { currentPuzzle, currentPuzzleSubtype });
+            Cursor cursor = dbHandler.getAllSolvesFrom(currentPuzzle, currentPuzzleSubtype, history);
 
             // Looping through all rows and adding to list
             int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
@@ -258,11 +246,9 @@ public class TimerGraphFragment extends Fragment {
 
             // Adding the mean to the string arraylist, so we don't have
             // to create another variable to store it in (remember to remove it from the list in the next step)
-            tempPair.second.add(String.valueOf(handler.getMean(! history, currentPuzzle, currentPuzzleSubtype) / 1000));
+            tempPair.second.add(String.valueOf(dbHandler.getMean(! history, currentPuzzle, currentPuzzleSubtype) / 1000));
 
-            // FIXME: database crashing the app
             cursor.close();
-            db.close();
             return tempPair;
         }
 
@@ -314,27 +300,27 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected int[] doInBackground(Void... voids) {
-            int BestAvg3 = handler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg5 = handler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg12 = handler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg100 = handler.getBestAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg50 = handler.getBestAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg1000 = handler.getBestAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int BestMean = handler.getMean(false, currentPuzzle, currentPuzzleSubtype);
-            int BestBest = handler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-            int BestWorst = handler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
-            int BestSolveCount = handler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
+            int BestAvg3 = dbHandler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
+            int BestAvg5 = dbHandler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
+            int BestAvg12 = dbHandler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
+            int BestAvg100 = dbHandler.getBestAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
+            int BestAvg50 = dbHandler.getBestAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
+            int BestAvg1000 = dbHandler.getBestAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
+            int BestMean = dbHandler.getMean(false, currentPuzzle, currentPuzzleSubtype);
+            int BestBest = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
+            int BestWorst = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
+            int BestSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
 
-            int SessionAvg3 = handler.getFastAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg5 = handler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg12 = handler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg100 = handler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg50 = handler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg1000 = handler.getTruncatedAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionMean = handler.getMean(true, currentPuzzle, currentPuzzleSubtype);
-            int SessionBest = handler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionWorst = handler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionSolveCount = handler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
+            int SessionAvg3 = dbHandler.getFastAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
+            int SessionAvg5 = dbHandler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
+            int SessionAvg12 = dbHandler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
+            int SessionAvg100 = dbHandler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
+            int SessionAvg50 = dbHandler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
+            int SessionAvg1000 = dbHandler.getTruncatedAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
+            int SessionMean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
+            int SessionBest = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
+            int SessionWorst = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
+            int SessionSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
 
             return new int[] { BestAvg5, BestAvg12, BestAvg100, BestMean, BestBest, BestWorst, BestSolveCount,
                                SessionAvg5, SessionAvg12, SessionAvg100, SessionMean, SessionBest, SessionWorst, SessionSolveCount,
@@ -398,7 +384,7 @@ public class TimerGraphFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        handler.close();
+        dbHandler.closeDB();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         super.onDestroy();
     }
