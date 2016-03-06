@@ -176,5 +176,12 @@
     <string name="showHintsTitle">Mostrar dicas</string>
     <string name="showHintsSummary">Ativa dicas de cruz no 3x3</string>
     <string name="warning">Aviso</string>
+    <string name="action_default">Padrão</string>
+    <string name="quick_action_button_large_summary">Mostrar botões de ação rápida maiores (os botões que aparecem depois de uma solução)</string>
+    <string name="scrambleImageSize_summary">Controla o tamanho da imagem do embaralhamento</string>
+    <string name="timer_text_offset_summary">Controla a posição do cronômetro</string>
+    <string name="timer_text_size_summary">Controla o tamanho to texto do cronômetro</string>
+    <string name="showHintsXCrossSummary">Dicas para a cruz extendida podem levar um longo tempo para carregar.\nAtive esta opção apenas se você estiver ok com o tempo de espera ou se você possuir um celular potente.</string>
+    <string name="showHintsXCrossTitle">Mostrar dicas de cruz extendida</string>
 
 </resources>

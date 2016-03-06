@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.jenzz.materialpreference.Preference;
@@ -61,6 +63,15 @@ public class SettingsActivity extends AppCompatActivity {
                     case "inspectionTime":
                         createNumberDialog(R.string.inspection_time, "inspectionTime");
                         break;
+                    case "showHintsXCross":
+                        if (preferences.getBoolean("showHintsXCross", false)) {
+                            new MaterialDialog.Builder(getActivity())
+                                    .title(R.string.warning)
+                                    .content(R.string.showHintsXCrossSummary)
+                                    .positiveText(R.string.action_ok)
+                                    .show();
+                        }
+                        break;
                     case "timerAppearance":
                         Intent appearanceIntent = new Intent(getActivity(), TimerAppearanceSettingsActivity.class);
                         startActivity(appearanceIntent);
@@ -81,9 +92,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             final Preference inspectionTime = (Preference) getPreferenceScreen().findPreference("inspectionTime");
             final Preference timerAppearance = (Preference) getPreferenceScreen().findPreference("timerAppearance");
+            final Preference showHintsXCross = (Preference) getPreferenceScreen().findPreference("showHintsXCross");
 
             timerAppearance.setOnPreferenceClickListener(clickListener);
             inspectionTime.setOnPreferenceClickListener(clickListener);
+            showHintsXCross.setOnPreferenceClickListener(clickListener);
 
         }
 
@@ -106,6 +119,14 @@ public class SettingsActivity extends AppCompatActivity {
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
+                    .neutralText(R.string.action_default)
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            editor.putInt(key, 15);
+                            editor.apply();
+                        }
+                    })
                     .show();
         }
     }

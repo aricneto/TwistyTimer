@@ -42,6 +42,12 @@
             android:title="@string/pagerEnabledTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_scrambleEnabled"
+            android:key="scrambleEnabled"
+            android:summary="@string/scrambleEnabledSummary"
+            android:title="@string/scrambleEnabledTitle" />
+
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_showHints"
             android:key="showHints"
             android:dependency="scrambleEnabled"
@@ -49,10 +55,10 @@
             android:title="@string/showHintsTitle" />
 
         <com.jenzz.materialpreference.SwitchPreference
-            android:defaultValue="@bool/default_scrambleEnabled"
-            android:key="scrambleEnabled"
-            android:summary="@string/scrambleEnabledSummary"
-            android:title="@string/scrambleEnabledTitle" />
+            android:defaultValue="@bool/default_showHintsXCross"
+            android:key="showHintsXCross"
+            android:dependency="showHints"
+            android:title="@string/showHintsXCrossTitle" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

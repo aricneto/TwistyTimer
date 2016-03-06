@@ -155,6 +155,7 @@ public class TimerFragment extends BaseFragment {
     private float   scrambleTextSize;
     private boolean advancedEnabled;
     private boolean showHints;
+    private boolean showHintsXCross;
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -379,6 +380,7 @@ public class TimerFragment extends BaseFragment {
             chronometer.setY(chronometer.getY() - timerTextOffset);
             inspectionText.setY(inspectionText.getY() - timerTextOffset);
             quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);
+            congratsText.setY(congratsText.getY() - timerTextOffset);
         } else {
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
@@ -394,6 +396,7 @@ public class TimerFragment extends BaseFragment {
         backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", false);
         startCueEnabled = sharedPreferences.getBoolean("startCue", false);
         showHints = sharedPreferences.getBoolean("showHints", true);
+        showHintsXCross = sharedPreferences.getBoolean("showHintsXCross", false);
 
         if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
             hintCard.setVisibility(View.VISIBLE);
@@ -901,11 +904,13 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected String doInBackground(Void... voids) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             String text = "";
             text += optimalCross.getTip(realScramble);
-            //text += "\n\n";
-            //text += optimalXCross.getTip(realScramble);
-
+            if (showHintsXCross) {
+                text += "\n\n";
+                text += optimalXCross.getTip(realScramble);
+            }
             return text;
         }
 
@@ -958,7 +963,10 @@ public class TimerFragment extends BaseFragment {
                     if (scrambleText != null) {
                         Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
                         Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
-                        if (scrambleRect.intersect(chronometerRect)) {
+                        Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
+
+                        if ((Rect.intersects(scrambleRect, chronometerRect)) ||
+                                (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                             scrambleText.setClickable(true);
                             scrambleText.setText(R.string.scramble_text_tap_hint);
                             scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
