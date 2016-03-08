@@ -145,14 +145,16 @@ public class TimerFragmentMain extends BaseFragment {
                         animatorSet.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                if (toolbarLayout.getTranslationY() == 0) {
-                                    LinearLayout.LayoutParams params =
-                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
-                                    params.height = originalContentHeight;
-                                    viewPager.setLayoutParams(params);
-                                    Intent sendIntent = new Intent("TIMELIST");
-                                    sendIntent.putExtra("action", "TOOLBAR ENDED");
-                                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                                if (toolbarLayout!= null) {
+                                    if (toolbarLayout.getTranslationY() == 0) {
+                                        LinearLayout.LayoutParams params =
+                                                (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                        params.height = originalContentHeight;
+                                        viewPager.setLayoutParams(params);
+                                        Intent sendIntent = new Intent("TIMELIST");
+                                        sendIntent.putExtra("action", "TOOLBAR ENDED");
+                                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                                    }
                                 }
                             }
                         });

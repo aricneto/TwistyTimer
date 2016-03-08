@@ -827,7 +827,7 @@ public class TimerFragment extends BaseFragment {
     }
 
     /**
-     * Cancels the chronometer (stop it without saving anything
+     * Cancels the chronometer (stop it without saving anything)
      */
     public void cancelChronometer() {
         chronometer.stop();
@@ -851,17 +851,15 @@ public class TimerFragment extends BaseFragment {
         showToolbar();
     }
 
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         // To fix memory leaks
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         dbHandler.closeDB();
         ButterKnife.unbind(this);
         scrambleGeneratorAsync.cancel(true);
         statCalculatorAsync.cancel(true);
-
     }
 
     public static void lockOrientation(Activity activity) {
