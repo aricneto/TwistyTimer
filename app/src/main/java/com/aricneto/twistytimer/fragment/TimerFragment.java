@@ -834,6 +834,11 @@ public class TimerFragment extends BaseFragment {
         chronometer.setText("0.00");
         isRunning = false;
         isCanceled = true;
+        isReady = false; // Reset variable
+        inspectionText.setVisibility(View.GONE);
+        countdown.cancel();
+        plusTwoCountdown.cancel();
+        countingDown = false;
         showToolbar();
     }
 
