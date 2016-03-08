@@ -227,8 +227,8 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         // To fix memory leaks
         dbHandler.closeDB();
         ButterKnife.unbind(this);

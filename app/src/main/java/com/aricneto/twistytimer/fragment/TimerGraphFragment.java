@@ -383,9 +383,9 @@ public class TimerGraphFragment extends Fragment {
 
 
     @Override
-    public void onDestroy() {
+    public void onDetach() {
+        super.onDetach();
         dbHandler.closeDB();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
-        super.onDestroy();
     }
 }
