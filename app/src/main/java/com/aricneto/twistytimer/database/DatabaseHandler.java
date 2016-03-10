@@ -214,7 +214,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // Adding new solve
-    public void addSolve(Solve solve) {
+    public long addSolve(Solve solve) {
         if (solve.getTime() != 0) {
             SQLiteDatabase db = this.getWritableDatabase();
 
@@ -229,36 +229,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(KEY_HISTORY, solve.isHistory());
 
             // Inserting Row
-            db.insert(TABLE_TIMES, null, values);
+            return db.insert(TABLE_TIMES, null, values);
         }
+        return -1;
     }
 
-    /**
-     * Updates a solve based on the timestamp and time
-     *
-     * @param solve
-     *
-     * @return
-     */
     public int updateSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_TYPE, solve.getPuzzle());
-        values.put(KEY_SUBTYPE, solve.getSubtype());
-        values.put(KEY_TIME, solve.getTime());
-        values.put(KEY_DATE, solve.getDate());
-        values.put(KEY_SCRAMBLE, solve.getScramble());
-        values.put(KEY_PENALTY, solve.getPenalty());
-        values.put(KEY_COMMENT, solve.getComment());
-        values.put(KEY_HISTORY, solve.isHistory());
-
-        // Updating row
-        return db.update(TABLE_TIMES, values, KEY_TYPE + " =? AND " + KEY_SUBTYPE + " =? AND " + KEY_DATE + " =?",
-                new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getDate()) });
-    }
-
-    public int updateSolveWithId(Solve solve) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -625,13 +601,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
     }
 
-    // Delete a single solve based on timestamp and time
-    public int deleteSolveWithTimestamp(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_DATE + " = ?",
-                new String[] { String.valueOf(solve.getDate()) });
-    }
-
     /**
      * Deletes all solves from a subtype, thus removing the subtype
      *
@@ -663,7 +632,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Boolean returnCode = false;
         int i = 0;
-        String csvHeader = "Puzzle,Type,Time(seconds),Date,Scramble,Penalty,Comment\n";
+        String csvHeader = "Puzzle,Type,Time,Date,Scramble,Penalty,Comment\n";
         String csvValues = "";
 
         try {
@@ -676,7 +645,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     csvValues = "\"" + cursor.getString(1) + "\",";
                     csvValues += "\"" + cursor.getString(2) + "\",";
-                    csvValues += "\"" + Integer.toString(cursor.getInt(3) * 1000) + "\",";
+                    csvValues += "\"" + PuzzleUtils.convertTimeToString(cursor.getInt(3)) + "\",";
                     csvValues += "\"" + new DateTime(cursor.getLong(4)).toString() + "\",";
                     csvValues += "\"" + cursor.getString(5) + "\",";
                     csvValues += "\"" + PuzzleUtils.convertPenaltyToString(cursor.getInt(6)) + "\",";

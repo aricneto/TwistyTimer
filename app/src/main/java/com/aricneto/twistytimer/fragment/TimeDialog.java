@@ -84,14 +84,14 @@ public class TimeDialog extends DialogFragment {
                                 case R.id.history_to:
                                     solve.setHistory(true);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_history), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
                                 case R.id.history_from:
                                     solve.setHistory(false);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_session), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
@@ -119,7 +119,7 @@ public class TimeDialog extends DialogFragment {
                                             solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
                                             break;
                                     }
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     // dismiss dialog
                                     updateList();
                                     return true;
@@ -135,7 +135,7 @@ public class TimeDialog extends DialogFragment {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     solve.setComment(input.toString());
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     updateList();
                                 }

@@ -73,6 +73,7 @@ public class TimerFragment extends BaseFragment {
 
     private String currentScramble = "";
     private Solve currentSolve;
+    private long currentId;
 
     private String realScramble;
 
@@ -192,6 +193,7 @@ public class TimerFragment extends BaseFragment {
     private SharedPreferences       sharedPreferences;
 
 
+
     public TimerFragment() {
         // Required empty public constructor
     }
@@ -209,7 +211,7 @@ public class TimerFragment extends BaseFragment {
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
-                                    dbHandler.deleteSolveWithTimestamp(currentSolve);
+                                    dbHandler.deleteSolve(currentSolve);
 
                                     handleButtons(true);
                                 }
@@ -644,7 +646,8 @@ public class TimerFragment extends BaseFragment {
             currentSolve = new Solve(0, currentPuzzle, currentPuzzleSubtype,
                     System.currentTimeMillis(), currentScramble, PuzzleUtils.PENALTY_DNF, "", false);
         }
-        dbHandler.addSolve(currentSolve);
+        currentId = dbHandler.addSolve(currentSolve);
+        currentSolve.setId(currentId);
 
         updateStats();
 

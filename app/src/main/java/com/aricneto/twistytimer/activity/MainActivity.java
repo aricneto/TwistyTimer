@@ -36,6 +36,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.joda.time.DateTime;
+
+import java.io.File;
+
 import butterknife.ButterKnife;
 
 
@@ -157,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                 .withIdentifier(ABOUT_ID)
 
 
-                        //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 1000 SOLVES")
+                        //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 10000 SOLVES")
                         //        .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
                         //        .withIdentifier(DEBUG_ID)
-                        //
+//
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -209,9 +213,15 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                             case EXPORT_ID:
                                 if (isExternalStorageWritable()) {
+                                    File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
+                                    fileDir.mkdir();
                                     DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
-                                    handler.backupDatabaseCSV(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "SolvesTwistyTimer.csv");
-                                    Toast.makeText(getApplicationContext(), getString(R.string.saved_to) + " " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/SolvesTwistyTimer.csv", Toast.LENGTH_LONG).show();
+                                    if (handler.backupDatabaseCSV(fileDir, "Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv")) {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.saved_to) + " " + fileDir.getAbsolutePath()
+                                                + "/Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.save_error), Toast.LENGTH_LONG);
+                                    }
                                 }
                                 break;
 
@@ -280,8 +290,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             //case DEBUG_ID:
                             //    Random rand = new Random();
                             //    DatabaseHandler db = new DatabaseHandler(activity);
-                            //    for (int i = 0; i < 1000; i++) {
-                            //        db.addSolve(new Solve(rand.nextInt(40000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
+                            //    for (int i = 0; i < 10000; i++) {
+                            //        db.addSolve(new Solve(30000 + rand.nextInt(2000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
                             //    }
                             //    break;
                         }

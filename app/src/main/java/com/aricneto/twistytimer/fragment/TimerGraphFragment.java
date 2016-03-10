@@ -179,7 +179,6 @@ public class TimerGraphFragment extends Fragment {
         lineChartView.getLegend().setEnabled(false);
         lineChartView.setDescription("");
 
-
         axisLeft.setDrawLimitLinesBehindData(true);
         axisLeft.setDrawGridLines(true);
         axisLeft.setDrawAxisLine(true);
@@ -285,7 +284,7 @@ public class TimerGraphFragment extends Fragment {
 
             lineChartView.setData(lineData);
             // Animates and refreshes the chart
-            lineChartView.animateXY(1000, 1000);
+            lineChartView.animateY(1000);
         }
     }
 
@@ -300,6 +299,7 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected int[] doInBackground(Void... voids) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             int BestAvg3 = dbHandler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg5 = dbHandler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg12 = dbHandler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
