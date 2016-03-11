@@ -45,7 +45,7 @@ dependencies {
     // FAB
     compile 'com.github.clans:fab:1.5.4'
     // Material Drawer
-    compile('com.mikepenz:materialdrawer:4.6.4@aar') {
+    compile('com.mikepenz:materialdrawer:5.0.8@aar') {
         transitive = true
     }
     // Joda-time

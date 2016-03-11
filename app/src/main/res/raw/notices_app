@@ -73,4 +73,10 @@
         <copyright>Copyright 2016 Jeremy Fleischman</copyright>
         <license>GNU General Public License 3.0</license>
     </notice>
+    <notice>
+        <name>PlusTimer</name>
+        <url>https://github.com/plusCubed/plusTimer</url>
+        <copyright>Copyright (C) 2014  Daniel Ciao</copyright>
+        <license>GNU General Public License 3.0</license>
+    </notice>
 </notices>

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,7 +33,9 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
@@ -48,15 +51,15 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private static final int DEBUG_ID = 11;
     BillingProcessor bp;
 
-    private static final int TIMER_ID    = 1;
-    private static final int THEME_ID    = 2;
-    private static final int SCHEME_ID   = 9;
-    private static final int OLL_ID      = 6;
-    private static final int PLL_ID      = 7;
-    private static final int DONATE_ID   = 8;
-    private static final int EXPORT_ID   = 3;
-    private static final int ABOUT_ID    = 4;
-    private static final int SETTINGS_ID = 5;
+    private static final int TIMER_ID         = 1;
+    private static final int THEME_ID         = 2;
+    private static final int SCHEME_ID        = 9;
+    private static final int OLL_ID           = 6;
+    private static final int PLL_ID           = 7;
+    private static final int DONATE_ID        = 8;
+    private static final int EXPORT_IMPORT_ID = 10;
+    private static final int ABOUT_ID         = 4;
+    private static final int SETTINGS_ID      = 5;
 
     private static final int REQUEST_SETTING = 42;
     private static final int REQUEST_ABOUT   = 23;
@@ -116,27 +119,33 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private void handleDrawer(Bundle savedInstanceState) {
         final Activity activity = this;
+
+        ImageView headerView = (ImageView) View.inflate(activity, R.layout.drawer_header, null);
+
+        headerView.setImageDrawable(ThemeUtils.tintDrawable(activity, R.drawable.header, R.attr.colorPrimary));
+
         // Setup drawer
         mDrawer = new DrawerBuilder()
                 .withActivity(activity)
                 .withDelayOnDrawerClose(- 1)
+                .withHeader(headerView)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.drawer_title_timer)
                                 .withIcon(R.drawable.ic_timer_black_24dp).withIconTintingEnabled(true).withIdentifier(TIMER_ID),
 
-                        new SectionDrawerItem().withName(R.string.drawer_title_reference),
+                        new ExpandableDrawerItem().withName(R.string.drawer_title_reference).withIcon(R.drawable.ic_cube_unfolded_black_24dp).withSelectable(false).withSubItems(
+                                new SecondaryDrawerItem().withName(R.string.drawer_title_oll).withLevel(2)
+                                        .withIcon(R.drawable.ic_oll_black_24dp).withIconTintingEnabled(true).withIdentifier(OLL_ID),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_oll)
-                                .withIcon(R.drawable.ic_oll_black_24dp).withIconTintingEnabled(true).withIdentifier(OLL_ID),
-
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_pll)
-                                .withIcon(R.drawable.ic_pll_black_24dp).withIconTintingEnabled(true).withIdentifier(PLL_ID),
+                                new SecondaryDrawerItem().withName(R.string.drawer_title_pll).withLevel(2)
+                                        .withIcon(R.drawable.ic_pll_black_24dp).withIconTintingEnabled(true).withIdentifier(PLL_ID)
+                        ).withIconTintingEnabled(true),
 
                         new SectionDrawerItem().withName(R.string.drawer_title_other),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_export)
-                                .withIcon(R.drawable.ic_file_export_black_24dp).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(EXPORT_ID),
+                        new PrimaryDrawerItem().withName(R.string.drawer_title_export_import)
+                                .withIcon(R.drawable.ic_folder_open_black_24dp).withIconTintingEnabled(true).withSelectable(false)
+                                .withIdentifier(EXPORT_IMPORT_ID),
 
                         new PrimaryDrawerItem().withName(R.string.drawer_title_changeTheme)
                                 .withIcon(R.drawable.ic_brush_black_24dp).withIconTintingEnabled(true).withSelectable(false)
@@ -164,14 +173,17 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                         //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 10000 SOLVES")
                         //        .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
                         //        .withIdentifier(DEBUG_ID)
-//
+                        //
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                        switch (drawerItem.getIdentifier()) {
+                        boolean closeDrawer = true;
+
+                        switch ((int) drawerItem.getIdentifier()) {
                             default:
+                                closeDrawer = false;
                             case TIMER_ID:
                                 mDrawerToggle.runWhenIdle(new Runnable() {
                                     @Override
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                 });
                                 break;
 
-                            case EXPORT_ID:
+                            case EXPORT_IMPORT_ID:
                                 if (isExternalStorageWritable()) {
                                     File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
                                     fileDir.mkdir();
@@ -295,7 +307,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             //    }
                             //    break;
                         }
-                        mDrawerLayout.closeDrawers();
+                        if (closeDrawer)
+                            mDrawerLayout.closeDrawers();
                         return false;
                     }
                 })

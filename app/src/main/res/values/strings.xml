@@ -197,5 +197,7 @@
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
     <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
     <string name="save_error">Could not export times.</string>
+    <string name="drawer_title_import">Import times</string>
+    <string name="drawer_title_export_import">Export/Import</string>
 
 </resources>

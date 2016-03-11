@@ -274,10 +274,11 @@ public class TimerGraphFragment extends Fragment {
 
             lineDataSet.setLineWidth(2f);
             lineDataSet.enableDashedLine(10f, 10f, 0);
-            lineDataSet.setCircleRadius(3f);
+            lineDataSet.setDrawCircles(false);
+            //lineDataSet.setCircleRadius(3f);
             lineDataSet.setColor(Color.WHITE);
             lineDataSet.setHighlightEnabled(false);
-            lineDataSet.setCircleColor(Color.WHITE);
+            //lineDataSet.setCircleColor(Color.WHITE);
             lineDataSet.setDrawValues(false);
 
             LineData lineData = new LineData(objects.second, lineDataSet);
