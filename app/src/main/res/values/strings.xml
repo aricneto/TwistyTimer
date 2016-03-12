@@ -46,7 +46,7 @@
     <string name="select_penalty">Select penalty</string>
     <string name="inspection">Inspection</string>
     <string name="add_time">Add time</string>
-    <string name="add_time_hint" translatable="false">00:00.00</string>
+    <string name="add_time_hint" translatable="false">1,23.45</string>
     <string name="action_add">Add</string>
     <string name="action_remove">Remove</string>
     <string name="remove_subtype_title">Select category to remove</string>
@@ -197,7 +197,11 @@
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
     <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
     <string name="save_error">Could not export times.</string>
-    <string name="drawer_title_import">Import times</string>
     <string name="drawer_title_export_import">Export/Import</string>
+    <string name="dialog_export_import_export">Export</string>
+    <string name="dialog_export_import_import">Import</string>
+    <string name="dialog_export_import_sync">Sync</string>
+    <string name="action_help">Help</string>
+    <string name="action_choose">Choose</string>
 
 </resources>

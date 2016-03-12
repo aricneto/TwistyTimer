@@ -1,4 +1,4 @@
-package com.aricneto.twistytimer.fragment;
+package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -239,7 +239,7 @@ public class TimeDialog extends DialogFragment {
             dialogListener.onUpdateDialog();
         } else {
             Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME ADDED");
+            sendIntent.putExtra("action", "TIME UPDATED");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
         }
         dismiss();

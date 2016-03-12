@@ -271,6 +271,7 @@ public class TimerFragmentMain extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 setupPage(position, inflater);
+                handleIcons(position);
                 currentPage = position;
             }
 
@@ -279,8 +280,6 @@ public class TimerFragmentMain extends BaseFragment {
                 Broadcaster.broadcast(getActivity(), "TIMELIST", "SCROLLED PAGE");
             }
         });
-
-        viewPager.setCurrentItem(0, true);
 
         // Sets up the toolbar with the timer icons
         mToolbar.post(new Runnable() {
@@ -296,6 +295,26 @@ public class TimerFragmentMain extends BaseFragment {
         return root;
     }
 
+    private void handleIcons(int index) {
+        switch (index) {
+            case 0:
+                tabLayout.getTabAt(0).getIcon().setAlpha(255);
+                tabLayout.getTabAt(1).getIcon().setAlpha(153); // 70%
+                tabLayout.getTabAt(2).getIcon().setAlpha(153);
+                break;
+            case 1:
+                tabLayout.getTabAt(0).getIcon().setAlpha(153);
+                tabLayout.getTabAt(1).getIcon().setAlpha(255);
+                tabLayout.getTabAt(2).getIcon().setAlpha(153);
+                break;
+            case 2:
+                tabLayout.getTabAt(0).getIcon().setAlpha(153);
+                tabLayout.getTabAt(1).getIcon().setAlpha(153);
+                tabLayout.getTabAt(2).getIcon().setAlpha(255);
+                break;
+        }
+    }
+
     private void activateTabLayout(boolean b) {
         tabStrip.setEnabled(b);
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -306,8 +325,8 @@ public class TimerFragmentMain extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Sets up the toolbar with the timer icons
-        viewPager.setCurrentItem(0, true);
+        viewPager.setCurrentItem(0, false);
+        handleIcons(0);
     }
 
     @Override
@@ -728,7 +747,7 @@ public class TimerFragmentMain extends BaseFragment {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME ADDED");
+            sendIntent.putExtra("action", "REFRESH TIME");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
         }
     };

@@ -84,8 +84,17 @@ public class TimerGraphFragment extends Fragment {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
                 switch (intent.getStringExtra("action")) {
                     case "MOVED TO HISTORY":
-                    case "TIME ADDED":
+                    case "TIME UPDATED":
+                    case "REFRESH TIME":
                         generateChart();
+                        if (refreshText.getVisibility() == View.GONE) {
+                            refreshText.setVisibility(View.VISIBLE);
+                            toggleCardStats(View.GONE);
+                        }
+                        break;
+                    case "TIME ADDED":
+                        if (! history)
+                            generateChart();
                         if (refreshText.getVisibility() == View.GONE) {
                             refreshText.setVisibility(View.VISIBLE);
                             toggleCardStats(View.GONE);
@@ -156,7 +165,7 @@ public class TimerGraphFragment extends Fragment {
                         params.height = container.getHeight();
                         lineChartView.setLayoutParams(params);
                         lineChartView.requestLayout();
-                        root.findViewById(R.id.graphScroll).setScrollY(params.height/2);
+                        root.findViewById(R.id.graphScroll).setScrollY(params.height / 2);
                     }
                 }
             });

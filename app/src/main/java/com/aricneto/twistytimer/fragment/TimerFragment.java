@@ -72,7 +72,7 @@ public class TimerFragment extends BaseFragment {
     private String currentPuzzleSubtype;
 
     private String currentScramble = "";
-    private Solve currentSolve;
+    private Solve currentSolve = null;
     private long currentId;
 
     private String realScramble;
@@ -164,6 +164,7 @@ public class TimerFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
                 switch (intent.getStringExtra("action")) {
+                    case "TIME UPDATED":
                     case "TIME ADDED":
                         updateStats();
                         break;
@@ -283,7 +284,7 @@ public class TimerFragment extends BaseFragment {
             quickActionButtons.setVisibility(View.GONE);
         }
         Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME ADDED");
+        sendIntent.putExtra("action", "TIME UPDATED");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
     }
 
@@ -653,40 +654,6 @@ public class TimerFragment extends BaseFragment {
 
         Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
 
-        int bestGlobal = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-        int worstGlobal = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
-        int solveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
-
-        // Checks if the current solve is the best or worst solve
-        if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF) {
-            if (solveCount >= 2) { // Start counting records at 2 solves
-                if (bestSolveEnabled) {
-                    if (currentSolve.getTime() == bestGlobal) { // best
-                        rippleBackground.startRippleAnimation();
-                        congratsText.setText(R.string.personal_best_message);
-                        congratsText.setVisibility(View.VISIBLE);
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (rippleBackground != null)
-                                    rippleBackground.stopRippleAnimation();
-                            }
-                        }, 2940);
-                    }
-                }
-                if (worstSolveEnabled) {
-                    if (currentSolve.getTime() == worstGlobal) { // worst
-                        congratsText.setText(R.string.personal_worst_message);
-                        if (backgroundEnabled)
-                            congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_white_18dp, 0, R.drawable.ic_emoticon_poop_white_18dp, 0);
-                        else
-                            congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_black_18dp, 0, R.drawable.ic_emoticon_poop_black_18dp, 0);
-                        congratsText.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
         currentPenalty = PuzzleUtils.NO_PENALTY;
     }
 
@@ -698,7 +665,7 @@ public class TimerFragment extends BaseFragment {
     private void updateStats() {
         statCalculatorAsync.cancel(true);
         statCalculatorAsync = new CalculateStats();
-        statCalculatorAsync.execute();
+        statCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showToolbar() {
@@ -1044,12 +1011,14 @@ public class TimerFragment extends BaseFragment {
             int avg50 = dbHandler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, true);
             int avg100 = dbHandler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
             int mean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
-            int best = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
-            int worst = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
+            int bestSession = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
+            int worstSession = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
+            int bestGlobal = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
+            int worstGlobal = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
             int count = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
 
 
-            return new int[] { avg5, avg12, avg50, avg100, mean, best, worst, count };
+            return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count, bestGlobal, worstGlobal };
         }
 
         @Override
@@ -1064,6 +1033,8 @@ public class TimerFragment extends BaseFragment {
             String best = PuzzleUtils.convertTimeToString(times[5]);
             String worst = PuzzleUtils.convertTimeToString(times[6]);
             int count = times[7];
+            int bestGlobal = times[8];
+            int worstGlobal = times[9];
 
             // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
             detailTimesAvg.setText(
@@ -1077,6 +1048,39 @@ public class TimerFragment extends BaseFragment {
                             best + "\n" +
                             worst + "\n" +
                             count);
+
+
+            // Check best/worst solve
+            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF) {
+                if (count >= 2) { // Start counting records at 2 solves
+                    if (bestSolveEnabled) {
+                        if (currentSolve.getTime() == bestGlobal) { // best
+                            rippleBackground.startRippleAnimation();
+                            congratsText.setText(R.string.personal_best_message);
+                            congratsText.setVisibility(View.VISIBLE);
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (rippleBackground != null)
+                                        rippleBackground.stopRippleAnimation();
+                                }
+                            }, 2940);
+                        }
+                    }
+                    if (worstSolveEnabled) {
+                        if (currentSolve.getTime() == worstGlobal) { // worst
+                            congratsText.setText(R.string.personal_worst_message);
+                            if (backgroundEnabled)
+                                congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_white_18dp, 0, R.drawable.ic_emoticon_poop_white_18dp, 0);
+                            else
+                                congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_black_18dp, 0, R.drawable.ic_emoticon_poop_black_18dp, 0);
+                            congratsText.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
 
 
         }

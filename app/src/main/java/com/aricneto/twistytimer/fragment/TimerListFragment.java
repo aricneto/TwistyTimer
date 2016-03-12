@@ -80,8 +80,13 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         public void onReceive(Context context, Intent intent) {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
                 switch (intent.getStringExtra("action")) {
-                    case "TIME ADDED":
+                    case "REFRESH TIME":
+                    case "TIME UPDATED":
                         resetList();
+                        break;
+                    case "TIME ADDED":
+                        if (! history)
+                            resetList();
                         break;
                     case "HISTORY":
                         history = ! history;

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,15 +19,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
-import com.aricneto.twistytimer.fragment.SchemeSelectDialogMain;
-import com.aricneto.twistytimer.fragment.ThemeSelectDialog;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
+import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
+import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
+import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
+import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
@@ -38,15 +41,19 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.opencsv.CSVReader;
 
-import org.joda.time.DateTime;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
+public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler, FileChooserDialog.FileCallback {
 
     private static final int DEBUG_ID = 11;
     BillingProcessor bp;
@@ -224,17 +231,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                 break;
 
                             case EXPORT_IMPORT_ID:
-                                if (isExternalStorageWritable()) {
-                                    File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
-                                    fileDir.mkdir();
-                                    DatabaseHandler handler = new DatabaseHandler(getApplicationContext());
-                                    if (handler.backupDatabaseCSV(fileDir, "Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv")) {
-                                        Toast.makeText(getApplicationContext(), getString(R.string.saved_to) + " " + fileDir.getAbsolutePath()
-                                                + "/Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), getString(R.string.save_error), Toast.LENGTH_LONG);
-                                    }
-                                }
+                                ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
+                                exportImportDialog.show(fragmentManager, "exportImport_dialog");
                                 break;
 
                             case THEME_ID:
@@ -396,6 +394,39 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onFileSelection(@NonNull FileChooserDialog dialog, @NonNull File file) {
+        List<Solve> solveList = new ArrayList<>();
+        DatabaseHandler handler = new DatabaseHandler(this);
+        int parseErrors = 0;
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            CSVReader csvReader = new CSVReader(br);
+            String[] line;
+
+            // throw away the header
+            csvReader.readNext();
+
+            while ((line = csvReader.readNext()) != null) {
+                try {
+                    solveList.add(new Solve(
+                            Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]), line[4], Integer.parseInt(line[5]), line[6], true));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    parseErrors ++;
+                }
+            }
+            for (Solve solve : solveList) {
+                handler.addSolve(solve);
+            }
+            handler.closeDB();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // So the drawer doesn't lag when closing
     private class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
@@ -418,11 +449,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         public void runWhenIdle(Runnable runnable) {
             this.runnable = runnable;
         }
-    }
-
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
 }

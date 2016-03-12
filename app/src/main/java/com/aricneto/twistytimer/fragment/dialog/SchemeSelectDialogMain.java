@@ -1,4 +1,4 @@
-package com.aricneto.twistytimer.fragment;
+package com.aricneto.twistytimer.fragment.dialog;
 
 import android.app.Activity;
 import android.content.DialogInterface;

@@ -14,8 +14,6 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
-import org.joda.time.DateTime;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -632,7 +630,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Boolean returnCode = false;
         int i = 0;
-        String csvHeader = "Puzzle,Type,Time,Date,Scramble,Penalty,Comment\n";
+        String csvHeader = "Puzzle,Type,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
         String csvValues = "";
 
         try {
@@ -645,10 +643,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     csvValues = "\"" + cursor.getString(1) + "\",";
                     csvValues += "\"" + cursor.getString(2) + "\",";
-                    csvValues += "\"" + PuzzleUtils.convertTimeToString(cursor.getInt(3)) + "\",";
-                    csvValues += "\"" + new DateTime(cursor.getLong(4)).toString() + "\",";
+                    csvValues += "\"" + cursor.getInt(3) + "\",";
+                    csvValues += "\"" + cursor.getLong(4) + "\",";
                     csvValues += "\"" + cursor.getString(5) + "\",";
-                    csvValues += "\"" + PuzzleUtils.convertPenaltyToString(cursor.getInt(6)) + "\",";
+                    csvValues += "\"" + cursor.getInt(6) + "\",";
                     csvValues += "\"" + cursor.getString(7) + "\"\n";
                     out.write(csvValues);
                 }
