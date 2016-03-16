@@ -11,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.utils.AnimUtils;
 
 import org.joda.time.DateTime;
 
@@ -31,10 +31,14 @@ import butterknife.ButterKnife;
  */
 public class ExportImportDialog extends DialogFragment {
 
-    @Bind(R.id.export_button) TextView exportButton;
-    @Bind(R.id.import_button) TextView importButton;
-    @Bind(R.id.sync_button)   TextView syncButton;
-    @Bind(R.id.help_button)   TextView helpButton;
+
+    @Bind(R.id.help_button)     View helpButton;
+    @Bind(R.id.export_backup)   View exportBackup;
+    @Bind(R.id.export_external) View exportExternal;
+    @Bind(R.id.import_backup)   View importBackup;
+    @Bind(R.id.import_external) View importExternal;
+    @Bind(R.id.import_button)   View importButton;
+    @Bind(R.id.export_button)   View exportButton;
 
     public static ExportImportDialog newInstance() {
         ExportImportDialog exportImportDialog = new ExportImportDialog();
@@ -46,7 +50,7 @@ public class ExportImportDialog extends DialogFragment {
         public void onClick(View view) {
 
             switch (view.getId()) {
-                case R.id.export_button:
+                case R.id.export_backup:
                     if (isExternalStorageWritable()) {
                         File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
                         fileDir.mkdir();
@@ -60,13 +64,18 @@ public class ExportImportDialog extends DialogFragment {
                     }
                     dismiss();
                     break;
-                case R.id.import_button:
+                case R.id.import_backup:
                     new FileChooserDialog.Builder((MainActivity) getActivity())
+                            .mimeType("text/csv")
                             .chooseButton(R.string.action_choose)
                             .show();
                     dismiss();
                     break;
-                case R.id.sync_button:
+                case R.id.export_button:
+                    AnimUtils.toggleContentVisibility(exportBackup, exportExternal);
+                    break;
+                case R.id.import_button:
+                    AnimUtils.toggleContentVisibility(importBackup, importExternal);
                     break;
                 case R.id.help_button:
                     break;
@@ -79,15 +88,20 @@ public class ExportImportDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_export_import, container);
         ButterKnife.bind(this, dialogView);
 
-        exportButton.setOnClickListener(clickListener);
-        importButton.setOnClickListener(clickListener);
-        syncButton.setOnClickListener(clickListener);
+        exportBackup.setOnClickListener(clickListener);
+        exportExternal.setOnClickListener(clickListener);
+        importBackup.setOnClickListener(clickListener);
+        importExternal.setOnClickListener(clickListener);
         helpButton.setOnClickListener(clickListener);
+        importButton.setOnClickListener(clickListener);
+        exportButton.setOnClickListener(clickListener);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialogView;
     }
+
+
 
     @Override
     public void onDestroyView() {
