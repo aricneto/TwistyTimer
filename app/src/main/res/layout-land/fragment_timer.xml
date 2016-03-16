@@ -130,6 +130,7 @@
             android:layout_below="@id/chronometer"
             android:layout_centerHorizontal="true"
             android:gravity="center"
+            tools:visibility="visible"
             android:visibility="invisible">
 
             <ImageView
@@ -177,6 +178,22 @@
 
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/button_undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chronometer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_undo_24dp"
+            android:tint="?colorTimerText"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/detailLayout"

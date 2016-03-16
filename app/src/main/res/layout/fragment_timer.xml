@@ -1,8 +1,7 @@
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    android:id="@+id/sliding_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -129,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/chronometer"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:visibility="invisible"
             tools:visibility="visible">
@@ -178,6 +178,22 @@
 
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/button_undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chronometer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_undo_24dp"
+            android:tint="?colorTimerText"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/detailLayout"

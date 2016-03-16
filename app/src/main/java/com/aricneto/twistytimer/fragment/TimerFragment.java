@@ -72,7 +72,7 @@ public class TimerFragment extends BaseFragment {
     private String currentPuzzleSubtype;
 
     private String currentScramble = "";
-    private Solve currentSolve = null;
+    private Solve  currentSolve    = null;
     private long currentId;
 
     private String realScramble;
@@ -82,13 +82,13 @@ public class TimerFragment extends BaseFragment {
     CountDownTimer countdown;
     boolean countingDown = false;
 
-    // If the show toolbar animation is done
+    // True If the show toolbar animation is done
     boolean animationDone = true;
 
-    // Checks if the user has pressed the chronometer for long enough for it to start
+    // True if the user has pressed the chronometer for long enough for it to start
     boolean isReady = false;
 
-    // If the user has holdEnabled and held the DNF at the last second
+    // True If the user has holdEnabled and held the DNF at the last second
     boolean holdingDNF;
 
     // Checks if the chronometer is running. Has to be public so the main fragment can access it
@@ -97,11 +97,14 @@ public class TimerFragment extends BaseFragment {
     // Locks the chronometer so it doesn't start before a scramble sequence is generated
     boolean isLocked = true;
 
-    // If the chronometer has just been canceled
+    // True If the chronometer has just been canceled
     private boolean isCanceled;
 
-    // If the scrambler is done calculating and can calculate a new hint.
+    // True If the scrambler is done calculating and can calculate a new hint.
     private boolean canShowHint = false;
+
+    // True If the user pressed the undo button
+    private boolean undone = false;
 
     private ScrambleGenerator generator;
 
@@ -135,6 +138,7 @@ public class TimerFragment extends BaseFragment {
     @Bind(R.id.button_dnf)           ImageView        dnfButton;
     @Bind(R.id.button_plustwo)       ImageView        plusTwoButton;
     @Bind(R.id.button_comment)       ImageView        commentButton;
+    @Bind(R.id.button_undo)          ImageView        undoButton;
     @Bind(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
     @Bind(R.id.rippleBackground)     RippleBackground rippleBackground;
 
@@ -194,7 +198,6 @@ public class TimerFragment extends BaseFragment {
     private SharedPreferences       sharedPreferences;
 
 
-
     public TimerFragment() {
         // Required empty public constructor
     }
@@ -225,6 +228,7 @@ public class TimerFragment extends BaseFragment {
                     dbHandler.updateSolve(currentSolve);
 
                     handleButtons(true);
+                    undoButton.setVisibility(View.VISIBLE);
                     break;
                 case R.id.button_plustwo:
                     if (currentPenalty != PuzzleUtils.PENALTY_PLUSTWO) {
@@ -234,6 +238,7 @@ public class TimerFragment extends BaseFragment {
                     }
 
                     handleButtons(true);
+                    undoButton.setVisibility(View.VISIBLE);
                     break;
                 case R.id.button_comment:
                     MaterialDialog dialog = new MaterialDialog.Builder(getContext())
@@ -272,6 +277,14 @@ public class TimerFragment extends BaseFragment {
                         crossCalculator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }
                     break;
+                case R.id.button_undo:
+                    currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.NO_PENALTY);
+                    chronometer.setText(PuzzleUtils.convertTimeToString(currentSolve.getTime()));
+                    dbHandler.updateSolve(currentSolve);
+                    undoButton.setVisibility(View.GONE);
+                    undone = true;
+                    Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME UPDATED");
+                    break;
             }
         }
     };
@@ -283,9 +296,7 @@ public class TimerFragment extends BaseFragment {
         if (hideButtons) {
             quickActionButtons.setVisibility(View.GONE);
         }
-        Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME UPDATED");
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+        Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME UPDATED");
     }
 
     public static TimerFragment newInstance(String puzzle, String puzzleSubType) {
@@ -351,6 +362,7 @@ public class TimerFragment extends BaseFragment {
         plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
         hintCard.setOnClickListener(buttonClickListener);
+        undoButton.setOnClickListener(buttonClickListener);
 
         // Preferences //
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -383,6 +395,7 @@ public class TimerFragment extends BaseFragment {
             chronometer.setY(chronometer.getY() - timerTextOffset);
             inspectionText.setY(inspectionText.getY() - timerTextOffset);
             quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);
+            undoButton.setY(undoButton.getY() - timerTextOffset);
             congratsText.setY(congratsText.getY() - timerTextOffset);
         } else {
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
@@ -729,6 +742,7 @@ public class TimerFragment extends BaseFragment {
 
     private void hideToolbar() {
         lockOrientation(getActivity());
+        undone = false;
         Intent sendIntent = new Intent("TIMER");
         sendIntent.putExtra("action", "TIMER STARTED");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
@@ -769,6 +783,7 @@ public class TimerFragment extends BaseFragment {
                     });
         }
         if (buttonsEnabled) {
+            undoButton.setVisibility(View.GONE);
             quickActionButtons.setEnabled(false);
             quickActionButtons.animate()
                     .alpha(0)
@@ -1051,7 +1066,7 @@ public class TimerFragment extends BaseFragment {
 
 
             // Check best/worst solve
-            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF) {
+            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF && !undone) {
                 if (count >= 2) { // Start counting records at 2 solves
                     if (bestSolveEnabled) {
                         if (currentSolve.getTime() == bestGlobal) { // best
@@ -1080,7 +1095,6 @@ public class TimerFragment extends BaseFragment {
                     }
                 }
             }
-
 
 
         }
