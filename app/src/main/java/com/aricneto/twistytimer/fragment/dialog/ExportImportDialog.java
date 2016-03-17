@@ -66,8 +66,8 @@ public class ExportImportDialog extends DialogFragment {
                     break;
                 case R.id.import_backup:
                     new FileChooserDialog.Builder((MainActivity) getActivity())
-                            .mimeType("text/csv")
                             .chooseButton(R.string.action_choose)
+                            .tag("import_backup")
                             .show();
                     dismiss();
                     break;

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -213,23 +214,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Adding new solve
     public long addSolve(Solve solve) {
-        if (solve.getTime() != 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+        //if (solve.getTime() != 0) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues values = new ContentValues();
-            values.put(KEY_TYPE, solve.getPuzzle());
-            values.put(KEY_SUBTYPE, solve.getSubtype());
-            values.put(KEY_TIME, solve.getTime());
-            values.put(KEY_DATE, solve.getDate());
-            values.put(KEY_SCRAMBLE, solve.getScramble());
-            values.put(KEY_PENALTY, solve.getPenalty());
-            values.put(KEY_COMMENT, solve.getComment());
-            values.put(KEY_HISTORY, solve.isHistory());
+        ContentValues values = new ContentValues();
+        values.put(KEY_TYPE, solve.getPuzzle());
+        values.put(KEY_SUBTYPE, solve.getSubtype());
+        values.put(KEY_TIME, solve.getTime());
+        values.put(KEY_DATE, solve.getDate());
+        values.put(KEY_SCRAMBLE, solve.getScramble());
+        values.put(KEY_PENALTY, solve.getPenalty());
+        values.put(KEY_COMMENT, solve.getComment());
+        values.put(KEY_HISTORY, solve.isHistory());
 
-            // Inserting Row
-            return db.insert(TABLE_TIMES, null, values);
-        }
-        return -1;
+        // Inserting Row
+        return db.insert(TABLE_TIMES, null, values);
+        //}
+        // return -1;
     }
 
     public int updateSolve(Solve solve) {
@@ -660,6 +661,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return returnCode;
+    }
+
+    public boolean solveExists(Solve solve) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return DatabaseUtils.queryNumEntries(db, TABLE_TIMES, "type=? AND subtype =? AND time=? AND scramble=? AND date=?", new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getTime()), solve.getScramble(), String.valueOf(solve.getDate()) }) > 0;
+
     }
 
     private void createInitialAlgs(SQLiteDatabase db) {

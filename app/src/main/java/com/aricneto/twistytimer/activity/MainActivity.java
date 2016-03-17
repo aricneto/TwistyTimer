@@ -5,10 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
@@ -77,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private Drawer mDrawer;
 
+    private MaterialDialog  progressDialog;
+    private DatabaseHandler handler;
+
     public void openDrawer() {
         mDrawer.openDrawer();
     }
@@ -107,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         ButterKnife.bind(this);
 
         AppRater.app_launched(this);
+
+        handler = new DatabaseHandler(this);
 
         bp = new BillingProcessor(this, null, this);
 
@@ -378,6 +386,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         if (bp != null)
             bp.release();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
+        handler.closeDB();
         super.onDestroy();
     }
 
@@ -396,35 +405,102 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     @Override
     public void onFileSelection(@NonNull FileChooserDialog dialog, @NonNull File file) {
-        List<Solve> solveList = new ArrayList<>();
-        DatabaseHandler handler = new DatabaseHandler(this);
+        ImportSolves importSolves = new ImportSolves(this);
+        importSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Pair<>(file, dialog.getTag()));
+
+        handler.closeDB();
+    }
+
+
+    private class ImportSolves extends AsyncTask<Pair<File, String>, Integer, Void> {
+
+        private Context mContext;
+
         int parseErrors = 0;
+        int duplicates = 0;
 
-        try {
+        public ImportSolves(Context context) {
+            this.mContext = context;
+        }
 
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            CSVReader csvReader = new CSVReader(br);
-            String[] line;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new MaterialDialog.Builder(mContext)
+                    .title(R.string.import_progress_title)
+                    .progress(false, 0, true)
+                    .cancelable(false)
+                    .show();
+        }
 
-            // throw away the header
-            csvReader.readNext();
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            if (progressDialog.isShowing()) {
+                if (progressDialog.getMaxProgress() == 0)
+                    progressDialog.setMaxProgress(values[1]);
 
-            while ((line = csvReader.readNext()) != null) {
-                try {
-                    solveList.add(new Solve(
-                            Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]), line[4], Integer.parseInt(line[5]), line[6], true));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    parseErrors ++;
+                progressDialog.setProgress(values[0]);
+                if (progressDialog.getCurrentProgress() == progressDialog.getMaxProgress()) {
+                    progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
+                    progressDialog.setContent(getString(R.string.import_progress_content)
+                            + " " + duplicates + " " + getString(R.string.ignored_duplicates)
+                            + " " + getString(R.string.and)
+                            + " " + parseErrors + " " + getString(R.string.errors) + ".");
+                    progressDialog.setTitle(R.string.import_progress_title_finished);
                 }
-            }
-            for (Solve solve : solveList) {
-                handler.addSolve(solve);
-            }
-            handler.closeDB();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Pair<File, String>... pairs) {
+            List<Solve> solveList = new ArrayList<>();
+            int imports = 0;
+
+            try {
+
+                BufferedReader br = new BufferedReader(new FileReader(pairs[0].first));
+                CSVReader csvReader = new CSVReader(br);
+                String[] line;
+
+                if (pairs[0].second.equals("import_backup")) {
+                    // throw away the header
+                    csvReader.readNext();
+
+                    while ((line = csvReader.readNext()) != null) {
+                        try {
+                            solveList.add(new Solve(
+                                    Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]),
+                                    line[4], Integer.parseInt(line[5]), line[6], true));
+                        } catch (Exception e) {
+                            parseErrors++;
+                        }
+                    }
+
+                }
+
+                publishProgress(imports, solveList.size());
+
+                for (Solve solve : solveList) {
+                    if (!handler.solveExists(solve))
+                        handler.addSolve(solve);
+                    else
+                        duplicates++;
+                    imports++;
+                    publishProgress(imports);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 

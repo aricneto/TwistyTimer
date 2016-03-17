@@ -34,6 +34,7 @@ import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -155,11 +156,11 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 int time = PuzzleUtils.parseTime(input.toString());
-                                dbHandler.addSolve(new Solve(time, currentPuzzle,
-                                        currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
-                                Intent sendIntent = new Intent("TIMELIST");
-                                sendIntent.putExtra("action", "TIME ADDED");
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                                if (time != 0) {
+                                    dbHandler.addSolve(new Solve(time, currentPuzzle,
+                                            currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
+                                    Broadcaster.broadcast(mContext, "TIMELIST", "TIME ADDED");
+                                }
 
                             }
                         })
