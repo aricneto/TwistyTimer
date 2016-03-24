@@ -38,37 +38,32 @@ public class PuzzleUtils {
     public PuzzleUtils() {
     }
 
-    /**
-     * Gets the position of the puzzle in the {@link com.aricneto.twistytimer.fragment.TimerFragmentMain} spinner list
-     * @param puzzle
-     * @return
-     */
-    public static int getPositionInSpinner(String puzzle) {
-        switch (puzzle) {
-            case PuzzleUtils.TYPE_333: // 333
-                return 0;
-            case PuzzleUtils.TYPE_222: // 222
-                return 1;
-            case PuzzleUtils.TYPE_444: // 444
-                return 2;
-            case PuzzleUtils.TYPE_555: // 555
-                return 3;
-            case PuzzleUtils.TYPE_666: // 666
-                return 4;
-            case PuzzleUtils.TYPE_777: // 777
-                return 5;
-            case PuzzleUtils.TYPE_CLOCK: // Clock
-                return 6;
-            case PuzzleUtils.TYPE_MEGA: // Mega
-                return 7;
-            case PuzzleUtils.TYPE_PYRA: // Pyra
-                return 8;
-            case PuzzleUtils.TYPE_SKEWB: // Skewb
-                return 9;
-            case PuzzleUtils.TYPE_SQUARE1: // Square-1
-                return 10;
+    public static String getPuzzleInPosition(int position) {
+        switch (position) {
+            case 0: // 333
+                return PuzzleUtils.TYPE_333;
+            case 1: // 222
+                return PuzzleUtils.TYPE_222;
+            case 2: // 444
+                return PuzzleUtils.TYPE_444;
+            case 3: // 555
+                return PuzzleUtils.TYPE_555;
+            case 4: // 666
+                return PuzzleUtils.TYPE_666;
+            case 5: // 777
+                return PuzzleUtils.TYPE_777;
+            case 6: // Clock
+                return PuzzleUtils.TYPE_CLOCK;
+            case 7: // Mega
+                return PuzzleUtils.TYPE_MEGA;
+            case 8: // Pyra
+                return PuzzleUtils.TYPE_PYRA;
+            case 9: // Skewb
+                return PuzzleUtils.TYPE_SKEWB;
+            case 10: // Square-1
+                return PuzzleUtils.TYPE_SQUARE1;
         }
-        return 0;
+        return PuzzleUtils.TYPE_333;
     }
 
     /**

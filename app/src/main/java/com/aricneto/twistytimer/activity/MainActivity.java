@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Pair;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,10 +31,13 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
+import com.aricneto.twistytimer.fragment.dialog.ExportImportSelectionDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
+import com.aricneto.twistytimer.interfaces.ExportImportDialogInterface;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.Broadcaster;
+import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -46,17 +49,19 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.opencsv.CSVReader;
 
+import org.joda.time.DateTime;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler, FileChooserDialog.FileCallback {
+public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
+        FileChooserDialog.FileCallback, ExportImportDialogInterface {
 
     private static final int DEBUG_ID = 11;
     BillingProcessor bp;
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private MaterialDialog  progressDialog;
     private DatabaseHandler handler;
+    final MainActivity mainActivity = this;
 
     public void openDrawer() {
         mDrawer.openDrawer();
@@ -403,31 +409,75 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         super.onSaveInstanceState(outState);
     }
 
+
+    String importPuzzle   = "333";
+    String importCategory = "Normal";
+    String importTag;
+    File importFile;
+
+    @Override
+    public void onImportExternal() {
+        final ImportSolves importSolves = new ImportSolves(this, importTag, importFile);
+        importSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onSelectPuzzle(String puzzle) {
+        importPuzzle = puzzle;
+    }
+
+    @Override
+    public void onSelectCategory(String category) {
+        importCategory = category;
+    }
+
     @Override
     public void onFileSelection(@NonNull FileChooserDialog dialog, @NonNull File file) {
-        ImportSolves importSolves = new ImportSolves(this);
-        importSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Pair<>(file, dialog.getTag()));
 
-        handler.closeDB();
+        importFile = file;
+        importTag = dialog.getTag();
+
+        if (file.getName().toLowerCase().endsWith(".txt")) {
+            if (importTag.equals("import_external")) {
+                ExportImportSelectionDialog selectionDialog = ExportImportSelectionDialog.newInstance();
+                selectionDialog.setDialogInterface(this);
+                selectionDialog.show(fragmentManager, "export_import_selection");
+            } else {
+                final ImportSolves importSolves = new ImportSolves(this, importTag, importFile);
+                importSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        } else {
+            // TODO: ADD HELP
+            new MaterialDialog.Builder(this)
+                    .title(R.string.file_selection_error_title)
+                    .content(R.string.file_selection_error_content, ".txt")
+                    .neutralText(R.string.action_help)
+                    .positiveText(R.string.action_ok)
+                    .show();
+        }
     }
 
 
-    private class ImportSolves extends AsyncTask<Pair<File, String>, Integer, Void> {
+    private class ImportSolves extends AsyncTask<Void, Integer, Void> {
 
         private Context mContext;
+        private String  tag;
+        private File    file;
 
         int parseErrors = 0;
-        int duplicates = 0;
+        int duplicates  = 0;
 
-        public ImportSolves(Context context) {
+        public ImportSolves(Context context, String tag, File file) {
             this.mContext = context;
+            this.tag = tag;
+            this.file = file;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new MaterialDialog.Builder(mContext)
-                    .title(R.string.import_progress_title)
+                    .content(R.string.import_progress_title)
                     .progress(false, 0, true)
                     .cancelable(false)
                     .show();
@@ -447,24 +497,23 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             + " " + duplicates + " " + getString(R.string.ignored_duplicates)
                             + " " + getString(R.string.and)
                             + " " + parseErrors + " " + getString(R.string.errors) + ".");
-                    progressDialog.setTitle(R.string.import_progress_title_finished);
                 }
 
             }
         }
 
         @Override
-        protected Void doInBackground(Pair<File, String>... pairs) {
+        protected Void doInBackground(Void... voids) {
             List<Solve> solveList = new ArrayList<>();
             int imports = 0;
 
             try {
 
-                BufferedReader br = new BufferedReader(new FileReader(pairs[0].first));
-                CSVReader csvReader = new CSVReader(br);
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                CSVReader csvReader = new CSVReader(br, ';');
                 String[] line;
 
-                if (pairs[0].second.equals("import_backup")) {
+                if (tag.equals("import_backup")) {
                     // throw away the header
                     csvReader.readNext();
 
@@ -480,10 +529,42 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                 }
 
+                if (tag.equals("import_external")) {
+
+                    while ((line = csvReader.readNext()) != null) {
+                        if (line.length <= 3) {
+                            try {
+                                Log.d("IMPORTING EXTERNAL", "time: " + line[0]);
+
+                                int time = PuzzleUtils.parseTime(line[0]);
+                                String scramble = "";
+                                long date = DateTime.now().getMillis();;
+                                if (line.length >= 2) {
+                                    scramble = line[1];
+                                }
+                                if (line.length == 3) {
+                                    try {
+                                        date = DateTime.parse(line[2]).getMillis();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                solveList.add(new Solve(time, importPuzzle, importCategory, date, scramble, PuzzleUtils.NO_PENALTY, "", true));
+                            } catch (Exception e) {
+                                parseErrors++;
+                            }
+                        } else {
+                            parseErrors++;
+                        }
+                    }
+
+                }
+
                 publishProgress(imports, solveList.size());
 
                 for (Solve solve : solveList) {
-                    if (!handler.solveExists(solve))
+                    if (! handler.solveExists(solve))
                         handler.addSolve(solve);
                     else
                         duplicates++;
@@ -491,7 +572,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     publishProgress(imports);
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

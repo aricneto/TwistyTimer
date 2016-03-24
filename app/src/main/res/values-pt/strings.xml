@@ -47,8 +47,8 @@
     <string name="inspection">Inspeção</string>
     <string name="inspection_time">Tempo de inspeção</string>
     <string name="list_empty_state_message_history">Nada aqui!\nTodas as suas soluções antigas serão guardadas aqui.</string>
-    <string name="personal_best_message">Parabéns!\nVocê acaba de bater seu recorde pessoal.</string>
-    <string name="personal_worst_message">Parabéns!\nEsse é o pior tempo que você já fez.</string>
+    <string name="personal_best_message">Parabéns!\nVocê acaba de bater seu recorde pessoal por %1$s</string>
+    <string name="personal_worst_message">Parabéns!\nEsse é o pior tempo que você já fez, quebrando seu recorde por %1$s</string>
     <string name="remove_subtype_confirmation">Remover categoria?</string>
     <string name="remove_subtype_confirmation_content">Tem certeza que deseja remover a categoria</string>
     <string name="remove_subtype_title">Selecione uma categoria para remover</string>
@@ -190,5 +190,11 @@
     <string name="dialog_export_import_import">Importar</string>
     <string name="dialog_export_import_sync">Sincronizar</string>
     <string name="drawer_title_export_import">Exportar/Importar</string>
+    <string name="and">e</string>
+    <string name="errors">erros</string>
+    <string name="ignored_duplicates">duplicados ignorados</string>
+    <string name="import_progress_title">Importando resoluções…</string>
+    <string name="import_progress_content">Importação concluida com</string>
+    <string name="import_progress_title_finished">Importado</string>
 
 </resources>

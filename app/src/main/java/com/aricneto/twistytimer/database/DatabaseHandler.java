@@ -631,7 +631,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Boolean returnCode = false;
         int i = 0;
-        String csvHeader = "Puzzle,Type,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
+        String csvHeader = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
         String csvValues = "";
 
         try {
@@ -642,12 +642,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (cursor != null) {
                 out.write(csvHeader);
                 while (cursor.moveToNext()) {
-                    csvValues = "\"" + cursor.getString(1) + "\",";
-                    csvValues += "\"" + cursor.getString(2) + "\",";
-                    csvValues += "\"" + cursor.getInt(3) + "\",";
-                    csvValues += "\"" + cursor.getLong(4) + "\",";
-                    csvValues += "\"" + cursor.getString(5) + "\",";
-                    csvValues += "\"" + cursor.getInt(6) + "\",";
+                    csvValues = "\"" + cursor.getString(1) + "\";";
+                    csvValues += "\"" + cursor.getString(2) + "\";";
+                    csvValues += "\"" + cursor.getInt(3) + "\";";
+                    csvValues += "\"" + cursor.getLong(4) + "\";";
+                    csvValues += "\"" + cursor.getString(5) + "\";";
+                    csvValues += "\"" + cursor.getInt(6) + "\";";
                     csvValues += "\"" + cursor.getString(7) + "\"\n";
                     out.write(csvValues);
                 }
@@ -669,6 +669,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return DatabaseUtils.queryNumEntries(db, TABLE_TIMES, "type=? AND subtype =? AND time=? AND scramble=? AND date=?", new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getTime()), solve.getScramble(), String.valueOf(solve.getDate()) }) > 0;
 
     }
+
+
+    // TODO: this info should REALLY be in a separate file. I'll get to it when I add other alg sets.
 
     private void createInitialAlgs(SQLiteDatabase db) {
         // OLL

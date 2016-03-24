@@ -61,8 +61,8 @@
     <string name="list_empty_state_message_history">Nothing here yet!\nAll your old solves will be stored here.</string>
     <string name="drawer_title_timer">Timer</string>
     <string name="drawer_title_other">Other</string>
-    <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best.</string>
-    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far!</string>
+    <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best by %1$s</string>
+    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far, beating you record by %1$s</string>
     <string name="scramble_text_tap_hint">Tap here to see scramble</string>
     <string name="action_ok">OK</string>
     <string name="saved_to">Saved to</string>
@@ -209,5 +209,12 @@
     <string name="and">and</string>
     <string name="errors">errors</string>
     <string name="import_progress_title_finished">Imported</string>
+    <string name="import_external_puzzle_title">Select puzzle to import</string>
+    <string name="import_external_category_title">Select a category</string>
+    <string name="error_title">Error</string>
+    <string name="file_selection_error_content">Make sure you are selecting a valid %1$s file</string>
+    <string name="file_selection_error_title">Wrong file type</string>
+    <string name="import_external_content_first">In the next step, select a .txt file that is in the following format:\n\n<small><tt>\"time\"; \"scramble\"; \"date\"\n\n<b>Example:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
+    <string name="import_external_title">Importing from .txt</string>
 
 </resources>

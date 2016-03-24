@@ -6,4 +6,18 @@
         <item>@string/donation_tier3</item>
         <item>@string/donation_tier4</item>
     </string-array>
+
+    <string-array name="puzzles">
+        <item>@string/cube_333</item>
+        <item>@string/cube_222</item>
+        <item>@string/cube_444</item>
+        <item>@string/cube_555</item>
+        <item>@string/cube_666</item>
+        <item>@string/cube_777</item>
+        <item>@string/cube_clock</item>
+        <item>@string/cube_mega</item>
+        <item>@string/cube_pyra</item>
+        <item>@string/cube_skewb</item>
+        <item>@string/cube_sq1</item>
+    </string-array>
 </resources>

@@ -111,6 +111,7 @@ public class TimerFragment extends BaseFragment {
     private GenerateScrambleSequence scrambleGeneratorAsync;
     private GenerateScrambleImage    scrambleImageGenerator;
     private CalculateStats           statCalculatorAsync;
+    private CalculateBestAndWorst    bestAndWorstCalculatorAsync;
     private GetOptimalCross          crossCalculator;
 
     private int currentPenalty = PuzzleUtils.NO_PENALTY;
@@ -161,6 +162,10 @@ public class TimerFragment extends BaseFragment {
     private boolean advancedEnabled;
     private boolean showHints;
     private boolean showHintsXCross;
+
+    // Global best/worst
+    private int currentBestTime;
+    private int currentWorstTime;
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -283,7 +288,7 @@ public class TimerFragment extends BaseFragment {
                     dbHandler.updateSolve(currentSolve);
                     undoButton.setVisibility(View.GONE);
                     undone = true;
-                    Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME UPDATED");
+                    handleButtons(false);
                     break;
             }
         }
@@ -295,6 +300,8 @@ public class TimerFragment extends BaseFragment {
     private void handleButtons(boolean hideButtons) {
         if (hideButtons) {
             quickActionButtons.setVisibility(View.GONE);
+        } else {
+            quickActionButtons.setVisibility(View.VISIBLE);
         }
         Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME UPDATED");
     }
@@ -321,10 +328,13 @@ public class TimerFragment extends BaseFragment {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
         }
+
+
         dbHandler = new DatabaseHandler(getContext());
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
         statCalculatorAsync = new CalculateStats();
+        updateBestAndWorst();
 
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
@@ -662,8 +672,6 @@ public class TimerFragment extends BaseFragment {
         }
         currentId = dbHandler.addSolve(currentSolve);
         currentSolve.setId(currentId);
-
-        updateStats();
 
         Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
 
@@ -1028,12 +1036,10 @@ public class TimerFragment extends BaseFragment {
             int mean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
             int bestSession = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
             int worstSession = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
-            int bestGlobal = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-            int worstGlobal = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
             int count = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
 
 
-            return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count, bestGlobal, worstGlobal };
+            return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count };
         }
 
         @Override
@@ -1048,8 +1054,6 @@ public class TimerFragment extends BaseFragment {
             String best = PuzzleUtils.convertTimeToString(times[5]);
             String worst = PuzzleUtils.convertTimeToString(times[6]);
             int count = times[7];
-            int bestGlobal = times[8];
-            int worstGlobal = times[9];
 
             // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
             detailTimesAvg.setText(
@@ -1064,14 +1068,18 @@ public class TimerFragment extends BaseFragment {
                             worst + "\n" +
                             count);
 
+            if (count == 3) {
+                updateBestAndWorst();
+            }
 
             // Check best/worst solve
-            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF && !undone) {
-                if (count >= 2) { // Start counting records at 2 solves
+            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF && ! undone) {
+                if (count >= 4) { // Start counting records at 5 solves
                     if (bestSolveEnabled) {
-                        if (currentSolve.getTime() == bestGlobal) { // best
+                        if (currentSolve.getTime() < currentBestTime) { // best
                             rippleBackground.startRippleAnimation();
-                            congratsText.setText(R.string.personal_best_message);
+                            congratsText.setText(getString(R.string.personal_best_message,
+                                    PuzzleUtils.convertTimeToString(currentBestTime - currentSolve.getTime())));
                             congratsText.setVisibility(View.VISIBLE);
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -1082,10 +1090,11 @@ public class TimerFragment extends BaseFragment {
                                 }
                             }, 2940);
                         }
-                    }
-                    if (worstSolveEnabled) {
-                        if (currentSolve.getTime() == worstGlobal) { // worst
-                            congratsText.setText(R.string.personal_worst_message);
+                    } if (worstSolveEnabled) {
+                        if (currentSolve.getTime() > currentWorstTime) { // worst
+                            congratsText.setText(getString(R.string.personal_worst_message,
+                                    PuzzleUtils.convertTimeToString(currentSolve.getTime() - currentWorstTime)));
+
                             if (backgroundEnabled)
                                 congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_white_18dp, 0, R.drawable.ic_emoticon_poop_white_18dp, 0);
                             else
@@ -1094,10 +1103,24 @@ public class TimerFragment extends BaseFragment {
                         }
                     }
                 }
+                updateBestAndWorst();
             }
 
-
         }
+    }
+
+    private class CalculateBestAndWorst extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            currentBestTime = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
+            currentWorstTime = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
+            return null;
+        }
+    }
+
+    private void updateBestAndWorst() {
+        bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
+        bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 

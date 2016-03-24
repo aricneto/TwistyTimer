@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="40dp"
-            android:text="From other timers"
+            android:text="From .txt file"
             tools:visibility="visible" />
 
 

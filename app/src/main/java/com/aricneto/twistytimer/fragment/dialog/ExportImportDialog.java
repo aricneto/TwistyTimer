@@ -6,17 +6,22 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.interfaces.ExportImportDialogInterface;
 import com.aricneto.twistytimer.utils.AnimUtils;
 
 import org.joda.time.DateTime;
@@ -40,6 +45,11 @@ public class ExportImportDialog extends DialogFragment {
     @Bind(R.id.import_button)   View importButton;
     @Bind(R.id.export_button)   View exportButton;
 
+    DatabaseHandler dbHandler;
+
+    ExportImportDialogInterface dialogInterface;
+    private FragmentActivity mActivity;
+
     public static ExportImportDialog newInstance() {
         ExportImportDialog exportImportDialog = new ExportImportDialog();
         return exportImportDialog;
@@ -54,20 +64,39 @@ public class ExportImportDialog extends DialogFragment {
                     if (isExternalStorageWritable()) {
                         File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
                         fileDir.mkdir();
-                        DatabaseHandler handler = new DatabaseHandler(getContext());
-                        if (handler.backupDatabaseCSV(fileDir, "Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv")) {
+                        String fileName = "Solves_" + DateTime.now().toString("ddMMy'_'kkmmss") + ".txt";
+                        if (dbHandler.backupDatabaseCSV(fileDir, fileName)) {
                             Toast.makeText(getContext(), getString(R.string.saved_to) + " " + fileDir.getAbsolutePath()
-                                    + "/Solves_" + DateTime.now().toString("yMMdd'_'kkmmss") + ".csv", Toast.LENGTH_LONG).show();
+                                    + "/" + fileName, Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getContext(), getString(R.string.save_error), Toast.LENGTH_LONG).show();
                         }
                     }
                     dismiss();
                     break;
+                case R.id.export_external:
+                    break;
                 case R.id.import_backup:
-                    new FileChooserDialog.Builder((MainActivity) getActivity())
+                    new FileChooserDialog.Builder((MainActivity) mActivity)
                             .chooseButton(R.string.action_choose)
                             .tag("import_backup")
+                            .show();
+                    dismiss();
+                    break;
+                case R.id.import_external:
+                    new MaterialDialog.Builder(getContext())
+                            .title(R.string.import_external_title)
+                            .content(R.string.import_external_content_first)
+                            .positiveText(R.string.action_ok)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    new FileChooserDialog.Builder((MainActivity) mActivity)
+                                            .chooseButton(R.string.action_choose)
+                                            .tag("import_external")
+                                            .show();
+                                }
+                            })
                             .show();
                     dismiss();
                     break;
@@ -88,6 +117,10 @@ public class ExportImportDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_export_import, container);
         ButterKnife.bind(this, dialogView);
 
+        mActivity = getActivity();
+
+        dbHandler = new DatabaseHandler(mActivity);
+
         exportBackup.setOnClickListener(clickListener);
         exportExternal.setOnClickListener(clickListener);
         importBackup.setOnClickListener(clickListener);
@@ -102,11 +135,11 @@ public class ExportImportDialog extends DialogFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        dbHandler.closeDB();
     }
 
     public boolean isExternalStorageWritable() {
@@ -120,5 +153,9 @@ public class ExportImportDialog extends DialogFragment {
             activity.finish();
             activity.startActivity(new Intent(activity, MainActivity.class));
         }
+    }
+
+    public void setDialogInterface(ExportImportDialogInterface dialogInterface) {
+        this.dialogInterface = dialogInterface;
     }
 }
