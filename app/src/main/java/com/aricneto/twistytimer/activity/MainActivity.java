@@ -70,9 +70,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
         FileChooserDialog.FileCallback, ExportImportDialogInterface {
 
-    private static final int DEBUG_ID = 11;
-    BillingProcessor bp;
-
+    private static final int DEBUG_ID         = 11;
     private static final int TIMER_ID         = 1;
     private static final int THEME_ID         = 2;
     private static final int SCHEME_ID        = 9;
@@ -86,26 +84,25 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private static final int REQUEST_SETTING = 42;
     private static final int REQUEST_ABOUT   = 23;
 
+    final MainActivity mainActivity = this;
+
+    BillingProcessor bp;
+
     SmoothActionBarDrawerToggle mDrawerToggle;
     FragmentManager             fragmentManager;
     DrawerLayout                mDrawerLayout;
 
-    private Drawer mDrawer;
+    String exportImportPuzzle   = "333";
+    String exportImportCategory = "Normal";
+    String importTag;
+    File   importFile;
 
+    private Drawer          mDrawer;
     private MaterialDialog  progressDialog;
     private DatabaseHandler handler;
-    final MainActivity mainActivity = this;
-
-    public void openDrawer() {
-        mDrawer.openDrawer();
-    }
-
-    public void closeDrawer() {
-        mDrawer.closeDrawer();
-    }
-
 
     private boolean goBack = false;
+
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -117,6 +114,14 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             }
         }
     };
+
+    public void openDrawer() {
+        mDrawer.openDrawer();
+    }
+
+    public void closeDrawer() {
+        mDrawer.closeDrawer();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -417,12 +422,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         super.onSaveInstanceState(outState);
     }
 
-
-    String exportImportPuzzle   = "333";
-    String exportImportCategory = "Normal";
-    String importTag;
-    File   importFile;
-
     @Override
     public void onImportExternal() {
         final ImportSolves importSolves = new ImportSolves(this, importTag, importFile);
@@ -495,9 +494,9 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private class ExportSolves extends AsyncTask<Void, Integer, Boolean> {
 
         private final Context mContext;
-        private File fileDir;
-        private String outFileName;
-        private boolean isBackup;
+        private       File    fileDir;
+        private       String  outFileName;
+        private       boolean isBackup;
 
         public ExportSolves(Context context, File fileDir, String outFileName, boolean isBackup) {
             this.mContext = context;
@@ -603,12 +602,13 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private class ImportSolves extends AsyncTask<Void, Integer, Void> {
 
+        int parseErrors = 0;
+        int duplicates  = 0;
+        int successes   = 0;
+
         private Context mContext;
         private String  tag;
         private File    file;
-
-        int parseErrors = 0;
-        int duplicates  = 0;
 
         public ImportSolves(Context context, String tag, File file) {
             this.mContext = context;
@@ -700,9 +700,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                 publishProgress(imports, solveList.size());
 
                 for (Solve solve : solveList) {
-                    if (! handler.solveExists(solve))
+                    if (! handler.solveExists(solve)) {
                         handler.addSolve(solve);
-                    else
+                        successes++;
+                    } else
                         duplicates++;
                     imports++;
                     publishProgress(imports);
@@ -720,10 +721,12 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             super.onPostExecute(aVoid);
             if (progressDialog.isShowing()) {
                 progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
-                progressDialog.setContent(getString(R.string.import_progress_content)
-                        + " " + duplicates + " " + getString(R.string.ignored_duplicates)
-                        + " " + getString(R.string.and)
-                        + " " + parseErrors + " " + getString(R.string.errors) + ".");
+                progressDialog.setContent(Html.fromHtml(getString(R.string.import_progress_content)
+                        + "<br><br><small><tt>"
+                        + "<b>" + successes + "</b> " + getString(R.string.import_progress_content_successful_imports)
+                        + "<br><b>" + duplicates + "</b> " + getString(R.string.import_progress_content_ignored_duplicates)
+                        + "<br><b>" + parseErrors + "</b> " + getString(R.string.import_progress_content_errors)
+                        + "</small></tt>"));
             }
             Broadcaster.broadcast(mainActivity, "TIMELIST", "REFRESH TIME");
         }

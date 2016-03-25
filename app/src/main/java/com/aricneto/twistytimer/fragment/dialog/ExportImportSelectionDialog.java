@@ -32,7 +32,6 @@ public class ExportImportSelectionDialog extends DialogFragment {
     ExportImportDialogInterface dialogInterface;
     @Bind(R.id.puzzleSpinner)   Spinner  puzzleSpinner;
     @Bind(R.id.categorySpinner) Spinner  categorySpinner;
-    @Bind(R.id.dialogTitle)     TextView dialogTitle;
     @Bind(R.id.importButton)    TextView importButton;
 
     public final static int TYPE_EXPORT = 1;
@@ -68,10 +67,8 @@ public class ExportImportSelectionDialog extends DialogFragment {
 
         if (type == TYPE_EXPORT) {
             importButton.setText(R.string.action_export);
-            dialogTitle.setText(getString(R.string.dialog_export_import_selection_title, getString(R.string.action_export).toLowerCase()));
         } else {
             importButton.setText(R.string.action_import);
-            dialogTitle.setText(getString(R.string.dialog_export_import_selection_title, getString(R.string.action_import).toLowerCase()));
         }
 
         final ArrayAdapter puzzleAdapter = ArrayAdapter.createFromResource(getContext(), R.array.puzzles, android.R.layout.simple_spinner_dropdown_item);
