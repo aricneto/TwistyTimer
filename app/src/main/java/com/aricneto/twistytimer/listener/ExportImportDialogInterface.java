@@ -1,4 +1,4 @@
-package com.aricneto.twistytimer.interfaces;
+package com.aricneto.twistytimer.listener;
 
 /**
  * Created by Ari on 22/03/2016.
@@ -6,6 +6,8 @@ package com.aricneto.twistytimer.interfaces;
 public interface ExportImportDialogInterface {
 
     void onImportExternal();
+    void onExportExternal();
+    void onExportBackup();
     void onSelectPuzzle(String puzzle);
     void onSelectCategory(String category);
 }

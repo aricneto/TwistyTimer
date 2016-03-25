@@ -17,9 +17,18 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/dialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Puzzle" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:text="@string/dialog_export_import_selection_title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_puzzle" />
 
         <Spinner
             android:id="@+id/puzzleSpinner"
@@ -30,7 +39,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category" />
+            android:text="@string/name_category" />
 
         <Spinner
             android:id="@+id/categorySpinner"
@@ -44,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:padding="8dp"
-            android:text="Import"
+            tools:text="Import"
             android:textAllCaps="true"
             android:textColor="?colorAccent"
             android:textStyle="bold" />

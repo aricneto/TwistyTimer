@@ -5,8 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -34,10 +37,11 @@ import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportSelectionDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
-import com.aricneto.twistytimer.interfaces.ExportImportDialogInterface;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -52,8 +56,11 @@ import com.opencsv.CSVReader;
 import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                             case EXPORT_IMPORT_ID:
                                 ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
+                                exportImportDialog.setDialogInterface(mainActivity);
                                 exportImportDialog.show(fragmentManager, "exportImport_dialog");
                                 break;
 
@@ -410,10 +418,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     }
 
 
-    String importPuzzle   = "333";
-    String importCategory = "Normal";
+    String exportImportPuzzle   = "333";
+    String exportImportCategory = "Normal";
     String importTag;
-    File importFile;
+    File   importFile;
 
     @Override
     public void onImportExternal() {
@@ -422,13 +430,39 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     }
 
     @Override
+    public void onExportExternal() {
+        if (StoreUtils.isExternalStorageWritable()) {
+            File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
+            fileDir.mkdir();
+            String fileName = "Solves_" + exportImportPuzzle + "_" + exportImportCategory + "_"
+                    + DateTime.now().toString("dd-MMM-y'_'kk-mm") + ".txt";
+
+            final ExportSolves exportSolves = new ExportSolves(this, fileDir, fileName, false);
+            exportSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+
+    }
+
+    @Override
+    public void onExportBackup() {
+        if (StoreUtils.isExternalStorageWritable()) {
+            File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer/Backup");
+            fileDir.mkdirs();
+            String fileName = "Backup_" + DateTime.now().toString("dd-MMM-y'_'kk-mm") + ".txt";
+
+            final ExportSolves exportSolves = new ExportSolves(this, fileDir, fileName, true);
+            exportSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    @Override
     public void onSelectPuzzle(String puzzle) {
-        importPuzzle = puzzle;
+        exportImportPuzzle = puzzle;
     }
 
     @Override
     public void onSelectCategory(String category) {
-        importCategory = category;
+        exportImportCategory = category;
     }
 
     @Override
@@ -439,7 +473,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
         if (file.getName().toLowerCase().endsWith(".txt")) {
             if (importTag.equals("import_external")) {
-                ExportImportSelectionDialog selectionDialog = ExportImportSelectionDialog.newInstance();
+                ExportImportSelectionDialog selectionDialog =
+                        ExportImportSelectionDialog.newInstance(ExportImportSelectionDialog.TYPE_IMPORT);
                 selectionDialog.setDialogInterface(this);
                 selectionDialog.show(fragmentManager, "export_import_selection");
             } else {
@@ -454,6 +489,114 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     .neutralText(R.string.action_help)
                     .positiveText(R.string.action_ok)
                     .show();
+        }
+    }
+
+    private class ExportSolves extends AsyncTask<Void, Integer, Boolean> {
+
+        private final Context mContext;
+        private File fileDir;
+        private String outFileName;
+        private boolean isBackup;
+
+        public ExportSolves(Context context, File fileDir, String outFileName, boolean isBackup) {
+            this.mContext = context;
+            this.fileDir = fileDir;
+            this.outFileName = outFileName;
+            this.isBackup = isBackup;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new MaterialDialog.Builder(mContext)
+                    .content(R.string.export_progress_title)
+                    .progress(false, 0, true)
+                    .cancelable(false)
+                    .show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            if (progressDialog.isShowing()) {
+                if (progressDialog.getMaxProgress() == 0)
+                    progressDialog.setMaxProgress(values[1]);
+
+                progressDialog.setProgress(values[0]);
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Boolean returnCode = false;
+            int exports = 0;
+            String csvHeader = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
+            String csvValues = "";
+
+            try {
+                File outFile = new File(fileDir, outFileName);
+                FileWriter fileWriter = new FileWriter(outFile);
+                BufferedWriter out = new BufferedWriter(fileWriter);
+
+                if (isBackup) {
+                    Cursor cursor = handler.getAllSolves();
+                    publishProgress(0, cursor.getCount());
+                    if (cursor != null) {
+                        out.write(csvHeader);
+                        while (cursor.moveToNext()) {
+                            csvValues = "\"" + cursor.getString(1) + "\";";
+                            csvValues += "\"" + cursor.getString(2) + "\";";
+                            csvValues += "\"" + cursor.getInt(3) + "\";";
+                            csvValues += "\"" + cursor.getLong(4) + "\";";
+                            csvValues += "\"" + cursor.getString(5) + "\";";
+                            csvValues += "\"" + cursor.getInt(6) + "\";";
+                            csvValues += "\"" + cursor.getString(7) + "\"\n";
+                            out.write(csvValues);
+                            exports++;
+                            publishProgress(exports);
+                        }
+                        cursor.close();
+                    }
+                    out.close();
+                    returnCode = true;
+                } else {
+                    Cursor cursor = handler.getAllSolvesFrom(exportImportPuzzle, exportImportCategory);
+                    publishProgress(0, cursor.getCount());
+                    if (cursor != null) {
+                        while (cursor.moveToNext()) {
+                            csvValues = "\"" + PuzzleUtils.convertTimeToString(cursor.getInt(3)) + "\";";
+                            csvValues += "\"" + cursor.getString(5) + "\";";
+                            csvValues += "\"" + new DateTime(cursor.getLong(4)).toString() + "\"\n";
+                            out.write(csvValues);
+                            exports++;
+                            publishProgress(exports);
+                        }
+                        cursor.close();
+                    }
+                    out.close();
+                    returnCode = true;
+                }
+            } catch (IOException e) {
+                returnCode = false;
+                Log.d("ERROR", "IOException: " + e.getMessage());
+            }
+
+            return returnCode;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isExported) {
+            super.onPostExecute(isExported);
+            if (progressDialog.isShowing()) {
+                progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
+
+                if (isExported)
+                    progressDialog.setContent(Html.fromHtml(getString(R.string.export_progress_complete)
+                            + "<br><br>" + "<small><tt>" + fileDir.getAbsolutePath() + "/" + outFileName + "</tt></small>"));
+                else
+                    progressDialog.setContent(R.string.export_progress_error);
+            }
         }
     }
 
@@ -491,14 +634,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     progressDialog.setMaxProgress(values[1]);
 
                 progressDialog.setProgress(values[0]);
-                if (progressDialog.getCurrentProgress() == progressDialog.getMaxProgress()) {
-                    progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
-                    progressDialog.setContent(getString(R.string.import_progress_content)
-                            + " " + duplicates + " " + getString(R.string.ignored_duplicates)
-                            + " " + getString(R.string.and)
-                            + " " + parseErrors + " " + getString(R.string.errors) + ".");
-                }
-
             }
         }
 
@@ -538,7 +673,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                                 int time = PuzzleUtils.parseTime(line[0]);
                                 String scramble = "";
-                                long date = DateTime.now().getMillis();;
+                                long date = DateTime.now().getMillis();
+                                ;
                                 if (line.length >= 2) {
                                     scramble = line[1];
                                 }
@@ -550,7 +686,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                     }
                                 }
 
-                                solveList.add(new Solve(time, importPuzzle, importCategory, date, scramble, PuzzleUtils.NO_PENALTY, "", true));
+                                solveList.add(new Solve(time, exportImportPuzzle, exportImportCategory, date, scramble, PuzzleUtils.NO_PENALTY, "", true));
                             } catch (Exception e) {
                                 parseErrors++;
                             }
@@ -582,6 +718,14 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
+                progressDialog.setContent(getString(R.string.import_progress_content)
+                        + " " + duplicates + " " + getString(R.string.ignored_duplicates)
+                        + " " + getString(R.string.and)
+                        + " " + parseErrors + " " + getString(R.string.errors) + ".");
+            }
+            Broadcaster.broadcast(mainActivity, "TIMELIST", "REFRESH TIME");
         }
     }
 

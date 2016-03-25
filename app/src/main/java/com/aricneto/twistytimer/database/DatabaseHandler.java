@@ -15,10 +15,6 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,6 +184,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sqlSelection =
                     " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
                             + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
+
+        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
+    }
+
+    public Cursor getAllSolvesFrom(String type, String subtype) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlSelection;
+            sqlSelection =
+                    " WHERE type =? AND subtype =? AND penalty!=" + PuzzleUtils.PENALTY_HIDETIME;
 
         return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
@@ -623,44 +629,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_TIMES, contentValues, KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=?", new String[] { type, subtype });
     }
 
-
-    /**
-     * Exports all solves to a .csv file
-     */
-    public Boolean backupDatabaseCSV(File fileDir, String outFileName) {
+    public Cursor getAllSolves() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Boolean returnCode = false;
-        int i = 0;
-        String csvHeader = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
-        String csvValues = "";
-
-        try {
-            File outFile = new File(fileDir, outFileName);
-            FileWriter fileWriter = new FileWriter(outFile);
-            BufferedWriter out = new BufferedWriter(fileWriter);
-            Cursor cursor = db.rawQuery("SELECT * FROM times", null);
-            if (cursor != null) {
-                out.write(csvHeader);
-                while (cursor.moveToNext()) {
-                    csvValues = "\"" + cursor.getString(1) + "\";";
-                    csvValues += "\"" + cursor.getString(2) + "\";";
-                    csvValues += "\"" + cursor.getInt(3) + "\";";
-                    csvValues += "\"" + cursor.getLong(4) + "\";";
-                    csvValues += "\"" + cursor.getString(5) + "\";";
-                    csvValues += "\"" + cursor.getInt(6) + "\";";
-                    csvValues += "\"" + cursor.getString(7) + "\"\n";
-                    out.write(csvValues);
-                }
-                cursor.close();
-            }
-            out.close();
-            returnCode = true;
-        } catch (IOException e) {
-            returnCode = false;
-            Log.d("ERROR", "IOException: " + e.getMessage());
-        }
-
-        return returnCode;
+        return db.rawQuery("SELECT * FROM times WHERE penalty!=" + PuzzleUtils.PENALTY_HIDETIME, null);
     }
 
     public boolean solveExists(Solve solve) {

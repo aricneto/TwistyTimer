@@ -216,5 +216,13 @@
     <string name="file_selection_error_title">Wrong file type</string>
     <string name="import_external_content_first">In the next step, select a .txt file that is in the following format:\n\n<small><tt>\"time\"; \"scramble\"; \"date\"\n\n<b>Example:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
     <string name="import_external_title">Importing from .txt</string>
+    <string name="export_progress_title">Exporting…</string>
+    <string name="export_progress_complete">Successfully exported to:</string>
+    <string name="action_export">Export</string>
+    <string name="action_import">Import</string>
+    <string name="name_puzzle">Puzzle</string>
+    <string name="name_category">Category</string>
+    <string name="dialog_export_import_selection_title">Select a puzzle to %1$s</string>
+    <string name="export_progress_error">Unfortunately, an error ocurred while exporting.\nCheck your permissions</string>
 
 </resources>

@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.interfaces.ExportImportDialogInterface;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.List;
@@ -32,7 +32,15 @@ public class ExportImportSelectionDialog extends DialogFragment {
     ExportImportDialogInterface dialogInterface;
     @Bind(R.id.puzzleSpinner)   Spinner  puzzleSpinner;
     @Bind(R.id.categorySpinner) Spinner  categorySpinner;
+    @Bind(R.id.dialogTitle)     TextView dialogTitle;
     @Bind(R.id.importButton)    TextView importButton;
+
+    public final static int TYPE_EXPORT = 1;
+    public final static int TYPE_IMPORT = 2;
+
+    private final static String TYPE = "type";
+
+    private int type;
 
     String currentPuzzle   = "333";
     String currentCategory = "Normal";
@@ -41,8 +49,11 @@ public class ExportImportSelectionDialog extends DialogFragment {
 
     DatabaseHandler handler;
 
-    public static ExportImportSelectionDialog newInstance() {
+    public static ExportImportSelectionDialog newInstance(int type) {
         ExportImportSelectionDialog exportImportSelectionDialog = new ExportImportSelectionDialog();
+        Bundle args = new Bundle();
+        args.putInt(TYPE, type);
+        exportImportSelectionDialog.setArguments(args);
         return exportImportSelectionDialog;
     }
 
@@ -51,7 +62,17 @@ public class ExportImportSelectionDialog extends DialogFragment {
         final View dialogView = inflater.inflate(R.layout.dialog_export_import_selection_dialog, container);
         ButterKnife.bind(this, dialogView);
         handler = new DatabaseHandler(getContext());
+        if (getArguments() != null) {
+            type = getArguments().getInt(TYPE);
+        }
 
+        if (type == TYPE_EXPORT) {
+            importButton.setText(R.string.action_export);
+            dialogTitle.setText(getString(R.string.dialog_export_import_selection_title, getString(R.string.action_export).toLowerCase()));
+        } else {
+            importButton.setText(R.string.action_import);
+            dialogTitle.setText(getString(R.string.dialog_export_import_selection_title, getString(R.string.action_import).toLowerCase()));
+        }
 
         final ArrayAdapter puzzleAdapter = ArrayAdapter.createFromResource(getContext(), R.array.puzzles, android.R.layout.simple_spinner_dropdown_item);
 
@@ -86,7 +107,10 @@ public class ExportImportSelectionDialog extends DialogFragment {
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogInterface.onImportExternal();
+                if (type == TYPE_EXPORT)
+                    dialogInterface.onExportExternal();
+                else
+                    dialogInterface.onImportExternal();
                 dismiss();
             }
         });
