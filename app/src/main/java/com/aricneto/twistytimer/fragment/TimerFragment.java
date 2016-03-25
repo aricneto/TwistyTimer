@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Display;
@@ -238,7 +239,8 @@ public class TimerFragment extends BaseFragment {
                 case R.id.button_plustwo:
                     if (currentPenalty != PuzzleUtils.PENALTY_PLUSTWO) {
                         currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.PENALTY_PLUSTWO);
-                        chronometer.setText(PuzzleUtils.convertTimeToString(currentSolve.getTime()) + "+");
+                        chronometer.setText(Html.fromHtml(
+                                PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime()) + " <small>+</small>"));
                         dbHandler.updateSolve(currentSolve);
                     }
 
@@ -284,7 +286,7 @@ public class TimerFragment extends BaseFragment {
                     break;
                 case R.id.button_undo:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.NO_PENALTY);
-                    chronometer.setText(PuzzleUtils.convertTimeToString(currentSolve.getTime()));
+                    chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime())));
                     dbHandler.updateSolve(currentSolve);
                     undoButton.setVisibility(View.GONE);
                     undone = true;
@@ -611,7 +613,7 @@ public class TimerFragment extends BaseFragment {
                         animationDone = false;
                         stopChronometer();
                         if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO)
-                            chronometer.setText(PuzzleUtils.convertTimeToString((int) chronometer.getTimeElapsed() + 2000) + "+");
+                            chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal((int) chronometer.getTimeElapsed() + 2000) + " <small>+</small>"));
                         addNewSolve();
 
                     }
@@ -824,7 +826,7 @@ public class TimerFragment extends BaseFragment {
      */
     public void cancelChronometer() {
         chronometer.stop();
-        chronometer.setText("0.00");
+        chronometer.setText(Html.fromHtml("0<small>.00</small>"));
         isRunning = false;
         isCanceled = true;
         isReady = false; // Reset variable

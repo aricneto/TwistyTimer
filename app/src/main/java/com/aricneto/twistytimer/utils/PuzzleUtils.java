@@ -121,6 +121,28 @@ public class PuzzleUtils {
             return new DateTime(time).toString("s'.'SS");
     }
 
+    public static String convertTimeToStringWithSmallDecimal(int time) {
+
+        if (time == TIME_DNF)
+            return "DNF";
+        if (time == 0)
+            return "--";
+
+        // Magic (not-so-magic actually) numbers below
+        int hours = time / 3600000; // 3600 * 1000
+        int remaining = time % 3600000; // 3600 * 1000
+        int minutes = remaining / 60000; // 60 * 1000
+
+        if (hours > 0)
+            return new DateTime(time).toString("k':'mm'<small>:'ss'</small>'");
+
+        else if (minutes > 0)
+            return new DateTime(time).toString("m':'ss'<small>.'SS'</small>'");
+
+        else
+            return new DateTime(time).toString("s'<small>.'SS'</small>'");
+    }
+
     public static String convertTimeToStringWithoutMilli(int time) {
 
         if (time == - 1)

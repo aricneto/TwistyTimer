@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -190,7 +191,7 @@ public class TimeDialog extends DialogFragment {
         if (idExists(mId)) {
             solve = handler.getSolve(mId);
 
-            timeText.setText(PuzzleUtils.convertTimeToString(solve.getTime()));
+            timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
             dateText.setText(new DateTime(solve.getDate()).toString("d MMM y'\n'H':'mm"));
 
             scrambleText.setText(solve.getScramble());
