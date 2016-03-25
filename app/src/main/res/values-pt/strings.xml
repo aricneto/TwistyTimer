@@ -183,14 +183,12 @@
     <string name="dialog_export_import_export">Exportar</string>
     <string name="dialog_export_import_import">Importar</string>
     <string name="drawer_title_export_import">Exportar/Importar</string>
-    <string name="and">e</string>
     <string name="import_progress_content_errors">erros</string>
     <string name="import_progress_content_ignored_duplicates">duplicados ignorados</string>
     <string name="import_progress_title">Importando resoluções…</string>
     <string name="import_progress_content">Importação concluida com</string>
     <string name="action_export">Exportar</string>
     <string name="action_import">Importar</string>
-    <string name="dialog_export_import_selection_title">Selecione um puzzle para %1$s</string>
     <string name="export_progress_complete">Exportado com sucesso para:</string>
     <string name="export_progress_error">Infelizmente, ocorreu um erro na exportação.\nCheque suas permissões</string>
     <string name="export_progress_title">Exportando…</string>

@@ -102,6 +102,9 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                     }
                     break;
                 case R.id.fab_share_histogram:
+                    if (!PuzzleUtils.shareHistogramOf(currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case R.id.fab_add_time:
                     new MaterialDialog.Builder(getContext())

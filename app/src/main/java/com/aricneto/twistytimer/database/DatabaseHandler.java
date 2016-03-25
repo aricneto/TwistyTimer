@@ -167,6 +167,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { String.valueOf(id) });
     }
 
+
+    /**
+     * Returns all solves from history or session, from puzzle and category
+     * @param type
+     * @param subtype
+     * @return
+     */
     public Cursor getAllSolvesFrom(String type, String subtype, boolean history) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -182,6 +189,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
+
+    /**
+     * Returns all solves from puzzle and category
+     * @param type
+     * @param subtype
+     * @return
+     */
 
     public Cursor getAllSolvesFrom(String type, String subtype) {
         SQLiteDatabase db = this.getReadableDatabase();

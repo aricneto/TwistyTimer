@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.StringRes;
 
 import com.aricneto.twistify.R;
@@ -12,8 +13,10 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by Ari on 17/01/2016.
@@ -78,22 +81,20 @@ public class PuzzleUtils {
      *
      * @return
      */
-    public static
-    @StringRes
-    int getPuzzleName(String puzzle) {
+    public static @StringRes int getPuzzleName(String puzzle) {
         switch (puzzle) {
             case PuzzleUtils.TYPE_333: // 333
-                return R.string.cube_333;
+                return R.string.cube_333_informal;
             case PuzzleUtils.TYPE_222: // 222
-                return R.string.cube_222;
+                return R.string.cube_222_informal;
             case PuzzleUtils.TYPE_444: // 444
-                return R.string.cube_444;
+                return R.string.cube_444_informal;
             case PuzzleUtils.TYPE_555: // 555
-                return R.string.cube_555;
+                return R.string.cube_555_informal;
             case PuzzleUtils.TYPE_666: // 666
-                return R.string.cube_666;
+                return R.string.cube_666_informal;
             case PuzzleUtils.TYPE_777: // 777
-                return R.string.cube_777;
+                return R.string.cube_777_informal;
             case PuzzleUtils.TYPE_CLOCK: // Clock
                 return R.string.cube_clock;
             case PuzzleUtils.TYPE_MEGA: // Mega
@@ -361,6 +362,64 @@ public class PuzzleUtils {
         } else {
             return false;
         }
+    }
+
+
+    public static String createHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
+        Cursor cursor = dbHandler.getAllSolvesFrom(currentPuzzle, currentPuzzleSubtype, false);
+
+
+        ArrayList<Integer> timeList = new ArrayList<>();
+        int columnIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
+        while(cursor.moveToNext()) {
+            // Cut off decimals
+            int time = cursor.getInt(columnIndex);
+            time = time - (time % 1000);
+            timeList.add(time);
+        }
+
+        StringBuilder histogram = new StringBuilder();
+
+        Set<Integer> set = new HashSet<>(timeList);
+        //HashMap<Integer, Integer> frequencies = new HashMap();
+        for (int time : set) {
+            //frequencies.put(time, Collections.frequency(timeList, time));
+            histogram.append("\n" +
+                PuzzleUtils.convertTimeToStringWithoutMilli(time) + ": " + convertToBars(Collections.frequency(timeList, time)));
+        }
+
+        return histogram.toString();
+    }
+
+    public static boolean shareHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler, Context context) {
+        int solveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
+        if (solveCount > 0) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                context.getString(R.string.fab_share_histogram_solvecount,
+                    context.getString(PuzzleUtils.getPuzzleName(currentPuzzle)), solveCount) + ":" +
+                    PuzzleUtils.createHistogramOf(currentPuzzle, currentPuzzleSubtype, dbHandler));
+            shareIntent.setType("text/plain");
+            context.startActivity(shareIntent);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Takes an int N and converts it to bars █. Used for histograms
+     * @param n
+     * @return
+     */
+    private static String convertToBars(int n) {
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            temp.append("█");
+        }
+        return temp.toString();
     }
 
 }
