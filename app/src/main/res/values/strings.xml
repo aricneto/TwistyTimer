@@ -46,7 +46,7 @@
     <string name="select_penalty">Select penalty</string>
     <string name="inspection">Inspection</string>
     <string name="add_time">Add time</string>
-    <string name="add_time_hint" translatable="false">1,23.45</string>
+    <string name="add_time_hint" translatable="false">1:23.45</string>
     <string name="action_add">Add</string>
     <string name="action_remove">Remove</string>
     <string name="remove_subtype_title">Select category to remove</string>
@@ -213,5 +213,12 @@
     <string name="name_category">Category</string>
     <string name="dialog_export_import_selection_title">Select a puzzle to %1$s</string>
     <string name="export_progress_error">Unfortunately, an error ocurred while exporting.\nCheck your permissions</string>
+    <string name="fab_share">Share</string>
+    <string name="fab_addTime">Add time</string>
+    <string name="fab_share_ao12">Ao12</string>
+    <string name="fab_share_ao5">Ao5</string>
+    <string name="fab_share_histogram">Histogram</string>
+    <string name="fab_add_time">Add time</string>
+    <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
 
 </resources>

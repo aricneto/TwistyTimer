@@ -84,6 +84,7 @@
         android:textAllCaps="true"
         android:layout_alignBottom="@id/reset"
         android:textColor="?colorAccent"
+        android:textStyle="bold"
         android:drawablePadding="8dp"
         android:gravity="center"
         android:padding="8dp"

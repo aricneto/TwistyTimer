@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorBackgroundList"
-    android:orientation="vertical"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
 
     <android.support.v7.widget.CardView
@@ -97,21 +96,90 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab_addTime"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:fab="http://schemas.android.com/apk/res-auto"
+    <com.aricneto.twistytimer.layout.Fab
+        android:id="@+id/fab_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:paddingBottom="16dp"
-        android:paddingRight="16dp"
-        android:src="@drawable/fab_add"
-        fab:fab_colorNormal="?attr/colorAccent"
-        fab:fab_colorPressed="?attr/colorAccent"
-        fab:fab_size="normal" />
+        android:layout_margin="@dimen/action_button_margin"
+        android:src="@drawable/ic_add_white_18dp"
+        app:backgroundTint="?colorPrimary"
+        app:elevation="4dp"
+        app:useCompatPadding="false" />
 
+    <!-- Overlay that dims the screen -->
+    <com.gordonwong.materialsheetfab.DimOverlayFrameLayout
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Circular reveal container for the sheet -->
+    <io.codetail.widget.RevealLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:gravity="end|bottom"
+        android:orientation="vertical">
+
+        <!-- Sheet that contains your items -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/fab_sheet"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            app:cardPreventCornerOverlap="false">
+
+            <ScrollView
+                android:id="@+id/fab_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SheetListItem"
+                        android:clickable="false"
+                        android:drawableLeft="@drawable/ic_share_black_24dp"
+                        android:text="Share session..." />
+
+                    <include
+                        layout="@layout/view_divider" />
+
+                    <TextView
+                        android:id="@+id/fab_share_ao12"
+                        style="@style/SheetListItem"
+                        android:paddingLeft="56dp"
+                        android:text="@string/fab_share_ao12" />
+
+                    <TextView
+                        android:id="@+id/fab_share_ao5"
+                        style="@style/SheetListItem"
+                        android:paddingLeft="56dp"
+                        android:text="@string/fab_share_ao5" />
+
+                    <TextView
+                        android:id="@+id/fab_share_histogram"
+                        style="@style/SheetListItem"
+                        android:paddingLeft="56dp"
+                        android:text="@string/fab_share_histogram" />
+
+                    <TextView
+                        android:id="@+id/fab_add_time"
+                        style="@style/SheetListItem"
+                        android:background="?colorPrimary"
+                        android:drawableLeft="@drawable/ic_add_white_24dp"
+                        android:text="@string/fab_add_time"
+                        android:textColor="?textColorContrastBackground"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </android.support.v7.widget.CardView>
+    </io.codetail.widget.RevealLinearLayout>
 
 </RelativeLayout>

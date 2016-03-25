@@ -1,12 +1,17 @@
 package com.aricneto.twistytimer.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.StringRes;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -33,7 +38,7 @@ public class PuzzleUtils {
     // Every time query should ignore every time that has a penalty of 10
     public static final int PENALTY_HIDETIME = 10;
 
-    public static final int TIME_DNF = -1;
+    public static final int TIME_DNF = - 1;
 
     public PuzzleUtils() {
     }
@@ -68,10 +73,14 @@ public class PuzzleUtils {
 
     /**
      * Gets the string id of the name of a puzzle
+     *
      * @param puzzle
+     *
      * @return
      */
-    public static @StringRes int getPuzzleName(String puzzle) {
+    public static
+    @StringRes
+    int getPuzzleName(String puzzle) {
         switch (puzzle) {
             case PuzzleUtils.TYPE_333: // 333
                 return R.string.cube_333;
@@ -182,7 +191,9 @@ public class PuzzleUtils {
     /**
      * Converts times such as 00:00.00 into int for storage
      * Code shamelessly stolen from Prisma Puzzle Timer (love you).
+     *
      * @param input
+     *
      * @return time in millis
      */
     public static int parseTime(String input) {
@@ -195,7 +206,7 @@ public class PuzzleUtils {
         if (input.contains(":")) {
             scanner.useDelimiter(":");
 
-            if (!scanner.hasNextLong()) {
+            if (! scanner.hasNextLong()) {
                 return 0;
             }
 
@@ -204,7 +215,7 @@ public class PuzzleUtils {
                 return 0;
             }
 
-            if (!scanner.hasNextDouble()) {
+            if (! scanner.hasNextDouble()) {
                 return 0;
             }
 
@@ -218,7 +229,7 @@ public class PuzzleUtils {
 
         // 00.00
         else {
-            if (!scanner.hasNextDouble()) {
+            if (! scanner.hasNextDouble()) {
                 return 0;
             }
 
@@ -280,6 +291,75 @@ public class PuzzleUtils {
                 return num + 1;
             else
                 return num - 1;
+        }
+    }
+
+
+    /**
+     * Creates a list of averages from a number.
+     * Useful for sharing
+     *
+     * @param currentPuzzle
+     * @param currentPuzzleSubtype
+     * @param dbHandler
+     * @param n
+     *
+     * @return the list
+     */
+    private static String createAverageList(int n, String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
+        int average;
+
+        ArrayList<Integer> aoList = dbHandler.getListOfTruncatedAverageOf(n, currentPuzzle, currentPuzzleSubtype, true);
+        average = aoList.get(n);
+        aoList.remove(n);
+
+        int max = Collections.max(aoList);
+        int min = Collections.min(aoList);
+
+        String aoStringList = convertTimeToString(average) + " = ";
+
+        boolean markedMax = false;
+        boolean markedMin = false;
+
+        for (int time : aoList) {
+            if (time == max && ! markedMax) {
+                aoStringList += "(" + convertTimeToString(time) + "), ";
+                markedMax = true;
+            } else if (time == min && ! markedMin) {
+                aoStringList += "(" + convertTimeToString(time) + "), ";
+                markedMin = true;
+            } else {
+                aoStringList += convertTimeToString(time) + ", ";
+            }
+        }
+
+        // The substring is there to remove the last ", "
+        return aoStringList.substring(0, aoStringList.length() - 2);
+    }
+
+    /**
+     * Shares an average of n
+     *
+     * @param n
+     * @param currentPuzzle
+     * @param currentPuzzleSubtype
+     * @param dbHandler
+     * @param context
+     *
+     * @return True if it's possible to share
+     */
+    public static boolean shareAverageOf(int n, String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler, Context context) {
+        if (dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true) >= n) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                context.getString(PuzzleUtils.getPuzzleName(currentPuzzle)) + ": " +
+                    PuzzleUtils.createAverageList(n, currentPuzzle, currentPuzzleSubtype, dbHandler));
+            shareIntent.setType("text/plain");
+            context.startActivity(shareIntent);
+            return true;
+        } else {
+            return false;
         }
     }
 

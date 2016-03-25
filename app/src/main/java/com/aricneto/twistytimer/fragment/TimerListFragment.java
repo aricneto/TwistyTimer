@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -25,7 +26,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -34,9 +37,13 @@ import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.layout.Fab;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.github.clans.fab.FloatingActionButton;
+import com.aricneto.twistytimer.utils.ThemeUtils;
+import com.gordonwong.materialsheetfab.DimOverlayFrameLayout;
+import com.gordonwong.materialsheetfab.MaterialSheetFab;
+import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 
 import org.joda.time.DateTime;
 
@@ -50,30 +57,75 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private static final String HISTORY        = "history";
 
     private static final int TASK_LOADER_ID = 14;
-
-
-    private String currentPuzzle;
-    private String currentPuzzleSubtype;
-
+    public MaterialSheetFab<Fab> materialSheetFab;
     DatabaseHandler dbHandler;
+    // True if you want to search history, false if you only want to search session
+    boolean         history;
+    @Bind(R.id.list)                 RecyclerView          recyclerView;
+    @Bind(R.id.nothing_here)         ImageView             nothingHere;
+    @Bind(R.id.nothing_text)         TextView              nothingText;
+    @Bind(R.id.send_to_history_card) CardView              moveToHistory;
+    @Bind(R.id.clear_button)         TextView              clearButton;
+    @Bind(R.id.divider01)            View                  dividerView;
+    @Bind(R.id.archive_button)       TextView              archiveButton;
+    @Bind(R.id.fab_button)           Fab                   fabButton;
+    @Bind(R.id.overlay)              DimOverlayFrameLayout overlay;
+    @Bind(R.id.fab_sheet)            CardView              fabSheet;
 
+    @Bind(R.id.fab_share_ao12)      TextView fabShareAo12;
+    @Bind(R.id.fab_share_ao5)       TextView fabShareAo5;
+    @Bind(R.id.fab_share_histogram) TextView fabShareHistogram;
+    @Bind(R.id.fab_add_time)        TextView fabAddTime;
+
+    @Bind(R.id.fab_scroll) ScrollView fabScroll;
+
+    private String            currentPuzzle;
+    private String            currentPuzzleSubtype;
     private TimeCursorAdapter timeCursorAdapter;
     private TimeTaskLoader    timeTaskLoader;
+    private Context           mContext;
 
-    // True if you want to search history, false if you only want to search session
-    boolean history;
 
-    @Bind(R.id.list)         RecyclerView         recyclerView;
-    @Bind(R.id.nothing_here) ImageView            nothingHere;
-    @Bind(R.id.nothing_text) TextView             nothingText;
-    @Bind(R.id.fab_addTime)  FloatingActionButton fabAddTime;
+    View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
 
-    @Bind(R.id.send_to_history_card) CardView moveToHistory;
-    @Bind(R.id.clear_button)         TextView clearButton;
-    @Bind(R.id.divider01)            View     dividerView;
-    @Bind(R.id.archive_button)       TextView archiveButton;
+            switch (view.getId()) {
+                case R.id.fab_share_ao12:
+                    if (!PuzzleUtils.shareAverageOf(12, currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.fab_share_ao5:
+                    if (!PuzzleUtils.shareAverageOf(5, currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.fab_share_histogram:
+                    break;
+                case R.id.fab_add_time:
+                    new MaterialDialog.Builder(getContext())
+                        .title(R.string.add_time)
+                        .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                int time = PuzzleUtils.parseTime(input.toString());
+                                if (time != 0) {
+                                    dbHandler.addSolve(new Solve(time, currentPuzzle,
+                                        currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
+                                    Broadcaster.broadcast(mContext, "TIMELIST", "TIME ADDED");
+                                }
 
-    private Context mContext;
+                            }
+                        })
+                        .positiveText(R.string.action_add)
+                        .negativeText(R.string.action_cancel)
+                        .show();
+                    break;
+            }
+        }
+    };
+
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -147,28 +199,26 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             archiveButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer_sand_black_18dp, 0, 0, 0);
         }
 
-        fabAddTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.add_time)
-                        .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                int time = PuzzleUtils.parseTime(input.toString());
-                                if (time != 0) {
-                                    dbHandler.addSolve(new Solve(time, currentPuzzle,
-                                            currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
-                                    Broadcaster.broadcast(mContext, "TIMELIST", "TIME ADDED");
-                                }
+        materialSheetFab = new MaterialSheetFab<>(
+            fabButton, fabSheet, overlay, Color.WHITE, ThemeUtils.fetchAttrColor(getActivity(), R.attr.colorPrimary));
 
-                            }
-                        })
-                        .positiveText(R.string.action_add)
-                        .negativeText(R.string.action_cancel)
-                        .show();
+        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
+            @Override
+            public void onSheetShown() {
+                super.onSheetShown();
+                fabScroll.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fabScroll.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
             }
         });
+
+        fabShareAo12.setOnClickListener(clickListener);
+        fabShareAo5.setOnClickListener(clickListener);
+        fabShareHistogram.setOnClickListener(clickListener);
+        fabAddTime.setOnClickListener(clickListener);
 
         archiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,24 +228,24 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                 text.setSpan(icon, text.length() - 1, text.length(), 0);
 
                 new MaterialDialog.Builder(getContext())
-                        .title(R.string.move_solves_to_history)
-                        .content(text)
-                        .positiveText(R.string.action_move)
-                        .negativeText(R.string.action_cancel)
-                        .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                        .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                dbHandler.moveAllSolvesToHistory(currentPuzzle, currentPuzzleSubtype);
-                                Intent sendIntent = new Intent("TIMELIST");
-                                sendIntent.putExtra("action", "MOVED TO HISTORY");
-                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                    .title(R.string.move_solves_to_history)
+                    .content(text)
+                    .positiveText(R.string.action_move)
+                    .negativeText(R.string.action_cancel)
+                    .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+                    .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            dbHandler.moveAllSolvesToHistory(currentPuzzle, currentPuzzleSubtype);
+                            Intent sendIntent = new Intent("TIMELIST");
+                            sendIntent.putExtra("action", "MOVED TO HISTORY");
+                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
 
-                                resetList();
-                            }
-                        })
-                        .show();
+                            resetList();
+                        }
+                    })
+                    .show();
             }
         });
 
@@ -203,20 +253,20 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             @Override
             public void onClick(View view) {
                 new MaterialDialog.Builder(getContext())
-                        .title(R.string.remove_session_title)
-                        .content(R.string.remove_session_confirmation_content)
-                        .positiveText(R.string.action_remove)
-                        .negativeText(R.string.action_cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                dbHandler.deleteAllFromSession(currentPuzzle, currentPuzzleSubtype);
+                    .title(R.string.remove_session_title)
+                    .content(R.string.remove_session_confirmation_content)
+                    .positiveText(R.string.action_remove)
+                    .negativeText(R.string.action_cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            dbHandler.deleteAllFromSession(currentPuzzle, currentPuzzleSubtype);
 
-                                resetList();
+                            resetList();
 
-                            }
-                        })
-                        .show();
+                        }
+                    })
+                    .show();
             }
         });
 
@@ -301,9 +351,9 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =
-                new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL);
+            new StaggeredGridLayoutManager(6, StaggeredGridLayoutManager.VERTICAL);
         StaggeredGridLayoutManager gridLayoutManagerVertical =
-                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
 
         // Adapt to orientation
         if (parentActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -315,5 +365,9 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

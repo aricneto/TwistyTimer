@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryDark">@color/md_indigo_700</item>
-        <item name="colorAccent">@color/accentColor</item>
+        <item name="colorAccent">@color/md_amber_500</item>
         <item name="mainColorBackground">@color/md_indigo_700</item>
         <item name="colorTimerText">@color/white_text</item>
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
@@ -14,6 +14,8 @@
         <item name="colorItemListText">@color/black_text</item>
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
+
+        <item name="textColorContrastBackground">@android:color/white</item>
 
         <item name="windowActionModeOverlay">true</item>
         <item name="android:actionModeBackground">?colorPrimary</item>
@@ -26,7 +28,7 @@
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="android:statusBarColor">@color/md_indigo_700</item>
 
-        <item name="md_positive_color">@color/accentColor</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
         <item name="md_negative_color">@color/black_secondary_icon</item>
         <item name="md_widget_color">@color/accentDarkColor</item>
 

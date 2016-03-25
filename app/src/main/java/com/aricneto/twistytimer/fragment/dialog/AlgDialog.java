@@ -1,11 +1,8 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -55,7 +52,7 @@ public class AlgDialog extends DialogFragment {
 
     private long            mId;
     private DatabaseHandler handler;
-    private SQLiteDatabase  db;
+
     private Algorithm       algorithm;
     private DialogListener  dialogListener;
 
@@ -143,12 +140,11 @@ public class AlgDialog extends DialogFragment {
 
         mId = getArguments().getLong("id");
         handler = new DatabaseHandler(getActivity());
-        db = handler.getWritableDatabase();
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (idExists(mId)) {
+        if (handler.idExists(mId)) {
             algorithm = handler.getAlgorithm(mId);
             algText.setText(algorithm.getAlgs());
             nameText.setText(algorithm.getName());
@@ -193,29 +189,13 @@ public class AlgDialog extends DialogFragment {
         //dismiss();
     }
 
-    // Check if a record exists
-    public boolean idExists(long _id) {
-        Cursor cursor = db.rawQuery("SELECT 1 FROM algs WHERE _id=" + _id, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
-    }
-
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        db.close();
-        handler.close();
-        ButterKnife.unbind(this);
-        if (dialogListener != null)
-            dialogListener.onDismissDialog();
-        super.onDismiss(dialog);
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        handler.closeDB();
         ButterKnife.unbind(this);
+        if (dialogListener != null)
+            dialogListener.onDismissDialog();
     }
 
     @Bind(R.id.sticker21) View sticker21;

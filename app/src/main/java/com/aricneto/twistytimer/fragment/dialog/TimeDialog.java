@@ -1,9 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -53,7 +50,6 @@ public class TimeDialog extends DialogFragment {
 
     private long            mId;
     private DatabaseHandler handler;
-    private SQLiteDatabase  db;
     private Solve           solve;
     private DialogListener  dialogListener;
 
@@ -182,13 +178,12 @@ public class TimeDialog extends DialogFragment {
 
         mId = getArguments().getLong("id");
         handler = new DatabaseHandler(getActivity());
-        db = handler.getWritableDatabase();
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //getDialog().getWindow().setWindowAnimations(R.style.DialogAnimationScale);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (idExists(mId)) {
+        if (handler.idExists(mId)) {
             solve = handler.getSolve(mId);
 
             timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
@@ -246,23 +241,14 @@ public class TimeDialog extends DialogFragment {
         dismiss();
     }
 
-    // Check if a record exists
-    public boolean idExists(long _id) {
-        Cursor cursor = db.rawQuery("SELECT 1 FROM times WHERE _id=" + _id, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
-    }
-
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        db.close();
-        handler.close();
+    public void onDestroyView() {
+        handler.closeDB();
         ButterKnife.unbind(this);
         if (dialogListener != null)
             dialogListener.onDismissDialog();
-        super.onDismiss(dialog);
+        super.onDestroyView();
     }
 
 }

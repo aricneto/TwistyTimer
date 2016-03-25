@@ -1076,7 +1076,7 @@ public class TimerFragment extends BaseFragment {
 
             // Check best/worst solve
             if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF && ! undone) {
-                if (count >= 4) { // Start counting records at 5 solves
+                if (count >= 4 && currentSolve.getTime() != 0) { // Start counting records at 5 solves
                     if (bestSolveEnabled) {
                         if (currentSolve.getTime() < currentBestTime) { // best
                             rippleBackground.startRippleAnimation();
@@ -1121,8 +1121,10 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void updateBestAndWorst() {
-        bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
-        bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (dbHandler != null) {
+            bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
+            bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
 

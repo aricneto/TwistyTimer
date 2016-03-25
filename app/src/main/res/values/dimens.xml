@@ -3,6 +3,7 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="action_button_margin">8dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
 
