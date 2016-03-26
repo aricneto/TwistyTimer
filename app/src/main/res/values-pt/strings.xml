@@ -198,5 +198,12 @@
     <string name="import_external_title">Importando de .txt</string>
     <string name="name_category">Categoria</string>
     <string name="name_puzzle">Puzzle</string>
+    <string name="fab_add_time">Adicionar tempo</string>
+    <string name="fab_share_ao12">Média de 12</string>
+    <string name="fab_share_ao5">Média de 5</string>
+    <string name="fab_share_error">Não foi possível compartilhar. Certifique-se de que você fez resoluções o suficiente nesta sessão.</string>
+    <string name="fab_share_histogram">Histograma</string>
+    <string name="fab_share_histogram_solvecount">Distribuição de tempo do %1$s (%2$d resoluções)</string>
+    <string name="import_progress_content_successful_imports">importações bem-sucedidas</string>
 
 </resources>

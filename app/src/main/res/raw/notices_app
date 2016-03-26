@@ -33,9 +33,9 @@
     </notice>
     <notice>
         <name>FAB</name>
-        <url>https://github.com/Clans/FloatingActionButton</url>
-        <copyright>Copyright 2015 Dmytro Tarianyk</copyright>
-        <license>Apache Software License 2.0</license>
+        <url>https://github.com/gowong/material-sheet-fab</url>
+        <copyright>Copyright 2015 Gordon Wong</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>Prisma Puzzle Timer</name>

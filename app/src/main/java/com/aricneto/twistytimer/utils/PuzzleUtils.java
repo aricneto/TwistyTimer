@@ -81,7 +81,9 @@ public class PuzzleUtils {
      *
      * @return
      */
-    public static @StringRes int getPuzzleName(String puzzle) {
+    public static
+    @StringRes
+    int getPuzzleName(String puzzle) {
         switch (puzzle) {
             case PuzzleUtils.TYPE_333: // 333
                 return R.string.cube_333_informal;
@@ -317,20 +319,28 @@ public class PuzzleUtils {
         int max = Collections.max(aoList);
         int min = Collections.min(aoList);
 
-        String aoStringList = convertTimeToString(average) + " = ";
+        // So the last solves come first
+        Collections.reverse(aoList);
+
+        StringBuilder aoStringList = new StringBuilder(convertTimeToString(average) + " = ");
 
         boolean markedMax = false;
         boolean markedMin = false;
 
         for (int time : aoList) {
             if (time == max && ! markedMax) {
-                aoStringList += "(" + convertTimeToString(time) + "), ";
+                aoStringList.append("(");
+                aoStringList.append(convertTimeToString(time));
+                aoStringList.append("), ");
                 markedMax = true;
             } else if (time == min && ! markedMin) {
-                aoStringList += "(" + convertTimeToString(time) + "), ";
+                aoStringList.append("(");
+                aoStringList.append(convertTimeToString(time));
+                aoStringList.append("), ");
                 markedMin = true;
             } else {
-                aoStringList += convertTimeToString(time) + ", ";
+                aoStringList.append(convertTimeToString(time));
+                aoStringList.append(", ");
             }
         }
 
@@ -366,12 +376,12 @@ public class PuzzleUtils {
 
 
     public static String createHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
-        Cursor cursor = dbHandler.getAllSolvesFrom(currentPuzzle, currentPuzzleSubtype, false);
+        Cursor cursor = dbHandler.getAllSolvesFromWithLimit(100, currentPuzzle, currentPuzzleSubtype, false);
 
 
         ArrayList<Integer> timeList = new ArrayList<>();
         int columnIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             // Cut off decimals
             int time = cursor.getInt(columnIndex);
             time = time - (time % 1000);
@@ -392,7 +402,7 @@ public class PuzzleUtils {
     }
 
     public static boolean shareHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler, Context context) {
-        int solveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
+        int solveCount = dbHandler.getSolveCountWithLimit(100, currentPuzzle, currentPuzzleSubtype, true);
         if (solveCount > 0) {
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
@@ -411,7 +421,9 @@ public class PuzzleUtils {
 
     /**
      * Takes an int N and converts it to bars █. Used for histograms
+     *
      * @param n
+     *
      * @return
      */
     private static String convertToBars(int n) {

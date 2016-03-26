@@ -71,6 +71,8 @@ dependencies {
     // Sliding Up Panel
     compile 'com.sothree.slidinguppanel:library:3.2.1'
 
+    compile 'com.github.iammert:MaterialIntroView:1.5.2'
+
 
 }
 

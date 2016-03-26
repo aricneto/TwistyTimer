@@ -191,6 +191,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Returns all solves from history or session, from puzzle and category with a limit
+     * @param type
+     * @param subtype
+     * @return
+     */
+    public Cursor getAllSolvesFromWithLimit(int limit, String type, String subtype, boolean history) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlSelection;
+        if (! history)
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC LIMIT " + limit;
+        else
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC LIMIT " + limit;
+
+        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
+    }
+
+    /**
      * Returns all solves from puzzle and category
      * @param type
      * @param subtype
@@ -311,6 +333,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.close();
         return subtypesList;
+    }
+
+    /**
+     * Returns the solve count with limit
+     *
+     * @return
+     */
+    public int getSolveCountWithLimit(int limit, String type, String subtype, boolean session) {
+        String sqlSelection;
+        if (session)
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 LIMIT " + limit;
+        else
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 LIMIT " + limit;
+
+        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
+
+        int count = cursor.getCount();
+        cursor.close();
+        // Return count
+        return count;
     }
 
     /**

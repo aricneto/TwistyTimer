@@ -218,11 +218,13 @@
     <string name="fab_add_time">Add time</string>
     <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
     <string name="fab_share_histogram_solvecount">%1$s time distribution (%2$d solves)</string>
-    <string name="cube_333_informal">3x3</string>
-    <string name="cube_222_informal">2x2</string>
-    <string name="cube_444_informal">4x4</string>
-    <string name="cube_555_informal">5x5</string>
-    <string name="cube_666_informal">6x6</string>
-    <string name="cube_777_informal">7x7</string>
+    <string name="cube_333_informal" translatable="false">3x3</string>
+    <string name="cube_222_informal" translatable="false">2x2</string>
+    <string name="cube_444_informal" translatable="false">4x4</string>
+    <string name="cube_555_informal" translatable="false">5x5</string>
+    <string name="cube_666_informal" translatable="false">6x6</string>
+    <string name="cube_777_informal" translatable="false">7x7</string>
+    <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
+    <string name="fab_share_title">Share session…</string>
 
 </resources>

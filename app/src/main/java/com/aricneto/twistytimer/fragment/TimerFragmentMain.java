@@ -57,36 +57,50 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 
 
 public class TimerFragmentMain extends BaseFragment {
     
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
+    private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
     @Bind(R.id.toolbar)       Toolbar         mToolbar;
     @Bind(R.id.pager)         LockedViewPager viewPager;
     @Bind(R.id.main_tabs)     TabLayout       tabLayout;
     @Bind(R.id.toolbarLayout) LinearLayout    toolbarLayout;
     DatabaseHandler dbHandler;
     ActionMode      actionMode;
-    int     currentPage    = 0;
+
+    int currentPage = 0;
+
+    private int primaryColor;
+
     // Stores the current state of the list switch
     boolean historyChecked = false;
+
     TimerFragment      currentTimerFragmentInstance;
     TimerListFragment  currentTimerListFragmentInstance;
     TimerGraphFragment currentTimerGraphFragmentInstance;
+
     private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
     private TimerFragmentMain fragReference = this;
+
     private MaterialDialog removeSubtypeDialog;
     private MaterialDialog subtypeDialog;
     private MaterialDialog createSubtypeDialog;
     private MaterialDialog renameSubtypeDialog;
+
     // Stores the current puzzle being timed/shown
     private String currentPuzzle        = "333";
     private String currentPuzzleSubtype = "Normal";
+
     private boolean pagerEnabled;
-    private int     originalContentHeight;
-    private int                 selectCount        = 0;
+
+    private int originalContentHeight;
+    private int selectCount = 0;
+
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
 
         // Called when the action mode is created; startActionMode() was called
@@ -244,6 +258,7 @@ public class TimerFragmentMain extends BaseFragment {
             }
         }
     };
+
     
     public TimerFragmentMain() {
         // Required empty public constructor
@@ -286,7 +301,6 @@ public class TimerFragmentMain extends BaseFragment {
             viewPager.setPagingEnabled(true);
         else
             viewPager.setPagingEnabled(false);
-
 
         viewPagerAdapter = new NavigationAdapter(getFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
@@ -336,6 +350,8 @@ public class TimerFragmentMain extends BaseFragment {
 
         // Register a receiver to update if something has changed
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMER"));
+
+        primaryColor = ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimary);
 
         return root;
     }
@@ -612,6 +628,19 @@ public class TimerFragmentMain extends BaseFragment {
                 }
                 if (currentTimerListFragmentInstance != null) {
                     currentTimerListFragmentInstance.fabButton.show();
+                    new MaterialIntroView.Builder(getActivity())
+                        .enableDotAnimation(false)
+                        .setFocusGravity(FocusGravity.CENTER)
+                        .setDelayMillis(600)
+                        .enableFadeAnimation(true)
+                        .enableIcon(false)
+                        .performClick(true)
+                        .dismissOnTouch(true)
+                        .setMaskColor(primaryColor)
+                        .setInfoText(getString(R.string.showcase_fab_average))
+                        .setTarget(currentTimerListFragmentInstance.fabButton)
+                        .setUsageId(SHOWCASE_FAB_ID)
+                        .show();
                 }
                 break;
             case 2:

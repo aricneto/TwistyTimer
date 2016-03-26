@@ -143,7 +143,7 @@
                         style="@style/SheetListItem"
                         android:clickable="false"
                         android:drawableLeft="@drawable/ic_share_black_24dp"
-                        android:text="Share session..." />
+                        android:text="@string/fab_share_title" />
 
                     <include
                         layout="@layout/view_divider" />
