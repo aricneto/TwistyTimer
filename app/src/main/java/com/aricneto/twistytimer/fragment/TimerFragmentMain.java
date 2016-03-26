@@ -636,7 +636,6 @@ public class TimerFragmentMain extends BaseFragment {
                         .enableIcon(false)
                         .performClick(true)
                         .dismissOnTouch(true)
-                        .setMaskColor(primaryColor)
                         .setInfoText(getString(R.string.showcase_fab_average))
                         .setTarget(currentTimerListFragmentInstance.fabButton)
                         .setUsageId(SHOWCASE_FAB_ID)

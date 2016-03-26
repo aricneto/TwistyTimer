@@ -205,5 +205,11 @@
     <string name="fab_share_histogram">Histograma</string>
     <string name="fab_share_histogram_solvecount">Distribuição de tempo do %1$s (%2$d resoluções)</string>
     <string name="import_progress_content_successful_imports">importações bem-sucedidas</string>
+    <string name="fab_share_title">Compartilhar sessão…</string>
+    <string name="showcase_fab_average">Você agora pode compartilhar suas médias!\nToque no botão para iniciar</string>
+    <string name="export_import_dialog_for_backup">Para backup</string>
+    <string name="export_import_dialog_for_other_timers">Para outros cronômetros</string>
+    <string name="export_import_dialog_from_backup">De um backup</string>
+    <string name="export_import_dialog_from_txt_file">De um arquivo .txt</string>
 
 </resources>

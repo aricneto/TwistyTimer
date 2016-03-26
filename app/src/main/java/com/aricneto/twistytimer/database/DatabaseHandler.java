@@ -744,9 +744,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Check if a record exists
      */
 
-    public boolean idExists(long _id) {
+    public boolean idExists(long _id, String table) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT 1 FROM algs WHERE _id=" + _id, null);
+        Cursor cursor = db.rawQuery("SELECT 1 FROM " + table + " WHERE _id=" + _id, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;

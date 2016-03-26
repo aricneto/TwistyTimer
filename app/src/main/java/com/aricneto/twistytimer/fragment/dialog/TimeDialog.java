@@ -179,11 +179,13 @@ public class TimeDialog extends DialogFragment {
         mId = getArguments().getLong("id");
         handler = new DatabaseHandler(getActivity());
 
+        //Log.d("TIME DIALOG", "mId: " + mId + "\nexists: " + handler.idExists(mId));
+
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //getDialog().getWindow().setWindowAnimations(R.style.DialogAnimationScale);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (handler.idExists(mId)) {
+        if (handler.idExists(mId, DatabaseHandler.TABLE_TIMES)) {
             solve = handler.getSolve(mId);
 
             timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));

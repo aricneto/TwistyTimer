@@ -211,7 +211,7 @@
     <string name="action_import">Import</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="name_category">Category</string>
-    <string name="export_progress_error">Unfortunately, an error ocurred while exporting.\nCheck your permissions</string>
+    <string name="export_progress_error">Unfortunately, an error occurred while exporting.\nCheck your permissions</string>
     <string name="fab_share_ao12">Ao12</string>
     <string name="fab_share_ao5">Ao5</string>
     <string name="fab_share_histogram">Histogram</string>
@@ -226,5 +226,9 @@
     <string name="cube_777_informal" translatable="false">7x7</string>
     <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
     <string name="fab_share_title">Share session…</string>
+    <string name="export_import_dialog_from_backup">From backup</string>
+    <string name="export_import_dialog_from_txt_file">From .txt file</string>
+    <string name="export_import_dialog_for_other_timers">For other timers</string>
+    <string name="export_import_dialog_for_backup">For backup</string>
 
 </resources>

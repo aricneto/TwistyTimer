@@ -144,7 +144,7 @@ public class AlgDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (handler.idExists(mId)) {
+        if (handler.idExists(mId, DatabaseHandler.TABLE_ALGS)) {
             algorithm = handler.getAlgorithm(mId);
             algText.setText(algorithm.getAlgs());
             nameText.setText(algorithm.getName());
