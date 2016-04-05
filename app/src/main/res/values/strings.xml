@@ -214,7 +214,7 @@
     <string name="export_progress_error">Unfortunately, an error occurred while exporting.\nCheck your permissions</string>
     <string name="fab_share_ao12">Ao12</string>
     <string name="fab_share_ao5">Ao5</string>
-    <string name="fab_share_histogram">Histogram</string>
+    <string name="fab_share_distribution">Distribution</string>
     <string name="fab_add_time">Add time</string>
     <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
     <string name="fab_share_histogram_solvecount">%1$s time distribution (%2$d solves)</string>
@@ -230,5 +230,6 @@
     <string name="export_import_dialog_from_txt_file">From .txt file</string>
     <string name="export_import_dialog_for_other_timers">For other timers</string>
     <string name="export_import_dialog_for_backup">For backup</string>
+    <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
 
 </resources>

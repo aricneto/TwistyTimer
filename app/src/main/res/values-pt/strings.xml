@@ -202,7 +202,7 @@
     <string name="fab_share_ao12">Média de 12</string>
     <string name="fab_share_ao5">Média de 5</string>
     <string name="fab_share_error">Não foi possível compartilhar. Certifique-se de que você fez resoluções o suficiente nesta sessão.</string>
-    <string name="fab_share_histogram">Histograma</string>
+    <string name="fab_share_distribution">Distribuição</string>
     <string name="fab_share_histogram_solvecount">Distribuição de tempo do %1$s (%2$d resoluções)</string>
     <string name="import_progress_content_successful_imports">importações bem-sucedidas</string>
     <string name="fab_share_title">Compartilhar sessão…</string>
@@ -211,5 +211,6 @@
     <string name="export_import_dialog_for_other_timers">Para outros cronômetros</string>
     <string name="export_import_dialog_from_backup">De um backup</string>
     <string name="export_import_dialog_from_txt_file">De um arquivo .txt</string>
+    <string name="permission_denied_explanation">Para a função de exportar/importar funcionar, você precisa garantir ao Twisty Timer o acesso ao seu armazenamento externo.</string>
 
 </resources>

@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class ExportImportDialog extends DialogFragment {
 
 
-    @Bind(R.id.help_button)     View helpButton;
+    //@Bind(R.id.help_button)     View helpButton;
     @Bind(R.id.export_backup)   View exportBackup;
     @Bind(R.id.export_external) View exportExternal;
     @Bind(R.id.import_backup)   View importBackup;
@@ -92,8 +92,8 @@ public class ExportImportDialog extends DialogFragment {
                 case R.id.import_button:
                     AnimUtils.toggleContentVisibility(importBackup, importExternal);
                     break;
-                case R.id.help_button:
-                    break;
+                //case R.id.help_button:
+                //    break;
             }
         }
     };
@@ -109,7 +109,7 @@ public class ExportImportDialog extends DialogFragment {
         exportExternal.setOnClickListener(clickListener);
         importBackup.setOnClickListener(clickListener);
         importExternal.setOnClickListener(clickListener);
-        helpButton.setOnClickListener(clickListener);
+        //helpButton.setOnClickListener(clickListener);
         importButton.setOnClickListener(clickListener);
         exportButton.setOnClickListener(clickListener);
 

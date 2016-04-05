@@ -316,8 +316,22 @@ public class PuzzleUtils {
         average = aoList.get(n);
         aoList.remove(n);
 
-        int max = Collections.max(aoList);
-        int min = Collections.min(aoList);
+        int best = Integer.MAX_VALUE;
+        // If we do Collections.max(), you'll get DNFs as best solves since they have time -1,
+        // so we have to do this workaround
+        for (int time : aoList) {
+            if (time != -1 && time < best)
+                best = time;
+        }
+        // In the rare case that all solves are DNFs, the best solve will be a DNF.
+        if (best == Integer.MAX_VALUE)
+            best = -1;
+
+        int worst;
+        if (aoList.contains(- 1))
+            worst = - 1;
+        else
+            worst = Collections.max(aoList);
 
         // So the last solves come first
         Collections.reverse(aoList);
@@ -328,12 +342,12 @@ public class PuzzleUtils {
         boolean markedMin = false;
 
         for (int time : aoList) {
-            if (time == max && ! markedMax) {
+            if (time == worst && ! markedMax) {
                 aoStringList.append("(");
                 aoStringList.append(convertTimeToString(time));
                 aoStringList.append("), ");
                 markedMax = true;
-            } else if (time == min && ! markedMin) {
+            } else if (time == best && ! markedMin) {
                 aoStringList.append("(");
                 aoStringList.append(convertTimeToString(time));
                 aoStringList.append("), ");
@@ -380,11 +394,16 @@ public class PuzzleUtils {
 
 
         ArrayList<Integer> timeList = new ArrayList<>();
-        int columnIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
+        int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
+        int penaltyIndex = cursor.getColumnIndex(DatabaseHandler.KEY_PENALTY);
         while (cursor.moveToNext()) {
             // Cut off decimals
-            int time = cursor.getInt(columnIndex);
-            time = time - (time % 1000);
+            int time = cursor.getInt(timeIndex);
+            int penalty = cursor.getInt(penaltyIndex);
+            if (penalty != PuzzleUtils.PENALTY_DNF)
+                time = time - (time % 1000);
+            else
+                time = - 1;
             timeList.add(time);
         }
 

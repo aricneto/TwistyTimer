@@ -202,12 +202,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sqlSelection;
         if (! history)
             sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC LIMIT " + limit;
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date ASC LIMIT " + limit;
         else
             sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC LIMIT " + limit;
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 1 ORDER BY date ASC LIMIT " + limit;
 
         return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
@@ -559,7 +557,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /**
      * Returns a truncated average of n, along with a list containing all times from that average.
-     * Best and worst time are marked.
      *
      * @param n             The "average of" (5, 12...)
      * @param puzzle        The puzzle name in database
@@ -603,6 +600,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                     if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
                         worst = time;
+                        time = PuzzleUtils.TIME_DNF;
                         dnfCount += 1;
                     }
 
@@ -611,7 +609,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     cursor.moveToNext();
                 }
                 if (disqualifyDNF && dnfCount > 1)
-                    timeList.add(- 1);
+                    timeList.add(PuzzleUtils.TIME_DNF);
                 else
                     timeList.add((sum - worst - best) / (n - 2));
             }

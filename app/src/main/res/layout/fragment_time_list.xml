@@ -164,7 +164,7 @@
                         android:id="@+id/fab_share_histogram"
                         style="@style/SheetListItem"
                         android:paddingLeft="56dp"
-                        android:text="@string/fab_share_histogram" />
+                        android:text="@string/fab_share_distribution" />
 
                     <TextView
                         android:id="@+id/fab_add_time"

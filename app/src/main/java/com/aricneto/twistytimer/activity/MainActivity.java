@@ -1,16 +1,20 @@
 package com.aricneto.twistytimer.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -68,7 +72,7 @@ import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
-        FileChooserDialog.FileCallback, ExportImportDialogInterface {
+    FileChooserDialog.FileCallback, ExportImportDialogInterface {
 
     private static final int DEBUG_ID         = 11;
     private static final int TIMER_ID         = 1;
@@ -81,8 +85,11 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private static final int ABOUT_ID         = 4;
     private static final int SETTINGS_ID      = 5;
 
-    private static final int REQUEST_SETTING = 42;
-    private static final int REQUEST_ABOUT   = 23;
+    private static final int REQUEST_SETTING           = 42;
+    private static final int REQUEST_ABOUT             = 23;
+    private static final int STORAGE_PERMISSION_CODE   = 11;
+
+    private static final String OPEN_EXPORT_IMPORT_DIALOG = "open_export_import_dialog";
 
     final MainActivity mainActivity = this;
 
@@ -102,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private DatabaseHandler handler;
 
     private boolean goBack = false;
+    private boolean openExportImportDialog;
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -140,14 +148,31 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
         if (savedInstanceState == null) {
             fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
-                    .commit();
+                .beginTransaction()
+                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
+                .commit();
+            try {
+                openExportImportDialog = savedInstanceState.getBoolean(OPEN_EXPORT_IMPORT_DIALOG);
+            } catch (Exception e) {
+                e.printStackTrace();
+                openExportImportDialog = false;
+            }
         }
 
         handleDrawer(savedInstanceState);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter("ACTIVITY"));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (openExportImportDialog) {
+            ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
+            exportImportDialog.setDialogInterface(mainActivity);
+            exportImportDialog.show(fragmentManager, "exportImport_dialog");
+            openExportImportDialog = false;
+        }
     }
 
     private void handleDrawer(Bundle savedInstanceState) {
@@ -159,186 +184,218 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
         // Setup drawer
         mDrawer = new DrawerBuilder()
-                .withActivity(activity)
-                .withDelayOnDrawerClose(- 1)
-                .withHeader(headerView)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_timer)
-                                .withIcon(R.drawable.ic_timer_black_24dp).withIconTintingEnabled(true).withIdentifier(TIMER_ID),
+            .withActivity(activity)
+            .withDelayOnDrawerClose(- 1)
+            .withHeader(headerView)
+            .addDrawerItems(
+                new PrimaryDrawerItem().withName(R.string.drawer_title_timer)
+                    .withIcon(R.drawable.ic_timer_black_24dp).withIconTintingEnabled(true).withIdentifier(TIMER_ID),
 
-                        new ExpandableDrawerItem().withName(R.string.drawer_title_reference).withIcon(R.drawable.ic_cube_unfolded_black_24dp).withSelectable(false).withSubItems(
-                                new SecondaryDrawerItem().withName(R.string.drawer_title_oll).withLevel(2)
-                                        .withIcon(R.drawable.ic_oll_black_24dp).withIconTintingEnabled(true).withIdentifier(OLL_ID),
+                new ExpandableDrawerItem().withName(R.string.drawer_title_reference).withIcon(R.drawable.ic_cube_unfolded_black_24dp).withSelectable(false).withSubItems(
+                    new SecondaryDrawerItem().withName(R.string.drawer_title_oll).withLevel(2)
+                        .withIcon(R.drawable.ic_oll_black_24dp).withIconTintingEnabled(true).withIdentifier(OLL_ID),
 
-                                new SecondaryDrawerItem().withName(R.string.drawer_title_pll).withLevel(2)
-                                        .withIcon(R.drawable.ic_pll_black_24dp).withIconTintingEnabled(true).withIdentifier(PLL_ID)
-                        ).withIconTintingEnabled(true),
+                    new SecondaryDrawerItem().withName(R.string.drawer_title_pll).withLevel(2)
+                        .withIcon(R.drawable.ic_pll_black_24dp).withIconTintingEnabled(true).withIdentifier(PLL_ID)
+                ).withIconTintingEnabled(true),
 
-                        new SectionDrawerItem().withName(R.string.drawer_title_other),
+                new SectionDrawerItem().withName(R.string.drawer_title_other),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_export_import)
-                                .withIcon(R.drawable.ic_folder_open_black_24dp).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(EXPORT_IMPORT_ID),
+                new PrimaryDrawerItem().withName(R.string.drawer_title_export_import)
+                    .withIcon(R.drawable.ic_folder_open_black_24dp).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(EXPORT_IMPORT_ID),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_changeTheme)
-                                .withIcon(R.drawable.ic_brush_black_24dp).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(THEME_ID),
+                new PrimaryDrawerItem().withName(R.string.drawer_title_changeTheme)
+                    .withIcon(R.drawable.ic_brush_black_24dp).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(THEME_ID),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_title_changeColorScheme)
-                                .withIcon(R.drawable.ic_scheme_black_24dp).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(SCHEME_ID),
+                new PrimaryDrawerItem().withName(R.string.drawer_title_changeColorScheme)
+                    .withIcon(R.drawable.ic_scheme_black_24dp).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(SCHEME_ID),
 
-                        new DividerDrawerItem(),
+                new DividerDrawerItem(),
 
-                        new PrimaryDrawerItem().withName(R.string.action_settings)
-                                .withIcon(R.drawable.ic_action_settings_black_24).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(SETTINGS_ID),
+                new PrimaryDrawerItem().withName(R.string.action_settings)
+                    .withIcon(R.drawable.ic_action_settings_black_24).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(SETTINGS_ID),
 
-                        new PrimaryDrawerItem().withName(R.string.action_donate)
-                                .withIcon(R.drawable.ic_mood_black_24dp).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(DONATE_ID),
+                new PrimaryDrawerItem().withName(R.string.action_donate)
+                    .withIcon(R.drawable.ic_mood_black_24dp).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(DONATE_ID),
 
-                        new PrimaryDrawerItem().withName(R.string.drawer_about)
-                                .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
-                                .withIdentifier(ABOUT_ID)
+                new PrimaryDrawerItem().withName(R.string.drawer_about)
+                    .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
+                    .withIdentifier(ABOUT_ID)
 
 
-                        //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 10000 SOLVES")
-                        //        .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
-                        //        .withIdentifier(DEBUG_ID)
-                        //
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                //,new PrimaryDrawerItem().withName("DEBUG OPTION - ADD 10000 SOLVES")
+                //        .withIcon(R.drawable.ic_action_help_black_24).withIconTintingEnabled(true).withSelectable(false)
+                //        .withIdentifier(DEBUG_ID)
+                //
+            )
+            .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                @Override
+                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
 
-                        boolean closeDrawer = true;
+                    boolean closeDrawer = true;
 
-                        switch ((int) drawerItem.getIdentifier()) {
-                            default:
-                                closeDrawer = false;
-                            case TIMER_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
-                                                .commit();
+                    switch ((int) drawerItem.getIdentifier()) {
+                        default:
+                            closeDrawer = false;
+                        case TIMER_ID:
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
+                                        .commit();
 
-                                    }
-                                });
-                                break;
+                                }
+                            });
+                            break;
 
-                            case OLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL), "fragment_algs_oll")
-                                                .commit();
+                        case OLL_ID:
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL), "fragment_algs_oll")
+                                        .commit();
 
-                                    }
-                                });
-                                break;
+                                }
+                            });
+                            break;
 
-                            case PLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL), "fragment_algs_pll")
-                                                .commit();
+                        case PLL_ID:
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL), "fragment_algs_pll")
+                                        .commit();
 
-                                    }
-                                });
-                                break;
+                                }
+                            });
+                            break;
 
-                            case EXPORT_IMPORT_ID:
+                        case EXPORT_IMPORT_ID:
+                            // Here, thisActivity is the current activity
+                            if (ContextCompat.checkSelfPermission(activity,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                                // Should we show an explanation?
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                                    new MaterialDialog.Builder(activity)
+                                        .content(R.string.permission_denied_explanation)
+                                        .positiveText(R.string.action_ok)
+                                        .negativeText(R.string.action_cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                ActivityCompat.requestPermissions(activity,
+                                                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                                                    STORAGE_PERMISSION_CODE);
+                                            }
+                                        })
+                                        .show();
+
+                                } else {
+
+                                    ActivityCompat.requestPermissions(activity,
+                                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                                        STORAGE_PERMISSION_CODE);
+                                }
+
+                            } else {
                                 ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
                                 exportImportDialog.setDialogInterface(mainActivity);
                                 exportImportDialog.show(fragmentManager, "exportImport_dialog");
-                                break;
+                            }
+                            break;
 
-                            case THEME_ID:
-                                ThemeSelectDialog themeSelectDialog = ThemeSelectDialog.newInstance();
-                                themeSelectDialog.show(fragmentManager, "theme_dialog");
-                                break;
+                        case THEME_ID:
+                            ThemeSelectDialog themeSelectDialog = ThemeSelectDialog.newInstance();
+                            themeSelectDialog.show(fragmentManager, "theme_dialog");
+                            break;
 
-                            case SCHEME_ID:
-                                SchemeSelectDialogMain schemeSelectDialogMain = SchemeSelectDialogMain.newInstance();
-                                schemeSelectDialogMain.show(fragmentManager, "scheme_dialog");
-                                break;
+                        case SCHEME_ID:
+                            SchemeSelectDialogMain schemeSelectDialogMain = SchemeSelectDialogMain.newInstance();
+                            schemeSelectDialogMain.show(fragmentManager, "scheme_dialog");
+                            break;
 
-                            case SETTINGS_ID:
-                                final Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivityForResult(settingsIntent, REQUEST_SETTING);
-                                    }
-                                });
-                                break;
+                        case SETTINGS_ID:
+                            final Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivityForResult(settingsIntent, REQUEST_SETTING);
+                                }
+                            });
+                            break;
 
-                            case DONATE_ID:
-                                if (BillingProcessor.isIabServiceAvailable(activity))
-                                    new MaterialDialog.Builder(activity)
-                                            .title(R.string.choose_donation_amount)
-                                            .items(R.array.donation_tiers)
-                                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                                @Override
-                                                public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                                    switch (which) {
-                                                        case 0:
-                                                            bp.purchase(activity, "donation_tier1");
-                                                            break;
-                                                        case 1:
-                                                            bp.purchase(activity, "donation_tier2");
-                                                            break;
-                                                        case 2:
-                                                            bp.purchase(activity, "donation_tier3");
-                                                            break;
-                                                        case 3:
-                                                            bp.purchase(activity, "donation_tier4");
-                                                            break;
-                                                    }
-                                                }
-                                            })
-                                            .show();
+                        case DONATE_ID:
+                            if (BillingProcessor.isIabServiceAvailable(activity))
+                                new MaterialDialog.Builder(activity)
+                                    .title(R.string.choose_donation_amount)
+                                    .items(R.array.donation_tiers)
+                                    .itemsCallback(new MaterialDialog.ListCallback() {
+                                        @Override
+                                        public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                            switch (which) {
+                                                case 0:
+                                                    bp.purchase(activity, "donation_tier1");
+                                                    break;
+                                                case 1:
+                                                    bp.purchase(activity, "donation_tier2");
+                                                    break;
+                                                case 2:
+                                                    bp.purchase(activity, "donation_tier3");
+                                                    break;
+                                                case 3:
+                                                    bp.purchase(activity, "donation_tier4");
+                                                    break;
+                                            }
+                                        }
+                                    })
+                                    .show();
 
-                                else
-                                    Toast.makeText(activity, "Google Play not available", Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(activity, "Google Play not available", Toast.LENGTH_LONG).show();
 
-                                break;
+                            break;
 
-                            case ABOUT_ID:
-                                final Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivityForResult(aboutIntent, REQUEST_ABOUT);
-                                    }
-                                });
-                                break;
+                        case ABOUT_ID:
+                            final Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivityForResult(aboutIntent, REQUEST_ABOUT);
+                                }
+                            });
+                            break;
 
 
-                            //case DEBUG_ID:
-                            //    Random rand = new Random();
-                            //    DatabaseHandler db = new DatabaseHandler(activity);
-                            //    for (int i = 0; i < 10000; i++) {
-                            //        db.addSolve(new Solve(30000 + rand.nextInt(2000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
-                            //    }
-                            //    break;
-                        }
-                        if (closeDrawer)
-                            mDrawerLayout.closeDrawers();
-                        return false;
+                        //case DEBUG_ID:
+                        //    Random rand = new Random();
+                        //    DatabaseHandler db = new DatabaseHandler(activity);
+                        //    for (int i = 0; i < 10000; i++) {
+                        //        db.addSolve(new Solve(30000 + rand.nextInt(2000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
+                        //    }
+                        //    break;
                     }
-                })
-                .withSavedInstance(savedInstanceState)
-                .build();
+                    if (closeDrawer)
+                        mDrawerLayout.closeDrawers();
+                    return false;
+                }
+            })
+            .withSavedInstance(savedInstanceState)
+            .build();
 
         mDrawerLayout = mDrawer.getDrawerLayout();
         mDrawerToggle = new SmoothActionBarDrawerToggle(this, mDrawerLayout, null, R.string.drawer_open, R.string.drawer_close);
@@ -419,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState = mDrawer.saveInstanceState(outState);
+        //outState.putBoolean(OPEN_EXPORT_IMPORT_DIALOG, openExportImportDialog);
         super.onSaveInstanceState(outState);
     }
 
@@ -434,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             File fileDir = new File(Environment.getExternalStorageDirectory() + "/TwistyTimer");
             fileDir.mkdir();
             String fileName = "Solves_" + exportImportPuzzle + "_" + exportImportCategory + "_"
-                    + DateTime.now().toString("dd-MMM-y'_'kk-mm") + ".txt";
+                + DateTime.now().toString("dd-MMM-y'_'kk-mm") + ".txt";
 
             final ExportSolves exportSolves = new ExportSolves(this, fileDir, fileName, false);
             exportSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -473,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         if (file.getName().toLowerCase().endsWith(".txt")) {
             if (importTag.equals("import_external")) {
                 ExportImportSelectionDialog selectionDialog =
-                        ExportImportSelectionDialog.newInstance(ExportImportSelectionDialog.TYPE_IMPORT);
+                    ExportImportSelectionDialog.newInstance(ExportImportSelectionDialog.TYPE_IMPORT);
                 selectionDialog.setDialogInterface(this);
                 selectionDialog.show(fragmentManager, "export_import_selection");
             } else {
@@ -483,11 +541,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         } else {
             // TODO: ADD HELP
             new MaterialDialog.Builder(this)
-                    .title(R.string.file_selection_error_title)
-                    .content(R.string.file_selection_error_content, ".txt")
-                    .neutralText(R.string.action_help)
-                    .positiveText(R.string.action_ok)
-                    .show();
+                .title(R.string.file_selection_error_title)
+                .content(R.string.file_selection_error_content, ".txt")
+                .positiveText(R.string.action_ok)
+                .show();
         }
     }
 
@@ -508,10 +565,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         @Override
         protected void onPreExecute() {
             progressDialog = new MaterialDialog.Builder(mContext)
-                    .content(R.string.export_progress_title)
-                    .progress(false, 0, true)
-                    .cancelable(false)
-                    .show();
+                .content(R.string.export_progress_title)
+                .progress(false, 0, true)
+                .cancelable(false)
+                .show();
             super.onPreExecute();
         }
 
@@ -592,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                 if (isExported)
                     progressDialog.setContent(Html.fromHtml(getString(R.string.export_progress_complete)
-                            + "<br><br>" + "<small><tt>" + fileDir.getAbsolutePath() + "/" + outFileName + "</tt></small>"));
+                        + "<br><br>" + "<small><tt>" + fileDir.getAbsolutePath() + "/" + outFileName + "</tt></small>"));
                 else
                     progressDialog.setContent(R.string.export_progress_error);
             }
@@ -620,10 +677,10 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new MaterialDialog.Builder(mContext)
-                    .content(R.string.import_progress_title)
-                    .progress(false, 0, true)
-                    .cancelable(false)
-                    .show();
+                .content(R.string.import_progress_title)
+                .progress(false, 0, true)
+                .cancelable(false)
+                .show();
         }
 
         @Override
@@ -655,8 +712,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     while ((line = csvReader.readNext()) != null) {
                         try {
                             solveList.add(new Solve(
-                                    Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]),
-                                    line[4], Integer.parseInt(line[5]), line[6], true));
+                                Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]),
+                                line[4], Integer.parseInt(line[5]), line[6], true));
                         } catch (Exception e) {
                             parseErrors++;
                         }
@@ -722,11 +779,11 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             if (progressDialog.isShowing()) {
                 progressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
                 progressDialog.setContent(Html.fromHtml(getString(R.string.import_progress_content)
-                        + "<br><br><small><tt>"
-                        + "<b>" + successes + "</b> " + getString(R.string.import_progress_content_successful_imports)
-                        + "<br><b>" + duplicates + "</b> " + getString(R.string.import_progress_content_ignored_duplicates)
-                        + "<br><b>" + parseErrors + "</b> " + getString(R.string.import_progress_content_errors)
-                        + "</small></tt>"));
+                    + "<br><br><small><tt>"
+                    + "<b>" + successes + "</b> " + getString(R.string.import_progress_content_successful_imports)
+                    + "<br><b>" + duplicates + "</b> " + getString(R.string.import_progress_content_ignored_duplicates)
+                    + "<br><b>" + parseErrors + "</b> " + getString(R.string.import_progress_content_errors)
+                    + "</small></tt>"));
             }
             Broadcaster.broadcast(mainActivity, "TIMELIST", "REFRESH TIME");
         }
