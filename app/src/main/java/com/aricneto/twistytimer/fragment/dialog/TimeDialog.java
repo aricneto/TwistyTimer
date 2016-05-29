@@ -1,9 +1,6 @@
-package com.aricneto.twistytimer.fragment;
+package com.aricneto.twistytimer.fragment.dialog;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -52,7 +50,6 @@ public class TimeDialog extends DialogFragment {
 
     private long            mId;
     private DatabaseHandler handler;
-    private SQLiteDatabase  db;
     private Solve           solve;
     private DialogListener  dialogListener;
 
@@ -84,14 +81,14 @@ public class TimeDialog extends DialogFragment {
                                 case R.id.history_to:
                                     solve.setHistory(true);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_history), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
                                 case R.id.history_from:
                                     solve.setHistory(false);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_session), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
@@ -119,7 +116,7 @@ public class TimeDialog extends DialogFragment {
                                             solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
                                             break;
                                     }
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     // dismiss dialog
                                     updateList();
                                     return true;
@@ -135,7 +132,7 @@ public class TimeDialog extends DialogFragment {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     solve.setComment(input.toString());
-                                    handler.updateSolveWithId(solve);
+                                    handler.updateSolve(solve);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     updateList();
                                 }
@@ -181,16 +178,17 @@ public class TimeDialog extends DialogFragment {
 
         mId = getArguments().getLong("id");
         handler = new DatabaseHandler(getActivity());
-        db = handler.getWritableDatabase();
+
+        //Log.d("TIME DIALOG", "mId: " + mId + "\nexists: " + handler.idExists(mId));
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //getDialog().getWindow().setWindowAnimations(R.style.DialogAnimationScale);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (idExists(mId)) {
+        if (handler.idExists(mId, DatabaseHandler.TABLE_TIMES)) {
             solve = handler.getSolve(mId);
 
-            timeText.setText(PuzzleUtils.convertTimeToString(solve.getTime()));
+            timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
             dateText.setText(new DateTime(solve.getDate()).toString("d MMM y'\n'H':'mm"));
 
             scrambleText.setText(solve.getScramble());
@@ -239,29 +237,20 @@ public class TimeDialog extends DialogFragment {
             dialogListener.onUpdateDialog();
         } else {
             Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME ADDED");
+            sendIntent.putExtra("action", "TIME UPDATED");
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
         }
         dismiss();
     }
 
-    // Check if a record exists
-    public boolean idExists(long _id) {
-        Cursor cursor = db.rawQuery("SELECT 1 FROM times WHERE _id=" + _id, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
-    }
-
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        db.close();
-        handler.close();
+    public void onDestroyView() {
+        handler.closeDB();
         ButterKnife.unbind(this);
         if (dialogListener != null)
             dialogListener.onDismissDialog();
-        super.onDismiss(dialog);
+        super.onDestroyView();
     }
 
 }

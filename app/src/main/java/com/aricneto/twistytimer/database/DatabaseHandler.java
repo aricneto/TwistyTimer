@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -14,12 +15,6 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
-import org.joda.time.DateTime;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,44 +48,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String SUBSET_PLL = "PLL";
 
 
-    private static final String RED = "R";
-    private static final String GRE = "G";
-    private static final String BLU = "B";
-    private static final String ORA = "O";
-    private static final String WHI = "W";
-    private static final String YEL = "Y";
-    private static final String NUL = "N";
-
-    private Context mContext;
-
+    private static final String RED                = "R";
+    private static final String GRE                = "G";
+    private static final String BLU                = "B";
+    private static final String ORA                = "O";
+    private static final String WHI                = "W";
+    private static final String YEL                = "Y";
+    private static final String NUL                = "N";
     // Database Version
-    private static final int DATABASE_VERSION = 9;
-
+    private static final int    DATABASE_VERSION   = 9;
     // Database Name
-    private static final String DATABASE_NAME = "databaseManager";
-
+    private static final String DATABASE_NAME      = "databaseManager";
     private static final String CREATE_TABLE_TIMES =
-            "CREATE TABLE " + TABLE_TIMES + "("
-                    + KEY_ID + " INTEGER PRIMARY KEY,"
-                    + KEY_TYPE + " TEXT,"
-                    + KEY_SUBTYPE + " TEXT,"
-                    + KEY_TIME + " INTEGER,"
-                    + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),"
-                    + KEY_SCRAMBLE + " TEXT,"
-                    + KEY_PENALTY + " INTEGER,"
-                    + KEY_COMMENT + " TEXT,"
-                    + KEY_HISTORY + " BOOLEAN"
-                    + ")";
-
-    private static final String CREATE_TABLE_ALGS =
-            "CREATE TABLE " + TABLE_ALGS + "("
-                    + KEY_ID + " INTEGER PRIMARY KEY,"
-                    + KEY_SUBSET + " TEXT,"
-                    + KEY_NAME + " TEXT,"
-                    + KEY_STATE + " TEXT,"
-                    + KEY_ALGS + " TEXT,"
-                    + KEY_PROGRESS + " INTEGER"
-                    + ")";
+        "CREATE TABLE " + TABLE_TIMES + "("
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_TYPE + " TEXT,"
+            + KEY_SUBTYPE + " TEXT,"
+            + KEY_TIME + " INTEGER,"
+            + KEY_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),"
+            + KEY_SCRAMBLE + " TEXT,"
+            + KEY_PENALTY + " INTEGER,"
+            + KEY_COMMENT + " TEXT,"
+            + KEY_HISTORY + " BOOLEAN"
+            + ")";
+    private static final String CREATE_TABLE_ALGS  =
+        "CREATE TABLE " + TABLE_ALGS + "("
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_SUBSET + " TEXT,"
+            + KEY_NAME + " TEXT,"
+            + KEY_STATE + " TEXT,"
+            + KEY_ALGS + " TEXT,"
+            + KEY_PROGRESS + " INTEGER"
+            + ")";
+    private Context mContext;
 
 
     public DatabaseHandler(Context context) {
@@ -111,7 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older tables if existed
         Log.d("Database upgrade", "Upgrading from"
-                + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+            + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
         switch (oldVersion) {
             case 6:
                 db.execSQL("ALTER TABLE times ADD COLUMN " + KEY_HISTORY + " BOOLEAN DEFAULT 0");
@@ -138,17 +128,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_ALGS, new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+            new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Algorithm algorithm = new Algorithm(
-                cursor.getLong(0),  // id
-                cursor.getString(1), // subset
-                cursor.getString(2), // name
-                cursor.getString(3), // state
-                cursor.getString(4), // algs
-                cursor.getInt(5)); // progress
+            cursor.getLong(0),  // id
+            cursor.getString(1), // subset
+            cursor.getString(2), // name
+            cursor.getString(3), // state
+            cursor.getString(4), // algs
+            cursor.getInt(5)); // progress
 
         // Return alg
         cursor.close();
@@ -163,7 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Updating row
         return db.update(TABLE_ALGS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(id) });
+            new String[] { String.valueOf(id) });
     }
 
     public int updateAlgorithmProgress(long id, int progress) {
@@ -174,21 +164,65 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Updating row
         return db.update(TABLE_ALGS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(id) });
+            new String[] { String.valueOf(id) });
     }
 
+
+    /**
+     * Returns all solves from history or session, from puzzle and category
+     * @param type
+     * @param subtype
+     * @return
+     */
     public Cursor getAllSolvesFrom(String type, String subtype, boolean history) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sqlSelection;
         if (! history)
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
         else
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
+
+        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
+    }
+
+    /**
+     * Returns all solves from history or session, from puzzle and category with a limit
+     * @param type
+     * @param subtype
+     * @return
+     */
+    public Cursor getAllSolvesFromWithLimit(int limit, String type, String subtype, boolean history) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlSelection;
+        if (! history)
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date ASC LIMIT " + limit;
+        else
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 1 ORDER BY date ASC LIMIT " + limit;
+
+        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
+    }
+
+    /**
+     * Returns all solves from puzzle and category
+     * @param type
+     * @param subtype
+     * @return
+     */
+
+    public Cursor getAllSolvesFrom(String type, String subtype) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlSelection;
+        sqlSelection =
+            " WHERE type =? AND subtype =? AND penalty!=" + PuzzleUtils.PENALTY_HIDETIME;
 
         return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
@@ -209,37 +243,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Updating row
         return db.update(TABLE_TIMES, values, KEY_TYPE + " = ? AND " + KEY_SUBTYPE + " =?",
-                new String[] { type, subtype });
+            new String[] { type, subtype });
     }
 
 
     // Adding new solve
-    public void addSolve(Solve solve) {
-        if (solve.getTime() != 0) {
-            SQLiteDatabase db = this.getWritableDatabase();
+    public long addSolve(Solve solve) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues values = new ContentValues();
-            values.put(KEY_TYPE, solve.getPuzzle());
-            values.put(KEY_SUBTYPE, solve.getSubtype());
-            values.put(KEY_TIME, solve.getTime());
-            values.put(KEY_DATE, solve.getDate());
-            values.put(KEY_SCRAMBLE, solve.getScramble());
-            values.put(KEY_PENALTY, solve.getPenalty());
-            values.put(KEY_COMMENT, solve.getComment());
-            values.put(KEY_HISTORY, solve.isHistory());
+        // Cutting off last digit to fix rounding errors
+        int time = solve.getTime();
+        time = time - (time % 10);
 
-            // Inserting Row
-            db.insert(TABLE_TIMES, null, values);
-        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_TYPE, solve.getPuzzle());
+        values.put(KEY_SUBTYPE, solve.getSubtype());
+        values.put(KEY_TIME, time);
+        values.put(KEY_DATE, solve.getDate());
+        values.put(KEY_SCRAMBLE, solve.getScramble());
+        values.put(KEY_PENALTY, solve.getPenalty());
+        values.put(KEY_COMMENT, solve.getComment());
+        values.put(KEY_HISTORY, solve.isHistory());
+
+        // Inserting Row
+        return db.insert(TABLE_TIMES, null, values);
     }
 
-    /**
-     * Updates a solve based on the timestamp and time
-     *
-     * @param solve
-     *
-     * @return
-     */
     public int updateSolve(Solve solve) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -254,46 +283,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_HISTORY, solve.isHistory());
 
         // Updating row
-        return db.update(TABLE_TIMES, values, KEY_TYPE + " =? AND " + KEY_SUBTYPE + " =? AND " + KEY_DATE + " =?",
-                new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getDate()) });
-    }
-
-    public int updateSolveWithId(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_TYPE, solve.getPuzzle());
-        values.put(KEY_SUBTYPE, solve.getSubtype());
-        values.put(KEY_TIME, solve.getTime());
-        values.put(KEY_DATE, solve.getDate());
-        values.put(KEY_SCRAMBLE, solve.getScramble());
-        values.put(KEY_PENALTY, solve.getPenalty());
-        values.put(KEY_COMMENT, solve.getComment());
-        values.put(KEY_HISTORY, solve.isHistory());
-
-        // Updating row
         return db.update(TABLE_TIMES, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(solve.getId()) });
+            new String[] { String.valueOf(solve.getId()) });
     }
 
     public Solve getSolve(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_TIMES, new String[] { KEY_ID, KEY_TIME, KEY_TYPE, KEY_SUBTYPE, KEY_DATE, KEY_SCRAMBLE, KEY_PENALTY, KEY_COMMENT, KEY_HISTORY }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+            new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Solve solve = new Solve(
-                cursor.getInt(0),
-                cursor.getInt(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getLong(4),
-                cursor.getString(5),
-                cursor.getInt(6),
-                cursor.getString(7),
-                getBoolean(cursor, 8));
+            cursor.getInt(0),
+            cursor.getInt(1),
+            cursor.getString(2),
+            cursor.getString(3),
+            cursor.getLong(4),
+            cursor.getString(5),
+            cursor.getInt(6),
+            cursor.getString(7),
+            getBoolean(cursor, 8));
 
         // Return solve
         cursor.close();
@@ -310,7 +321,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT DISTINCT " + KEY_SUBTYPE + " FROM "
-                + TABLE_TIMES + " WHERE " + KEY_TYPE + " ='" + type + "' ORDER BY " + KEY_SUBTYPE + " ASC", null);
+            + TABLE_TIMES + " WHERE " + KEY_TYPE + " ='" + type + "' ORDER BY " + KEY_SUBTYPE + " ASC", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -323,6 +334,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Returns the solve count with limit
+     *
+     * @return
+     */
+    public int getSolveCountWithLimit(int limit, String type, String subtype, boolean session) {
+        String sqlSelection;
+        if (session)
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 LIMIT " + limit;
+        else
+            sqlSelection =
+                " WHERE type =? AND subtype =? AND penalty!=10 LIMIT " + limit;
+
+        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
+
+        int count = cursor.getCount();
+        cursor.close();
+        // Return count
+        return count;
+    }
+
+    /**
      * Returns the solve count
      *
      * @return
@@ -331,10 +367,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sqlSelection;
         if (session)
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0";
         else
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10";
+                " WHERE type =? AND subtype =? AND penalty!=10";
 
         String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -371,21 +407,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sqlSelection;
         if (session)
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date DESC ";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date DESC ";
         else
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF;
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF;
 
-        cursor = db.rawQuery("SELECT " + minOrMax + " FROM " + TABLE_TIMES + sqlSelection,
+        try {
+            cursor = db.rawQuery("SELECT " + minOrMax + " FROM " + TABLE_TIMES + sqlSelection,
                 new String[] { puzzle, subtype });
-        cursor.moveToFirst();
 
-        if (cursor.getCount() != 0)
-            time = cursor.getInt(0);
+            if (cursor.moveToFirst())
+                time = cursor.getInt(0);
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        cursor.close();
         return time;
     }
 
@@ -397,15 +436,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sqlSelection;
         if (session)
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF + " AND history = 0";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
         else
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF;
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF;
 
         cursor = db.rawQuery("SELECT AVG(time) FROM " + TABLE_TIMES + sqlSelection,
-                new String[] { puzzle, type });
+            new String[] { puzzle, type });
         cursor.moveToFirst();
 
         if (cursor.getCount() != 0)
@@ -430,12 +469,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
+            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
 
         Cursor cursor;
 
         cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
-                new String[] { puzzle, type });
+            new String[] { puzzle, type });
 
         if (cursor.getCount() >= n) {
 
@@ -492,21 +531,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sqlSelection;
         if (session)
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF + " AND history = 0";
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
         else
             sqlSelection =
-                    " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                            + PuzzleUtils.PENALTY_DNF;
+                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
+                    + PuzzleUtils.PENALTY_DNF;
 
         Cursor cursor;
 
         cursor = db.rawQuery("SELECT time FROM " + TABLE_TIMES + sqlSelection + " LIMIT " + n,
-                new String[] { puzzle, type });
+            new String[] { puzzle, type });
 
         if (cursor.getCount() >= n) {
             cursor = db.rawQuery("SELECT AVG(time) FROM (SELECT * FROM " + TABLE_TIMES + sqlSelection + " ORDER BY date DESC LIMIT " + n + ")",
-                    new String[] { puzzle, type });
+                new String[] { puzzle, type });
             if (cursor.moveToFirst())
                 time = cursor.getInt(0);
         }
@@ -515,6 +554,69 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return time;
     }
 
+
+    /**
+     * Returns a truncated average of n, along with a list containing all times from that average.
+     *
+     * @param n             The "average of" (5, 12...)
+     * @param puzzle        The puzzle name in database
+     * @param type          The puzzle type in database
+     * @param disqualifyDNF True 2 DNFs disqualify the attempt
+     *
+     * @return
+     */
+
+    public ArrayList<Integer> getListOfTruncatedAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<Integer> timeList = new ArrayList<>(n + 1);
+
+        String sqlSelection =
+            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
+
+        Cursor cursor;
+
+        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
+            new String[] { puzzle, type });
+
+        if (cursor.getCount() >= n) {
+
+            int timeIndex = cursor.getColumnIndex(KEY_TIME);
+            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
+
+            if (cursor.moveToFirst()) {
+                int worst = 0;
+                int best = Integer.MAX_VALUE;
+                int sum = 0;
+                int dnfCount = 0;
+                for (int i = 0; i < n; i++) {
+                    int time = cursor.getInt(timeIndex); // time
+                    sum += time;
+
+                    if (time > worst && dnfCount == 0)
+                        worst = time;
+                    if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
+                        best = time;
+
+                    if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
+                        worst = time;
+                        time = PuzzleUtils.TIME_DNF;
+                        dnfCount += 1;
+                    }
+
+                    timeList.add(time);
+
+                    cursor.moveToNext();
+                }
+                if (disqualifyDNF && dnfCount > 1)
+                    timeList.add(PuzzleUtils.TIME_DNF);
+                else
+                    timeList.add((sum - worst - best) / (n - 2));
+            }
+        }
+        cursor.close();
+        return timeList;
+    }
 
     /**
      * Returns best average of n.
@@ -531,12 +633,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 ORDER BY date DESC";
+            " WHERE type =? AND subtype =? AND penalty!=10 ORDER BY date DESC";
 
         Cursor cursor;
 
         cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection,
-                new String[] { puzzle, type });
+            new String[] { puzzle, type });
         cursor.moveToFirst();
 
         int bestAverage = Integer.MAX_VALUE;
@@ -625,13 +727,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
     }
 
-    // Delete a single solve based on timestamp and time
-    public int deleteSolveWithTimestamp(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_DATE + " = ?",
-                new String[] { String.valueOf(solve.getDate()) });
-    }
-
     /**
      * Deletes all solves from a subtype, thus removing the subtype
      *
@@ -640,7 +735,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public int deleteSubtype(String type, String subtype) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ?",
-                new String[] { type, subtype });
+            new String[] { type, subtype });
+    }
+
+    /**
+     * Check if a record exists
+     */
+
+    public boolean idExists(long _id, String table) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM " + table + " WHERE _id=" + _id, null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
     }
 
     /**
@@ -655,45 +762,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_TIMES, contentValues, KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=?", new String[] { type, subtype });
     }
 
-
-    /**
-     * Exports all solves to a .csv file
-     */
-    public Boolean backupDatabaseCSV(File fileDir, String outFileName) {
+    public Cursor getAllSolves() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Boolean returnCode = false;
-        int i = 0;
-        String csvHeader = "Puzzle,Type,Time(seconds),Date,Scramble,Penalty,Comment\n";
-        String csvValues = "";
-
-        try {
-            File outFile = new File(fileDir, outFileName);
-            FileWriter fileWriter = new FileWriter(outFile);
-            BufferedWriter out = new BufferedWriter(fileWriter);
-            Cursor cursor = db.rawQuery("SELECT * FROM times", null);
-            if (cursor != null) {
-                out.write(csvHeader);
-                while (cursor.moveToNext()) {
-                    csvValues = "\"" + cursor.getString(1) + "\",";
-                    csvValues += "\"" + cursor.getString(2) + "\",";
-                    csvValues += "\"" + Integer.toString(cursor.getInt(3) * 1000) + "\",";
-                    csvValues += "\"" + new DateTime(cursor.getLong(4)).toString() + "\",";
-                    csvValues += "\"" + cursor.getString(5) + "\",";
-                    csvValues += "\"" + PuzzleUtils.convertPenaltyToString(cursor.getInt(6)) + "\",";
-                    csvValues += "\"" + cursor.getString(7) + "\"\n";
-                    out.write(csvValues);
-                }
-                cursor.close();
-            }
-            out.close();
-            returnCode = true;
-        } catch (IOException e) {
-            returnCode = false;
-            Log.d("ERROR", "IOException: " + e.getMessage());
-        }
-
-        return returnCode;
+        return db.rawQuery("SELECT * FROM times WHERE penalty!=" + PuzzleUtils.PENALTY_HIDETIME, null);
     }
+
+    public boolean solveExists(Solve solve) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return DatabaseUtils.queryNumEntries(db, TABLE_TIMES, "type=? AND subtype =? AND time=? AND scramble=? AND date=?", new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getTime()), solve.getScramble(), String.valueOf(solve.getDate()) }) > 0;
+
+    }
+
+
+    // TODO: this info should REALLY be in a separate file. I'll get to it when I add other alg sets.
 
     private void createInitialAlgs(SQLiteDatabase db) {
         // OLL

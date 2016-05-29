@@ -33,9 +33,9 @@
     </notice>
     <notice>
         <name>FAB</name>
-        <url>https://github.com/Clans/FloatingActionButton</url>
-        <copyright>Copyright 2015 Dmytro Tarianyk</copyright>
-        <license>Apache Software License 2.0</license>
+        <url>https://github.com/gowong/material-sheet-fab</url>
+        <copyright>Copyright 2015 Gordon Wong</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>Prisma Puzzle Timer</name>
@@ -71,6 +71,12 @@
         <name>TNoodle</name>
         <url>https://github.com/cubing/tnoodle</url>
         <copyright>Copyright 2016 Jeremy Fleischman</copyright>
+        <license>GNU General Public License 3.0</license>
+    </notice>
+    <notice>
+        <name>PlusTimer</name>
+        <url>https://github.com/plusCubed/plusTimer</url>
+        <copyright>Copyright (C) 2014  Daniel Ciao</copyright>
         <license>GNU General Public License 3.0</license>
     </notice>
 </notices>

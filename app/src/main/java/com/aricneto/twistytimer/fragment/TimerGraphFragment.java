@@ -84,8 +84,17 @@ public class TimerGraphFragment extends Fragment {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
                 switch (intent.getStringExtra("action")) {
                     case "MOVED TO HISTORY":
-                    case "TIME ADDED":
+                    case "TIME UPDATED":
+                    case "REFRESH TIME":
                         generateChart();
+                        if (refreshText.getVisibility() == View.GONE) {
+                            refreshText.setVisibility(View.VISIBLE);
+                            toggleCardStats(View.GONE);
+                        }
+                        break;
+                    case "TIME ADDED":
+                        if (! history)
+                            generateChart();
                         if (refreshText.getVisibility() == View.GONE) {
                             refreshText.setVisibility(View.VISIBLE);
                             toggleCardStats(View.GONE);
@@ -156,7 +165,7 @@ public class TimerGraphFragment extends Fragment {
                         params.height = container.getHeight();
                         lineChartView.setLayoutParams(params);
                         lineChartView.requestLayout();
-                        root.findViewById(R.id.graphScroll).setScrollY(params.height/2);
+                        root.findViewById(R.id.graphScroll).setScrollY(params.height / 2);
                     }
                 }
             });
@@ -178,7 +187,6 @@ public class TimerGraphFragment extends Fragment {
         lineChartView.getAxisRight().setEnabled(false);
         lineChartView.getLegend().setEnabled(false);
         lineChartView.setDescription("");
-
 
         axisLeft.setDrawLimitLinesBehindData(true);
         axisLeft.setDrawGridLines(true);
@@ -275,17 +283,18 @@ public class TimerGraphFragment extends Fragment {
 
             lineDataSet.setLineWidth(2f);
             lineDataSet.enableDashedLine(10f, 10f, 0);
-            lineDataSet.setCircleRadius(3f);
+            lineDataSet.setDrawCircles(false);
+            //lineDataSet.setCircleRadius(3f);
             lineDataSet.setColor(Color.WHITE);
             lineDataSet.setHighlightEnabled(false);
-            lineDataSet.setCircleColor(Color.WHITE);
+            //lineDataSet.setCircleColor(Color.WHITE);
             lineDataSet.setDrawValues(false);
 
             LineData lineData = new LineData(objects.second, lineDataSet);
 
             lineChartView.setData(lineData);
             // Animates and refreshes the chart
-            lineChartView.animateXY(1000, 1000);
+            lineChartView.animateY(1000);
         }
     }
 
@@ -300,6 +309,7 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected int[] doInBackground(Void... voids) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             int BestAvg3 = dbHandler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg5 = dbHandler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
             int BestAvg12 = dbHandler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);

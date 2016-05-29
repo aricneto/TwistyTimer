@@ -46,7 +46,7 @@
     <string name="select_penalty">Select penalty</string>
     <string name="inspection">Inspection</string>
     <string name="add_time">Add time</string>
-    <string name="add_time_hint" translatable="false">00:00.00</string>
+    <string name="add_time_hint" translatable="false">1:23.45</string>
     <string name="action_add">Add</string>
     <string name="action_remove">Remove</string>
     <string name="remove_subtype_title">Select category to remove</string>
@@ -61,12 +61,10 @@
     <string name="list_empty_state_message_history">Nothing here yet!\nAll your old solves will be stored here.</string>
     <string name="drawer_title_timer">Timer</string>
     <string name="drawer_title_other">Other</string>
-    <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best.</string>
-    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far!</string>
+    <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best by %1$s</string>
+    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far, beating you record by %1$s</string>
     <string name="scramble_text_tap_hint">Tap here to see scramble</string>
     <string name="action_ok">OK</string>
-    <string name="saved_to">Saved to</string>
-    <string name="drawer_title_export">Export times</string>
     <string name="drawer_title_changeTheme">App theme</string>
     <string name="graph_stats_title">Stats</string>
     <string name="graph_card_global">Best</string>
@@ -168,7 +166,6 @@
     <string name="enable_advanced">Enable advanced settings</string>
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
-    <string name="donation_thanks">Thank you for donating :)</string>
     <string name="source">Source</string>
     <string name="startCueTitle">Start cue</string>
     <string name="startCueSummary">Change text color when the timer is ready to start</string>
@@ -179,7 +176,6 @@
     <string name="hideTimeSummary">The timer will display your time when you finish</string>
     <string name="hideTimeText">…</string>
     <string name="scrambleImageSize_text">Scramble image size</string>
-    <string name="action_update_progress">Update progress</string>
     <string name="panel_swipe_down_to_hide">Swipe down to hide</string>
     <string name="optimal_cross">Optimal cross on</string>
     <string name="optimal_x_cross">Optimal extended cross on</string>
@@ -187,7 +183,6 @@
     <string name="showHintsTitle">Show hints</string>
     <string name="showHintsSummary">Enables cross hints for the 3x3 puzzle</string>
     <string name="hint">Hint</string>
-    <string name="whats_new">What\'s new</string>
     <string name="warning">Warning</string>
     <string name="action_default">Default</string>
     <string name="scrambleImageSize_summary">Controls the size of the scramble image</string>
@@ -196,5 +191,45 @@
     <string name="timer_text_size_summary">Controls the size of the timer text</string>
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
     <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
+    <string name="drawer_title_export_import">Export/Import</string>
+    <string name="dialog_export_import_export">Export…</string>
+    <string name="dialog_export_import_import">Import…</string>
+    <string name="action_help">Help</string>
+    <string name="action_choose">Choose</string>
+    <string name="import_progress_title">Importing solves…</string>
+    <string name="import_progress_content">Import finished with:</string>
+    <string name="import_progress_content_successful_imports">successful imports</string>
+    <string name="import_progress_content_ignored_duplicates">ignored duplicates</string>
+    <string name="import_progress_content_errors">errors</string>
+    <string name="file_selection_error_content">Make sure you are selecting a valid %1$s file</string>
+    <string name="file_selection_error_title">Wrong file type</string>
+    <string name="import_external_content_first">In the next step, select a .txt file that is in the following format, with one solve per line:\n\n<small><tt>\"time\"; \"scramble\"; \"date\"\n\n<b>Example:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
+    <string name="import_external_title">Importing from .txt</string>
+    <string name="export_progress_title">Exporting…</string>
+    <string name="export_progress_complete">Successfully exported to:</string>
+    <string name="action_export">Export</string>
+    <string name="action_import">Import</string>
+    <string name="name_puzzle">Puzzle</string>
+    <string name="name_category">Category</string>
+    <string name="export_progress_error">Unfortunately, an error occurred while exporting.\nCheck your permissions</string>
+    <string name="fab_share_ao12">Ao12</string>
+    <string name="fab_share_ao5">Ao5</string>
+    <string name="fab_share_distribution">Distribution</string>
+    <string name="fab_add_time">Add time</string>
+    <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
+    <string name="fab_share_histogram_solvecount">%1$s time distribution (%2$d solves)</string>
+    <string name="cube_333_informal" translatable="false">3x3</string>
+    <string name="cube_222_informal" translatable="false">2x2</string>
+    <string name="cube_444_informal" translatable="false">4x4</string>
+    <string name="cube_555_informal" translatable="false">5x5</string>
+    <string name="cube_666_informal" translatable="false">6x6</string>
+    <string name="cube_777_informal" translatable="false">7x7</string>
+    <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
+    <string name="fab_share_title">Share session…</string>
+    <string name="export_import_dialog_from_backup">From backup</string>
+    <string name="export_import_dialog_from_txt_file">From .txt file</string>
+    <string name="export_import_dialog_for_other_timers">For other timers</string>
+    <string name="export_import_dialog_for_backup">For backup</string>
+    <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
 
 </resources>

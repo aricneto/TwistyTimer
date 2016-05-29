@@ -11,8 +11,8 @@ android {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 13
-        versionName "1.2.1"
+        versionCode 16
+        versionName "1.3.1"
     }
     buildTypes {
         release {
@@ -28,12 +28,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':TNoodle')
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:support-v4:23.2.0'
-    compile 'com.android.support:cardview-v7:23.2.0'
-    compile 'com.android.support:recyclerview-v7:23.2.0'
-    compile 'com.android.support:gridlayout-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
+    compile project(':opencsv')
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:gridlayout-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
     // Observable scrollview
@@ -42,14 +43,17 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.6@aar') {
         transitive = true
     }
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.6@aar') {
+        transitive = true
+    }
     // FAB
-    compile 'com.github.clans:fab:1.5.4'
+    compile 'com.gordonwong:material-sheet-fab:1.2.1'
     // Material Drawer
-    compile('com.mikepenz:materialdrawer:4.6.4@aar') {
+    compile('com.mikepenz:materialdrawer:5.0.8@aar') {
         transitive = true
     }
     // Joda-time
-    compile 'net.danlew:android.joda:2.9.1'
+    compile 'net.danlew:android.joda:2.9.3.1'
     // Material preferences
     compile 'com.jenzz:materialpreference:1.3'
     // Android SVG
@@ -61,11 +65,13 @@ dependencies {
     // LicensesDialog
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     // Inapp Billing
-    compile 'com.anjlab.android.iab.v3:library:1.0.+'
+    compile 'com.anjlab.android.iab.v3:library:1.0.31'
     // Material color picker
-    compile 'com.pes.materialcolorpicker:library:1.0.+'
+    compile 'com.pes.materialcolorpicker:library:1.0.1'
     // Sliding Up Panel
     compile 'com.sothree.slidinguppanel:library:3.2.1'
+
+    compile 'com.github.iammert:MaterialIntroView:1.5.2'
 
 
 }

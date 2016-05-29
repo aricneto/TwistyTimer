@@ -7,4 +7,6 @@
     <attr format="color" name="colorItemListBackgroundSelected"/>
     <attr format="color" name="colorItemListBackground"/>
     <attr format="color" name="mainColorBackground"/>
+
+    <attr format="color" name="textColorContrastBackground"/>
 </resources>

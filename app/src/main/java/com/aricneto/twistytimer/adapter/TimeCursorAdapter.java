@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.fragment.TimeDialog;
+import com.aricneto.twistytimer.fragment.dialog.TimeDialog;
 import com.aricneto.twistytimer.fragment.TimerListFragment;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
@@ -88,7 +88,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     @Override
     public void onUpdateDialog() {
         Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME ADDED");
+        sendIntent.putExtra("action", "TIME UPDATED");
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(sendIntent);
     }
 
@@ -110,7 +110,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     public void deleteAllSelected() {
         DatabaseHandler handler = new DatabaseHandler(mContext);
         handler.deleteAllFromList(selectedItems);
-        handler.close();
+        handler.closeDB();
         resetList();
     }
 

@@ -1,1 +1,1 @@
-include ':app', ':TNoodle'
+include ':app', ':TNoodle', ':opencsv'

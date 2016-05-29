@@ -37,6 +37,10 @@ public class Solve {
         this.history = history;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public boolean isHistory() {
         return history;
     }

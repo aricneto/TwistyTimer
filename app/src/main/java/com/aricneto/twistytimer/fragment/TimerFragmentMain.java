@@ -57,45 +57,97 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 
 
 public class TimerFragmentMain extends BaseFragment {
     
+    private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
+    private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
     @Bind(R.id.toolbar)       Toolbar         mToolbar;
     @Bind(R.id.pager)         LockedViewPager viewPager;
     @Bind(R.id.main_tabs)     TabLayout       tabLayout;
     @Bind(R.id.toolbarLayout) LinearLayout    toolbarLayout;
+    DatabaseHandler dbHandler;
+    ActionMode      actionMode;
 
-    private LinearLayout tabStrip;
-    
+    int currentPage = 0;
+
+    private int primaryColor;
+
+    // Stores the current state of the list switch
+    boolean historyChecked = false;
+
+    TimerFragment      currentTimerFragmentInstance;
+    TimerListFragment  currentTimerListFragmentInstance;
+    TimerGraphFragment currentTimerGraphFragmentInstance;
+
+    private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
     private TimerFragmentMain fragReference = this;
-    
-    private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
-    
+
     private MaterialDialog removeSubtypeDialog;
     private MaterialDialog subtypeDialog;
     private MaterialDialog createSubtypeDialog;
     private MaterialDialog renameSubtypeDialog;
-    
-    DatabaseHandler dbHandler;
 
-    ActionMode actionMode;
-    
-    int currentPage = 0;
-    
-    // Stores the current state of the list switch
-    boolean historyChecked = false;
-    
     // Stores the current puzzle being timed/shown
     private String currentPuzzle        = "333";
     private String currentPuzzleSubtype = "Normal";
-    
+
     private boolean pagerEnabled;
-    
+
     private int originalContentHeight;
+    private int selectCount = 0;
+
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_list_callback, menu);
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
+            }
+            return true; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.delete:
+                    Intent sendIntent = new Intent("TIMELIST");
+                    sendIntent.putExtra("action", "DELETE SELECTED");
+                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            Intent sendIntent = new Intent("TIMELIST");
+            sendIntent.putExtra("action", "REFRESH TIME");
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+        }
+    };
     // Receives broadcasts from the timer
-    private BroadcastReceiver mReceiver   = new BroadcastReceiver() {
+    private BroadcastReceiver   mReceiver          = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
@@ -112,7 +164,7 @@ public class TimerFragmentMain extends BaseFragment {
                             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                                 if (viewPager != null) {
                                     LinearLayout.LayoutParams params =
-                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                     params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                     viewPager.setLayoutParams(params);
                                     viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -132,7 +184,7 @@ public class TimerFragmentMain extends BaseFragment {
                             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                                 if (viewPager != null) {
                                     LinearLayout.LayoutParams params =
-                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                     params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                     viewPager.setLayoutParams(params);
                                     viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -145,10 +197,10 @@ public class TimerFragmentMain extends BaseFragment {
                         animatorSet.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                if (toolbarLayout!= null) {
+                                if (toolbarLayout != null) {
                                     if (toolbarLayout.getTranslationY() == 0) {
                                         LinearLayout.LayoutParams params =
-                                                (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                         params.height = originalContentHeight;
                                         viewPager.setLayoutParams(params);
                                         Intent sendIntent = new Intent("TIMELIST");
@@ -164,7 +216,7 @@ public class TimerFragmentMain extends BaseFragment {
                         else
                             viewPager.setPagingEnabled(false);
                         break;
-                    
+
                     case "SELECTIONMODE TRUE":
                         selectCount = 0;
                         actionMode = mToolbar.startActionMode(actionModeCallback);
@@ -184,12 +236,20 @@ public class TimerFragmentMain extends BaseFragment {
                         break;
 
                     case "BACK PRESSED":
-                        if (currentTimerFragmentInstance.isRunning) {
-                            currentTimerFragmentInstance.cancelChronometer();
-                        } else if (currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                        boolean timerRunning = currentTimerFragmentInstance.isRunning;
+                        boolean panelShowing =
+                            currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
                                 currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
-                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING) {
-                            currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING;
+
+                        boolean sheetShowing = currentTimerListFragmentInstance.materialSheetFab.isSheetVisible();
+                        if (timerRunning || panelShowing || sheetShowing) {
+                            if (timerRunning)
+                                currentTimerFragmentInstance.cancelChronometer();
+                            if (panelShowing)
+                                currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                            if (sheetShowing)
+                                currentTimerListFragmentInstance.materialSheetFab.hideSheet();
                         } else {
                             Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
                         }
@@ -198,24 +258,24 @@ public class TimerFragmentMain extends BaseFragment {
             }
         }
     };
-    private int               selectCount = 0;
+
     
     public TimerFragmentMain() {
         // Required empty public constructor
     }
-    
+
     public static TimerFragmentMain newInstance() {
         TimerFragmentMain fragment = new TimerFragmentMain();
         return fragment;
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("puzzle", currentPuzzle);
         outState.putString("subtype", currentPuzzleSubtype);
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,25 +284,24 @@ public class TimerFragmentMain extends BaseFragment {
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
         }
     }
-    
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         ButterKnife.bind(this, root);
-        
+
         handleHeaderSpinner();
         setupToolbarForFragment(mToolbar);
-        
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         pagerEnabled = sharedPreferences.getBoolean("pagerEnabled", true);
-        
+
         if (pagerEnabled)
             viewPager.setPagingEnabled(true);
         else
             viewPager.setPagingEnabled(false);
-        
-        
+
         viewPagerAdapter = new NavigationAdapter(getFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
@@ -271,6 +330,7 @@ public class TimerFragmentMain extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 setupPage(position, inflater);
+                handleIcons(position);
                 currentPage = position;
             }
 
@@ -279,8 +339,6 @@ public class TimerFragmentMain extends BaseFragment {
                 Broadcaster.broadcast(getActivity(), "TIMELIST", "SCROLLED PAGE");
             }
         });
-
-        viewPager.setCurrentItem(0, true);
 
         // Sets up the toolbar with the timer icons
         mToolbar.post(new Runnable() {
@@ -293,7 +351,29 @@ public class TimerFragmentMain extends BaseFragment {
         // Register a receiver to update if something has changed
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMER"));
 
+        primaryColor = ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimary);
+
         return root;
+    }
+
+    private void handleIcons(int index) {
+        switch (index) {
+            case 0:
+                tabLayout.getTabAt(0).getIcon().setAlpha(255);
+                tabLayout.getTabAt(1).getIcon().setAlpha(153); // 70%
+                tabLayout.getTabAt(2).getIcon().setAlpha(153);
+                break;
+            case 1:
+                tabLayout.getTabAt(0).getIcon().setAlpha(153);
+                tabLayout.getTabAt(1).getIcon().setAlpha(255);
+                tabLayout.getTabAt(2).getIcon().setAlpha(153);
+                break;
+            case 2:
+                tabLayout.getTabAt(0).getIcon().setAlpha(153);
+                tabLayout.getTabAt(1).getIcon().setAlpha(153);
+                tabLayout.getTabAt(2).getIcon().setAlpha(255);
+                break;
+        }
     }
 
     private void activateTabLayout(boolean b) {
@@ -306,13 +386,13 @@ public class TimerFragmentMain extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Sets up the toolbar with the timer icons
-        viewPager.setCurrentItem(0, true);
+        viewPager.setCurrentItem(0, false);
+        handleIcons(0);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         ButterKnife.unbind(this);
         dbHandler.closeDB();
@@ -320,15 +400,15 @@ public class TimerFragmentMain extends BaseFragment {
 
     private void setupTypeDialogItem() {
         mToolbar.getMenu().add(0, 6, 0, R.string.type).setIcon(R.drawable.ic_tag_outline_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        createDialogs();
-                        subtypeDialog.show();
-                        return true;
-                    }
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    createDialogs();
+                    subtypeDialog.show();
+                    return true;
+                }
+            })
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
     }
 
     private void createDialogs() {
@@ -337,21 +417,21 @@ public class TimerFragmentMain extends BaseFragment {
 
         // Create Subtype dialog
         createSubtypeDialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.enter_type_name)
-                .inputRange(0, 16)
-                .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-                        historyChecked = false; // Resets the checked state of the switch
-                        currentPuzzleSubtype = input.toString();
-                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                        editor.apply();
-                        viewPager.setAdapter(viewPagerAdapter);
-                        Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
+            .title(R.string.enter_type_name)
+            .inputRange(0, 16)
+            .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(MaterialDialog materialDialog, CharSequence input) {
+                    dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                    historyChecked = false; // Resets the checked state of the switch
+                    currentPuzzleSubtype = input.toString();
+                    editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                    editor.apply();
+                    viewPager.setAdapter(viewPagerAdapter);
+                    Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
+                }
+            })
+            .build();
 
         final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
@@ -362,112 +442,112 @@ public class TimerFragmentMain extends BaseFragment {
         }
         // Remove Subtype dialog
         removeSubtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
-                .title(R.string.remove_subtype_title)
-                .negativeText(R.string.action_cancel)
-                .autoDismiss(true)
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.remove_subtype_confirmation)
-                                .content(getString(R.string.remove_subtype_confirmation_content) +
-                                        " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
-                                .positiveText(R.string.action_remove)
-                                .negativeText(R.string.action_cancel)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
-                                        if (subtypeList.size() > 1) {
-                                            currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
-                                        } else {
-                                            currentPuzzleSubtype = "Normal";
-                                        }
-                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                        editor.apply();
-                                        viewPager.setAdapter(viewPagerAdapter);
-                                        viewPager.setCurrentItem(currentPage);
-                                    }
-                                })
-                                .show();
-                    }
-                })
-                .build();
+            .title(R.string.remove_subtype_title)
+            .negativeText(R.string.action_cancel)
+            .autoDismiss(true)
+            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+            .itemsCallback(new MaterialDialog.ListCallback() {
+                @Override
+                public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
+                    new MaterialDialog.Builder(getContext())
+                        .title(R.string.remove_subtype_confirmation)
+                        .content(getString(R.string.remove_subtype_confirmation_content) +
+                            " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
+                        .positiveText(R.string.action_remove)
+                        .negativeText(R.string.action_cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
+                                if (subtypeList.size() > 1) {
+                                    currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
+                                } else {
+                                    currentPuzzleSubtype = "Normal";
+                                }
+                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                                editor.apply();
+                                viewPager.setAdapter(viewPagerAdapter);
+                                viewPager.setCurrentItem(currentPage);
+                            }
+                        })
+                        .show();
+                }
+            })
+            .build();
 
         //Rename subtype
         renameSubtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
-                .title(R.string.rename_subtype_title)
-                .negativeText(R.string.action_cancel)
-                .autoDismiss(true)
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.enter_new_name_dialog)
-                                .input("", "", false, new MaterialDialog.InputCallback() {
-                                    @Override
-                                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                                        dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
-                                        currentPuzzleSubtype = input.toString();
-                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                        editor.apply();
-                                        viewPager.setAdapter(viewPagerAdapter);
-                                        viewPager.setCurrentItem(currentPage);
-                                    }
-                                })
-                                .inputRange(0, 16)
-                                .positiveText(R.string.action_done)
-                                .negativeText(R.string.action_cancel)
-                                .show();
-                    }
-                })
-                .build();
+            .title(R.string.rename_subtype_title)
+            .negativeText(R.string.action_cancel)
+            .autoDismiss(true)
+            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+            .itemsCallback(new MaterialDialog.ListCallback() {
+                @Override
+                public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
+                    new MaterialDialog.Builder(getContext())
+                        .title(R.string.enter_new_name_dialog)
+                        .input("", "", false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
+                                currentPuzzleSubtype = input.toString();
+                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                                editor.apply();
+                                viewPager.setAdapter(viewPagerAdapter);
+                                viewPager.setCurrentItem(currentPage);
+                            }
+                        })
+                        .inputRange(0, 16)
+                        .positiveText(R.string.action_done)
+                        .negativeText(R.string.action_cancel)
+                        .show();
+                }
+            })
+            .build();
 
 
         // Select subtype dialog
         subtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
-                .title(R.string.select_solve_type)
-                .positiveText(R.string.w_new_subtype)
-                .negativeText(R.string.action_rename)
-                .neutralText(R.string.action_remove)
-                .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .alwaysCallSingleChoiceCallback()
-                .itemsCallbackSingleChoice(subtypeList.indexOf(currentPuzzleSubtype), new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        currentPuzzleSubtype = subtypeList.get(which);
-                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                        editor.apply();
-                        historyChecked = false; // Resets the checked state of the switch
-                        viewPager.setAdapter(viewPagerAdapter);
-                        viewPager.setCurrentItem(currentPage);
-                        subtypeDialog.dismiss();
-                        return true;
-                    }
-                })
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        createSubtypeDialog.show();
-                    }
+            .title(R.string.select_solve_type)
+            .positiveText(R.string.w_new_subtype)
+            .negativeText(R.string.action_rename)
+            .neutralText(R.string.action_remove)
+            .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+            .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+            .alwaysCallSingleChoiceCallback()
+            .itemsCallbackSingleChoice(subtypeList.indexOf(currentPuzzleSubtype), new MaterialDialog.ListCallbackSingleChoice() {
+                @Override
+                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    currentPuzzleSubtype = subtypeList.get(which);
+                    editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                    editor.apply();
+                    historyChecked = false; // Resets the checked state of the switch
+                    viewPager.setAdapter(viewPagerAdapter);
+                    viewPager.setCurrentItem(currentPage);
+                    subtypeDialog.dismiss();
+                    return true;
+                }
+            })
+            .callback(new MaterialDialog.ButtonCallback() {
+                @Override
+                public void onPositive(MaterialDialog dialog) {
+                    createSubtypeDialog.show();
+                }
 
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                        renameSubtypeDialog.show();
-                    }
+                @Override
+                public void onNegative(MaterialDialog dialog) {
+                    super.onNegative(dialog);
+                    renameSubtypeDialog.show();
+                }
 
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        super.onNeutral(dialog);
-                        removeSubtypeDialog.show();
-                    }
-                })
-                .build();
+                @Override
+                public void onNeutral(MaterialDialog dialog) {
+                    super.onNeutral(dialog);
+                    removeSubtypeDialog.show();
+                }
+            })
+            .build();
     }
 
     private void setupHistorySwitchItem(LayoutInflater inflater) {
@@ -524,15 +604,18 @@ public class TimerFragmentMain extends BaseFragment {
                 if (mToolbar != null) {
                     mToolbar.getMenu().clear();
                     mToolbar.getMenu().add(0, 5, 0, R.string.scramble_action).setIcon(R.drawable.ic_dice_white_24dp)
-                            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem menuItem) {
-                                    currentTimerFragmentInstance.generateNewScramble();
-                                    return true;
-                                }
-                            })
-                            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                currentTimerFragmentInstance.generateNewScramble();
+                                return true;
+                            }
+                        })
+                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                     setupTypeDialogItem();
+                }
+                if (currentTimerListFragmentInstance != null && currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
+                    currentTimerListFragmentInstance.materialSheetFab.hideSheetThenFab();
                 }
                 break;
             case 1:
@@ -543,6 +626,21 @@ public class TimerFragmentMain extends BaseFragment {
                     setupHistorySwitchItem(inflater);
                     setupTypeDialogItem();
                 }
+                if (currentTimerListFragmentInstance != null && !currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
+                    currentTimerListFragmentInstance.fabButton.show();
+                    new MaterialIntroView.Builder(getActivity())
+                        .enableDotAnimation(false)
+                        .setFocusGravity(FocusGravity.CENTER)
+                        .setDelayMillis(600)
+                        .enableFadeAnimation(true)
+                        .enableIcon(false)
+                        .performClick(true)
+                        .dismissOnTouch(true)
+                        .setInfoText(getString(R.string.showcase_fab_average))
+                        .setTarget(currentTimerListFragmentInstance.fabButton)
+                        .setUsageId(SHOWCASE_FAB_ID)
+                        .show();
+                }
                 break;
             case 2:
                 //((MainActivity) getActivity()).hideFAB();
@@ -551,6 +649,9 @@ public class TimerFragmentMain extends BaseFragment {
                     mToolbar.getMenu().clear();
                     setupHistorySwitchItem(inflater);
                     setupTypeDialogItem();
+                }
+                if (currentTimerListFragmentInstance != null && currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
+                    currentTimerListFragmentInstance.materialSheetFab.hideSheetThenFab();
                 }
                 break;
         }
@@ -573,7 +674,7 @@ public class TimerFragmentMain extends BaseFragment {
         // Setup spinner
         View spinnerContainer = LayoutInflater.from(getActivity()).inflate(R.layout.toolbar_spinner, mToolbar, false);
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         mToolbar.addView(spinnerContainer, layoutParams);
 
@@ -645,10 +746,6 @@ public class TimerFragmentMain extends BaseFragment {
         });
     }
 
-    TimerFragment      currentTimerFragmentInstance;
-    TimerListFragment  currentTimerListFragmentInstance;
-    TimerGraphFragment currentTimerGraphFragmentInstance;
-
     protected class NavigationAdapter extends CacheFragmentStatePagerAdapter {
 
         private int mScrollY;
@@ -666,15 +763,15 @@ public class TimerFragmentMain extends BaseFragment {
             switch (position) {
                 case 0:
                     currentTimerFragmentInstance =
-                            TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype);
+                        TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype);
                     return currentTimerFragmentInstance;
                 case 1:
                     currentTimerListFragmentInstance =
-                            TimerListFragment.newInstance(currentPuzzle, currentPuzzleSubtype, historyChecked);
+                        TimerListFragment.newInstance(currentPuzzle, currentPuzzleSubtype, historyChecked);
                     return currentTimerListFragmentInstance;
                 case 2:
                     currentTimerGraphFragmentInstance =
-                            TimerGraphFragment.newInstance(currentPuzzle, currentPuzzleSubtype, historyChecked);
+                        TimerGraphFragment.newInstance(currentPuzzle, currentPuzzleSubtype, historyChecked);
                     return currentTimerGraphFragmentInstance;
             }
             return TimerFragment.newInstance("333", "normal");
@@ -686,51 +783,5 @@ public class TimerFragmentMain extends BaseFragment {
         }
 
     }
-
-    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.menu_list_callback, menu);
-
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
-            }
-            return true; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.delete:
-                    Intent sendIntent = new Intent("TIMELIST");
-                    sendIntent.putExtra("action", "DELETE SELECTED");
-                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME ADDED");
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
-        }
-    };
 
 }
