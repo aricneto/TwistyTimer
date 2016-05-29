@@ -10,6 +10,7 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,13 +125,13 @@ public class PuzzleUtils {
         int minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
-            return new DateTime(time).toString("k':'mm':'ss");
+            return new DateTime(time, DateTimeZone.UTC).toString("k':'mm':'ss");
 
         else if (minutes > 0)
-            return new DateTime(time).toString("m':'ss'.'SS");
+            return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'.'SS");
 
         else
-            return new DateTime(time).toString("s'.'SS");
+            return new DateTime(time, DateTimeZone.UTC).toString("s'.'SS");
     }
 
     public static String convertTimeToStringWithSmallDecimal(int time) {
@@ -146,13 +147,13 @@ public class PuzzleUtils {
         int minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
-            return new DateTime(time).toString("k':'mm'<small>:'ss'</small>'");
+            return new DateTime(time, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
 
         else if (minutes > 0)
-            return new DateTime(time).toString("m':'ss'<small>.'SS'</small>'");
+            return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'<small>.'SS'</small>'");
 
         else
-            return new DateTime(time).toString("s'<small>.'SS'</small>'");
+            return new DateTime(time, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
     }
 
     public static String convertTimeToStringWithoutMilli(int time) {
@@ -168,13 +169,13 @@ public class PuzzleUtils {
         int minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
-            return new DateTime(time).toString("kk':'mm':'ss");
+            return new DateTime(time, DateTimeZone.UTC).toString("kk':'mm':'ss");
 
         else if (minutes > 0)
-            return new DateTime(time).toString("mm':'ss");
+            return new DateTime(time, DateTimeZone.UTC).toString("mm':'ss");
 
         else
-            return new DateTime(time).toString("s");
+            return new DateTime(time, DateTimeZone.UTC).toString("s");
     }
 
 

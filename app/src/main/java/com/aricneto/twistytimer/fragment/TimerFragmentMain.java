@@ -614,7 +614,7 @@ public class TimerFragmentMain extends BaseFragment {
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                     setupTypeDialogItem();
                 }
-                if (currentTimerListFragmentInstance != null) {
+                if (currentTimerListFragmentInstance != null && currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
                     currentTimerListFragmentInstance.materialSheetFab.hideSheetThenFab();
                 }
                 break;
@@ -626,7 +626,7 @@ public class TimerFragmentMain extends BaseFragment {
                     setupHistorySwitchItem(inflater);
                     setupTypeDialogItem();
                 }
-                if (currentTimerListFragmentInstance != null) {
+                if (currentTimerListFragmentInstance != null && !currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
                     currentTimerListFragmentInstance.fabButton.show();
                     new MaterialIntroView.Builder(getActivity())
                         .enableDotAnimation(false)
@@ -650,7 +650,7 @@ public class TimerFragmentMain extends BaseFragment {
                     setupHistorySwitchItem(inflater);
                     setupTypeDialogItem();
                 }
-                if (currentTimerListFragmentInstance != null) {
+                if (currentTimerListFragmentInstance != null && currentTimerListFragmentInstance.materialSheetFab.isSheetVisible()) {
                     currentTimerListFragmentInstance.materialSheetFab.hideSheetThenFab();
                 }
                 break;

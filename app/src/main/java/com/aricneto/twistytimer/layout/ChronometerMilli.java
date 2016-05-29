@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 public class ChronometerMilli extends TextView {
     @SuppressWarnings("unused")
@@ -103,13 +104,13 @@ public class ChronometerMilli extends TextView {
         String text = "";
 
         if (hours > 0)
-            text = new DateTime(timeElapsed).toString("k':'mm'<small>:'ss'</small>'");
+            text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
 
         else if (minutes > 0)
-            text = new DateTime(timeElapsed).toString("m':'ss'<small>.'SS'</small>'");
+            text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("m':'ss'<small>.'SS'</small>'");
 
         else
-            text = new DateTime(timeElapsed).toString("s'<small>.'SS'</small>'");
+            text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
 
         setText(Html.fromHtml(text));
 
@@ -150,23 +151,23 @@ public class ChronometerMilli extends TextView {
             text = hideTimeText;
         } else if (millisecondsEnabled) {
             if (hours > 0)
-                text = new DateTime(timeElapsed).toString("k':'mm'<small>:'ss'</small>'");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
 
             else if (minutes > 0)
-                text = new DateTime(timeElapsed).toString("m':'ss'<small>.'SS'</small>'");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("m':'ss'<small>.'SS'</small>'");
 
             else
-                text = new DateTime(timeElapsed).toString("s'<small>.'SS'</small>'");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
 
         } else {
             if (hours > 0)
-                text = new DateTime(timeElapsed).toString("k':'mm'<small>:'ss'</small>'");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
 
             else if (minutes > 0)
-                text = new DateTime(timeElapsed).toString("m'<small>:'ss'</small>'");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("m'<small>:'ss'</small>'");
 
             else
-                text = new DateTime(timeElapsed).toString("s");
+                text = new DateTime(timeElapsed, DateTimeZone.UTC).toString("s");
         }
 
         setText(Html.fromHtml(text));

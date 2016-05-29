@@ -194,7 +194,7 @@
     <string name="export_progress_title">Exportando…</string>
     <string name="file_selection_error_content">Certifique-se de que você está selecionando um arquivo %1$s válido</string>
     <string name="file_selection_error_title">Extensão de arquivo errada</string>
-    <string name="import_external_content_first">Na próxima etapa, selecione um arquivo .txt que esteja no seguinte formato:\n\n<small><tt>\"tempo\"; \"embaralhamento\"; \"data\"\n\n<b>Exemplo:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
+    <string name="import_external_content_first">Na próxima etapa, selecione um arquivo .txt que esteja no seguinte formato, com uma resolução por linha:\n\n<small><tt>\"tempo\"; \"embaralhamento\"; \"data\"\n\n<b>Exemplo:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
     <string name="import_external_title">Importando de .txt</string>
     <string name="name_category">Categoria</string>
     <string name="name_puzzle">Puzzle</string>
