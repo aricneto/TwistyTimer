@@ -155,7 +155,7 @@
     <string name="name_puzzle">Hlavolam</string>
     <string name="no_penalty">Bez penalty</string>
     <string name="optimal_cross">Optimální kříž na</string>
-    <string name="optimal_x_cross" translatable="false">Optimální rozšířený kříž na</string>
+    <string name="optimal_x_cross">Optimální rozšířený kříž na</string>
     <string name="pagerEnabledSummary">Pokud je toto vypnuto, budete muset stisknout záložku pro přepnutí</string>
     <string name="pagerEnabledTitle">Povolit přejíždění mezi záložkami</string>
     <string name="panel_swipe_down_to_hide">Sjeďte dolů pro skrytí</string>
@@ -220,4 +220,5 @@
     <string name="warning">Varování</string>
     <string name="worstSolveEnabledSummary">Upozornit když dosáhnete nového nejhoršího času</string>
     <string name="worstSolveEnabledTitle">Upozornění nejhoršího času</string>
+    <string name="translators">Překladatelé</string>
 </resources>

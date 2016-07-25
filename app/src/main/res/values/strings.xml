@@ -18,7 +18,7 @@
     <string name="drawer_about">About and feedback</string>
 
 
-    <string-array name="array_penalties">
+    <string-array name="array_penalties" translatable="false">
         <item>@string/no_penalty</item>
         <item>+2</item>
         <item>DNF</item>
@@ -231,5 +231,7 @@
     <string name="export_import_dialog_for_other_timers">For other timers</string>
     <string name="export_import_dialog_for_backup">For backup</string>
     <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
+    <string name="translators">Translators</string>
+    <string name="translators_content" translatable="false">Huge thanks to these people for providing translations for this app:\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)</string>
 
 </resources>

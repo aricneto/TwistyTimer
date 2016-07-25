@@ -136,6 +136,23 @@
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/translatorsButton"
+                android:drawableLeft="@drawable/ic_translate_white_18"
+                android:gravity="center"
+                android:drawablePadding="8dp"
+                android:text="@string/translators"
+                android:textSize="14sp" />
+
+        </TableRow>
+
     </TableLayout>
 
 
