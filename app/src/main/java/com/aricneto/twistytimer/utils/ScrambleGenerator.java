@@ -27,8 +27,10 @@ import puzzle.TwoByTwoCubePuzzle;
 public class ScrambleGenerator {
     private Puzzle puzzle;
     private String finalScramble;
+    private String puzzleType;
 
     public ScrambleGenerator(String type) {
+        puzzleType = type;
         switch (type) {
             case PuzzleUtils.TYPE_222:
                 puzzle = new TwoByTwoCubePuzzle();
@@ -64,7 +66,6 @@ public class ScrambleGenerator {
                 puzzle = new SquareOneUnfilteredPuzzle();
                 break;
         }
-
     }
 
     public Puzzle getPuzzle() {
@@ -84,12 +85,27 @@ public class ScrambleGenerator {
 
     public Drawable generateImageFromScramble(SharedPreferences sp, String scramble) {
         // Getting the color scheme
-        String top = sp.getString("cubeTop", "FFFFFF");
-        String left = sp.getString("cubeLeft", "FF8B24");
-        String front = sp.getString("cubeFront", "02D040");
-        String right = sp.getString("cubeRight", "EC0000");
-        String back = sp.getString("cubeBack", "304FFE");
-        String down = sp.getString("cubeDown", "FDD835");
+        String top;
+        String left;
+        String front;
+        String right;
+        String back;
+        String down;
+        if (! puzzleType.equals(PuzzleUtils.TYPE_SKEWB)) {
+            top = sp.getString("cubeTop", "FFFFFF");
+            left = sp.getString("cubeLeft", "FF8B24");
+            front = sp.getString("cubeFront", "02D040");
+            right = sp.getString("cubeRight", "EC0000");
+            back = sp.getString("cubeBack", "304FFE");
+            down = sp.getString("cubeDown", "FDD835");
+        } else { //skewb has a different scheme
+            top = sp.getString("cubeTop", "FFFFFF");
+            left = sp.getString("cubeFront", "FF8B24");
+            front = sp.getString("cubeRight", "02D040");
+            right = sp.getString("cubeBack", "EC0000");
+            back = sp.getString("cubeLeft", "304FFE");
+            down = sp.getString("cubeDown", "FDD835");
+        }
 
         String cubeImg = null;
         SVG cubeSvg = null;
