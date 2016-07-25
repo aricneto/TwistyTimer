@@ -100,10 +100,10 @@ public class ScrambleGenerator {
             down = sp.getString("cubeDown", "FDD835");
         } else { //skewb has a different scheme
             top = sp.getString("cubeTop", "FFFFFF");
-            left = sp.getString("cubeFront", "FF8B24");
-            front = sp.getString("cubeRight", "02D040");
-            right = sp.getString("cubeBack", "EC0000");
-            back = sp.getString("cubeLeft", "304FFE");
+            left = sp.getString("cubeFront", "02D040");
+            front = sp.getString("cubeRight", "EC0000");
+            right = sp.getString("cubeBack", "304FFE");
+            back = sp.getString("cubeLeft", "EF6C00");
             down = sp.getString("cubeDown", "FDD835");
         }
 
