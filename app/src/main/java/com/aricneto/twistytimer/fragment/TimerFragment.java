@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,10 +22,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
-import android.text.Html;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Display;
@@ -56,7 +57,6 @@ import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -69,12 +69,17 @@ public class TimerFragment extends BaseFragment {
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
 
+    /**
+     * The time delay in milliseconds before starting the chronometer if the hold-for-start
+     * preference is set.
+     */
+    private static final long HOLD_FOR_START_DELAY = 500L;
+
     private String currentPuzzle;
     private String currentPuzzleSubtype;
 
     private String currentScramble = "";
     private Solve  currentSolve    = null;
-    private long currentId;
 
     private String realScramble;
 
@@ -110,10 +115,7 @@ public class TimerFragment extends BaseFragment {
     private ScrambleGenerator generator;
 
     private GenerateScrambleSequence scrambleGeneratorAsync;
-    private GenerateScrambleImage    scrambleImageGenerator;
     private CalculateStats           statCalculatorAsync;
-    private CalculateBestAndWorst    bestAndWorstCalculatorAsync;
-    private GetOptimalCross          crossCalculator;
 
     private int currentPenalty = PuzzleUtils.NO_PENALTY;
 
@@ -159,8 +161,6 @@ public class TimerFragment extends BaseFragment {
     private boolean scrambleEnabled;
     private boolean holdEnabled;
     private boolean startCueEnabled;
-    private float   scrambleTextSize;
-    private boolean advancedEnabled;
     private boolean showHints;
     private boolean showHintsXCross;
 
@@ -183,7 +183,8 @@ public class TimerFragment extends BaseFragment {
                         break;
                     case "SCROLLED PAGE":
                         holdHandler.removeCallbacks(holdRunnable);
-                        chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
+                        chronometer.setHighlighted(false);
+                        chronometer.cancelHoldForStart();
                         isReady = false;
                         break;
                     case "TOOLBAR ENDED":
@@ -220,8 +221,11 @@ public class TimerFragment extends BaseFragment {
                             .negativeText(R.string.delete_dialog_cancel_button)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
                                     dbHandler.deleteSolve(currentSolve);
+                                    chronometer.reset(); // Reset to "0.00".
+                                    congratsText.setVisibility(View.GONE);
 
                                     handleButtons(true);
                                 }
@@ -230,7 +234,7 @@ public class TimerFragment extends BaseFragment {
                     break;
                 case R.id.button_dnf:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.PENALTY_DNF);
-                    chronometer.setText("DNF");
+                    chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
                     dbHandler.updateSolve(currentSolve);
 
                     handleButtons(true);
@@ -239,8 +243,7 @@ public class TimerFragment extends BaseFragment {
                 case R.id.button_plustwo:
                     if (currentPenalty != PuzzleUtils.PENALTY_PLUSTWO) {
                         currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.PENALTY_PLUSTWO);
-                        chronometer.setText(Html.fromHtml(
-                                PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime()) + " <small>+</small>"));
+                        chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
                         dbHandler.updateSolve(currentSolve);
                     }
 
@@ -252,7 +255,8 @@ public class TimerFragment extends BaseFragment {
                             .title(R.string.add_comment)
                             .input("", "", new MaterialDialog.InputCallback() {
                                 @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                public void onInput(@NonNull MaterialDialog dialog,
+                                                    CharSequence input) {
                                     currentSolve.setComment(input.toString());
                                     dbHandler.updateSolve(currentSolve);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
@@ -280,13 +284,12 @@ public class TimerFragment extends BaseFragment {
                         panelSpinner.setVisibility(View.VISIBLE);
                         panelSpinnerText.setVisibility(View.VISIBLE);
                         slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                        crossCalculator = new GetOptimalCross();
-                        crossCalculator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        new GetOptimalCross().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }
                     break;
                 case R.id.button_undo:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.NO_PENALTY);
-                    chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime())));
+                    chronometer.setPenalty(PuzzleUtils.NO_PENALTY);
                     dbHandler.updateSolve(currentSolve);
                     undoButton.setVisibility(View.GONE);
                     undone = true;
@@ -297,7 +300,7 @@ public class TimerFragment extends BaseFragment {
     };
 
     /**
-     * Handle the delete/dnf/plustwo butons and sends a broadcast
+     * Handle the delete/dnf/plus-two buttons and sends a broadcast
      */
     private void handleButtons(boolean hideButtons) {
         if (hideButtons) {
@@ -331,7 +334,6 @@ public class TimerFragment extends BaseFragment {
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
         }
 
-
         dbHandler = new DatabaseHandler(getContext());
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
@@ -361,7 +363,7 @@ public class TimerFragment extends BaseFragment {
         scrambleImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                zoomImageFromThumb(scrambleImg, scrambleImg.getDrawable());
+                zoomImageFromThumb(scrambleImg);
             }
         });
 
@@ -380,13 +382,11 @@ public class TimerFragment extends BaseFragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
-
-
-        advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
-        scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
+        final boolean advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
+        final float scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
         final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
         final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 100)) / 100f;
-        float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 100)) / 100f;
+        final float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 100)) / 100f;
         final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
 
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
@@ -412,7 +412,6 @@ public class TimerFragment extends BaseFragment {
         } else {
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
-
 
         buttonsEnabled = sharedPreferences.getBoolean("buttonsEnabled", true);
         scrambleImgEnabled = sharedPreferences.getBoolean("scrambleImageEnabled", true);
@@ -448,177 +447,163 @@ public class TimerFragment extends BaseFragment {
         // Preferences //
 
         // Inspection timer
-        countdown = new CountDownTimer(inspectionTime * 1000, 500) {
-            @Override
-            public void onTick(long l) {
-                if (chronometer != null) {
+        if (inspectionEnabled) {
+            countdown = new CountDownTimer(inspectionTime * 1000, 500) {
+                @Override
+                public void onTick(long l) {
                     chronometer.setText(String.valueOf((l / 1000) + 1));
                 }
-            }
 
-            @Override
-            public void onFinish() {
-                chronometer.setText("+2");
-                currentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
-                plusTwoCountdown.start();
-            }
-        };
+                @Override
+                public void onFinish() {
+                    chronometer.setText("+2");
+                    // "+2" penalty is applied to "chronometer" when timer is eventually stopped.
+                    currentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
+                    plusTwoCountdown.start();
+                }
+            };
 
-        plusTwoCountdown = new CountDownTimer(2000, 500) {
-            @Override
-            public void onTick(long l) {
+            plusTwoCountdown = new CountDownTimer(2000, 500) {
+                @Override
+                public void onTick(long l) {
+                    // The displayed value remains "+2" for the duration of this countdown.
+                }
 
-            }
+                @Override
+                public void onFinish() {
+                    // After counting down the inspection period, a "+2" penalty was counted down
+                    // before the solve started, so this is a DNF. If the timer starts before this
+                    // countdown ends, then "plusTwoCountdown" is cancelled before this happens.
+                    countingDown = false;
+                    isReady = false;
+                    holdingDNF = true;
+                    currentPenalty = PuzzleUtils.PENALTY_DNF;
+                    chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
+                    stopChronometer();
+                    addNewSolve();
+                    inspectionText.setVisibility(View.GONE);
+                }
+            };
+        }
 
-            @Override
-            public void onFinish() {
-                countingDown = false;
-                isReady = false;
-                isRunning = false;
-                holdingDNF = true;
-                chronometer.setText("DNF");
-                showToolbar();
-                chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                currentPenalty = PuzzleUtils.PENALTY_DNF;
-                addNewSolve();
-                inspectionText.setVisibility(View.GONE);
-            }
-        };
-
-
-        // Delay start
-        holdHandler = new Handler();
-        holdRunnable = new Runnable() {
-            public void run() {
-                isReady = true;
-                chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
-                if (! inspectionEnabled)
-                    hideToolbar();
-            }
-        };
+        // If hold-for-start is enabled, use the "isReady" flag to indicate if the hold was long
+        // enough (0.5s) to trigger the starting of the timer.
+        if (holdEnabled) {
+            holdHandler = new Handler();
+            holdRunnable = new Runnable() {
+                public void run() {
+                    isReady = true;
+                    // Indicate to the user that the hold was long enough.
+                    chronometer.setHighlighted(true);
+                    if (! inspectionEnabled) {
+                        // If inspection is enabled, the toolbar is already hidden.
+                        hideToolbar();
+                    }
+                }
+            };
+        }
 
         // Chronometer
         startTimerLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                if (animationDone) {
-
-                    if (countingDown) {
-
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                if (holdEnabled && inspectionEnabled) {
-                                    if (! isLocked)
-                                        holdHandler.postDelayed(holdRunnable, 500);
-                                } else {
-                                    if (! isLocked) {
-                                        if (startCueEnabled)
-                                            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
-                                    }
-                                }
-                                return true;
-                            case MotionEvent.ACTION_UP:
-                                // Check if the user has hold delay enabled
-                                if (holdEnabled && inspectionEnabled) {
-                                    // Check if the user held the timer long enough
-                                    if (isReady) {
-                                        isReady = false; // Reset variable
-                                        isRunning = true; // Set running to true to indicate we're running
-                                        inspectionText.setVisibility(View.GONE);
-                                        countdown.cancel();
-                                        plusTwoCountdown.cancel();
-                                        countingDown = false;
-                                        startChronometer();
-                                        chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                                    } else {
-                                        holdHandler.removeCallbacks(holdRunnable);
-                                        isReady = false;
-                                    }
-                                } else {
-                                    inspectionText.setVisibility(View.GONE);
-                                    countdown.cancel();
-                                    plusTwoCountdown.cancel();
-                                    isRunning = true; // Set running to true to indicate we're running
-                                    countingDown = false;
-                                    startChronometer();
-                                }
-                                return false;
-                        }
-                    } else if (! isRunning) {
-
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-
-                                if (holdingDNF) {
-                                    holdingDNF = false;
-                                    chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                                }
-
-                                if (holdEnabled && ! inspectionEnabled) {
-                                    if (! isLocked)
-                                        holdHandler.postDelayed(holdRunnable, 500);
-                                } else if (! holdEnabled && ! inspectionEnabled) {
-                                    if (! isLocked) {
-                                        if (startCueEnabled)
-                                            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent));
-                                    }
-                                }
-
-                                return true;
-                            case MotionEvent.ACTION_UP:
-
-                                if (holdingDNF) { // Checks if the user was holding the screen in a previous DNF by inspection timeout
-                                    holdingDNF = false;
-                                } else if (! isLocked) { // Before we start, check if the chronometer can start
-                                    // Check if the user has hold delay enabled
-                                    if (holdEnabled && ! inspectionEnabled) {
-                                        // Check if the user held the timer long enough
-                                        if (isReady) {
-                                            isReady = false; // Reset variable
-                                            isRunning = true; // Set running to true to indicate we're running
-                                            startChronometer();
-                                            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                                        } else {
-                                            holdHandler.removeCallbacks(holdRunnable);
-                                            isReady = false;
-                                        }
-
-                                    } else if (holdEnabled && inspectionEnabled) {
-                                        isRunning = true; // Set running to true to indicate we're running
-                                        hideToolbar();
-                                        // So it doesn't flash the old time when the inspection starts
-                                        chronometer.setText(Integer.toString(inspectionTime));
-                                        inspectionText.setVisibility(View.VISIBLE);
-                                        countdown.start();
-                                        countingDown = true;
-
-                                    } else { // If he doesn't have hold delay enabled
-                                        isRunning = true; // Set running to true to indicate we're running
-                                        hideToolbar();
-                                        if (inspectionEnabled) { // If inspection is enabled, start countdown
-                                            // So it doesn't flash the old time when the inspection starts
-                                            chronometer.setText(Integer.toString(inspectionTime));
-                                            inspectionText.setVisibility(View.VISIBLE);
-                                            countdown.start();
-                                            countingDown = true;
-                                        } else { // Else, start timer
-                                            startChronometer();
-                                        }
-                                    }
-                                }
-                                return false;
-                        }
-                    } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && chronometer.getTimeElapsed() >= 80) {
-                        animationDone = false;
-                        stopChronometer();
-                        if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO)
-                            chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal((int) chronometer.getTimeElapsed() + 2000) + " <small>+</small>"));
-                        addNewSolve();
-
-                    }
+                if (!animationDone || isLocked) {
+                    // Not ready to start the timer, yet. May be waiting on the animation of the
+                    // restoration of the tool-bars after the timer was stopped, or waiting on the
+                    // generation of a scramble ("isLocked" flag). In these states, the timer cannot
+                    // be running or counting down, so touches are ignored for now.
+                    return false;
                 }
 
+                if (countingDown) { // "countingDown == true" => "inspectionEnabled == true"
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            // During inspection, touching down changes the text highlight color
+                            // to indicate readiness to start timing. If the hold-for-start delay
+                            // is enabled, that color change will be delayed. The timer will not
+                            // start until the touch is lifted up, but the inspection countdown
+                            // will still continue in the meantime.
+                            if (holdEnabled) {
+                                isReady = false;
+                                holdHandler.postDelayed(holdRunnable, HOLD_FOR_START_DELAY);
+                            } else if (startCueEnabled) {
+                                chronometer.setHighlighted(true);
+                            }
+                            // "chronometer.holdForStart" is not called here; it displays "0.00",
+                            // which would interfere with the continuing countdown of the inspection
+                            // period and, anyway, be overwritten by the next countdown "tick".
+                            return true;
+
+                        case MotionEvent.ACTION_UP:
+                            // Counting down inspection period. User has already touched down after
+                            // starting the inspection, so start the timer unless "hold-to-start"
+                            // is enabled and the hold delay was not long enough.
+                            if (holdEnabled && !isReady) {
+                                holdHandler.removeCallbacks(holdRunnable);
+                            } else {
+                                stopInspectionCountdown();
+                                startChronometer(); // Tool-bar is already hidden and remains so.
+                            }
+                            return false;
+                    }
+                } else if (! isRunning) { // Not running and not counting down.
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+
+                            if (holdingDNF) {
+                                holdingDNF = false;
+                                chronometer.setHighlighted(false);
+                            }
+
+                            if (!inspectionEnabled) {
+                                if (holdEnabled) {
+                                    isReady = false;
+                                    holdHandler.postDelayed(holdRunnable, HOLD_FOR_START_DELAY);
+                                } else if (startCueEnabled) {
+                                    chronometer.setHighlighted(true);
+                                }
+                                // Display "0.00" while holding in readiness for a new solve.
+                                // This is not used above when inspection is enabled, as it would
+                                // interfere with the countdown display.
+                                chronometer.holdForStart();
+                            }
+                            return true;
+
+                        case MotionEvent.ACTION_UP:
+
+                            if (holdingDNF) { // Checks if the user was holding the screen in a previous DNF by inspection timeout
+                                holdingDNF = false;
+                            } else if (inspectionEnabled) {
+                                hideToolbar();
+                                startInspectionCountdown(inspectionTime);
+                            } else if (holdEnabled && !isReady) {
+                                // Not held for long enough. Replace "0.00" with previous value.
+                                chronometer.cancelHoldForStart();
+                                holdHandler.removeCallbacks(holdRunnable);
+                            } else {
+                                // Inspection disabled. Hold-for-start disabled, or hold-for-start
+                                // enabled, but the hold time was long enough. In the latter case,
+                                // the tool-bar will already have been hidden. Start timing!
+                                if (!holdEnabled) {
+                                    hideToolbar();
+                                }
+                                startChronometer();
+                            }
+                            return false;
+                    }
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN
+                        && chronometer.getElapsedTime() >= 80) { // => "isRunning == true"
+                    // Chronometer is timing a solve (running, not counting down inspection period).
+                    // Stop the timer if it has been running for long enough (80 ms) for this not to
+                    // be an accidental touch as the user lifted up the touch to start the timer.
+                    animationDone = false;
+                    stopChronometer();
+                    if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO) {
+                        chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
+                    }
+                    addNewSolve();
+                }
                 return false;
             }
         });
@@ -626,6 +611,40 @@ public class TimerFragment extends BaseFragment {
         updateStats();
 
         return root;
+    }
+
+    /**
+     * Stops the inspection period countdown (if it is active). This cancels the inspection
+     * countdown timer and associated "+2" countdown timer and hides the inspection text.
+     */
+    private void stopInspectionCountdown() {
+        // These timers may be null if inspection was not enabled when "onCreate" was called.
+        if (countdown != null) {
+            countdown.cancel();
+        }
+        if (plusTwoCountdown != null) {
+            plusTwoCountdown.cancel();
+        }
+
+        inspectionText.setVisibility(View.GONE);
+        countingDown = false;
+    }
+
+    /**
+     * Starts the inspection period countdown.
+     *
+     * @param inspectionTime
+     *     The inspection time in seconds.
+     */
+    private void startInspectionCountdown(int inspectionTime) {
+        // The "countdown" timer may be null if inspection was not enabled when "onCreate" was
+        // called. In that case this method will not be called from the touch listener.
+
+        // So it doesn't flash the old time when the inspection starts
+        chronometer.setText(String.valueOf(inspectionTime));
+        inspectionText.setVisibility(View.VISIBLE);
+        countdown.start();
+        countingDown = true;
     }
 
     /**
@@ -662,18 +681,12 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void addNewSolve() {
-        if (currentPenalty != PuzzleUtils.PENALTY_DNF) {
-            currentSolve = new Solve(
-                    currentPenalty == PuzzleUtils.PENALTY_PLUSTWO ?
-                            (int) chronometer.getTimeElapsed() + 2000 : (int) chronometer.getTimeElapsed()
-                    , currentPuzzle, currentPuzzleSubtype,
-                    System.currentTimeMillis(), currentScramble, currentPenalty, "", false);
-        } else {
-            currentSolve = new Solve(0, currentPuzzle, currentPuzzleSubtype,
-                    System.currentTimeMillis(), currentScramble, PuzzleUtils.PENALTY_DNF, "", false);
-        }
-        currentId = dbHandler.addSolve(currentSolve);
-        currentSolve.setId(currentId);
+        currentSolve = new Solve(
+                (int) chronometer.getElapsedTime(), // Includes any "+2" penalty. Is zero for "DNF".
+                currentPuzzle, currentPuzzleSubtype,
+                System.currentTimeMillis(), currentScramble, currentPenalty, "", false);
+
+        currentSolve.setId(dbHandler.addSolve(currentSolve));
 
         Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
 
@@ -681,8 +694,7 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void generateScrambleImage() {
-        scrambleImageGenerator = new GenerateScrambleImage();
-        scrambleImageGenerator.execute();
+        new GenerateScrambleImage().execute();
     }
 
     private void updateStats() {
@@ -760,7 +772,6 @@ public class TimerFragment extends BaseFragment {
         congratsText.setVisibility(View.GONE);
         congratsText.setCompoundDrawables(null, null, null, null);
 
-
         if (scrambleEnabled) {
             scrambleText.setEnabled(false);
             scrambleText.setVisibility(View.INVISIBLE);
@@ -808,33 +819,19 @@ public class TimerFragment extends BaseFragment {
     }
 
     /**
-     * Starts the chronometer
+     * Starts the chronometer from zero and removes any color highlight.
      */
     private void startChronometer() {
-        if (chronometer != null) {
-            chronometer.start();
-            chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-        }
+        chronometer.reset(); // Start from "0.00"; do not resume from the previous time.
+        chronometer.start();
+        chronometer.setHighlighted(false); // Clear any start cue or hold-for-start highlight.
+
         if (scrambleEnabled) {
             currentScramble = realScramble;
             generateNewScramble();
         }
-    }
 
-    /**
-     * Cancels the chronometer (stop it without saving anything)
-     */
-    public void cancelChronometer() {
-        chronometer.stop();
-        chronometer.setText(Html.fromHtml("0<small>.00</small>"));
-        isRunning = false;
-        isCanceled = true;
-        isReady = false; // Reset variable
-        inspectionText.setVisibility(View.GONE);
-        countdown.cancel();
-        plusTwoCountdown.cancel();
-        countingDown = false;
-        showToolbar();
+        isRunning = true;
     }
 
     /**
@@ -842,8 +839,21 @@ public class TimerFragment extends BaseFragment {
      */
     private void stopChronometer() {
         chronometer.stop();
+        chronometer.setHighlighted(false);
         isRunning = false;
         showToolbar();
+    }
+
+    /**
+     * Cancels the chronometer and any inspection countdown. Nothing is saved and the timer is
+     * reset to zero.
+     */
+    public void cancelChronometer() {
+        stopInspectionCountdown();
+        stopChronometer();
+
+        chronometer.reset(); // Show "0.00".
+        isCanceled = true;
     }
 
     @Override
@@ -942,8 +952,7 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected String doInBackground(String... params) {
-            String scramble = generator.getPuzzle().generateScramble();
-            return scramble;
+            return generator.getPuzzle().generateScramble();
         }
 
         @Override
@@ -1003,8 +1012,7 @@ public class TimerFragment extends BaseFragment {
 
         @Override
         protected Drawable doInBackground(Void... voids) {
-            Drawable finalImg = generator.generateImageFromScramble(sharedPreferences, realScramble);
-            return finalImg;
+            return generator.generateImageFromScramble(sharedPreferences, realScramble);
         }
 
         @Override
@@ -1044,6 +1052,7 @@ public class TimerFragment extends BaseFragment {
             return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count };
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(int[] times) {
             super.onPostExecute(times);
@@ -1057,7 +1066,8 @@ public class TimerFragment extends BaseFragment {
             String worst = PuzzleUtils.convertTimeToString(times[6]);
             int count = times[7];
 
-            // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
+            // The following code makes Android Studio throw a fit (so suppressed above), but it's
+            // alright since we're not going to be translating NUMBERS.
             detailTimesAvg.setText(
                     avg5 + "\n" +
                             avg12 + "\n" +
@@ -1122,13 +1132,12 @@ public class TimerFragment extends BaseFragment {
 
     private void updateBestAndWorst() {
         if (dbHandler != null) {
-            bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
-            bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new CalculateBestAndWorst().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
 
-    private void zoomImageFromThumb(final View thumbView, Drawable image) {
+    private void zoomImageFromThumb(final View thumbView) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (mCurrentAnimator != null) {
@@ -1148,8 +1157,7 @@ public class TimerFragment extends BaseFragment {
         // bounds, since that's the origin for the positioning animation
         // properties (X, Y).
         thumbView.getGlobalVisibleRect(startBounds);
-        rootLayout
-                .getGlobalVisibleRect(finalBounds, globalOffset);
+        rootLayout.getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(- globalOffset.x, - globalOffset.y);
         finalBounds.offset(- globalOffset.x, - globalOffset.y);
 
@@ -1261,6 +1269,4 @@ public class TimerFragment extends BaseFragment {
             }
         });
     }
-
-
 }
