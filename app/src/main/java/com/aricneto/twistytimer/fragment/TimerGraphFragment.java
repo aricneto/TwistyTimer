@@ -1,6 +1,7 @@
 package com.aricneto.twistytimer.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.spans.TimeFormatter;
-import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.Statistics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -35,10 +36,14 @@ import com.github.mikephil.charting.data.LineDataSet;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
+import static com.aricneto.twistytimer.utils.AverageCalculator.tr;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,20 +60,23 @@ public class TimerGraphFragment extends Fragment {
     private String  currentPuzzleSubtype;
     private Context mContext;
 
-    @Bind(R.id.linechart)         LineChart lineChartView;
-    @Bind(R.id.personalBestTimes) TextView  personalBestTimes;
-    @Bind(R.id.sessionBestTimes)  TextView  sessionBestTimes;
+    @Bind(R.id.linechart)           LineChart lineChartView;
+    @Bind(R.id.personalBestTimes)   TextView  personalBestTimes;
+    @Bind(R.id.sessionBestTimes)    TextView  sessionBestTimes;
+    @Bind(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
 
     @Bind(R.id.progressSpinner) MaterialProgressBar progressBar;
     @Bind(R.id.refreshText)     TextView            refreshText;
-    @Bind(R.id.bestCard)        CardView            bestsCard;
+    @Bind(R.id.statsTable)      CardView            statsTable;
 
     // Things that must be hidden/shown when refreshing the card.
     // The names don't matter since we're just going to show/hide them anyway
-    @Bind(R.id.globalBestTitle)  View rl1;
-    @Bind(R.id.divider03)        View rl2;
-    @Bind(R.id.divider04)        View rl3;
-    @Bind(R.id.sessionBestTitle) View r14;
+    @Bind(R.id.personalBestTitle)   View v1;
+    @Bind(R.id.sessionBestTitle)    View v2;
+    @Bind(R.id.sessionCurrentTitle) View v3;
+    @Bind(R.id.horizontalDivider02) View v4;
+    @Bind(R.id.verticalDivider02)   View v5;
+    @Bind(R.id.verticalDivider03)   View v6;
 
     DatabaseHandler dbHandler;
 
@@ -144,8 +152,7 @@ public class TimerGraphFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         ButterKnife.bind(this, root);
 
-        // Bests stats
-        bestsCard.setOnClickListener(new View.OnClickListener() {
+        statsTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (! refreshLocked) {
@@ -211,12 +218,16 @@ public class TimerGraphFragment extends Fragment {
     }
 
     private void toggleCardStats(int visibility) {
-        rl1.setVisibility(visibility);
-        rl2.setVisibility(visibility);
-        rl3.setVisibility(visibility);
-        r14.setVisibility(visibility);
+        v1.setVisibility(visibility);
+        v2.setVisibility(visibility);
+        v3.setVisibility(visibility);
+        v4.setVisibility(visibility);
+        v5.setVisibility(visibility);
+        v6.setVisibility(visibility);
+
         personalBestTimes.setVisibility(visibility);
         sessionBestTimes.setVisibility(visibility);
+        sessionCurrentTimes.setVisibility(visibility);
     }
 
     /**
@@ -298,7 +309,7 @@ public class TimerGraphFragment extends Fragment {
         }
     }
 
-    private class CalculateStats extends AsyncTask<Void, Void, int[]> {
+    private class CalculateStats extends AsyncTask<Void, Void, Statistics> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -308,89 +319,116 @@ public class TimerGraphFragment extends Fragment {
         }
 
         @Override
-        protected int[] doInBackground(Void... voids) {
+        protected Statistics doInBackground(Void... voids) {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            int BestAvg3 = dbHandler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg5 = dbHandler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg12 = dbHandler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg100 = dbHandler.getBestAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg50 = dbHandler.getBestAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg1000 = dbHandler.getBestAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int BestMean = dbHandler.getMean(false, currentPuzzle, currentPuzzleSubtype);
-            int BestBest = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-            int BestWorst = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
-            int BestSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
 
-            int SessionAvg3 = dbHandler.getFastAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg5 = dbHandler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg12 = dbHandler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg100 = dbHandler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg50 = dbHandler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg1000 = dbHandler.getTruncatedAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionMean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
-            int SessionBest = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionWorst = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
+            final Statistics stats = Statistics.newStandardStatistics();
 
-            return new int[] { BestAvg5, BestAvg12, BestAvg100, BestMean, BestBest, BestWorst, BestSolveCount,
-                               SessionAvg5, SessionAvg12, SessionAvg100, SessionMean, SessionBest, SessionWorst, SessionSolveCount,
-                               BestAvg50, BestAvg1000, SessionAvg50, SessionAvg1000, BestAvg3, SessionAvg3 };
+            dbHandler.populateAllTimeStatistics(currentPuzzle, currentPuzzleSubtype, stats);
+
+            return stats;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
-        protected void onPostExecute(int[] times) {
-            super.onPostExecute(times);
+        protected void onPostExecute(Statistics stats) {
+            super.onPostExecute(stats);
 
-            String BestAvg3 = PuzzleUtils.convertTimeToString(times[18]);
-            String BestAvg5 = PuzzleUtils.convertTimeToString(times[0]);
-            String BestAvg12 = PuzzleUtils.convertTimeToString(times[1]);
-            String BestAvg50 = PuzzleUtils.convertTimeToString(times[14]);
-            String BestAvg100 = PuzzleUtils.convertTimeToString(times[2]);
-            String BestAvg1000 = PuzzleUtils.convertTimeToString(times[15]);
-            String BestMean = PuzzleUtils.convertTimeToString(times[3]);
-            String BestBest = PuzzleUtils.convertTimeToString(times[4]);
-            String BestWorst = PuzzleUtils.convertTimeToString(times[5]);
+            // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
+            // values needed by "convertTimeToString".
 
-            String SessionAvg3 = PuzzleUtils.convertTimeToString(times[19]);
-            String SessionAvg5 = PuzzleUtils.convertTimeToString(times[7]);
-            String SessionAvg12 = PuzzleUtils.convertTimeToString(times[8]);
-            String SessionAvg50 = PuzzleUtils.convertTimeToString(times[16]);
-            String SessionAvg100 = PuzzleUtils.convertTimeToString(times[9]);
-            String SessionAvg1000 = PuzzleUtils.convertTimeToString(times[17]);
-            String SessionMean = PuzzleUtils.convertTimeToString(times[10]);
-            String SessionBest = PuzzleUtils.convertTimeToString(times[11]);
-            String SessionWorst = PuzzleUtils.convertTimeToString(times[12]);
+            String allTimeBestAvg3 = convertTimeToString(
+                    tr(stats.getAverageOf(3, false).getBestAverage()));
+            String allTimeBestAvg5 = convertTimeToString(
+                    tr(stats.getAverageOf(5, false).getBestAverage()));
+            String allTimeBestAvg12 = convertTimeToString(
+                    tr(stats.getAverageOf(12, false).getBestAverage()));
+            String allTimeBestAvg50 = convertTimeToString(
+                    tr(stats.getAverageOf(50, false).getBestAverage()));
+            String allTimeBestAvg100 = convertTimeToString(
+                    tr(stats.getAverageOf(100, false).getBestAverage()));
+            String allTimeBestAvg1000 = convertTimeToString(
+                    tr(stats.getAverageOf(1_000, false).getBestAverage()));
 
-            // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
+            String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()));
+            String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()));
+            String allTimeWorstTime = convertTimeToString(tr(stats.getAllTimeWorstTime()));
+            // Format count using appropriate grouping separators, e.g., "1,234", not "1234".
+            String allTimeCount
+                    = String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves());
+
+            String sessionBestAvg3 = convertTimeToString(
+                    tr(stats.getAverageOf(3, true).getBestAverage()));
+            String sessionBestAvg5 = convertTimeToString(
+                    tr(stats.getAverageOf(5, true).getBestAverage()));
+            String sessionBestAvg12 = convertTimeToString(
+                    tr(stats.getAverageOf(12, true).getBestAverage()));
+            String sessionBestAvg50 = convertTimeToString(
+                    tr(stats.getAverageOf(50, true).getBestAverage()));
+            String sessionBestAvg100 = convertTimeToString(
+                    tr(stats.getAverageOf(100, true).getBestAverage()));
+            String sessionBestAvg1000 = convertTimeToString(
+                    tr(stats.getAverageOf(1_000, true).getBestAverage()));
+
+            String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
+            String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
+            String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
+            String sessionCount
+                    = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
+
+            String sessionCurrentAvg3 = convertTimeToString(
+                    tr(stats.getAverageOf(3, true).getCurrentAverage()));
+            String sessionCurrentAvg5 = convertTimeToString(
+                    tr(stats.getAverageOf(5, true).getCurrentAverage()));
+            String sessionCurrentAvg12 = convertTimeToString(
+                    tr(stats.getAverageOf(12, true).getCurrentAverage()));
+            String sessionCurrentAvg50 = convertTimeToString(
+                    tr(stats.getAverageOf(50, true).getCurrentAverage()));
+            String sessionCurrentAvg100 = convertTimeToString(
+                    tr(stats.getAverageOf(100, true).getCurrentAverage()));
+            String sessionCurrentAvg1000 = convertTimeToString(
+                    tr(stats.getAverageOf(1_000, true).getCurrentAverage()));
+
             personalBestTimes.setText(
-                    BestAvg3 + "\n" +
-                            BestAvg5 + "\n" +
-                            BestAvg12 + "\n" +
-                            BestAvg50 + "\n" +
-                            BestAvg100 + "\n" +
-                            BestAvg1000 + "\n" +
-                            BestMean + "\n" +
-                            BestBest + "\n" +
-                            BestWorst + "\n" +
-                            times[6]);
+                    allTimeBestAvg3 + "\n" +
+                            allTimeBestAvg5 + "\n" +
+                            allTimeBestAvg12 + "\n" +
+                            allTimeBestAvg50 + "\n" +
+                            allTimeBestAvg100 + "\n" +
+                            allTimeBestAvg1000 + "\n" +
+                            allTimeMeanTime + "\n" +
+                            allTimeBestTime + "\n" +
+                            allTimeWorstTime + "\n" +
+                            allTimeCount);
             sessionBestTimes.setText(
-                    SessionAvg3 + "\n" +
-                            SessionAvg5 + "\n" +
-                            SessionAvg12 + "\n" +
-                            SessionAvg50 + "\n" +
-                            SessionAvg100 + "\n" +
-                            SessionAvg1000 + "\n" +
-                            SessionMean + "\n" +
-                            SessionBest + "\n" +
-                            SessionWorst + "\n" +
-                            times[13]);
+                    sessionBestAvg3 + "\n" +
+                            sessionBestAvg5 + "\n" +
+                            sessionBestAvg12 + "\n" +
+                            sessionBestAvg50 + "\n" +
+                            sessionBestAvg100 + "\n" +
+                            sessionBestAvg1000 + "\n" +
+                            sessionMeanTime + "\n" +
+                            sessionBestTime + "\n" +
+                            sessionWorstTime + "\n" +
+                            sessionCount);
+            sessionCurrentTimes.setText(
+                    sessionCurrentAvg3 + "\n" +
+                            sessionCurrentAvg5 + "\n" +
+                            sessionCurrentAvg12 + "\n" +
+                            sessionCurrentAvg50 + "\n" +
+                            sessionCurrentAvg100 + "\n" +
+                            sessionCurrentAvg1000 + "\n" +
+                            // Last few are the same for "Session Best" and "Session Current".
+                            sessionMeanTime + "\n" +
+                            sessionBestTime + "\n" +
+                            sessionWorstTime + "\n" +
+                            sessionCount);
 
             toggleCardStats(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
             refreshLocked = false;
         }
     }
-
 
     @Override
     public void onDetach() {

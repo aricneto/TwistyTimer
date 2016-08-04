@@ -13,7 +13,9 @@ import android.util.Log;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.AverageCalculator;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -455,6 +457,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Populates the collection of statistics (average calculators) with the solve times from all
+     * past and current sessions. The statistics will manage the segregation of solves for the
+     * current session only from those from all past and current sessions.
+     *
+     * @param puzzleType
+     *     The name of the puzzle type.
+     * @param puzzleSubtype
+     *     The name of the puzzle subtype.
+     * @param statistics
+     *     The statistics in which to record the solve times.
+     */
+    public void populateAllTimeStatistics(
+            String puzzleType, String puzzleSubtype, Statistics statistics) {
+        // Sort into ascending order of date (oldest solves first), so that the "current"
+        // average is, in the end, calculated to be that of the most recent solves.
+        final String sql
+                = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_HISTORY
+                + " FROM " + TABLE_TIMES
+                + " WHERE " + KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=? AND "
+                + KEY_PENALTY + "!=10 ORDER BY " + KEY_DATE + " ASC";
+        final Cursor cursor
+                = getReadableDatabase().rawQuery(sql, new String[] { puzzleType, puzzleSubtype });
+
+        try {
+            final int timeCol = cursor.getColumnIndex(KEY_TIME);
+            final int penaltyCol = cursor.getColumnIndex(KEY_PENALTY);
+            final int historyCol = cursor.getColumnIndex(KEY_HISTORY);
+
+            while (cursor.moveToNext()) {
+                final boolean isForCurrentSession = cursor.getInt(historyCol) == 0;
+
+                if (cursor.getInt(penaltyCol) == PuzzleUtils.PENALTY_DNF) {
+                    statistics.addDNF(isForCurrentSession);
+                } else {
+                    statistics.addTime(cursor.getLong(timeCol), isForCurrentSession);
+                }
+            }
+        } finally {
+            // As elsewhere in this class, assume "cursor" is not null.
+            cursor.close();
+        }
+    }
+
+    /**
      * Returns a truncated average of n.
      *
      * @param n             The "average of" (5, 12...)
@@ -511,47 +557,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return 0;
-    }
-
-    /**
-     * Returns an average of n. It's faster than other functions but it isn't a real "best of".
-     *
-     * @param n       The "average of" (5, 12...)
-     * @param puzzle  The puzzle name in database
-     * @param type    The puzzle type in database
-     * @param session True if it's in session
-     *
-     * @return
-     */
-
-    public int getFastAverageOf(int n, String puzzle, String type, boolean session) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        int time = 0;
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time FROM " + TABLE_TIMES + sqlSelection + " LIMIT " + n,
-            new String[] { puzzle, type });
-
-        if (cursor.getCount() >= n) {
-            cursor = db.rawQuery("SELECT AVG(time) FROM (SELECT * FROM " + TABLE_TIMES + sqlSelection + " ORDER BY date DESC LIMIT " + n + ")",
-                new String[] { puzzle, type });
-            if (cursor.moveToFirst())
-                time = cursor.getInt(0);
-        }
-
-        cursor.close();
-        return time;
     }
 
 
@@ -616,88 +621,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return timeList;
-    }
-
-    /**
-     * Returns best average of n.
-     *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True if 2 DNFs disqualify the attempt
-     *
-     * @return
-     */
-
-    public int getBestAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 ORDER BY date DESC";
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection,
-            new String[] { puzzle, type });
-        cursor.moveToFirst();
-
-        int bestAverage = Integer.MAX_VALUE;
-        int count = cursor.getCount();
-
-        if (count >= n) {
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
-
-            if (cursor.moveToFirst()) {
-
-                for (int i = 0; i < count - n + 1; i++) {
-                    int worst = Integer.MIN_VALUE;
-                    int best = Integer.MAX_VALUE;
-                    int sum = 0;
-                    int dnfCount = 0;
-
-                    for (int j = 0; j < n; j++) {
-                        cursor.moveToPosition(i + j);
-                        int time = cursor.getInt(timeIndex);
-                        sum += time;
-
-                        if (time > worst && dnfCount == 0)
-                            worst = time;
-                        if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                            best = time;
-
-                        if (disqualifyDNF) {
-                            if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) {
-                                worst = time;
-                                dnfCount += 1;
-                            }
-                        }
-
-                    }
-
-                    if (! (disqualifyDNF && dnfCount > 1)) {
-                        int average = Integer.MAX_VALUE;
-
-                        if (n == 3) {
-                            if (dnfCount == 0)
-                                average = sum / 3;
-                        } else
-                            average = (sum - worst - best) / (n - 2);
-
-                        if (average < bestAverage)
-                            bestAverage = average;
-                    }
-
-                }
-                cursor.close();
-                if (bestAverage == Integer.MAX_VALUE)
-                    return 0;
-                else
-                    return bestAverage;
-            }
-        }
-        cursor.close();
-        return 0;
     }
 
 

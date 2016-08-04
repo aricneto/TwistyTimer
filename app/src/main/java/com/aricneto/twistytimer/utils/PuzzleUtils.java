@@ -15,6 +15,7 @@ import org.joda.time.DateTimeZone;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
@@ -112,7 +113,7 @@ public class PuzzleUtils {
         return 0;
     }
 
-    public static String convertTimeToString(int time) {
+    public static String convertTimeToString(long time) {
 
         if (time == TIME_DNF)
             return "DNF";
@@ -120,9 +121,9 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("k':'mm':'ss");
@@ -134,7 +135,7 @@ public class PuzzleUtils {
             return new DateTime(time, DateTimeZone.UTC).toString("s'.'SS");
     }
 
-    public static String convertTimeToStringWithSmallDecimal(int time) {
+    public static String convertTimeToStringWithSmallDecimal(long time) {
 
         if (time == TIME_DNF)
             return "DNF";
@@ -142,9 +143,9 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
@@ -156,7 +157,7 @@ public class PuzzleUtils {
             return new DateTime(time, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
     }
 
-    public static String convertTimeToStringWithoutMilli(int time) {
+    public static String convertTimeToStringWithoutMilli(long time) {
 
         if (time == - 1)
             return "DNF";
@@ -164,9 +165,9 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("kk':'mm':'ss");
@@ -313,7 +314,7 @@ public class PuzzleUtils {
     private static String createAverageList(int n, String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
         int average;
 
-        ArrayList<Integer> aoList = dbHandler.getListOfTruncatedAverageOf(n, currentPuzzle, currentPuzzleSubtype, true);
+        List<Integer> aoList = dbHandler.getListOfTruncatedAverageOf(n, currentPuzzle, currentPuzzleSubtype, true);
         average = aoList.get(n);
         aoList.remove(n);
 
@@ -394,7 +395,7 @@ public class PuzzleUtils {
         Cursor cursor = dbHandler.getAllSolvesFromWithLimit(100, currentPuzzle, currentPuzzleSubtype, false);
 
 
-        ArrayList<Integer> timeList = new ArrayList<>();
+        List<Integer> timeList = new ArrayList<>();
         int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
         int penaltyIndex = cursor.getColumnIndex(DatabaseHandler.KEY_PENALTY);
         while (cursor.moveToNext()) {
