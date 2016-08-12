@@ -179,20 +179,6 @@ public class PuzzleUtils {
             return new DateTime(time, DateTimeZone.UTC).toString("s");
     }
 
-
-    public static String convertPenaltyToString(int penalty) {
-        switch (penalty) {
-            case NO_PENALTY:
-                return "--";
-            case PENALTY_PLUSTWO:
-                return "+2";
-            case PENALTY_DNF:
-                return "DNF";
-        }
-        return "";
-    }
-
-
     /**
      * Converts times such as 00:00.00 into int for storage
      * Code shamelessly stolen from Prisma Puzzle Timer (love you).
@@ -278,27 +264,6 @@ public class PuzzleUtils {
         }
         return solve;
     }
-
-    /**
-     * Returns the nearest even int
-     *
-     * @param num
-     * @param roundUp True for rounding up, false for rounding douwn
-     *
-     * @return
-     */
-
-    public static int nearestEvenInt(int num, boolean roundUp) {
-        if (num % 2 == 0) {
-            return num;
-        } else {
-            if (roundUp)
-                return num + 1;
-            else
-                return num - 1;
-        }
-    }
-
 
     /**
      * Creates a list of averages from a number.

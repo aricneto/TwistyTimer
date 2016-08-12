@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -56,13 +57,19 @@ import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.Statistics;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
+import static com.aricneto.twistytimer.utils.AverageCalculator.tr;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 
 public class TimerFragment extends BaseFragment {
 
@@ -1023,52 +1030,52 @@ public class TimerFragment extends BaseFragment {
         }
     }
 
-    private class CalculateStats extends AsyncTask<Void, Void, int[]> {
+    private class CalculateStats extends AsyncTask<Void, Void, Statistics> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected int[] doInBackground(Void... voids) {
-            int avg5 = dbHandler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int avg12 = dbHandler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int avg50 = dbHandler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, true);
-            int avg100 = dbHandler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int mean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
-            int bestSession = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
-            int worstSession = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
-            int count = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
+        protected Statistics doInBackground(Void... voids) {
+            final Statistics stats = Statistics.newCurrentSessionStatistics();
 
+            dbHandler.populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
 
-            return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count };
+            return stats;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
-        protected void onPostExecute(int[] times) {
-            super.onPostExecute(times);
+        protected void onPostExecute(Statistics stats) {
+            super.onPostExecute(stats);
 
-            String avg5 = PuzzleUtils.convertTimeToString(times[0]);
-            String avg12 = PuzzleUtils.convertTimeToString(times[1]);
-            String avg50 = PuzzleUtils.convertTimeToString(times[2]);
-            String avg100 = PuzzleUtils.convertTimeToString(times[3]);
-            String mean = PuzzleUtils.convertTimeToString(times[4]);
-            String best = PuzzleUtils.convertTimeToString(times[5]);
-            String worst = PuzzleUtils.convertTimeToString(times[6]);
-            int count = times[7];
+            final int count = stats.getSessionNumSolves();
+            String sessionCount = String.format(Locale.getDefault(), "%,d", count);
+            String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
+            String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
+            String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
 
-            // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
+            String sessionCurrentAvg5 = convertTimeToString(
+                    tr(stats.getAverageOf(5, true).getCurrentAverage()));
+            String sessionCurrentAvg12 = convertTimeToString(
+                    tr(stats.getAverageOf(12, true).getCurrentAverage()));
+            String sessionCurrentAvg50 = convertTimeToString(
+                    tr(stats.getAverageOf(50, true).getCurrentAverage()));
+            String sessionCurrentAvg100 = convertTimeToString(
+                    tr(stats.getAverageOf(100, true).getCurrentAverage()));
+
             detailTimesAvg.setText(
-                    avg5 + "\n" +
-                            avg12 + "\n" +
-                            avg50 + "\n" +
-                            avg100);
+                    sessionCurrentAvg5 + "\n" +
+                            sessionCurrentAvg12 + "\n" +
+                            sessionCurrentAvg50 + "\n" +
+                            sessionCurrentAvg100);
 
             detailTimesMore.setText(
-                    mean + "\n" +
-                            best + "\n" +
-                            worst + "\n" +
-                            count);
+                    sessionMeanTime + "\n" +
+                            sessionBestTime + "\n" +
+                            sessionWorstTime + "\n" +
+                            sessionCount);
 
             if (count == 3) {
                 updateBestAndWorst();
@@ -1261,6 +1268,4 @@ public class TimerFragment extends BaseFragment {
             }
         });
     }
-
-
 }

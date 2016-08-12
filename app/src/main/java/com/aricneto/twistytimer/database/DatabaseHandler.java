@@ -13,7 +13,7 @@ import android.util.Log;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.aricneto.twistytimer.utils.AverageCalculator;
+import com.aricneto.twistytimer.utils.ChartStatistics;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.Statistics;
 
@@ -167,29 +167,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Updating row
         return db.update(TABLE_ALGS, values, KEY_ID + " = ?",
             new String[] { String.valueOf(id) });
-    }
-
-
-    /**
-     * Returns all solves from history or session, from puzzle and category
-     * @param type
-     * @param subtype
-     * @return
-     */
-    public Cursor getAllSolvesFrom(String type, String subtype, boolean history) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection;
-        if (! history)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
-
-        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
     }
 
     /**
@@ -430,63 +407,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return time;
     }
 
-    public int getMean(boolean session, String puzzle, String type) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        int mean = 0;
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
-
-        cursor = db.rawQuery("SELECT AVG(time) FROM " + TABLE_TIMES + sqlSelection,
-            new String[] { puzzle, type });
-        cursor.moveToFirst();
-
-        if (cursor.getCount() != 0)
-            mean = cursor.getInt(0);
-
-        cursor.close();
-        return mean;
-    }
-
     /**
-     * Populates the collection of statistics (average calculators) with the solve times from all
-     * past and current sessions. The statistics will manage the segregation of solves for the
-     * current session only from those from all past and current sessions.
+     * Populates the collection of statistics (average calculators) with the solve times recorded
+     * in the database. The statistics will manage the segregation of solves for the current session
+     * only from those from all past and current sessions. If all average calculators are for the
+     * current session only, only the times for the current session will be read from the database.
      *
      * @param puzzleType
      *     The name of the puzzle type.
      * @param puzzleSubtype
      *     The name of the puzzle subtype.
      * @param statistics
-     *     The statistics in which to record the solve times.
+     *     The statistics in which to record the solve times. This may contain any mix of average
+     *     calculators for all sessions or only the current session. The database read will be
+     *     adapted automatically to read the minimum number of rows to satisfy the collection of
+     *     the required statistics.
      */
-    public void populateAllTimeStatistics(
+    public void populateStatistics(
             String puzzleType, String puzzleSubtype, Statistics statistics) {
+        final boolean isStatisticsForCurrentSessionOnly = statistics.isForCurrentSessionOnly();
+        final String sql;
+
         // Sort into ascending order of date (oldest solves first), so that the "current"
         // average is, in the end, calculated to be that of the most recent solves.
-        final String sql
-                = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_HISTORY
-                + " FROM " + TABLE_TIMES
-                + " WHERE " + KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=? AND "
-                + KEY_PENALTY + "!=10 ORDER BY " + KEY_DATE + " ASC";
+        if (isStatisticsForCurrentSessionOnly) {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + " FROM " + TABLE_TIMES
+                    + " WHERE " + KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=? AND "
+                    + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME + " AND "
+                    + KEY_HISTORY + "=0 ORDER BY " + KEY_DATE + " ASC";
+        } else {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_HISTORY
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " ORDER BY " + KEY_DATE + " ASC";
+        }
+
         final Cursor cursor
                 = getReadableDatabase().rawQuery(sql, new String[] { puzzleType, puzzleSubtype });
 
         try {
             final int timeCol = cursor.getColumnIndex(KEY_TIME);
             final int penaltyCol = cursor.getColumnIndex(KEY_PENALTY);
-            final int historyCol = cursor.getColumnIndex(KEY_HISTORY);
+            final int historyCol
+                    = isStatisticsForCurrentSessionOnly ? -1 : cursor.getColumnIndex(KEY_HISTORY);
 
             while (cursor.moveToNext()) {
-                final boolean isForCurrentSession = cursor.getInt(historyCol) == 0;
+                final boolean isForCurrentSession
+                        = isStatisticsForCurrentSessionOnly || cursor.getInt(historyCol) == 0;
 
                 if (cursor.getInt(penaltyCol) == PuzzleUtils.PENALTY_DNF) {
                     statistics.addDNF(isForCurrentSession);
@@ -501,64 +468,61 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns a truncated average of n.
+     * Populates the chart statistics with the solve times recorded in the database. If all
+     * statistics are for the current session only, only the times for the current session will be
+     * read from the database.
      *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True 2 DNFs disqualify the attempt
-     *
-     * @return
+     * @param puzzleType
+     *     The name of the puzzle type.
+     * @param puzzleSubtype
+     *     The name of the puzzle subtype.
+     * @param statistics
+     *     The chart statistics in which to record the solve times. This may require solve times for
+     *     all sessions or only the current session. The database read will be adapted automatically
+     *     to read the minimum number of rows to satisfy the collection of the required statistics.
      */
+    public void populateChartStatistics(
+            String puzzleType, String puzzleSubtype, ChartStatistics statistics) {
+        final boolean isStatisticsForCurrentSessionOnly = statistics.isForCurrentSessionOnly();
+        final String sql;
 
-    public int getTruncatedAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
-            new String[] { puzzle, type });
-
-        if (cursor.getCount() >= n) {
-
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
-
-            if (cursor.moveToFirst()) {
-                int worst = 0;
-                int best = Integer.MAX_VALUE;
-                int sum = 0;
-                int dnfCount = 0;
-                for (int i = 0; i < n; i++) {
-                    int time = cursor.getInt(timeIndex); // time
-                    sum += time;
-
-                    if (time > worst && dnfCount == 0)
-                        worst = time;
-                    if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                        best = time;
-
-                    if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
-                        worst = time;
-                        dnfCount += 1;
-                    }
-
-                    cursor.moveToNext();
-                }
-                cursor.close();
-                if (disqualifyDNF && dnfCount > 1)
-                    return - 1;
-                else
-                    return (sum - worst - best) / (n - 2);
-            }
+        // Sort into ascending order of date (oldest solves first), so that the "current"
+        // average is, in the end, calculated to be that of the most recent solves.
+        if (isStatisticsForCurrentSessionOnly) {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_DATE
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " AND " + KEY_HISTORY + "=0 ORDER BY " + KEY_DATE + " ASC";
+        } else {
+            // NOTE: A change from the old approach: the "all time" option include those from the
+            // current session, too. This is consistent with the way "all time statistics" are
+            // calculated for the table of statistics.
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_DATE
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " ORDER BY " + KEY_DATE + " ASC";
         }
-        cursor.close();
-        return 0;
-    }
 
+        final Cursor cursor
+                = getReadableDatabase().rawQuery(sql, new String[] { puzzleType, puzzleSubtype });
+
+        try {
+            final int timeCol = cursor.getColumnIndex(KEY_TIME);
+            final int penaltyCol = cursor.getColumnIndex(KEY_PENALTY);
+            final int dateCol = cursor.getColumnIndex(KEY_DATE);
+
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(penaltyCol) == PuzzleUtils.PENALTY_DNF) {
+                    statistics.addDNF(cursor.getLong(dateCol));
+                } else {
+                    statistics.addTime(cursor.getLong(timeCol), cursor.getLong(dateCol));
+                }
+            }
+        } finally {
+            // As elsewhere in this class, assume "cursor" is not null.
+            cursor.close();
+        }
+    }
 
     /**
      * Returns a truncated average of n, along with a list containing all times from that average.

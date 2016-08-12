@@ -2,6 +2,8 @@ package com.aricneto.twistytimer.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
@@ -47,14 +49,15 @@ public class Statistics {
     }
 
     /**
-     * Creates a new set of statistical averages for the standard reported statistics. Averages of
-     * 3, 5, 12, 50, 100 and 1,000 are added for all sessions and for the current session only. The
-     * average of 3 permits no DNF solves. The averages of 5 and 12 permit no more than one DNF
-     * solves. The averages of 100 and 1,000 permit all but one solve to be a DNF solve.
+     * Creates a new set of statistical averages for the detailed table of all-time and session
+     * statistics reported on the statistics/graph tab. Averages of 3, 5, 12, 50, 100 and 1,000 are
+     * added for all sessions and for the current session only. The average of 3 permits no DNF
+     * solves. The averages of 5 and 12 permit no more than one DNF solves. The averages of 50, 100
+     * and 1,000 permit all but one solve to be a DNF solve.
      *
-     * @return The standard set of solve time statistics.
+     * @return The detailed set of all-time solve time statistics for the statistics/graph tab.
      */
-    public static Statistics newStandardStatistics() {
+    public static Statistics newAllTimeStatistics() {
         final Statistics stats = new Statistics();
 
         // Averages for all sessions.
@@ -74,6 +77,109 @@ public class Statistics {
         stats.addAverageOf(1_000, false, true);
 
         return stats;
+    }
+
+    /**
+     * Creates a new set of statistical averages for the summary statistics reported for the current
+     * session on the timer tab. Averages of 5, 12, 50 and 100 are added for the current session
+     * only. The averages of 5 and 12 permit no more than one DNF solves. The averages of 50 and 100
+     * permit all but one solve to be a DNF solve.
+     *
+     * @return The summary set of solve time statistics.
+     */
+    public static Statistics newCurrentSessionStatistics() {
+        final Statistics stats = new Statistics();
+
+        // Averages for the current session only.
+        stats.addAverageOf(5, true, true);
+        stats.addAverageOf(12, true, true);
+        stats.addAverageOf(50, false, true);
+        stats.addAverageOf(100, false, true);
+
+        return stats;
+    }
+
+    /**
+     * Creates a new set of statistical averages for the averages displayed in the graph of the
+     * times from the all past and current sessions. Averages of 50 and 100 are added for the
+     * <i>current session only</i> (a requirement for the {@link ChartStatistics} constructor, even
+     * though the all-time data will be graphed). These averages permit all but one solves to be
+     * DNFs.
+     *
+     * @return The solve time statistics for graphing the all-time averages.
+     */
+    static Statistics newAllTimeAveragesChartStatistics() {
+        final Statistics stats = new Statistics();
+
+        // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
+        // passes all data in for the "current session", but makes a distinction using its own API.
+        stats.addAverageOf(50, false, true);
+        stats.addAverageOf(100, false, true);
+
+        return stats;
+    }
+
+    /**
+     * Creates a new set of statistical averages for the averages displayed in the graph of the
+     * times from the current session. Averages of 5 and 12 are added for the current session
+     * only. These averages permit no more than one DNF solve.
+     *
+     * @return The solve time statistics for graphing the current session averages.
+     */
+    static Statistics newCurrentSessionAveragesChartStatistics() {
+        final Statistics stats = new Statistics();
+
+        stats.addAverageOf(5, true, true);
+        stats.addAverageOf(12, true, true);
+
+        return stats;
+    }
+
+    /**
+     * Indicates if all of the solve time averages required are across the current session only. If
+     * only times for the current session are required, a more efficient approach may be taken to
+     * load the saved solve times.
+     *
+     * @return
+     *     {@code true} if all required averages apply only to solve times for the current session;
+     *     or {@code false} if the averages include at least one average for solve times across all
+     *     past and current sessions. If no averages for either set of solve times are required,
+     *     the result will be {@code true}.
+     */
+    public boolean isForCurrentSessionOnly() {
+        return mOneAllTimeAC == null;
+    }
+
+    /**
+     * Gets an array of all distinct values of "N" for which calculators for the "average-of-N"
+     * have been added to these statistics. There is no distinction between current-session-only
+     * and all-time average calculators; the distinct set of values of "N" across both sets of
+     * calculators is returned.
+     *
+     * @return
+     *     The distinction values of "N" for all "average-of-N" calculators in these statistics.
+     */
+    public int[] getNsOfAverages() {
+        // NOTE: This is intended only to support the needs of "ChartStatistics", which assumes
+        // that the union of all average calculators (created by appropriate factory methods in
+        // this "Statistics" class) are exclusively for the current session or exclusively for all
+        // sessions, not a mixture of both. "ChartStatistics" just needs to get all values of "N"
+        // for which averages are required, so that it can create corresponding objects to store
+        // the chart data. This ensures that it is not coupled to the details of the factory
+        // methods in this class. An efficient implementation is not of much concern here.
+        final Set<Integer> distinctNs = new TreeSet<>();
+
+        distinctNs.addAll(mAllTimeACs.keySet());
+        distinctNs.addAll(mSessionACs.keySet());
+
+        final int[] ns = new int[distinctNs.size()];
+        int i = 0;
+
+        for (final Integer n : distinctNs) {
+            ns[i++] = n;
+        }
+
+        return ns;
     }
 
     /**
@@ -139,7 +245,7 @@ public class Statistics {
      *     The solve time in milliseconds. Must be positive (though {@link AverageCalculator#DNF}
      *     is also accepted).
      * @param isForCurrentSession
-     *     {@code true} if the DNF solve was added during the current session; or {@code false} if
+     *     {@code true} if the solve was added during the current session; or {@code false} if
      *     the solve was added in a previous session.
      *
      * @throws IllegalArgumentException
@@ -209,7 +315,7 @@ public class Statistics {
     /**
      * Gets the simple arithmetic mean time of all non-DNF solves that were added to these
      * statistics for the current session. The returned millisecond value is truncated to a whole
-     * milliseconds values, not rounded.
+     * milliseconds value, not rounded.
      *
      * @return
      *     The mean time of all non-DNF solves that were added for the current session. The result
@@ -259,7 +365,7 @@ public class Statistics {
     /**
      * Gets the simple arithmetic mean time of all non-DNF solves that were added to these
      * statistics for all past and current sessions. The returned millisecond value is truncated
-     * to a whole milliseconds values, not rounded.
+     * to a whole milliseconds value, not rounded.
      *
      * @return
      *     The mean time of all non-DNF solves that were added for all past and current sessions.

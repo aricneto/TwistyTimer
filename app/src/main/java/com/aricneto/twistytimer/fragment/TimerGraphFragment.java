@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +22,14 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.spans.TimeFormatter;
+import com.aricneto.twistytimer.utils.AverageCalculator;
+import com.aricneto.twistytimer.utils.ChartStatistics;
 import com.aricneto.twistytimer.utils.Statistics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
-import org.joda.time.DateTime;
-
-import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -233,79 +227,53 @@ public class TimerGraphFragment extends Fragment {
     /**
      * Generate a list of solves for the chart
      */
-    private class GenerateSolveList extends AsyncTask<String, Void, Pair<ArrayList<Entry>, ArrayList<String>>> {
+    private class GenerateSolveList extends AsyncTask<String, Void, ChartStatistics> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Pair<ArrayList<Entry>, ArrayList<String>> doInBackground(String... params) {
-            ArrayList<Entry> yVals = new ArrayList<>();
-            ArrayList<String> xVals = new ArrayList<>();
+        protected ChartStatistics doInBackground(String... params) {
+            final ChartStatistics chartStats
+                    = history ? ChartStatistics.newAllTimeChartStatistics()
+                    : ChartStatistics.newCurrentSessionChartStatistics();
 
-            Pair<ArrayList<Entry>, ArrayList<String>> tempPair = new Pair<>(yVals, xVals);
+            dbHandler.populateChartStatistics(currentPuzzle, currentPuzzleSubtype, chartStats);
 
-            Cursor cursor = dbHandler.getAllSolvesFrom(currentPuzzle, currentPuzzleSubtype, history);
-
-            // Looping through all rows and adding to list
-            int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(DatabaseHandler.KEY_DATE);
-            int count = 0;
-            if (cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        tempPair.first.add(new Entry((float) cursor.getInt(timeIndex) / 1000,
-                                count));
-                        tempPair.second.add(new DateTime(cursor.getLong(penaltyIndex)).toString("dd'/'MM"));
-                        count++;
-                    } while (cursor.moveToNext());
-                }
-            }
-
-            // Adding the mean to the string arraylist, so we don't have
-            // to create another variable to store it in (remember to remove it from the list in the next step)
-            tempPair.second.add(String.valueOf(dbHandler.getMean(! history, currentPuzzle, currentPuzzleSubtype) / 1000));
-
-            cursor.close();
-            return tempPair;
+            return chartStats;
         }
 
         @Override
-        protected void onPostExecute(Pair<ArrayList<Entry>, ArrayList<String>> objects) {
-            super.onPostExecute(objects);
-
-            //Getting the mean and removing it from the list so it doesn't interfere with the times
-            float mean = Float.parseFloat(objects.second.get(objects.second.size() - 1));
-            objects.second.remove(objects.second.size() - 1);
-
-            LineDataSet lineDataSet = new LineDataSet(objects.first, "yVals");
+        protected void onPostExecute(ChartStatistics chartStats) {
+            // Mean line.
+            final long mean = chartStats.getMeanTime();
 
             lineChartView.getAxisLeft().removeAllLimitLines();
-            // Mean line
-            LimitLine ll = new LimitLine(mean, mContext.getString(R.string.graph_mean));
-            ll.setLineColor(ContextCompat.getColor(mContext, R.color.yellow_material_700));
-            ll.setLineWidth(1f);
-            ll.enableDashedLine(20f, 10f, 0f);
-            ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-            ll.setTextColor(ContextCompat.getColor(mContext, R.color.yellow_material_700));
-            ll.setTextSize(12f);
-            lineChartView.getAxisLeft().addLimitLine(ll);
 
-            lineDataSet.setLineWidth(2f);
-            lineDataSet.enableDashedLine(10f, 10f, 0);
-            lineDataSet.setDrawCircles(false);
-            //lineDataSet.setCircleRadius(3f);
-            lineDataSet.setColor(Color.WHITE);
-            lineDataSet.setHighlightEnabled(false);
-            //lineDataSet.setCircleColor(Color.WHITE);
-            lineDataSet.setDrawValues(false);
+            if (mean != AverageCalculator.UNKNOWN) {
+                final LimitLine ll = new LimitLine(mean, mContext.getString(R.string.graph_mean));
+                final int meanColor = ContextCompat.getColor(mContext, R.color.yellow_material_700);
 
-            LineData lineData = new LineData(objects.second, lineDataSet);
+                ll.setLineColor(meanColor);
+                ll.setLineWidth(1f);
+                ll.enableDashedLine(20f, 10f, 0f);
+                ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+                ll.setTextColor(meanColor);
+                ll.setTextSize(12f);
 
-            lineChartView.setData(lineData);
-            // Animates and refreshes the chart
-            lineChartView.animateY(1000);
+                lineChartView.getAxisLeft().addLimitLine(ll);
+            }
+
+            // Main data line and average lines.
+            lineChartView.setData(chartStats.getChartData(mContext));
+
+            // Set up the legend to explain the average lines.
+            lineChartView.getLegend().setEnabled(true);
+            lineChartView.getLegend().setTextColor(Color.WHITE);
+
+            // Animate and refresh the chart.
+            lineChartView.animateY(1_000);
         }
     }
 
@@ -322,9 +290,9 @@ public class TimerGraphFragment extends Fragment {
         protected Statistics doInBackground(Void... voids) {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-            final Statistics stats = Statistics.newStandardStatistics();
+            final Statistics stats = Statistics.newAllTimeStatistics();
 
-            dbHandler.populateAllTimeStatistics(currentPuzzle, currentPuzzleSubtype, stats);
+            dbHandler.populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
 
             return stats;
         }
