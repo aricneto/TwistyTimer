@@ -109,7 +109,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
 
     public void deleteAllSelected() {
         DatabaseHandler handler = new DatabaseHandler(mContext);
-        handler.deleteAllFromList(selectedItems);
+        handler.deleteSolvesByID(selectedItems, null); // Ignore progress updates.
         handler.closeDB();
         resetList();
     }

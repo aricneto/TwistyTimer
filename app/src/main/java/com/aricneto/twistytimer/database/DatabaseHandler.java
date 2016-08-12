@@ -16,6 +16,7 @@ import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,6 +36,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_PENALTY  = "penalty";
     public static final String KEY_COMMENT  = "comment";
     public static final String KEY_HISTORY  = "history";
+
+    // Index value of the keys of the "times" table *only* for a full "SELECT * FROM times".
+    // Added these to make code in places like "MainActivity" (export/import) a bit more readable,
+    // as it was using "magic numbers". However, it would be better if such ad hoc reads were moved
+    // back into this class.
+    public static final int IDX_ID       = 0;
+    public static final int IDX_TYPE     = 1;
+    public static final int IDX_SUBTYPE  = 2;
+    public static final int IDX_TIME     = 3;
+    public static final int IDX_DATE     = 4;
+    public static final int IDX_SCRAMBLE = 5;
+    public static final int IDX_PENALTY  = 6;
+    public static final int IDX_COMMENT  = 7;
+    public static final int IDX_HISTORY  = 8;
 
     // Algs table
     public static final String TABLE_ALGS   = "algs";
@@ -82,6 +97,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + ")";
     private Context mContext;
 
+    /**
+     * An interface for notification of the progress of bulk database operations.
+     */
+    public interface ProgressListener {
+        /**
+         * Notifies the listener of the progress of a bulk operation. This may be called many
+         * times during the operation.
+         *
+         * @param numCompleted
+         *     The number of sub-operations of the bulk operation that have been completed.
+         * @param total
+         *     The total number of sub-operations that must be completed before the the bulk
+         *     operation is complete.
+         */
+        void onProgress(int numCompleted, int total);
+    }
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -246,16 +277,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { type, subtype });
     }
 
-
-    // Adding new solve
+    /**
+     * Adds a new solve to the database.
+     *
+     * @param solve The solve to be added to the database.
+     * @return The new ID of the stored solve record.
+     */
     public long addSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        return addSolveInternal(getWritableDatabase(), solve);
+    }
 
+    /**
+     * Adds a new solve to the given database.
+     *
+     * @param db    The database to which to add the solve.
+     * @param solve The solve to be added to the database.
+     * @return The new ID of the stored solve record.
+     */
+    private long addSolveInternal(SQLiteDatabase db, Solve solve) {
         // Cutting off last digit to fix rounding errors
         int time = solve.getTime();
         time = time - (time % 10);
 
         ContentValues values = new ContentValues();
+
         values.put(KEY_TYPE, solve.getPuzzle());
         values.put(KEY_SUBTYPE, solve.getSubtype());
         values.put(KEY_TIME, time);
@@ -267,6 +312,63 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         return db.insert(TABLE_TIMES, null, values);
+    }
+
+    /**
+     * Adds a collection of new solves to the given database. The solves are added in a single
+     * transaction, so this operation is much faster than adding them one-by-one using the
+     * {@link #addSolve(Solve)} method. Any given solve that matches a solve already in the
+     * database will not be inserted.
+     *
+     * @param solves
+     *     The collection of solves to be added to the database. Must not be {@code null}, but may
+     *     be empty.
+     * @param listener
+     *     An optional progress listener that will be notified as each new solve is inserted into
+     *     the database. Before the first new solve is added, this will be called to report that
+     *     zero of the total number of solves have been inserted (even if {@code solves} is empty).
+     *     Thereafter, it will be notified after each insertion. May be {@code null} if no progress
+     *     updates are required.
+     *
+     * @return
+     *     The number of unique solves inserted. Solves that are duplicates of existing solves
+     *     (by {@link #solveExists(Solve)}) are not inserted.
+     */
+    public int addSolves(Collection<Solve> solves, ProgressListener listener) {
+        final int total = solves.size();
+        int numProcessed = 0; // Whether inserted or not (i.e., includes duplicates).
+
+        if (listener != null) {
+            listener.onProgress(numProcessed, total);
+        }
+
+        int numInserted = 0; // Only those actually inserted (i.e., excludes duplicates).
+
+        if (total > 0) {
+            final SQLiteDatabase db = getWritableDatabase();
+
+            try{
+                // Wrapping the insertions in a transaction is about 50x faster!
+                db.beginTransaction();
+
+                for (Solve solve : solves) {
+                    if (!solveExists(solve)) {
+                        addSolveInternal(db, solve);
+                        numInserted++;
+                    }
+
+                    if (listener != null) {
+                        listener.onProgress(++numProcessed, total);
+                    }
+                }
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
+        return numInserted;
     }
 
     public int updateSolve(Solve solve) {
@@ -700,31 +802,107 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return 0;
     }
 
-
-    // Delete an entry with an id
-    public int deleteFromId(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(id) });
+    /**
+     * Deletes a single solve matching the given ID from the database.
+     *
+     * @param solveID
+     *     The ID of the solve record in the "times" table of the database.
+     *
+     * @return
+     *     The number of records deleted. If no record matches {@code solveID}, the result is zero.
+     */
+    public int deleteSolveByID(long solveID) {
+        return deleteSolveByIDInternal(getWritableDatabase(), solveID);
     }
 
-    // Delete entries with an id list
-    public void deleteAllFromList(List<Long> idList) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        for (int i = 0; i < idList.size(); i++) {
-            db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { Long.toString(idList.get(i)) });
+    /**
+     * Deletes a single solve from the database.
+     *
+     * @param solve
+     *     The solve to be deleted. The corresponding database record to be deleted from the "times"
+     *     table is matched using the ID returned from {@link Solve#getId()}.
+     *
+     * @return
+     *     The number of records deleted. If no record matches the ID of the solve, the result is
+     *     zero.
+     */
+    public int deleteSolve(Solve solve) {
+        return deleteSolveByIDInternal(getWritableDatabase(), solve.getId());
+    }
+
+    /**
+     * Deletes multiple solves from the database that match the solve record IDs in the given
+     * collection. The solves are deleted in the context of a single database transaction.
+     *
+     * @param solveIDs
+     *     The IDs of the solve records in the "times" table of the database to be deleted. Must
+     *     not be {@code null}, but may be empty.
+     * @param listener
+     *     An optional progress listener that will be notified as each solve is deleted from the
+     *     database. Before the first solve is deleted, this will be called to report that zero of
+     *     the total number of solves have been deleted (even if {@code solveIDs} is empty).
+     *     Thereafter, it will be notified after each attempted deletion by ID, whether a matching
+     *     solve was found or not. May be {@code null} if no progress reports are required.
+     *
+     * @return
+     *     The number of records deleted. If an ID from {@code solveIDs} does not match any record,
+     *     or if an ID is a duplicate of an ID that has already been deleted, that ID is ignored,
+     *     so the result may be less than the number of solve IDs in the collection.
+     */
+    public int deleteSolvesByID(Collection<Long> solveIDs, ProgressListener listener) {
+        final int total = solveIDs.size();
+        int numProcessed = 0; // Whether deleted or not (i.e., includes RNF and duplicates).
+
+        if (listener != null) {
+            listener.onProgress(numProcessed, total);
         }
+
+        int numDeleted = 0; // Only those actually deleted (i.e., excludes RNF and duplicates).
+
+        if (total > 0) {
+            final SQLiteDatabase db = getWritableDatabase();
+
+            try{
+                // Wrap the bulk delete operations in a transaction; it is *much* faster,
+                db.beginTransaction();
+
+                for (long id : solveIDs) {
+                    // May not change if RNF or if ID is a duplicate and is already deleted.
+                    numDeleted += deleteSolveByIDInternal(db, id);
+
+                    if (listener != null) {
+                        listener.onProgress(++numProcessed, total);
+                    }
+                }
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
+        return numDeleted;
+    }
+
+    /**
+     * Deletes a single solve matching the given ID from the database.
+     *
+     * @param db
+     *     The database from which to delete the solve.
+     * @param solveID
+     *     The ID of the solve record in the "times" table of the database.
+     *
+     * @return
+     *     The number of records deleted. If no record matches {@code solveID}, the result is zero.
+     */
+    private int deleteSolveByIDInternal(SQLiteDatabase db, long solveID) {
+        return db.delete(TABLE_TIMES, KEY_ID + "=?", new String[] { Long.toString(solveID) });
     }
 
     // Delete entries from session
     public int deleteAllFromSession(String type, String subtype) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ? AND " + KEY_HISTORY + "=0", new String[] { type, subtype });
-    }
-
-    // Delete a single solve
-    public int deleteSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
     }
 
     /**

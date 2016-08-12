@@ -75,7 +75,7 @@ public class TimeDialog extends DialogFragment {
                                     getContext().startActivity(shareIntent);
                                     break;
                                 case R.id.remove:
-                                    handler.deleteFromId(mId);
+                                    handler.deleteSolveByID(mId);
                                     updateList();
                                     break;
                                 case R.id.history_to:

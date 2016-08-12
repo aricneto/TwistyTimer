@@ -65,10 +65,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+
+import static com.aricneto.twistytimer.database.DatabaseHandler.*;
 
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
@@ -585,52 +588,67 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            Boolean returnCode = false;
+            File outFile = new File(fileDir, outFileName);
+            Boolean returnCode;
             int exports = 0;
-            String csvHeader = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
-            String csvValues = "";
 
             try {
-                File outFile = new File(fileDir, outFileName);
-                FileWriter fileWriter = new FileWriter(outFile);
-                BufferedWriter out = new BufferedWriter(fileWriter);
+                final Writer out = new BufferedWriter(new FileWriter(outFile));
 
                 if (isBackup) {
+                    String csvHeader
+                            = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
                     Cursor cursor = handler.getAllSolves();
-                    publishProgress(0, cursor.getCount());
-                    if (cursor != null) {
+
+                    try {
+                        publishProgress(0, cursor.getCount());
                         out.write(csvHeader);
+
                         while (cursor.moveToNext()) {
-                            csvValues = "\"" + cursor.getString(1) + "\";";
-                            csvValues += "\"" + cursor.getString(2) + "\";";
-                            csvValues += "\"" + cursor.getInt(3) + "\";";
-                            csvValues += "\"" + cursor.getLong(4) + "\";";
-                            csvValues += "\"" + cursor.getString(5) + "\";";
-                            csvValues += "\"" + cursor.getInt(6) + "\";";
-                            csvValues += "\"" + cursor.getString(7) + "\"\n";
-                            out.write(csvValues);
+                            out.write('"' + cursor.getString(IDX_TYPE)
+                                    + "\";\"" + cursor.getString(IDX_SUBTYPE)
+                                    + "\";\"" + cursor.getInt(IDX_TIME)
+                                    + "\";\"" + cursor.getLong(IDX_DATE)
+                                    + "\";\"" + cursor.getString(IDX_SCRAMBLE)
+                                    + "\";\"" + cursor.getInt(IDX_PENALTY)
+                                    + "\";\"" + cursor.getString(IDX_COMMENT)
+                                    + "\"\n");
                             exports++;
                             publishProgress(exports);
                         }
+                    } finally {
                         cursor.close();
+                        out.close();
                     }
-                    out.close();
                     returnCode = true;
                 } else {
                     Cursor cursor = handler.getAllSolvesFrom(exportImportPuzzle, exportImportCategory);
-                    publishProgress(0, cursor.getCount());
-                    if (cursor != null) {
+
+                    try {
+                        publishProgress(0, cursor.getCount());
+
                         while (cursor.moveToNext()) {
-                            csvValues = "\"" + PuzzleUtils.convertTimeToString(cursor.getInt(3)) + "\";";
-                            csvValues += "\"" + cursor.getString(5) + "\";";
-                            csvValues += "\"" + new DateTime(cursor.getLong(4)).toString() + "\"\n";
+                            String csvValues
+                                    = '"' + PuzzleUtils.convertTimeToString(cursor.getInt(IDX_TIME))
+                                    + "\";\"" + cursor.getString(IDX_SCRAMBLE)
+                                    + "\";\"" + new DateTime(cursor.getLong(IDX_DATE)).toString()
+                                    + '"';
+
+                            // Add optional "DNF" in fourth field.
+                            if (cursor.getInt(IDX_PENALTY) == PuzzleUtils.PENALTY_DNF) {
+                                csvValues += ";\"DNF\"";
+                            }
+
+                            csvValues += '\n';
+
                             out.write(csvValues);
                             exports++;
                             publishProgress(exports);
                         }
+                    } finally {
                         cursor.close();
+                        out.close();
                     }
-                    out.close();
                     returnCode = true;
                 }
             } catch (IOException e) {
@@ -697,7 +715,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         @Override
         protected Void doInBackground(Void... voids) {
             List<Solve> solveList = new ArrayList<>();
-            int imports = 0;
 
             try {
 
@@ -718,32 +735,41 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             parseErrors++;
                         }
                     }
-
                 }
 
                 if (tag.equals("import_external")) {
+                    final long now = DateTime.now().getMillis();
 
                     while ((line = csvReader.readNext()) != null) {
-                        if (line.length <= 3) {
+                        if (line.length <= 4) {
                             try {
                                 Log.d("IMPORTING EXTERNAL", "time: " + line[0]);
 
                                 int time = PuzzleUtils.parseTime(line[0]);
                                 String scramble = "";
-                                long date = DateTime.now().getMillis();
-                                ;
+                                long date = now;
+                                int penalty = PuzzleUtils.NO_PENALTY;
+
                                 if (line.length >= 2) {
                                     scramble = line[1];
                                 }
-                                if (line.length == 3) {
+                                if (line.length >= 3) {
                                     try {
                                         date = DateTime.parse(line[2]).getMillis();
                                     } catch (Exception e) {
+                                        // "date" remains equal to "now".
                                         e.printStackTrace();
                                     }
                                 }
+                                // Optional fourth field (index 3) may contain "DNF". If it is
+                                // something else, ignore it.
+                                if (line.length >= 4 && "DNF".equals(line[3])) {
+                                    penalty = PuzzleUtils.PENALTY_DNF;
+                                }
 
-                                solveList.add(new Solve(time, exportImportPuzzle, exportImportCategory, date, scramble, PuzzleUtils.NO_PENALTY, "", true));
+                                solveList.add(new Solve(
+                                        time, exportImportPuzzle, exportImportCategory,
+                                        date, scramble, penalty, "", true));
                             } catch (Exception e) {
                                 parseErrors++;
                             }
@@ -751,21 +777,16 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             parseErrors++;
                         }
                     }
-
                 }
 
-                publishProgress(imports, solveList.size());
-
-                for (Solve solve : solveList) {
-                    if (! handler.solveExists(solve)) {
-                        handler.addSolve(solve);
-                        successes++;
-                    } else
-                        duplicates++;
-                    imports++;
-                    publishProgress(imports);
-                }
-
+                // Perform a bulk insertion of the solves.
+                successes = handler.addSolves(solveList, new ProgressListener() {
+                            @Override
+                            public void onProgress(int numCompleted, int total) {
+                                publishProgress(numCompleted, total);
+                            }
+                        });
+                duplicates = solveList.size() - successes;
             } catch (Exception e) {
                 e.printStackTrace();
             }

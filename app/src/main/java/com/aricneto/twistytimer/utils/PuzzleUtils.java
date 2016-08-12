@@ -15,8 +15,6 @@ import org.joda.time.DateTimeZone;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Locale;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -191,63 +189,51 @@ public class PuzzleUtils {
         return "";
     }
 
-
     /**
-     * Converts times such as 00:00.00 into int for storage
-     * Code shamelessly stolen from Prisma Puzzle Timer (love you).
+     * Converts times in the format "M:SS.s", or "S.s" into an integer number of milliseconds. The
+     * minutes value may be padded with zeros. The "ss" is the fractional number of seconds and may
+     * be given to any desired precision, but will be rounded to a whole number of milliseconds.
+     * For example, "1:23.45" is parsed to 83,450 ms and "95.6789" is parsed to 95,679 ms. Where
+     * minutes are present, the seconds can be padded with zeros or not, but the number of seconds
+     * must be less than 60, or the time will be treated as invalid. Where minutes are not present,
+     * the number of seconds can be 60 or greater.
      *
-     * @param input
+     * @param time
+     *     The time string to be parsed. Leading and trailing whitespace will be trimmed before
+     *     the time is parsed. If minus signs are present, the result is not defined.
      *
-     * @return time in millis
+     * @return
+     *     The parsed time in milliseconds. The value is rounded to the nearest multiple of 10
+     *     milliseconds. If the time cannot be parsed because the format does not conform to the
+     *     requirements, zero is returned.
      */
-    public static int parseTime(String input) {
-        Scanner scanner = new Scanner(input.trim());
-        scanner.useLocale(Locale.ENGLISH);
+    public static int parseTime(String time) {
+        final String timeStr = time.trim();
+        final int colonIdx = timeStr.indexOf(':');
+        int parsedTime = 0;
 
-        int time;
+        try {
+            if (colonIdx != -1) {
+                if (colonIdx > 0 && colonIdx < timeStr.length()) {
+                    // At least one digit for the minutes, so still a valid time format. Format is
+                    // expected to be "M:S.s" (zero padding to "MM" and "SS" is optional).
+                    final int minutes = Integer.parseInt(timeStr.substring(0, colonIdx));
+                    final float seconds = Float.parseFloat(timeStr.substring(colonIdx + 1));
 
-        // 00:00.00
-        if (input.contains(":")) {
-            scanner.useDelimiter(":");
-
-            if (! scanner.hasNextLong()) {
-                return 0;
+                    if (seconds < 60f) {
+                        parsedTime += 60_000 * minutes + Math.round(seconds * 1_000f);
+                    } // else "parsedTime" remains zero as seconds value is out of range (>= 60).
+                } // else "parsedTime" remains zero as there is nothing before or after the colon.
+            } else {
+                // Format is expected to be "S.s", with arbitrary precision and padding.
+                parsedTime = Math.round(Float.parseFloat(timeStr.substring(colonIdx + 1)) * 1_000f);
             }
-
-            long minutes = scanner.nextLong();
-            if (minutes < 0) {
-                return 0;
-            }
-
-            if (! scanner.hasNextDouble()) {
-                return 0;
-            }
-
-            double seconds = scanner.nextDouble();
-            if (seconds < 0.0 || seconds >= 60.0) {
-                return 0;
-            }
-
-            time = (int) (60000 * minutes + 1000 * seconds);
+        } catch (NumberFormatException ignore) {
+            parsedTime = 0; // Invalid time format.
         }
 
-        // 00.00
-        else {
-            if (! scanner.hasNextDouble()) {
-                return 0;
-            }
-
-            double seconds = scanner.nextDouble();
-            if (seconds < 0.0) {
-                return 0;
-            }
-
-            time = (int) (1000 * seconds);
-        }
-
-        return 10 * ((time + 5) / 10);
+        return 10 * ((parsedTime + 5) / 10);
     }
-
 
     /**
      * This function applies a penalty to a solve
