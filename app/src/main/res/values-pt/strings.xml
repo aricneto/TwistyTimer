@@ -146,6 +146,7 @@
     <string name="enable_advanced">Ativar configurações avançadas</string>
     <!-- REVIEW: A Google translation of "Everything" by a non-Portguese developer. -->
     <string name="graph_legend_all_times">Tudo</string>
+    <string name="graph_legend_best_times">Melhor</string>
     <string name="graph_legend_avg_prefix">Md</string>
     <string name="detail_text_avg">Md5:\nMd12:\nMd50:\nMd100:</string>
     <string name="detail_text_plus">Md3:\nMd5:\nMd12:\nMd50:\nMd100:\nMd1000\nMédia:\nMelhor:\nPior:\nTotal:</string>

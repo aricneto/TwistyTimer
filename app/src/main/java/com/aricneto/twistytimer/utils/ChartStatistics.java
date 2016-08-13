@@ -28,14 +28,32 @@ public class ChartStatistics {
 
     /**
      * The colors to use for the chart lines. The first colour is used for the line showing all
-     * solve times; the other are used for the averages.
+     * solve times, the next for the best times, and the rest are used for the averages.
      */
     // TODO: Probably want colors that do not get lost against the choice of background color.
     // They may need to be specific to each color scheme/theme. Different colours for each line
     // are preferred, as it makes the chart legend
     private final static int[] LINE_COLORS = {
-            Color.WHITE, Color.MAGENTA, Color.CYAN, Color.RED, Color.LTGRAY
+            Color.WHITE, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.RED, Color.LTGRAY
     };
+
+    /**
+     * The data set index for the graph of all solve times.
+     */
+    private static final int DS_ALL = 0;
+
+    /**
+     * The data set index for the graph of changes to the the best solve time.
+     */
+    private static final int DS_BEST = 1;
+
+    /**
+     * The data set index for the first of a series of graphs of "average-of-N" solve times. The
+     * data set at this index corresponds to the average for the value of "N" at index zero in
+     * {@link #mNsOfAverages}, the data set at the next index after this index corresponds to the
+     * average for the value of "N" at index one in that array, and so on.
+     */
+    private static final int DS_AVG_0 = 2;
 
     /**
      * The collection of statistics that are required to support the calculation of any number of
@@ -69,6 +87,11 @@ public class ChartStatistics {
      * The number of solve times recorded for the chart.
      */
     private int mCount;
+
+    /**
+     * The current best solve time recorded so far (in milliseconds).
+     */
+    private long mBestTime = Long.MAX_VALUE;
 
     /**
      * Creates a new collector for chart statistics that will chart all collected values and all
@@ -105,13 +128,16 @@ public class ChartStatistics {
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
 
-        // Data set at index 0 is the set for all solve times, not an average of solve times.
-        // The data sets are not configured here, only later in "getChartData", which makes it
-        // easy to pass in a "Context" to access configuration resources for colours, etc., while
-        // keeping the constructor API cleaner for easier testing and avoiding exceptions.
+        // Data set at index DS_ALL (0) is the set for all solve times, not an average of solve
+        // times. The data sets are not configured here, only later in "getChartData", which makes
+        // it easy to pass in a "Context" to access configuration resources for colours, etc.,
+        // while keeping the constructor API cleaner for easier testing and avoiding exceptions.
         mChartData.addDataSet(new LineDataSet(null, null));
 
-        // Add a data set (starting at index 1) for each "average-of-N" to be charted.
+        // Data set at index DS_BEST (1) is the set for the changes to the best puzzle time.
+        mChartData.addDataSet(new LineDataSet(null, null));
+
+        // Add data sets--starting at index DS_AVG_0 (2)--for each "average-of-N" to be charted.
         for (final int ignored : mNsOfAverages) {
             mChartData.addDataSet(new LineDataSet(null, null));
         }
@@ -170,7 +196,7 @@ public class ChartStatistics {
         // more than once. Only one call is expected and two calls should not break anything.
 
         final Resources res = context.getResources();
-        final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(0);
+        final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
 
         // A legend is enabled on the chart view in the graph fragment. The legend is created
         // automatically, but requires a unique labels and colors on each data set.
@@ -182,21 +208,32 @@ public class ChartStatistics {
         //allDataSet.enableDashedLine(10f, 10f, 0);
         allDataSet.setDrawCircles(false);
         //allDataSet.setCircleRadius(3f);
-        allDataSet.setColor(LINE_COLORS[0]);
+        allDataSet.setColor(LINE_COLORS[DS_ALL]);
         allDataSet.setHighlightEnabled(false);
         //allDataSet.setCircleColor(Color.WHITE);
         allDataSet.setDrawValues(false);
 
+        final LineDataSet bestDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
+
+        bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
+        bestDataSet.setLineWidth(1f);
+        bestDataSet.setColor(LINE_COLORS[DS_BEST]);
+        bestDataSet.setDrawCircles(true);
+        bestDataSet.setCircleRadius(4f);
+        bestDataSet.setCircleColor(LINE_COLORS[DS_BEST]);
+        bestDataSet.setHighlightEnabled(false);
+        bestDataSet.setDrawValues(false);
+
         final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
 
         for (int i = 0; i < mNsOfAverages.length; i++) {
-            final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + 1);
+            final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + DS_AVG_0);
 
             avgDataSet.setLabel(avgPrefix + mNsOfAverages[i]); // e.g., "Ao12".
             avgDataSet.setLineWidth(1f);
             avgDataSet.setDrawCircles(false);
             // Wrap around the range of 1 to LINE_COLORS.length-1 (color 0 is used for all data).
-            avgDataSet.setColor(LINE_COLORS[i % (LINE_COLORS.length - 1) + 1]);
+            avgDataSet.setColor(LINE_COLORS[i % (LINE_COLORS.length - DS_AVG_0) + DS_AVG_0]);
             avgDataSet.setHighlightEnabled(false);
             avgDataSet.setDrawValues(false);
         }
@@ -226,7 +263,14 @@ public class ChartStatistics {
 
         if (time != DNF) {
             isSolveCharted = true;
-            mChartData.addEntry(new Entry(time / 1_000f, mCount), 0); // Data set 0 for all times.
+            mChartData.addEntry(new Entry(time / 1_000f, mCount), DS_ALL);
+
+            // Only update the recorded best time if it changes. The result should be a line that
+            // traces (if lucky) a staircase descending from left to right (never rising).
+            if (time < mBestTime) {
+                mBestTime = time;
+                mChartData.addEntry(new Entry(mBestTime / 1_000f, mCount), DS_BEST);
+            }
         }
 
         for (int i = 0; i < mNsOfAverages.length; i++) {
@@ -237,7 +281,7 @@ public class ChartStatistics {
                 isSolveCharted = true;
                 // Add the average value to the appropriate data set, using a one-based data set
                 // index, as index zero is used for all times (not averages).
-                mChartData.addEntry(new Entry(averageTime / 1_000f, mCount), i + 1);
+                mChartData.addEntry(new Entry(averageTime / 1_000f, mCount), i + DS_AVG_0);
             }
         }
 

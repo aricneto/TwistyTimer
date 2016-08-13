@@ -166,6 +166,7 @@
     <string name="action_archive">Archive</string>
     <string name="enable_advanced">Enable advanced settings</string>
     <string name="graph_legend_all_times">Everything</string>
+    <string name="graph_legend_best_times">Best</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
