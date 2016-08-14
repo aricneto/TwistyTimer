@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
@@ -49,13 +50,14 @@ public class TimeDialog extends DialogFragment {
     @Bind(R.id.overflowButton)    ImageView overflowButton;
 
     private long            mId;
-    private DatabaseHandler handler;
     private Solve           solve;
     private DialogListener  dialogListener;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+
             switch (view.getId()) {
                 case R.id.overflowButton:
                     PopupMenu popupMenu = new PopupMenu(getActivity(), overflowButton);
@@ -75,20 +77,20 @@ public class TimeDialog extends DialogFragment {
                                     getContext().startActivity(shareIntent);
                                     break;
                                 case R.id.remove:
-                                    handler.deleteFromId(mId);
+                                    dbHandler.deleteFromId(mId);
                                     updateList();
                                     break;
                                 case R.id.history_to:
                                     solve.setHistory(true);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_history), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
                                 case R.id.history_from:
                                     solve.setHistory(false);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_session), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
@@ -116,7 +118,7 @@ public class TimeDialog extends DialogFragment {
                                             solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
                                             break;
                                     }
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     // dismiss dialog
                                     updateList();
                                     return true;
@@ -132,7 +134,7 @@ public class TimeDialog extends DialogFragment {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     solve.setComment(input.toString());
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     updateList();
                                 }
@@ -177,7 +179,6 @@ public class TimeDialog extends DialogFragment {
         ButterKnife.bind(this, dialogView);
 
         mId = getArguments().getLong("id");
-        handler = new DatabaseHandler(getActivity());
 
         //Log.d("TIME DIALOG", "mId: " + mId + "\nexists: " + handler.idExists(mId));
 
@@ -185,8 +186,10 @@ public class TimeDialog extends DialogFragment {
         //getDialog().getWindow().setWindowAnimations(R.style.DialogAnimationScale);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (handler.idExists(mId, DatabaseHandler.TABLE_TIMES)) {
-            solve = handler.getSolve(mId);
+        final Solve matchedSolve = TwistyTimer.getDBHandler().getSolve(mId);
+
+        if (matchedSolve != null) {
+            solve = matchedSolve;
 
             timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
             dateText.setText(new DateTime(solve.getDate()).toString("d MMM y'\n'H':'mm"));
@@ -219,7 +222,6 @@ public class TimeDialog extends DialogFragment {
 
         }
 
-
         return dialogView;
     }
 
@@ -243,14 +245,11 @@ public class TimeDialog extends DialogFragment {
         dismiss();
     }
 
-
     @Override
     public void onDestroyView() {
-        handler.closeDB();
         ButterKnife.unbind(this);
         if (dialogListener != null)
             dialogListener.onDismissDialog();
         super.onDestroyView();
     }
-
 }

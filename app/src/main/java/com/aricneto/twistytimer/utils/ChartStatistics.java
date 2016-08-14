@@ -217,9 +217,10 @@ public class ChartStatistics {
 
         bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
         bestDataSet.setLineWidth(1f);
+        bestDataSet.enableDashedLine(3f, 6f, 0);
         bestDataSet.setColor(LINE_COLORS[DS_BEST]);
         bestDataSet.setDrawCircles(true);
-        bestDataSet.setCircleRadius(4f);
+        bestDataSet.setCircleRadius(3.5f);
         bestDataSet.setCircleColor(LINE_COLORS[DS_BEST]);
         bestDataSet.setHighlightEnabled(false);
         bestDataSet.setDrawValues(false);

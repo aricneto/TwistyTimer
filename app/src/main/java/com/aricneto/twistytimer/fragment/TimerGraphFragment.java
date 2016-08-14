@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.utils.AverageCalculator;
 import com.aricneto.twistytimer.utils.ChartStatistics;
@@ -72,8 +72,6 @@ public class TimerGraphFragment extends Fragment {
     @Bind(R.id.verticalDivider02)   View v5;
     @Bind(R.id.verticalDivider03)   View v6;
 
-    DatabaseHandler dbHandler;
-
     private boolean history;
 
     // To prevent an user from crashing the app by refreshing really fast
@@ -111,7 +109,6 @@ public class TimerGraphFragment extends Fragment {
         }
     };
 
-
     public TimerGraphFragment() {
         // Required empty public constructor
     }
@@ -135,9 +132,10 @@ public class TimerGraphFragment extends Fragment {
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
-        dbHandler = new DatabaseHandler(getContext());
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
-        mContext = getContext();
+
+        // App context is less likely to cause memory leaks. Only used for resources.
+        mContext = getContext() != null ? getContext().getApplicationContext() : null;
     }
 
     @Override
@@ -239,7 +237,8 @@ public class TimerGraphFragment extends Fragment {
                     = history ? ChartStatistics.newAllTimeChartStatistics()
                     : ChartStatistics.newCurrentSessionChartStatistics();
 
-            dbHandler.populateChartStatistics(currentPuzzle, currentPuzzleSubtype, chartStats);
+            TwistyTimer.getDBHandler().populateChartStatistics(
+                    currentPuzzle, currentPuzzleSubtype, chartStats);
 
             return chartStats;
         }
@@ -250,9 +249,9 @@ public class TimerGraphFragment extends Fragment {
             final long mean = chartStats.getMeanTime();
 
             lineChartView.getAxisLeft().removeAllLimitLines();
-
             if (mean != AverageCalculator.UNKNOWN) {
-                final LimitLine ll = new LimitLine(mean, mContext.getString(R.string.graph_mean));
+                final LimitLine ll
+                        = new LimitLine(mean / 1_000f, mContext.getString(R.string.graph_mean));
                 final int meanColor = ContextCompat.getColor(mContext, R.color.yellow_material_700);
 
                 ll.setLineColor(meanColor);
@@ -265,10 +264,9 @@ public class TimerGraphFragment extends Fragment {
                 lineChartView.getAxisLeft().addLimitLine(ll);
             }
 
-            // Main data line and average lines.
+            // Add all times line, best times line and average-of-N times lines and identify them
+            // using the automatically-generated legend (each line has a label and a unique color).
             lineChartView.setData(chartStats.getChartData(mContext));
-
-            // Set up the legend to explain the average lines.
             lineChartView.getLegend().setEnabled(true);
             lineChartView.getLegend().setTextColor(Color.WHITE);
 
@@ -292,7 +290,8 @@ public class TimerGraphFragment extends Fragment {
 
             final Statistics stats = Statistics.newAllTimeStatistics();
 
-            dbHandler.populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
+            TwistyTimer.getDBHandler().populateStatistics(
+                    currentPuzzle, currentPuzzleSubtype, stats);
 
             return stats;
         }
@@ -401,7 +400,6 @@ public class TimerGraphFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        dbHandler.closeDB();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
     }
 }

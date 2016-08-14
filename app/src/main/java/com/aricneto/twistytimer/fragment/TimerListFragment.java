@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
@@ -58,7 +59,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
     private static final int TASK_LOADER_ID = 14;
     public MaterialSheetFab<Fab> materialSheetFab;
-    DatabaseHandler dbHandler;
     // True if you want to search history, false if you only want to search session
     boolean         history;
     @Bind(R.id.list)                 RecyclerView          recyclerView;
@@ -85,10 +85,10 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private TimeTaskLoader    timeTaskLoader;
     private Context           mContext;
 
-
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
 
             switch (view.getId()) {
                 case R.id.fab_share_ao12:
@@ -183,7 +183,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
-        dbHandler = new DatabaseHandler(getContext());
     }
 
     @Override
@@ -240,7 +239,8 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog dialog, DialogAction which) {
-                            dbHandler.moveAllSolvesToHistory(currentPuzzle, currentPuzzleSubtype);
+                            TwistyTimer.getDBHandler().moveAllSolvesToHistory(
+                                    currentPuzzle, currentPuzzleSubtype);
                             Intent sendIntent = new Intent("TIMELIST");
                             sendIntent.putExtra("action", "MOVED TO HISTORY");
                             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
@@ -263,10 +263,10 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog dialog, DialogAction which) {
-                            dbHandler.deleteAllFromSession(currentPuzzle, currentPuzzleSubtype);
+                            TwistyTimer.getDBHandler().deleteAllFromSession(
+                                    currentPuzzle, currentPuzzleSubtype);
 
                             resetList();
-
                         }
                     })
                     .show();
@@ -289,7 +289,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     public void onDetach() {
         super.onDetach();
         // To fix memory leaks
-        dbHandler.closeDB();
         ButterKnife.unbind(this);
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mReceiver);
         getLoaderManager().destroyLoader(TASK_LOADER_ID);

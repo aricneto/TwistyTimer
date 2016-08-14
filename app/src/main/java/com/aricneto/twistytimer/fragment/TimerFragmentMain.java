@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.adapter.SpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
@@ -62,14 +63,13 @@ import co.mobiwise.materialintro.view.MaterialIntroView;
 
 
 public class TimerFragmentMain extends BaseFragment {
-    
+
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
     private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
     @Bind(R.id.toolbar)       Toolbar         mToolbar;
     @Bind(R.id.pager)         LockedViewPager viewPager;
     @Bind(R.id.main_tabs)     TabLayout       tabLayout;
     @Bind(R.id.toolbarLayout) LinearLayout    toolbarLayout;
-    DatabaseHandler dbHandler;
     ActionMode      actionMode;
 
     int currentPage = 0;
@@ -259,14 +259,13 @@ public class TimerFragmentMain extends BaseFragment {
         }
     };
 
-    
+
     public TimerFragmentMain() {
         // Required empty public constructor
     }
 
     public static TimerFragmentMain newInstance() {
-        TimerFragmentMain fragment = new TimerFragmentMain();
-        return fragment;
+        return new TimerFragmentMain();
     }
 
     @Override
@@ -314,8 +313,6 @@ public class TimerFragmentMain extends BaseFragment {
         }
 
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-
-        dbHandler = new DatabaseHandler(getContext());
 
         if (savedInstanceState == null) {
             updateCurrentSubtype();
@@ -395,7 +392,6 @@ public class TimerFragmentMain extends BaseFragment {
         super.onDetach();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
         ButterKnife.unbind(this);
-        dbHandler.closeDB();
     }
 
     private void setupTypeDialogItem() {
@@ -412,6 +408,7 @@ public class TimerFragmentMain extends BaseFragment {
     }
 
     private void createDialogs() {
+        final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -660,7 +657,8 @@ public class TimerFragmentMain extends BaseFragment {
     private void updateCurrentSubtype() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
+        final List<String> subtypeList
+                = TwistyTimer.getDBHandler().getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             currentPuzzleSubtype = "Normal";
             editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
@@ -781,7 +779,5 @@ public class TimerFragmentMain extends BaseFragment {
         public int getCount() {
             return 3;
         }
-
     }
-
 }

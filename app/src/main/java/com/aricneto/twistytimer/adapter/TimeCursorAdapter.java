@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.dialog.TimeDialog;
 import com.aricneto.twistytimer.fragment.TimerListFragment;
@@ -108,9 +109,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     }
 
     public void deleteAllSelected() {
-        DatabaseHandler handler = new DatabaseHandler(mContext);
-        handler.deleteAllFromList(selectedItems);
-        handler.closeDB();
+        TwistyTimer.getDBHandler().deleteAllFromList(selectedItems);
         resetList();
     }
 
@@ -231,5 +230,4 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
             ButterKnife.bind(this, view);
         }
     }
-
 }

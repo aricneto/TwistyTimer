@@ -49,6 +49,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
@@ -84,8 +85,6 @@ public class TimerFragment extends BaseFragment {
     private long currentId;
 
     private String realScramble;
-
-    private DatabaseHandler dbHandler;
 
     CountDownTimer countdown;
     boolean countingDown = false;
@@ -216,9 +215,10 @@ public class TimerFragment extends BaseFragment {
     }
 
     private View.OnClickListener buttonClickListener = new View.OnClickListener() {
-
         @Override
         public void onClick(View view) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+
             switch (view.getId()) {
                 case R.id.button_delete:
                     new MaterialDialog.Builder(getContext())
@@ -337,9 +337,6 @@ public class TimerFragment extends BaseFragment {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
         }
-
-
-        dbHandler = new DatabaseHandler(getContext());
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
         statCalculatorAsync = new CalculateStats();
@@ -679,7 +676,7 @@ public class TimerFragment extends BaseFragment {
             currentSolve = new Solve(0, currentPuzzle, currentPuzzleSubtype,
                     System.currentTimeMillis(), currentScramble, PuzzleUtils.PENALTY_DNF, "", false);
         }
-        currentId = dbHandler.addSolve(currentSolve);
+        currentId = TwistyTimer.getDBHandler().addSolve(currentSolve);
         currentSolve.setId(currentId);
 
         Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
@@ -858,7 +855,6 @@ public class TimerFragment extends BaseFragment {
         super.onDetach();
         // To fix memory leaks
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
-        dbHandler.closeDB();
         ButterKnife.unbind(this);
         scrambleGeneratorAsync.cancel(true);
         statCalculatorAsync.cancel(true);
@@ -1040,7 +1036,7 @@ public class TimerFragment extends BaseFragment {
         protected Statistics doInBackground(Void... voids) {
             final Statistics stats = Statistics.newCurrentSessionStatistics();
 
-            dbHandler.populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
+            TwistyTimer.getDBHandler().populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
 
             return stats;
         }
@@ -1121,6 +1117,8 @@ public class TimerFragment extends BaseFragment {
     private class CalculateBestAndWorst extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+
             currentBestTime = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
             currentWorstTime = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
             return null;
@@ -1128,10 +1126,8 @@ public class TimerFragment extends BaseFragment {
     }
 
     private void updateBestAndWorst() {
-        if (dbHandler != null) {
-            bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
-            bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
+        bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
+        bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 
@@ -1141,7 +1137,6 @@ public class TimerFragment extends BaseFragment {
         if (mCurrentAnimator != null) {
             mCurrentAnimator.cancel();
         }
-
 
         // Calculate the starting and ending bounds for the zoomed-in image.
         // This step involves lots of math. Yay, math.

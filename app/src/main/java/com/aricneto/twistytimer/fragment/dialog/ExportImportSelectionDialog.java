@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
@@ -46,8 +47,6 @@ public class ExportImportSelectionDialog extends DialogFragment {
 
     ArrayAdapter<String> categoryAdapter;
 
-    DatabaseHandler handler;
-
     public static ExportImportSelectionDialog newInstance(int type) {
         ExportImportSelectionDialog exportImportSelectionDialog = new ExportImportSelectionDialog();
         Bundle args = new Bundle();
@@ -60,7 +59,6 @@ public class ExportImportSelectionDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View dialogView = inflater.inflate(R.layout.dialog_export_import_selection_dialog, container);
         ButterKnife.bind(this, dialogView);
-        handler = new DatabaseHandler(getContext());
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
         }
@@ -118,10 +116,11 @@ public class ExportImportSelectionDialog extends DialogFragment {
     }
 
     private void updateCategories() {
-        final List<String> subtypeList = handler.getAllSubtypesFromType(currentPuzzle);
+        final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             subtypeList.add("Normal");
-            handler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+            dbHandler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         }
         categoryAdapter =
                 new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, subtypeList);
@@ -133,7 +132,6 @@ public class ExportImportSelectionDialog extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        handler.closeDB();
     }
 
     public void setDialogInterface(ExportImportDialogInterface dialogInterface) {

@@ -34,6 +34,7 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.AppRater;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private Drawer          mDrawer;
     private MaterialDialog  progressDialog;
-    private DatabaseHandler handler;
 
     private boolean goBack = false;
     private boolean openExportImportDialog;
@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         ButterKnife.bind(this);
 
         AppRater.app_launched(this);
-
-        handler = new DatabaseHandler(this);
 
         bp = new BillingProcessor(this, null, this);
 
@@ -383,9 +381,9 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                         //case DEBUG_ID:
                         //    Random rand = new Random();
-                        //    DatabaseHandler db = new DatabaseHandler(activity);
+                        //    DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
                         //    for (int i = 0; i < 10000; i++) {
-                        //        db.addSolve(new Solve(30000 + rand.nextInt(2000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
+                        //        dbHandler.addSolve(new Solve(30000 + rand.nextInt(2000), "333", "Normal", 165165l, "", 0, "", rand.nextBoolean()));
                         //    }
                         //    break;
                     }
@@ -462,7 +460,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         if (bp != null)
             bp.release();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
-        handler.closeDB();
         super.onDestroy();
     }
 
@@ -591,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             String csvValues = "";
 
             try {
+                final DatabaseHandler handler = TwistyTimer.getDBHandler();
                 File outFile = new File(fileDir, outFileName);
                 FileWriter fileWriter = new FileWriter(outFile);
                 BufferedWriter out = new BufferedWriter(fileWriter);
@@ -754,6 +752,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                 }
 
+                final DatabaseHandler handler = TwistyTimer.getDBHandler();
                 publishProgress(imports, solveList.size());
 
                 for (Solve solve : solveList) {

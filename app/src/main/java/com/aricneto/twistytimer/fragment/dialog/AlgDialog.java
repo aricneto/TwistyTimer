@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.listener.DialogListener;
@@ -40,7 +41,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  */
 public class AlgDialog extends DialogFragment {
 
-
     @Bind(R.id.editButton)     ImageView           editButton;
     @Bind(R.id.progressButton) ImageView           progressButton;
     @Bind(R.id.progressBar)    MaterialProgressBar progressBar;
@@ -49,16 +49,15 @@ public class AlgDialog extends DialogFragment {
     @Bind(R.id.revertButton)   ImageView           revertButton;
     @Bind(R.id.pll_arrows)     ImageView           pllArrows;
 
-
     private long            mId;
-    private DatabaseHandler handler;
-
     private Algorithm       algorithm;
     private DialogListener  dialogListener;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+
             switch (view.getId()) {
                 case R.id.editButton:
                     MaterialDialog dialog = new MaterialDialog.Builder(getContext())
@@ -67,7 +66,7 @@ public class AlgDialog extends DialogFragment {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     algorithm.setAlgs(input.toString());
-                                    handler.updateAlgorithmAlg(mId, input.toString());
+                                    dbHandler.updateAlgorithmAlg(mId, input.toString());
                                     algText.setText(input.toString());
                                     updateList();
                                 }
@@ -98,7 +97,7 @@ public class AlgDialog extends DialogFragment {
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     int seekProgress = seekBar.getProgress();
                                     algorithm.setProgress(seekProgress);
-                                    handler.updateAlgorithmProgress(mId, seekProgress);
+                                    dbHandler.updateAlgorithmProgress(mId, seekProgress);
                                     progressBar.setProgress(seekProgress);
                                     updateList();
                                 }
@@ -115,7 +114,7 @@ public class AlgDialog extends DialogFragment {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     algorithm.setAlgs(AlgUtils.getDefaultAlgs(algorithm.getSubset(), algorithm.getName()));
-                                    handler.updateAlgorithmAlg(mId, algorithm.getAlgs());
+                                    dbHandler.updateAlgorithmAlg(mId, algorithm.getAlgs());
                                     algText.setText(algorithm.getAlgs());
                                 }
                             })
@@ -139,20 +138,21 @@ public class AlgDialog extends DialogFragment {
         ButterKnife.bind(this, dialogView);
 
         mId = getArguments().getLong("id");
-        handler = new DatabaseHandler(getActivity());
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (handler.idExists(mId, DatabaseHandler.TABLE_ALGS)) {
-            algorithm = handler.getAlgorithm(mId);
+        final Algorithm matchedAlgorithm = TwistyTimer.getDBHandler().getAlgorithm(mId);
+
+        if (matchedAlgorithm != null) {
+            algorithm = matchedAlgorithm;
             algText.setText(algorithm.getAlgs());
             nameText.setText(algorithm.getName());
 
             colorCube(algorithm.getState());
 
             progressBar.setProgress(algorithm.getProgress());
-            
+
             revertButton.setOnClickListener(clickListener);
             progressButton.setOnClickListener(clickListener);
             editButton.setOnClickListener(clickListener);
@@ -164,7 +164,6 @@ public class AlgDialog extends DialogFragment {
             }
 
         }
-
 
         return dialogView;
     }
@@ -192,7 +191,6 @@ public class AlgDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        handler.closeDB();
         ButterKnife.unbind(this);
         if (dialogListener != null)
             dialogListener.onDismissDialog();
@@ -252,5 +250,4 @@ public class AlgDialog extends DialogFragment {
         sticker21.setBackgroundColor(colorHash.get(charState[20]));
 
     }
-
 }

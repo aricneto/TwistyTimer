@@ -49,7 +49,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String SUBSET_OLL = "OLL";
     public static final String SUBSET_PLL = "PLL";
 
-
     private static final String RED                = "R";
     private static final String GRE                = "G";
     private static final String BLU                = "B";
@@ -82,12 +81,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_ALGS + " TEXT,"
             + KEY_PROGRESS + " INTEGER"
             + ")";
+
     private Context mContext;
 
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
+        // App context is less likely to cause memory leaks. Only used for resources.
+        mContext = context != null ? context.getApplicationContext() : null;
     }
 
     // Creating Tables
@@ -113,7 +114,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 editor.putInt("timerTextSize", sharedPreferences.getInt("timerTextSize", 10) * 10);
                 editor.apply();
         }
-
     }
 
     private void createAlg(SQLiteDatabase db, String subset, String name, String state, String algs) {
@@ -126,25 +126,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_ALGS, null, values);
     }
 
-    public Algorithm getAlgorithm(long id) {
+    /**
+     * Loads an algorithm from the database for the given algorithm ID.
+     *
+     * @param algID
+     *     The ID of the algorithm to be loaded.
+     *
+     * @return
+     *     An {@link Algorithm} object created from the details loaded from the database for the
+     *     algorithm record matching the given ID, or {@code null} if no algorithm matching the
+     *     given ID was found.
+     */
+    public Algorithm getAlgorithm(long algID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ALGS, new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS }, KEY_ID + "=?",
-            new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        Cursor cursor = db.query(TABLE_ALGS,
+                new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS },
+                KEY_ID + "=?", new String[] { String.valueOf(algID) }, null, null, null, null);
 
-        Algorithm algorithm = new Algorithm(
-            cursor.getLong(0),  // id
-            cursor.getString(1), // subset
-            cursor.getString(2), // name
-            cursor.getString(3), // state
-            cursor.getString(4), // algs
-            cursor.getInt(5)); // progress
+        try {
+            if (cursor.moveToFirst()) {
+                return new Algorithm(
+                        cursor.getLong(0),   // id
+                        cursor.getString(1), // subset
+                        cursor.getString(2), // name
+                        cursor.getString(3), // state
+                        cursor.getString(4), // algs
+                        cursor.getInt(5));   // progress
+            }
 
-        // Return alg
-        cursor.close();
-        return algorithm;
+            // No algorithm matched the given ID.
+            return null;
+        } finally {
+            cursor.close();
+        }
     }
 
     public int updateAlgorithmAlg(long id, String alg) {
@@ -266,28 +281,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { String.valueOf(solve.getId()) });
     }
 
-    public Solve getSolve(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    /**
+     * Loads a solve from the database for the given solve ID.
+     *
+     * @param solveID
+     *     The ID of the solve to be loaded.
+     *
+     * @return
+     *     A {@link Solve} object created from the details loaded from the database for the solve
+     *     time matching the given ID, or {@code null} if no solve time matching the given ID was
+     *     found.
+     */
+    public Solve getSolve(long solveID) {
+        final Cursor cursor = getReadableDatabase().query(TABLE_TIMES,
+                new String[] {
+                        KEY_ID, KEY_TIME, KEY_TYPE, KEY_SUBTYPE, KEY_DATE, KEY_SCRAMBLE,
+                        KEY_PENALTY, KEY_COMMENT, KEY_HISTORY },
+                KEY_ID + "=?", new String[] { String.valueOf(solveID) }, null, null, null, null);
 
-        Cursor cursor = db.query(TABLE_TIMES, new String[] { KEY_ID, KEY_TIME, KEY_TYPE, KEY_SUBTYPE, KEY_DATE, KEY_SCRAMBLE, KEY_PENALTY, KEY_COMMENT, KEY_HISTORY }, KEY_ID + "=?",
-            new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        try {
+            if (cursor.moveToFirst()) {
+                return new Solve(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getLong(4),
+                        cursor.getString(5),
+                        cursor.getInt(6),
+                        cursor.getString(7),
+                        getBoolean(cursor, 8));
+            }
 
-        Solve solve = new Solve(
-            cursor.getInt(0),
-            cursor.getInt(1),
-            cursor.getString(2),
-            cursor.getString(3),
-            cursor.getLong(4),
-            cursor.getString(5),
-            cursor.getInt(6),
-            cursor.getString(7),
-            getBoolean(cursor, 8));
-
-        // Return solve
-        cursor.close();
-        return solve;
+            // No solve matched the given ID.
+            return null;
+        } finally {
+            cursor.close();
+        }
     }
 
     public boolean getBoolean(Cursor cursor, int columnIndex) {
@@ -338,28 +368,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns the solve count
+     * Gets the number of solves recorded in the database (including DNFs). The solves for the
+     * current session only or the solves for all past and current sessions can be counted.
+     *
+     * @param type
+     *     The type of the puzzle.
+     * @param subtype
+     *     The sub-type of the puzzle.
+     * @param session
+     *     {@code true} to count only solves from the current session; or {@code false} to count
+     *     all solves from all past and current sessions.
      *
      * @return
+     *     The number of solves recorded in the database for the given puzzle type and sub-type.
+     *     The count includes DNF solves.
      */
     public int getSolveCount(String type, String subtype, boolean session) {
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10";
+        final String sqlSelection
+                = "type=? AND subtype=? AND penalty!=10" + (session ? " AND history=0" : "");
 
-        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
-
-        int count = cursor.getCount();
-        cursor.close();
-        // Return count
-        return count;
+        return (int) DatabaseUtils.queryNumEntries(
+                getReadableDatabase(), TABLE_TIMES, sqlSelection,
+                new String[] { type, subtype });
     }
 
     /**
@@ -626,18 +656,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Check if a record exists
-     */
-
-    public boolean idExists(long _id, String table) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT 1 FROM " + table + " WHERE _id=" + _id, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
-    }
-
-    /**
      * Renames a subtype
      *
      * @param subtype
@@ -658,9 +676,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         return DatabaseUtils.queryNumEntries(db, TABLE_TIMES, "type=? AND subtype =? AND time=? AND scramble=? AND date=?", new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getTime()), solve.getScramble(), String.valueOf(solve.getDate()) }) > 0;
-
     }
-
 
     // TODO: this info should REALLY be in a separate file. I'll get to it when I add other alg sets.
 
@@ -724,7 +740,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createAlg(db, SUBSET_OLL, "OLL 56", "NNNYYYNNNNYNYNYNYNYNY", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 56"));
         createAlg(db, SUBSET_OLL, "OLL 57", "YNYYYYYNYNYNNNNNYNNNN", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 57"));
 
-
         // PLL
         createAlg(db, SUBSET_PLL, "H", "YYYYYYYYYOROGBGRORBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "H"));
         createAlg(db, SUBSET_PLL, "Ua", "YYYYYYYYYOBOGOGRRRBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "Ua"));
@@ -747,13 +762,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createAlg(db, SUBSET_PLL, "T", "YYYYYYYYYOOGRBOGRRBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "T"));
         createAlg(db, SUBSET_PLL, "V", "YYYYYYYYYRGOGOBORRBBG", AlgUtils.getDefaultAlgs(SUBSET_PLL, "V"));
         createAlg(db, SUBSET_PLL, "Y", "YYYYYYYYYRBOGGBORRBOG", AlgUtils.getDefaultAlgs(SUBSET_PLL, "Y"));
-
     }
-
-    public void closeDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && db.isOpen())
-            db.close();
-    }
-
 }
