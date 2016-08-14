@@ -306,12 +306,6 @@ public class TimerFragmentMain extends BaseFragment {
         viewPager.setOffscreenPageLimit(2);
 
         tabLayout.setupWithViewPager(viewPager);
-        if (tabLayout.getTabCount() == 3) {
-            tabLayout.getTabAt(0).setIcon(R.drawable.ic_timer_white_24dp);
-            tabLayout.getTabAt(1).setIcon(R.drawable.ic_format_list_bulleted_white_24dp);
-            tabLayout.getTabAt(2).setIcon(R.drawable.ic_timeline_white_24dp);
-        }
-
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
         if (savedInstanceState == null) {
@@ -354,6 +348,7 @@ public class TimerFragmentMain extends BaseFragment {
     }
 
     private void handleIcons(int index) {
+        // Icons are set in "TimerTabLayout".
         switch (index) {
             case 0:
                 tabLayout.getTabAt(0).getIcon().setAlpha(255);

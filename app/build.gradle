@@ -5,8 +5,8 @@ android {
         config {
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 24
+    buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
@@ -29,12 +29,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':TNoodle')
     compile project(':opencsv')
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.android.support:cardview-v7:23.2.1'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
-    compile 'com.android.support:gridlayout-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:cardview-v7:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:gridlayout-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:percent:24.1.1'
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -73,7 +73,6 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.2.1'
 
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
-
 
     testCompile 'junit:junit:4.12'
 }

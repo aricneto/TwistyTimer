@@ -21,7 +21,7 @@
             android:elevation="4dp"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-        <android.support.design.widget.TabLayout
+        <com.aricneto.twistytimer.layout.TimerTabLayout
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="48dp"

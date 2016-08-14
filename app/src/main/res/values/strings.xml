@@ -70,7 +70,6 @@
     <string name="graph_card_global">All Time\nBest</string>
     <string name="graph_card_session_current">Session\nCurrent</string>
     <string name="graph_card_session_best">Session\nBest</string>
-    <string name="graph_card_refresh_text">Tap to load statistics</string>
     <string name="graph_mean">Mean</string>
     <string name="color_indigo">Indigo</string>
     <string name="color_purple">Purple</string>

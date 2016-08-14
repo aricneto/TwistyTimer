@@ -81,19 +81,6 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/verticalDivider01">
 
-            <TextView
-                android:id="@+id/refreshText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawablePadding="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:drawableTop="@drawable/refresh"
-                android:gravity="center"
-                android:text="@string/graph_card_refresh_text"
-                android:textColor="@color/black_text" />
-
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                     android:id="@+id/progressSpinner"
                     android:layout_width="wrap_content"

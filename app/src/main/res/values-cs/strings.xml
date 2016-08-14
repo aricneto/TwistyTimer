@@ -121,7 +121,6 @@
     <string name="file_selection_error_title">Špatný typ souboru</string>
     <string name="generating_scramble">Generuji scramble…</string>
     <string name="graph_card_global">Nejlepší</string>
-    <string name="graph_card_refresh_text">Stiskněte k načtění statistik</string>
     <string name="graph_card_session">Sezení</string>
     <string name="graph_mean">Průměr</string>
     <string name="hideTimeSummary">Časovač zobrazí váš čas až skončíte</string>

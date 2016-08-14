@@ -8,6 +8,8 @@ import com.aricneto.twistify.R;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
 
@@ -205,7 +207,7 @@ public class ChartStatistics {
         // If all times are graphed, a thinner line will probably look better.
         allDataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
         // Dashed line can make peaks inaccurate. Also makes the graph look too "busy".
-        //allDataSet.enableDashedLine(10f, 10f, 0);
+        //allDataSet.enableDashedLine(10f, 10f, 0f);
         allDataSet.setDrawCircles(false);
         //allDataSet.setCircleRadius(3f);
         allDataSet.setColor(LINE_COLORS[DS_ALL]);
@@ -217,13 +219,16 @@ public class ChartStatistics {
 
         bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
         bestDataSet.setLineWidth(1f);
-        bestDataSet.enableDashedLine(3f, 6f, 0);
+        bestDataSet.enableDashedLine(3f, 6f, 0f);
         bestDataSet.setColor(LINE_COLORS[DS_BEST]);
         bestDataSet.setDrawCircles(true);
         bestDataSet.setCircleRadius(3.5f);
         bestDataSet.setCircleColor(LINE_COLORS[DS_BEST]);
         bestDataSet.setHighlightEnabled(false);
-        bestDataSet.setDrawValues(false);
+        bestDataSet.setDrawValues(true);
+        bestDataSet.setValueTextColor(LINE_COLORS[DS_BEST]);
+        bestDataSet.setValueTextSize(10f);
+        bestDataSet.setValueFormatter(new TimeChartValueFormatter());
 
         final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
 
@@ -321,5 +326,18 @@ public class ChartStatistics {
      */
     public long getMeanTime() {
         return mStatistics.getSessionMeanTime();
+    }
+
+    /**
+     * A formatter for time values displayed beside points in the chart. This converts the stored
+     * values (in seconds) to the normal representation.
+     */
+    private static class TimeChartValueFormatter implements ValueFormatter {
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex,
+                                        ViewPortHandler viewPortHandler) {
+            // "value" is in fractional seconds. Convert to whole milliseconds and format it.
+            return PuzzleUtils.convertTimeToString(Math.round(value * 1_000));
+        }
     }
 }

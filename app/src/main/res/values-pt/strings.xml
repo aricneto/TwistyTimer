@@ -50,7 +50,6 @@
     <string name="graph_stats_title">Estat.</string>
     <string name="graph_card_global">Melhor</string>
     <string name="graph_card_session">Sessão</string>
-    <string name="graph_card_refresh_text">Toque para carregar as estatísticas</string>
     <string name="graph_mean">Média</string>
     <string name="color_black">Preto</string>
     <string name="color_brown">Marrom</string>

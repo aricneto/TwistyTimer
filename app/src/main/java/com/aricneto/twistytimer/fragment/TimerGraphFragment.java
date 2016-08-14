@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +57,7 @@ public class TimerGraphFragment extends Fragment {
     @Bind(R.id.personalBestTimes)   TextView  personalBestTimes;
     @Bind(R.id.sessionBestTimes)    TextView  sessionBestTimes;
     @Bind(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
-
-    @Bind(R.id.progressSpinner) MaterialProgressBar progressBar;
-    @Bind(R.id.refreshText)     TextView            refreshText;
-    @Bind(R.id.statsTable)      CardView            statsTable;
+    @Bind(R.id.progressSpinner)     MaterialProgressBar progressBar;
 
     // Things that must be hidden/shown when refreshing the card.
     // The names don't matter since we're just going to show/hide them anyway
@@ -74,9 +70,6 @@ public class TimerGraphFragment extends Fragment {
 
     private boolean history;
 
-    // To prevent an user from crashing the app by refreshing really fast
-    private boolean refreshLocked;
-
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -87,18 +80,12 @@ public class TimerGraphFragment extends Fragment {
                     case "TIME UPDATED":
                     case "REFRESH TIME":
                         generateChart();
-                        if (refreshText.getVisibility() == View.GONE) {
-                            refreshText.setVisibility(View.VISIBLE);
-                            toggleCardStats(View.GONE);
-                        }
+                        calculateStats();
                         break;
                     case "TIME ADDED":
                         if (! history)
                             generateChart();
-                        if (refreshText.getVisibility() == View.GONE) {
-                            refreshText.setVisibility(View.VISIBLE);
-                            toggleCardStats(View.GONE);
-                        }
+                        calculateStats();
                         break;
                     case "HISTORY":
                         history = ! history;
@@ -144,16 +131,6 @@ public class TimerGraphFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         ButterKnife.bind(this, root);
 
-        statsTable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (! refreshLocked) {
-                    refreshLocked = true;
-                    calculateStats();
-                }
-            }
-        });
-
         // Setting for landscape mode
         if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             root.post(new Runnable() {
@@ -184,8 +161,14 @@ public class TimerGraphFragment extends Fragment {
         xAxis.setTextColor(Color.WHITE);
         xAxis.setAvoidFirstLastClipping(true);
         lineChartView.getAxisRight().setEnabled(false);
-        lineChartView.getLegend().setEnabled(false);
+        lineChartView.getLegend().setTextColor(Color.WHITE);
         lineChartView.setDescription("");
+        // The maximum number of values that can be visible above which the time values are not
+        // drawn on the chart. However, values are only drawn for "best" times, and these are
+        // likely to be much fewer, so the maximum can be increased, otherwise if there are
+        // more than 100 (the default) times visible, the "best" times (which may be spread out
+        // much more thinly) will not be shown until the user zooms into the graph.
+        lineChartView.setMaxVisibleValueCount(500);
 
         axisLeft.setDrawLimitLinesBehindData(true);
         axisLeft.setDrawGridLines(true);
@@ -197,6 +180,7 @@ public class TimerGraphFragment extends Fragment {
         axisLeft.setGridColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
 
         generateChart();
+        calculateStats();
 
         return root;
     }
@@ -267,8 +251,6 @@ public class TimerGraphFragment extends Fragment {
             // Add all times line, best times line and average-of-N times lines and identify them
             // using the automatically-generated legend (each line has a label and a unique color).
             lineChartView.setData(chartStats.getChartData(mContext));
-            lineChartView.getLegend().setEnabled(true);
-            lineChartView.getLegend().setTextColor(Color.WHITE);
 
             // Animate and refresh the chart.
             lineChartView.animateY(1_000);
@@ -280,7 +262,6 @@ public class TimerGraphFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setVisibility(View.VISIBLE);
-            refreshText.setVisibility(View.GONE);
             toggleCardStats(View.GONE);
         }
 
@@ -393,7 +374,6 @@ public class TimerGraphFragment extends Fragment {
 
             toggleCardStats(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            refreshLocked = false;
         }
     }
 
