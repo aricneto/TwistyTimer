@@ -2,7 +2,7 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
+import android.util.Log;
 
 import com.aricneto.twistify.R;
 import com.github.mikephil.charting.data.Entry;
@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 
 import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
+import static com.aricneto.twistytimer.utils.ThemeUtils.fetchAttrColor;
 
 /**
  * A collector for solve times and related statistics (average times) to be presented in a chart.
@@ -27,17 +28,6 @@ public class ChartStatistics {
     // only a solve times to be added), but "ChartStatistics" is two-dimensional (requiring both
     // solve times and the date of each of the solve events). Re-use by containment avoids the mess
     // of trying to hide "Statistics.addTime", "Statistics.addDNF" and various other methods.
-
-    /**
-     * The colors to use for the chart lines. The first colour is used for the line showing all
-     * solve times, the next for the best times, and the rest are used for the averages.
-     */
-    // TODO: Probably want colors that do not get lost against the choice of background color.
-    // They may need to be specific to each color scheme/theme. Different colours for each line
-    // are preferred, as it makes the chart legend
-    private final static int[] LINE_COLORS = {
-            Color.WHITE, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.RED, Color.LTGRAY
-    };
 
     /**
      * The data set index for the graph of all solve times.
@@ -183,71 +173,6 @@ public class ChartStatistics {
     }
 
     /**
-     * Gets the chart data for all of the recorded solve times. The data includes line data sets
-     * for all solve times and for running averages of solve times.
-     *
-     * @param context
-     *     The context that may be used to access resources when configuring the elements of the
-     *     chart data.
-     *
-     * @return
-     *     The chart data set.
-     */
-    public LineData getChartData(Context context) {
-        // Not concerned that if this is called more than once that the data sets will be configured
-        // more than once. Only one call is expected and two calls should not break anything.
-
-        final Resources res = context.getResources();
-        final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
-
-        // A legend is enabled on the chart view in the graph fragment. The legend is created
-        // automatically, but requires a unique labels and colors on each data set.
-        allDataSet.setLabel(res.getString(R.string.graph_legend_all_times));
-
-        // If all times are graphed, a thinner line will probably look better.
-        allDataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
-        // Dashed line can make peaks inaccurate. Also makes the graph look too "busy".
-        //allDataSet.enableDashedLine(10f, 10f, 0f);
-        allDataSet.setDrawCircles(false);
-        //allDataSet.setCircleRadius(3f);
-        allDataSet.setColor(LINE_COLORS[DS_ALL]);
-        allDataSet.setHighlightEnabled(false);
-        //allDataSet.setCircleColor(Color.WHITE);
-        allDataSet.setDrawValues(false);
-
-        final LineDataSet bestDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
-
-        bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
-        bestDataSet.setLineWidth(1f);
-        bestDataSet.enableDashedLine(3f, 6f, 0f);
-        bestDataSet.setColor(LINE_COLORS[DS_BEST]);
-        bestDataSet.setDrawCircles(true);
-        bestDataSet.setCircleRadius(3.5f);
-        bestDataSet.setCircleColor(LINE_COLORS[DS_BEST]);
-        bestDataSet.setHighlightEnabled(false);
-        bestDataSet.setDrawValues(true);
-        bestDataSet.setValueTextColor(LINE_COLORS[DS_BEST]);
-        bestDataSet.setValueTextSize(10f);
-        bestDataSet.setValueFormatter(new TimeChartValueFormatter());
-
-        final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
-
-        for (int i = 0; i < mNsOfAverages.length; i++) {
-            final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + DS_AVG_0);
-
-            avgDataSet.setLabel(avgPrefix + mNsOfAverages[i]); // e.g., "Ao12".
-            avgDataSet.setLineWidth(1f);
-            avgDataSet.setDrawCircles(false);
-            // Wrap around the range of 1 to LINE_COLORS.length-1 (color 0 is used for all data).
-            avgDataSet.setColor(LINE_COLORS[i % (LINE_COLORS.length - DS_AVG_0) + DS_AVG_0]);
-            avgDataSet.setHighlightEnabled(false);
-            avgDataSet.setDrawValues(false);
-        }
-
-        return mChartData;
-    }
-
-    /**
      * Records a solve time. The time value should be in milliseconds. If the solve is a DNF,
      * call {@link #addDNF} instead.
      *
@@ -312,6 +237,130 @@ public class ChartStatistics {
     // This methods takes away any confusion about what time value represents a DNF.
     public void addDNF(long date) {
         addTime(DNF, date);
+    }
+
+    /**
+     * Gets the chart data for all of the recorded solve times. The data includes line data sets
+     * for all solve times and for running averages of solve times.
+     *
+     * @param context
+     *     The context that may be used to access resources when configuring the elements of the
+     *     chart data. An application context is not sufficient, an activity context is required
+     *     to access the needed theme attributes for the line colors.
+     *
+     * @return
+     *     The chart data set.
+     *
+     * @throws IllegalStateException
+     *     If there are more than three average-of-N lines to be graphed.
+     */
+    public LineData getChartData(Context context) throws IllegalStateException {
+        // Not concerned that if this method is called more than once that the data sets will be
+        // configured more than once. Only one call is expected, but more will not break anything.
+
+        final int[] lineColors = getLineColors(context, mChartData.getDataSetCount());
+        final Resources res = context.getResources();
+
+        final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
+
+        // A legend is enabled on the chart view in the graph fragment. The legend is created
+        // automatically, but requires a unique labels and colors on each data set.
+        allDataSet.setLabel(res.getString(R.string.graph_legend_all_times));
+        // If all times are graphed, a thinner line will probably look better.
+        allDataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
+        // Dashed line can make peaks inaccurate. Also makes the graph look too "busy".
+        //allDataSet.enableDashedLine(10f, 10f, 0f);
+        allDataSet.setDrawCircles(false);
+        //allDataSet.setCircleRadius(3f);
+        allDataSet.setColor(lineColors[DS_ALL]);
+        allDataSet.setHighlightEnabled(false);
+        //allDataSet.setCircleColor(Color.WHITE);
+        allDataSet.setDrawValues(false);
+
+        final LineDataSet bestDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
+
+        bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
+        bestDataSet.setLineWidth(1f);
+        bestDataSet.enableDashedLine(3f, 6f, 0f);
+        bestDataSet.setColor(lineColors[DS_BEST]);
+        bestDataSet.setDrawCircles(true);
+        bestDataSet.setCircleRadius(3.5f);
+        bestDataSet.setCircleColor(lineColors[DS_BEST]);
+        bestDataSet.setHighlightEnabled(false);
+        bestDataSet.setDrawValues(true);
+        bestDataSet.setValueTextColor(lineColors[DS_BEST]);
+        bestDataSet.setValueTextSize(10f);
+        bestDataSet.setValueFormatter(new TimeChartValueFormatter());
+
+        final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
+
+        for (int i = 0; i < mNsOfAverages.length; i++) {
+            final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + DS_AVG_0);
+
+            avgDataSet.setLabel(avgPrefix + mNsOfAverages[i]); // e.g., "Ao12".
+            avgDataSet.setLineWidth(1f);
+            avgDataSet.setDrawCircles(false);
+            avgDataSet.setColor(lineColors[DS_AVG_0 + i]); // "getLineColors" enforces bounds.
+            avgDataSet.setHighlightEnabled(false);
+            avgDataSet.setDrawValues(false);
+        }
+
+        return mChartData;
+    }
+
+    /**
+     * Gets the line colors corresponding to the data sets of the chart. The colors should be
+     * applied to their corresponding data sets by using the data set index as the index into
+     * the returned array of colors. It is assumed that the first data set represents all times,
+     * the second data set represents the best times and the other data sets represent various
+     * average-of-N times.
+     *
+     * @param context
+     *     The context required to access the line colors defined for the current theme. An
+     *     application context is not sufficient, an activity context is required.
+     * @param numLines
+     *     The number of lines (data sets) for which colors are required.
+     *
+     * @return
+     *     The colors to be used when rendering the lines for the data sets.
+     *
+     * @throws IllegalStateException
+     *     If there are more than three average-of-N lines to be graphed.
+     */
+    public int[] getLineColors(Context context, int numLines) throws IllegalStateException {
+        if (numLines - DS_AVG_0 > 3) {
+            // This limit is determined by the number of "colorChartExtra<X>" theme attributes. If
+            // there are more than three lines, there need to be more than three colors and that
+            // will require new theme attributes to be declared and defined.
+            throw new IllegalStateException("Maximum of 3 average-of-N lines allowed.");
+        }
+
+        final int[] lineColors = new int[numLines];
+
+        switch (numLines) {
+            case 5:
+                lineColors[DS_AVG_0 + 2] = fetchAttrColor(context, R.attr.colorChartExtra3);
+                // Fall through.
+            case 4:
+                lineColors[DS_AVG_0 + 1] = fetchAttrColor(context, R.attr.colorChartExtra2);
+                // Fall through.
+            case 3:
+                lineColors[DS_AVG_0] = fetchAttrColor(context, R.attr.colorChartExtra1);
+                // Fall through.
+            case 2:
+                lineColors[DS_BEST] = fetchAttrColor(context, R.attr.colorChartBestTimes);
+                // Fall through.
+            case 1:
+                lineColors[DS_ALL] = fetchAttrColor(context, R.attr.colorChartAllTimes);
+                break;
+        }
+
+        Log.d("LINE COLORS", "----------");
+        Log.d("LINE COLORS", "Context: " + context);
+        for (int c : lineColors) {
+            Log.d("LINE COLORS", "Line color: 0x" + Integer.toHexString(c));
+        }
+        return lineColors;
     }
 
     /**

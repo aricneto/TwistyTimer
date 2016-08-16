@@ -1,217 +1,69 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/md_indigo_500</item>
-        <item name="colorPrimaryDark">@color/md_indigo_700</item>
-        <item name="colorAccent">@color/md_amber_500</item>
-        <item name="mainColorBackground">@color/md_indigo_700</item>
+    <!--
+    Styles are defined here (values/styles.xml) for the application themes. However, for v21
+    (values-v21/styles.xml) the styles are essentially the same, but for the addition of an
+    "android:statusBarColor" item to the v21 styles. To avoid redundancy, all of the common theme
+    attributes are set in themes with names starting "Base...". These are then extended for the
+    different color themes. For the themes defined in the common "values/styles.xml" file, these
+    extensions are trivial; but those in "values-v21/styles.xml" add the extra attribute where
+    required.
+    -->
+
+    <style name="BaseDefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">?colorPrimary</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="android:actionModeStyle">@style/ActionModeStyle</item>
+        <item name="actionModeStyle">@style/ActionModeStyle</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
-        <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="colorBackgroundList">@color/materialGray</item>
         <item name="colorItemListText">@color/black_text</item>
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
-
         <item name="textColorContrastBackground">@android:color/white</item>
 
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">?colorPrimary</item>
-        <item name="actionModeBackground">?colorPrimary</item>
-        <item name="android:actionModeStyle">@style/DefaultTheme.ActionMode</item>
-        <item name="actionModeStyle">@style/DefaultTheme.ActionMode</item>
-
-
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-
-        <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
-
+        <!-- These items are those most commonly overridden for the color themes. -->
+        <item name="mainColorBackground">@color/md_indigo_700</item>
+        <item name="colorPrimary">@color/md_indigo_500</item>
+        <item name="colorPrimaryDark">@color/md_indigo_700</item>
+        <item name="colorAccent">@color/md_amber_500</item>
+        <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="md_positive_color">@color/md_amber_A400</item>
+
         <item name="md_negative_color">@color/black_secondary_icon</item>
         <item name="md_widget_color">@color/accentDarkColor</item>
 
+        <!--
+        The colors used for the lines on the graph. These are drawn against a background that is
+        given by the "colorPrimaryDark" attribute. For the different color themes, that background
+        changes, so any line color that would not stand out against "colorPrimaryDark" needs to be
+        overridden in the color theme with a contrasting color.
+
+        The first few colors are chosen to be consistent across all color themes, as they contrast
+        with all backgrounds (at this time). The "extra" colors, used for the average-of-N lines,
+        may vary for some color themes. They are effectively drawn over a background of
+        "colorPrimaryDark" and "colorChartAllTimes", so they must contrast with both.
+        -->
+        <item name="colorChartAllTimes">@color/md_white_1000</item>
+        <item name="colorChartBestTimes">@color/md_yellow_A400</item>
+        <item name="colorChartMeanTime">@color/md_orange_A400</item>
+
+        <item name="colorChartExtra1">@color/md_red_500</item>
+        <item name="colorChartExtra2">@color/md_light_green_500</item>
+        <item name="colorChartExtra3">@color/md_cyan_500</item>
     </style>
 
-    <style name="DefaultTheme.ActionMode" parent="Base.Widget.AppCompat.ActionMode">
-        <item name="android:background">?colorPrimary</item>
-        <item name="android:backgroundSplit">?colorPrimary</item>
-        <item name="android:titleTextStyle">@style/Toolbar.TitleText</item>
-        <item name="android:subtitleTextStyle">@style/Toolbar.SubtitleText</item>
-    </style>
+    <!--
+    "DefaultTheme" may be defined differently in "values-v21/styles.xml" before being inherited
+    by the "Base<Color>Theme" styles, which extend "DefaultTheme", not "BaseDefaultTheme".
+    -->
+    <style name="DefaultTheme" parent="BaseDefaultTheme"/>
 
-    <style name="DefaultTheme.NoBackground" parent="DefaultTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="PinkTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_pink_700</item>
-        <item name="colorPrimary">@color/md_pink_500</item>
-        <item name="colorPrimaryDark">@color/md_pink_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
-        <item name="colorItemListBackgroundSelected">@color/md_pink_200</item>
-    </style>
-
-    <style name="PinkTheme.NoBackground" parent="PinkTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="PurpleTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_purple_700</item>
-        <item name="colorPrimary">@color/md_purple_500</item>
-        <item name="colorPrimaryDark">@color/md_purple_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A700</item>
-        <item name="colorItemListBackgroundSelected">@color/md_purple_200</item>
-    </style>
-
-    <style name="PurpleTheme.NoBackground" parent="PurpleTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="TealTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_teal_700</item>
-        <item name="colorPrimary">@color/md_teal_500</item>
-        <item name="colorPrimaryDark">@color/md_teal_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
-        <item name="colorItemListBackgroundSelected">@color/md_teal_200</item>
-    </style>
-
-    <style name="TealTheme.NoBackground" parent="TealTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="RedTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_red_700</item>
-        <item name="colorPrimary">@color/md_red_500</item>
-        <item name="colorPrimaryDark">@color/md_red_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
-        <item name="colorItemListBackgroundSelected">@color/md_red_200</item>
-    </style>
-
-    <style name="RedTheme.NoBackground" parent="RedTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BrownTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_brown_700</item>
-        <item name="colorPrimary">@color/md_brown_500</item>
-        <item name="colorPrimaryDark">@color/md_brown_700</item>
-        <item name="colorAccent">@color/md_deep_orange_400</item>
-        <item name="md_positive_color">@color/md_deep_orange_400</item>
-        <item name="colorItemListBackgroundSelected">@color/md_brown_200</item>
-    </style>
-
-    <style name="BrownTheme.NoBackground" parent="BrownTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlueTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_blue_700</item>
-        <item name="colorPrimary">@color/md_blue_500</item>
-        <item name="colorPrimaryDark">@color/md_blue_700</item>
-        <item name="colorAccent">@color/md_deep_orange_A400</item>
-        <item name="md_positive_color">@color/md_deep_orange_A400</item>
-        <item name="colorItemListBackgroundSelected">@color/md_blue_200</item>
-    </style>
-
-    <style name="BlueTheme.NoBackground" parent="BlueTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlackTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_black_1000</item>
-        <item name="colorPrimary">@color/md_black_1000</item>
-        <item name="colorPrimaryDark">@color/md_black_1000</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
-        <item name="colorTimerText">@android:color/white</item>
-        <item name="colorBackgroundList">@color/md_black_1000</item>
-        <item name="android:textColorPrimaryInverse">@color/white_text</item>
-        <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
-        <item name="colorItemListText">@color/white_text</item>
-        <item name="colorItemListBackground">@color/md_grey_800</item>
-    </style>
-
-    <style name="BlackTheme.NoBackground" parent="BlackTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="GreenTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_green_700</item>
-        <item name="colorPrimary">@color/md_green_500</item>
-        <item name="colorPrimaryDark">@color/md_green_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A700</item>
-        <item name="colorItemListBackgroundSelected">@color/md_green_200</item>
-    </style>
-
-    <style name="GreenTheme.NoBackground" parent="GreenTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="OrangeTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_deep_orange_700</item>
-        <item name="colorPrimary">@color/md_deep_orange_500</item>
-        <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
-        <item name="colorAccent">@color/md_green_A400</item>
-        <item name="md_positive_color">@color/md_green_700</item>
-        <item name="colorItemListBackgroundSelected">@color/md_deep_orange_200</item>
-    </style>
-
-    <style name="OrangeTheme.NoBackground" parent="OrangeTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="DeepPurpleTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_deep_purple_700</item>
-        <item name="colorPrimary">@color/md_deep_purple_500</item>
-        <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A700</item>
-        <item name="colorItemListBackgroundSelected">@color/md_deep_purple_200</item>
-    </style>
-
-    <style name="DeepPurpleTheme.NoBackground" parent="DeepPurpleTheme">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlueGrayTheme" parent="DefaultTheme">
-        <item name="mainColorBackground">@color/md_blue_grey_700</item>
-        <item name="colorPrimary">@color/md_blue_grey_500</item>
-        <item name="colorPrimaryDark">@color/md_blue_grey_700</item>
-        <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="md_positive_color">@color/md_amber_A700</item>
-        <item name="colorItemListBackgroundSelected">@color/md_blue_grey_200</item>
-    </style>
-
-    <style name="BlueGrayTheme.NoBackground" parent="BlueGrayTheme">
+    <style name="DefaultTheme.NoBackground">
         <item name="colorTimerDetailText">@color/black_secondary_icon</item>
         <item name="mainColorBackground">@color/materialGray</item>
         <item name="colorTimerText">@color/black_secondary_icon</item>
@@ -220,6 +72,233 @@
     <style name="DefaultTheme.Overflow">
         <item name="android:src">@drawable/ic_action_more_vert_white_24</item>
         <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <!--
+    The "Base<Color>Theme" styles in extend "DefaultTheme", which may be defined differently in
+    "values-v21/styles.xml".
+    -->
+    <style name="BasePinkTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_pink_700</item>
+        <item name="colorPrimary">@color/md_pink_500</item>
+        <item name="colorPrimaryDark">@color/md_pink_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_pink_200</item>
+
+        <item name="colorChartExtra1">@color/md_deep_orange_500</item>
+    </style>
+
+    <style name="BasePurpleTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_purple_700</item>
+        <item name="colorPrimary">@color/md_purple_500</item>
+        <item name="colorPrimaryDark">@color/md_purple_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_purple_200</item>
+    </style>
+
+    <style name="BaseTealTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_teal_700</item>
+        <item name="colorPrimary">@color/md_teal_500</item>
+        <item name="colorPrimaryDark">@color/md_teal_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_teal_200</item>
+
+        <item name="colorChartExtra3">@color/md_deep_orange_500</item>
+    </style>
+
+    <style name="BaseRedTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_red_700</item>
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorPrimaryDark">@color/md_red_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_red_200</item>
+
+        <item name="colorChartExtra1">@color/md_purple_500</item>
+    </style>
+
+    <style name="BaseBrownTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_brown_700</item>
+        <item name="colorPrimary">@color/md_brown_500</item>
+        <item name="colorPrimaryDark">@color/md_brown_700</item>
+        <item name="colorAccent">@color/md_deep_orange_400</item>
+        <item name="md_positive_color">@color/md_deep_orange_400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_brown_200</item>
+    </style>
+
+    <style name="BaseBlueTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_blue_700</item>
+        <item name="colorPrimary">@color/md_blue_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_700</item>
+        <item name="colorAccent">@color/md_deep_orange_A400</item>
+        <item name="md_positive_color">@color/md_deep_orange_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_blue_200</item>
+
+        <item name="colorChartExtra3">@color/md_deep_orange_500</item>
+    </style>
+
+    <style name="BaseBlackTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_black_1000</item>
+        <item name="colorPrimary">@color/md_black_1000</item>
+        <item name="colorPrimaryDark">@color/md_black_1000</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
+
+        <item name="colorTimerText">@android:color/white</item>
+        <item name="colorBackgroundList">@color/md_black_1000</item>
+        <item name="android:textColorPrimaryInverse">@color/white_text</item>
+        <item name="colorItemListText">@color/white_text</item>
+        <item name="colorItemListBackground">@color/md_grey_800</item>
+    </style>
+
+    <style name="BaseGreenTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_green_700</item>
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorPrimaryDark">@color/md_green_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_green_200</item>
+
+        <item name="colorChartExtra2">@color/md_deep_orange_500</item>
+    </style>
+
+    <style name="BaseOrangeTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_deep_orange_700</item>
+        <item name="colorPrimary">@color/md_deep_orange_500</item>
+        <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
+        <item name="colorAccent">@color/md_green_A400</item>
+        <item name="md_positive_color">@color/md_green_700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_deep_orange_200</item>
+
+        <item name="colorChartExtra1">@color/md_purple_500</item>
+    </style>
+
+    <style name="BaseDeepPurpleTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_deep_purple_700</item>
+        <item name="colorPrimary">@color/md_deep_purple_500</item>
+        <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_deep_purple_200</item>
+    </style>
+
+    <style name="BaseBlueGrayTheme" parent="DefaultTheme">
+        <item name="mainColorBackground">@color/md_blue_grey_700</item>
+        <item name="colorPrimary">@color/md_blue_grey_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_grey_700</item>
+        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_amber_A700</item>
+        <item name="colorItemListBackgroundSelected">@color/md_blue_grey_200</item>
+    </style>
+
+    <!--
+    Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.
+    They are defined differently in "values-v21/styles.xml".
+    -->
+    <style name="PinkTheme" parent="BasePinkTheme"/>
+
+    <style name="PurpleTheme" parent="BasePurpleTheme"/>
+
+    <style name="TealTheme" parent="BaseTealTheme"/>
+
+    <style name="RedTheme" parent="BaseRedTheme"/>
+
+    <style name="BrownTheme" parent="BaseBrownTheme"/>
+
+    <style name="BlueTheme" parent="BaseBlueTheme"/>
+
+    <style name="BlackTheme" parent="BaseBlackTheme"/>
+
+    <style name="GreenTheme" parent="BaseGreenTheme"/>
+
+    <style name="OrangeTheme" parent="BaseOrangeTheme"/>
+
+    <style name="DeepPurpleTheme" parent="BaseDeepPurpleTheme"/>
+
+    <style name="BlueGrayTheme" parent="BaseBlueGrayTheme"/>
+
+    <!--
+    These "<Color>Theme.NoBackground" styles extend the "<Color>Theme" styles, which could be
+    defined differently in "values-v21/styles.xml".
+    -->
+    <style name="PinkTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="PurpleTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="TealTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="RedTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BrownTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlueTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlackTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="GreenTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="OrangeTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="DeepPurpleTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <style name="BlueGrayTheme.NoBackground">
+        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
+        <item name="mainColorBackground">@color/materialGray</item>
+        <item name="colorTimerText">@color/black_secondary_icon</item>
+    </style>
+
+    <!--
+    Other miscellaneous styles.
+    -->
+    <style name="ActionModeStyle" parent="Base.Widget.AppCompat.ActionMode">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:backgroundSplit">?colorPrimary</item>
+        <item name="android:titleTextStyle">@style/Toolbar.TitleText</item>
+        <item name="android:subtitleTextStyle">@style/Toolbar.SubtitleText</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -241,11 +320,6 @@
         <item name="android:alpha">0.8</item>
     </style>
 
-    <style name="ToolBarStyle">
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
-
     <style name="DialogExportImportActions">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:gravity">center_vertical</item>
@@ -264,25 +338,34 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="Widget.Tarefa.Header.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+    <!-- "ToolBarStyle" is defined differently for v21. -->
+    <style name="BaseToolBarStyle">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ToolBarStyle" parent="BaseToolBarStyle"/>
+
+    <!-- "Widget.Tarefa.Header.Spinner" is defined differently for v21. -->
+    <style name="Base.Widget.Tarefa.Header.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
         <item name="android:background">?android:selectableItemBackground</item>
         <item name="android:dropDownSelector">?android:selectableItemBackground</item>
         <item name="android:divider">@null</item>
     </style>
+
+    <style name="Widget.Tarefa.Header.Spinner" parent="Base.Widget.Tarefa.Header.Spinner"/>
 
     <style name="Widget.Tarefa.Body.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
         <item name="android:textSize">10sp</item>
     </style>
 
     <style name="HeaderSwitch">
-
         <!-- Active thumb color & Active track color(30% transparency) -->
         <item name="colorControlActivated">@color/white_text</item>
         <!-- Inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/primaryColor</item>
         <!-- Inactive track color(30% transparency) -->
         <item name="android:colorForeground">@color/black_text</item>
-
     </style>
 
 </resources>

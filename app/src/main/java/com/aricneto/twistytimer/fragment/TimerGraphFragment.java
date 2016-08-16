@@ -24,6 +24,7 @@ import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.utils.AverageCalculator;
 import com.aricneto.twistytimer.utils.ChartStatistics;
 import com.aricneto.twistytimer.utils.Statistics;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -121,8 +122,7 @@ public class TimerGraphFragment extends Fragment {
         }
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
 
-        // App context is less likely to cause memory leaks. Only used for resources.
-        mContext = getContext() != null ? getContext().getApplicationContext() : null;
+        mContext = getContext();
     }
 
     @Override
@@ -132,7 +132,8 @@ public class TimerGraphFragment extends Fragment {
         ButterKnife.bind(this, root);
 
         // Setting for landscape mode
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getActivity().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
             root.post(new Runnable() {
                 @Override
                 public void run() {
@@ -219,7 +220,7 @@ public class TimerGraphFragment extends Fragment {
         protected ChartStatistics doInBackground(String... params) {
             final ChartStatistics chartStats
                     = history ? ChartStatistics.newAllTimeChartStatistics()
-                    : ChartStatistics.newCurrentSessionChartStatistics();
+                              : ChartStatistics.newCurrentSessionChartStatistics();
 
             TwistyTimer.getDBHandler().populateChartStatistics(
                     currentPuzzle, currentPuzzleSubtype, chartStats);
@@ -236,7 +237,8 @@ public class TimerGraphFragment extends Fragment {
             if (mean != AverageCalculator.UNKNOWN) {
                 final LimitLine ll
                         = new LimitLine(mean / 1_000f, mContext.getString(R.string.graph_mean));
-                final int meanColor = ContextCompat.getColor(mContext, R.color.yellow_material_700);
+                final int meanColor
+                        = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartMeanTime);
 
                 ll.setLineColor(meanColor);
                 ll.setLineWidth(1f);
