@@ -22,6 +22,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.utils.AverageCalculator;
+import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
 import com.aricneto.twistytimer.utils.ChartStatistics;
 import com.aricneto.twistytimer.utils.Statistics;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -165,11 +166,26 @@ public class TimerGraphFragment extends Fragment {
         lineChartView.getLegend().setTextColor(Color.WHITE);
         lineChartView.setDescription("");
         // The maximum number of values that can be visible above which the time values are not
-        // drawn on the chart. However, values are only drawn for "best" times, and these are
-        // likely to be much fewer, so the maximum can be increased, otherwise if there are
-        // more than 100 (the default) times visible, the "best" times (which may be spread out
-        // much more thinly) will not be shown until the user zooms into the graph.
-        lineChartView.setMaxVisibleValueCount(500);
+        // drawn on the chart beside their data points. However, values are only drawn for the few
+        // "best" times, and these are likely to be much fewer (i.e., spread out along the X-axis),
+        // so the maximum can be increased from the default of 100. Otherwise, if there are more
+        // than 100 times visible, the "best" times will not be shown until the user zooms into the
+        // chart quite a lot.
+        //
+        // One confusing aspect is that the visible count that the chart renderer compares to this
+        // maximum count includes all points from all data sets, even those that have not been set
+        // to show values (i.e., even when "setDrawValues(false)" is applied). For example, if
+        // there are 1,000 solve times in one data set and then 951 Ao50 times and 901 Ao100 times,
+        // and 8 "best" times, then the total number of visible data points is 2,860, even though
+        // the chart is only 1,000 points wide and even though only the 8 "best" times will show
+        // their values. Therefore, the maximum count needs to be about 3 times higher than the
+        // number of solve times that would give rise to the number of "best" times that could have
+        // their values shown without much visual overlap.
+        lineChartView.setMaxVisibleValueCount(2_000);
+
+        // Use the custom renderer to draw the values of the "best" times below their data points.
+        lineChartView.setRenderer(new OffsetValuesLineChartRenderer(
+                lineChartView, ChartStatistics.BEST_TIME_VALUES_Y_OFFSET_DP));
 
         axisLeft.setDrawLimitLinesBehindData(true);
         axisLeft.setDrawGridLines(true);

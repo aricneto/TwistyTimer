@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.aricneto.twistify.R;
 import com.github.mikephil.charting.data.Entry;
@@ -28,6 +27,30 @@ public class ChartStatistics {
     // only a solve times to be added), but "ChartStatistics" is two-dimensional (requiring both
     // solve times and the date of each of the solve events). Re-use by containment avoids the mess
     // of trying to hide "Statistics.addTime", "Statistics.addDNF" and various other methods.
+
+    /**
+     * The circle radius to use for the circles drawn at the data points for the "best" times. The
+     * value is in DIP units.
+     */
+    private static final float BEST_TIME_CIRCLE_RADIUS_DP = 3.5f;
+
+    /**
+     * The text size to use for the value text shown near the data points for the best times. The
+     * value is in DIP units.
+     */
+    private static final float BEST_TIME_VALUES_TEXT_SIZE_DP = 10f;
+
+    /**
+     * The Y-coordinate offset to apply to the value text of the "best" times to cause the text to
+     * be drawn below the corresponding data point instead of above it. The value is in DIP units.
+     */
+    // NOTE: This calculation approximately flips the text position to the opposite side of the
+    // data point (i.e., from above to below) based on the way "LineChartRenderer.drawValues" does
+    // the calculation (baseline is offset by -1.75 * circle-radius). Here, we reverse that offset
+    // twice to set the reflected position of the top of the text *below* the point and then offset
+    // by the text size to set the position on the new text baseline.
+    public static final float BEST_TIME_VALUES_Y_OFFSET_DP
+            = BEST_TIME_CIRCLE_RADIUS_DP * 1.75f * 2f + BEST_TIME_VALUES_TEXT_SIZE_DP;
 
     /**
      * The data set index for the graph of all solve times.
@@ -258,8 +281,12 @@ public class ChartStatistics {
         // Not concerned that if this method is called more than once that the data sets will be
         // configured more than once. Only one call is expected, but more will not break anything.
 
-        final int[] lineColors = getLineColors(context, mChartData.getDataSetCount());
         final Resources res = context.getResources();
+        final int[] lineColors = getLineColors(context, mChartData.getDataSetCount());
+        // If graphing only times for a session, there will be fewer, and a thicker line will look
+        // well. However, if all times are graphed, a thinner line will probably look better, as
+        // the finer details will be more visible.
+        final float lineWidth = isForCurrentSessionOnly() ? 2f : 1f;
 
         final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
 
@@ -267,29 +294,28 @@ public class ChartStatistics {
         // automatically, but requires a unique labels and colors on each data set.
         allDataSet.setLabel(res.getString(R.string.graph_legend_all_times));
         // If all times are graphed, a thinner line will probably look better.
-        allDataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
-        // Dashed line can make peaks inaccurate. Also makes the graph look too "busy".
+        allDataSet.setLineWidth(lineWidth);
+        // A dashed line can make peaks inaccurate. It also makes the graph look too "busy".
         //allDataSet.enableDashedLine(10f, 10f, 0f);
         allDataSet.setDrawCircles(false);
-        //allDataSet.setCircleRadius(3f);
         allDataSet.setColor(lineColors[DS_ALL]);
         allDataSet.setHighlightEnabled(false);
-        //allDataSet.setCircleColor(Color.WHITE);
         allDataSet.setDrawValues(false);
 
         final LineDataSet bestDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
 
+        // NOTE: If the circle radius or text size are changed, update "BEST_TIME_VALUES_Y_OFFSET".
         bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
-        bestDataSet.setLineWidth(1f);
+        bestDataSet.setLineWidth(lineWidth);
         bestDataSet.enableDashedLine(3f, 6f, 0f);
         bestDataSet.setColor(lineColors[DS_BEST]);
         bestDataSet.setDrawCircles(true);
-        bestDataSet.setCircleRadius(3.5f);
+        bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
         bestDataSet.setCircleColor(lineColors[DS_BEST]);
         bestDataSet.setHighlightEnabled(false);
         bestDataSet.setDrawValues(true);
         bestDataSet.setValueTextColor(lineColors[DS_BEST]);
-        bestDataSet.setValueTextSize(10f);
+        bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
         bestDataSet.setValueFormatter(new TimeChartValueFormatter());
 
         final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
@@ -298,7 +324,7 @@ public class ChartStatistics {
             final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + DS_AVG_0);
 
             avgDataSet.setLabel(avgPrefix + mNsOfAverages[i]); // e.g., "Ao12".
-            avgDataSet.setLineWidth(1f);
+            avgDataSet.setLineWidth(lineWidth);
             avgDataSet.setDrawCircles(false);
             avgDataSet.setColor(lineColors[DS_AVG_0 + i]); // "getLineColors" enforces bounds.
             avgDataSet.setHighlightEnabled(false);
@@ -355,11 +381,6 @@ public class ChartStatistics {
                 break;
         }
 
-        Log.d("LINE COLORS", "----------");
-        Log.d("LINE COLORS", "Context: " + context);
-        for (int c : lineColors) {
-            Log.d("LINE COLORS", "Line color: 0x" + Integer.toHexString(c));
-        }
         return lineColors;
     }
 
