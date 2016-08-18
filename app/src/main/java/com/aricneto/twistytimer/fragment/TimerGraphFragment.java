@@ -149,21 +149,14 @@ public class TimerGraphFragment extends Fragment {
             });
         }
 
-        // Setting the chart up
-        lineChartView.setPinchZoom(true);
-        YAxis axisLeft = lineChartView.getAxisLeft();
-        XAxis xAxis = lineChartView.getXAxis();
+        // The color for the text in the legend and for the values along the chart's axes.
+        final int chartTextColor = Color.WHITE;
 
+        lineChartView.setPinchZoom(true);
         lineChartView.setBackgroundColor(Color.TRANSPARENT);
         lineChartView.setDrawGridBackground(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisLineColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
-        xAxis.setDrawAxisLine(true);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setAvoidFirstLastClipping(true);
         lineChartView.getAxisRight().setEnabled(false);
-        lineChartView.getLegend().setTextColor(Color.WHITE);
+        lineChartView.getLegend().setTextColor(chartTextColor);
         lineChartView.setDescription("");
         // The maximum number of values that can be visible above which the time values are not
         // drawn on the chart beside their data points. However, values are only drawn for the few
@@ -182,20 +175,36 @@ public class TimerGraphFragment extends Fragment {
         // number of solve times that would give rise to the number of "best" times that could have
         // their values shown without much visual overlap.
         lineChartView.setMaxVisibleValueCount(2_000);
-
         // Use the custom renderer to draw the values of the "best" times below their data points.
         lineChartView.setRenderer(new OffsetValuesLineChartRenderer(
                 lineChartView, ChartStatistics.BEST_TIME_VALUES_Y_OFFSET_DP));
 
+        final YAxis axisLeft = lineChartView.getAxisLeft();
+        final XAxis xAxis = lineChartView.getXAxis();
+        final int axisColor = ContextCompat.getColor(mContext, R.color.white_secondary_icon);
+
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineColor(axisColor);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setTextColor(chartTextColor);
+        xAxis.setAvoidFirstLastClipping(true);
+
         axisLeft.setDrawLimitLinesBehindData(true);
         axisLeft.setDrawGridLines(true);
         axisLeft.setDrawAxisLine(true);
-        axisLeft.setTextColor(Color.WHITE);
+        axisLeft.setTextColor(chartTextColor);
         axisLeft.enableGridDashedLine(10f, 8f, 0f);
+        axisLeft.setAxisLineColor(axisColor);
+        axisLeft.setGridColor(axisColor);
         axisLeft.setValueFormatter(new TimeFormatter());
-        axisLeft.setAxisLineColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
-        axisLeft.setGridColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
 
+        // Launch the background tasks to load the data for the chart and statistics.
+        // TODO: This should probably only be done when the fragment becomes visible, not when it
+        // is created. If the app is started, it shows the timer tab, but this graph fragment is
+        // created for another tab and triggers this loading, even though the graph and statistics
+        // are not yet visible. Triggering this only when the fragment is visible would speed the
+        // start-up of the app and the generation of the first scramble (if scrambles are enabled).
         generateChart();
         calculateStats();
 
@@ -235,8 +244,8 @@ public class TimerGraphFragment extends Fragment {
         @Override
         protected ChartStatistics doInBackground(String... params) {
             final ChartStatistics chartStats
-                    = history ? ChartStatistics.newAllTimeChartStatistics()
-                              : ChartStatistics.newCurrentSessionChartStatistics();
+                    = history ? ChartStatistics.newAllTimeChartStatistics(mContext)
+                              : ChartStatistics.newCurrentSessionChartStatistics(mContext);
 
             TwistyTimer.getDBHandler().populateChartStatistics(
                     currentPuzzle, currentPuzzleSubtype, chartStats);
@@ -246,7 +255,7 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ChartStatistics chartStats) {
-            // Mean line.
+            // Horizontal mean time line.
             final long mean = chartStats.getMeanTime();
 
             lineChartView.getAxisLeft().removeAllLimitLines();
@@ -266,9 +275,10 @@ public class TimerGraphFragment extends Fragment {
                 lineChartView.getAxisLeft().addLimitLine(ll);
             }
 
-            // Add all times line, best times line and average-of-N times lines and identify them
-            // using the automatically-generated legend (each line has a label and a unique color).
-            lineChartView.setData(chartStats.getChartData(mContext));
+            // Add all times line, best times line and average-of-N times lines (with highlighted
+            // best AoN times) and identify them using the custom-configured legend.
+            lineChartView.setData(chartStats.getChartData());
+            chartStats.configureLegend(lineChartView.getLegend());
 
             // Animate and refresh the chart.
             lineChartView.animateY(1_000);

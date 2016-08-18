@@ -83,6 +83,10 @@ public class OffsetValuesLineChartRenderer extends LineChartRenderer {
         // with a test of "mViewPortHandler.isInBoundsBottom(y + mValueYOffsetPX)". However, without
         // this bounds-checking, it looks quite nice: drawing the text outside the axis until the
         // point itself touches the axis. Zoom in and drag the chart around to experiment.
+
+        // TODO: It might be worth considering if these should be painted in "reverse video" to
+        // make them more readable, i.e., draw a rectangle in the "text color" and then draw the
+        // text on top in a contrasting color (maybe just black or white).
         super.drawValue(c, formatter, value, entry, dataSetIndex, x, y + mValueYOffsetPX);
     }
 }

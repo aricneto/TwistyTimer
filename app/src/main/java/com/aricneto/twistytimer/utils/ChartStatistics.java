@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.aricneto.twistify.R;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
@@ -63,10 +66,12 @@ public class ChartStatistics {
     private static final int DS_BEST = 1;
 
     /**
-     * The data set index for the first of a series of graphs of "average-of-N" solve times. The
-     * data set at this index corresponds to the average for the value of "N" at index zero in
-     * {@link #mNsOfAverages}, the data set at the next index after this index corresponds to the
-     * average for the value of "N" at index one in that array, and so on.
+     * The data set index for the first of a series of graphs of "average-of-N" (AoN) solve times.
+     * The data set at this index corresponds to the AoN for the value of "N" at index zero in
+     * {@link #mNsOfAverages}. Like the {@link #DS_ALL} and {@link #DS_BEST} indices, these AoN
+     * indices come in pairs, with the first index for the data set of AoN times and the second for
+     * the best AoN time for that "N". The data set at {@code DS_AVG_0 + 2} corresponds to the
+     * average for the value of "N" at index one in {@code mNsOfAverages}, and so on.
      */
     private static final int DS_AVG_0 = 2;
 
@@ -99,14 +104,33 @@ public class ChartStatistics {
     private final boolean mIsForCurrentSessionOnly;
 
     /**
-     * The number of solve times recorded for the chart.
+     * The current X-index for the solve time added to the chart.
      */
-    private int mCount;
+    private int mXIndex;
 
     /**
      * The current best solve time recorded so far (in milliseconds).
      */
     private long mBestTime = Long.MAX_VALUE;
+
+    /**
+     * The "pre-compiled" date formatter for the X-axis labels.
+     */
+    private DateTimeFormatter mXValueFormatter;
+
+    /**
+     * The day for which the previous data set entry was recorded. If the day has not changed, the
+     * value of {@link #mPrevEntryXValue} can be re-used instead of re-formatting the date object
+     * to a new string. If {@code null}, there was no previous entry.
+     */
+    private LocalDate mPrevEntryDay;
+
+    /**
+     * The formatted X-value with which the previous data set entry was recorded. If the day has
+     * not changed (tested against {@link #mPrevEntryDay}), this X-value can be re-used instead of
+     * re-formatting the date object to a new string. If {@code null}, there was no previous entry.
+     */
+    private String mPrevEntryXValue;
 
     /**
      * Creates a new collector for chart statistics that will chart all collected values and all
@@ -124,12 +148,18 @@ public class ChartStatistics {
      *     {@code true} if the solve times to be charted are only those solves added in the current
      *     sessions; or {@code false} if the solve times are only those solves added across all
      *     sessions.
+     * @param context
+     *     The context required to access string resources and the line colors defined for the
+     *     current theme. An application context is not sufficient to access the theme colors, so
+     *     an activity context is required.
      *
      * @throws IllegalArgumentException
      *     If {@code statistics} is not configured for the current session only.
+     * @throws IllegalStateException
+     *     If there are more than three average-of-N lines to be graphed.
      */
-    private ChartStatistics(Statistics statistics, boolean isForCurrentSessionOnly)
-                throws IllegalArgumentException {
+    private ChartStatistics(Statistics statistics, boolean isForCurrentSessionOnly, Context context)
+                throws IllegalArgumentException, IllegalStateException {
         if (!statistics.isForCurrentSessionOnly()) {
             // Enforcing this requirement means that there will be no excess clutter caused by
             // conditions in this class that need to decide between the two sets of times and
@@ -143,19 +173,120 @@ public class ChartStatistics {
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
 
-        // Data set at index DS_ALL (0) is the set for all solve times, not an average of solve
-        // times. The data sets are not configured here, only later in "getChartData", which makes
-        // it easy to pass in a "Context" to access configuration resources for colours, etc.,
-        // while keeping the constructor API cleaner for easier testing and avoiding exceptions.
-        mChartData.addDataSet(new LineDataSet(null, null));
+        final int numNs = mNsOfAverages.length;
+        final int[] lineColors = getLineColors(context, DS_AVG_0 + numNs); // May throw ISE.
 
-        // Data set at index DS_BEST (1) is the set for the changes to the best puzzle time.
-        mChartData.addDataSet(new LineDataSet(null, null));
+        // The order in which the data sets are added is important to ensure that "DS_ALL", etc.
+        // remain meaningful.
+        addMainDataSets(context, lineColors[DS_ALL], lineColors[DS_BEST]);
 
-        // Add data sets--starting at index DS_AVG_0 (2)--for each "average-of-N" to be charted.
-        for (final int ignored : mNsOfAverages) {
-            mChartData.addDataSet(new LineDataSet(null, null));
+        for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
+            addAoNDataSets(context, mNsOfAverages[nIndex], lineColors[DS_AVG_0 + nIndex]);
         }
+
+        // Set the formatter for the date label on the chart X-axis. Localise the format (mostly to
+        // support the "MM/DD" order for the USA). It will fall back to the most common "DD/MM"
+        // format (from "values/formats.xml") if no more specific localised format is found. This
+        // "pre-compiles" the pattern, making formatting faster later.
+        mXValueFormatter = DateTimeFormat.forPattern(
+                context.getResources().getString(R.string.chartXAxisDateFormat));
+    }
+
+    /**
+     * Adds the main data set for all times and the data set for the progression of record best
+     * times among all times. The progression of best times are marked in a different color to the
+     * main line of all time using circles lined with a dashed line. This will appear to connect
+     * the lowest troughs along the main line of all times.
+     *
+     * @param context   The context required to access the labels required for the chart legend.
+     * @param allColor  The color of the all-times line.
+     * @param bestColor The color of the best-times line.
+     */
+    private void addMainDataSets(Context context, int allColor, int bestColor) {
+        final Resources res = context.getResources();
+
+        // Main data set for all solve times.
+        mChartData.addDataSet(
+                createDataSet(res.getString(R.string.graph_legend_all_times), allColor));
+
+        // Data set to show the progression of best times along the main line of all times.
+        final LineDataSet bestDataSet
+                = createDataSet(res.getString(R.string.graph_legend_best_times), bestColor);
+
+        bestDataSet.enableDashedLine(3f, 6f, 0f);
+
+        bestDataSet.setDrawValues(true);
+        bestDataSet.setValueTextColor(bestColor);
+        bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
+        bestDataSet.setValueFormatter(new TimeChartValueFormatter());
+
+        bestDataSet.setDrawCircles(true);
+        bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
+        bestDataSet.setCircleColor(bestColor);
+
+        mChartData.addDataSet(bestDataSet);
+    }
+
+    /**
+     * Adds the data set for the average-of-N (AoN) times and the corresponding data set for the
+     * single best average time for that value of "N". The best AoN times are not shown as a
+     * progression; only one time is shown and it superimposed on its main AoN line, rendered in
+     * the same color as a circle and with the value drawn on the chart.
+     *
+     * @param context The context required to access the labels required for the chart legend.
+     * @param n       The value of "N" for this average-of-N.
+     * @param color   The color of the AoN line and best AoN time marker.
+     */
+    private void addAoNDataSets(Context context, int n, int color) {
+        final Resources res = context.getResources();
+        final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
+        final String avgLabel = avgPrefix + n; // e.g., "Ao12".
+
+        // Main AoN data set for all AoN times for one value of "N".
+        mChartData.addDataSet(createDataSet(avgLabel, color));
+
+        // Data set for the single best AoN time for this "N".
+        final LineDataSet bestAoNDataSet = createDataSet(avgLabel, color);
+
+        bestAoNDataSet.setDrawCircles(true);
+        bestAoNDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
+        bestAoNDataSet.setCircleColor(color);
+
+        bestAoNDataSet.setDrawValues(true);
+        bestAoNDataSet.setValueTextColor(color);
+        bestAoNDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
+        bestAoNDataSet.setValueFormatter(new TimeChartValueFormatter());
+
+        mChartData.addDataSet(bestAoNDataSet);
+    }
+
+    /**
+     * Creates a data set with the given label and color. Highlights and drawing of values and
+     * circles are disabled, as that is common for many cases.
+     *
+     * @param label The label to assign to the new data set.
+     * @param color The line color to set for the new data set.
+     */
+    private LineDataSet createDataSet(String label, int color) {
+        // A legend is enabled on the chart view in the graph fragment. The legend is created
+        // automatically, but requires a unique labels and colors on each data set.
+        final LineDataSet dataSet = new LineDataSet(null, label);
+
+        // A dashed line can make peaks inaccurate. It also makes the graph look too "busy". It
+        // is OK for some uses, such as progressions of best times, but that is left to the caller
+        // to change once this new data set is returned.
+        //
+        // If graphing only times for a session, there will be fewer, and a thicker line will look
+        // well. However, if all times are graphed, a thinner line will probably look better, as
+        // the finer details will be more visible.
+        dataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
+        dataSet.setColor(color);
+        dataSet.setHighlightEnabled(false);
+
+        dataSet.setDrawCircles(false);
+        dataSet.setDrawValues(false);
+
+        return dataSet;
     }
 
     /**
@@ -163,10 +294,16 @@ public class ChartStatistics {
      * data for all solve times across all past and current sessions and the running averages of 50
      * and 100 consecutive times. These averages permit all but one solve to be a DNF solve.
      *
-     * @return The collector for chart statistics.
+     * @param context
+     *     The context required to access string resources and the line colors defined for the
+     *     current theme. An application context is not sufficient to access the theme colors, so
+     *     an activity context is required.
+     *
+     * @return
+     *     The collector for chart statistics.
      */
-    public static ChartStatistics newAllTimeChartStatistics() {
-        return new ChartStatistics(Statistics.newAllTimeAveragesChartStatistics(), false);
+    public static ChartStatistics newAllTimeChartStatistics(Context context) {
+        return new ChartStatistics(Statistics.newAllTimeAveragesChartStatistics(), false, context);
     }
 
     /**
@@ -175,10 +312,17 @@ public class ChartStatistics {
      * of 5 and 12 consecutive times. These averages permit no more than one solve to be a DNF
      * solve.
      *
-     * @return The collector for chart statistics.
+     * @param context
+     *     The context required to access string resources and the line colors defined for the
+     *     current theme. An application context is not sufficient to access the theme colors, so
+     *     an activity context is required.
+     *
+     * @return
+     *     The collector for chart statistics.
      */
-    public static ChartStatistics newCurrentSessionChartStatistics() {
-        return new ChartStatistics(Statistics.newCurrentSessionAveragesChartStatistics(), true);
+    public static ChartStatistics newCurrentSessionChartStatistics(Context context) {
+        return new ChartStatistics(
+                Statistics.newCurrentSessionAveragesChartStatistics(), true, context);
     }
 
     /**
@@ -196,6 +340,49 @@ public class ChartStatistics {
     }
 
     /**
+     * Gets the chart data for all of the recorded solve times. The data includes line data sets
+     * for all solve times and for running averages of solve times.
+     *
+     * @return The chart data set.
+     */
+    public LineData getChartData() throws IllegalStateException {
+        return mChartData;
+    }
+
+    /**
+     * Configures the given {@code Legend} to correspond to the chart data provided by
+     * {@link #getChartData()}. This sets the
+     *
+     * @param legend The legend to be configured.
+     */
+    public void configureLegend(Legend legend) {
+        // NOTE: If "Legend" is allowed to configure itself automatically, it will add two entries
+        // for each AoN/best-AoN pair of data sets, but only one should be shown. Go custom....
+        final int numNs = mNsOfAverages.length;
+        final String[] labels = new String[DS_AVG_0 + numNs];
+        final int[] colors = new int[DS_AVG_0 + numNs];
+
+        LineDataSet ds;
+
+        ds = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
+        labels[DS_ALL] = ds.getLabel();
+        colors[DS_ALL] = ds.getColor();
+
+        ds = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
+        labels[DS_BEST] = ds.getLabel();
+        colors[DS_BEST] = ds.getColor();
+
+        for (int nIndex = 0; nIndex < numNs; nIndex++) {
+            // A main AoN data set. The "best AoN" data sets are not represented in the legend.
+            ds = (LineDataSet) mChartData.getDataSetByIndex(DS_AVG_0 + 2 * nIndex);
+            labels[DS_AVG_0 + nIndex] = ds.getLabel();
+            colors[DS_AVG_0 + nIndex] = ds.getColor();
+        }
+
+        legend.setCustom(colors, labels);
+    }
+
+    /**
      * Records a solve time. The time value should be in milliseconds. If the solve is a DNF,
      * call {@link #addDNF} instead.
      *
@@ -210,44 +397,86 @@ public class ChartStatistics {
      *     If the time is not greater than zero and is not {@code DNF}.
      */
     public void addTime(long time, long date) {
-        boolean isSolveCharted = false;
+        boolean isEntryAdded = false;
 
         // The value of "time" is validated by "Statistics.addTime".
         mStatistics.addTime(time, true); // May throw IAE.
 
         if (time != DNF) {
-            isSolveCharted = true;
-            mChartData.addEntry(new Entry(time / 1_000f, mCount), DS_ALL);
+            mChartData.addEntry(new Entry(time / 1_000f, mXIndex), DS_ALL);
+            isEntryAdded = true;
 
             // Only update the recorded best time if it changes. The result should be a line that
             // traces (if lucky) a staircase descending from left to right (never rising).
             if (time < mBestTime) {
                 mBestTime = time;
-                mChartData.addEntry(new Entry(mBestTime / 1_000f, mCount), DS_BEST);
+                mChartData.addEntry(new Entry(mBestTime / 1_000f, mXIndex), DS_BEST);
             }
         }
 
-        for (int i = 0; i < mNsOfAverages.length; i++) {
-            final AverageCalculator ac = mStatistics.getAverageOf(mNsOfAverages[i], true);
+        for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
+            final AverageCalculator ac = mStatistics.getAverageOf(mNsOfAverages[nIndex], true);
             final long averageTime = ac.getCurrentAverage();
 
             if (averageTime != AverageCalculator.DNF && averageTime != UNKNOWN) {
-                isSolveCharted = true;
-                // Add the average value to the appropriate data set, using a one-based data set
-                // index, as index zero is used for all times (not averages).
-                mChartData.addEntry(new Entry(averageTime / 1_000f, mCount), i + DS_AVG_0);
+                // AoN data sets start at "DS_AVG_0" and come in pairs. In each pair, the first is
+                // the data set for all AoN times for that "N" and the second is the data set for
+                // the single best AoN time for that "N".
+                final int aonDSIndex = DS_AVG_0 + 2 * nIndex;
+                final float aonYValue = averageTime / 1_000f;
+
+                mChartData.addEntry(new Entry(aonYValue, mXIndex), aonDSIndex);
+                isEntryAdded = true;
+
+                // Just keep a single entry in each data set for each best AoN; it will be rendered
+                // as a single circle that is coincident with the main AoN line and its value will
+                // be drawn. There is no line charting the *progression* of best AoN times.
+                final LineDataSet bestAoNDS
+                        = (LineDataSet) mChartData.getDataSetByIndex(aonDSIndex + 1);
+
+                if (bestAoNDS.getEntryCount() > 0) { // Should be 0 or 1, nothing more.
+                    final Entry oldEntry = bestAoNDS.getEntryForIndex(0); // Not an X-index.
+
+                    if (aonYValue < oldEntry.getVal()) {
+                        // A new best AoN time! Replace the old one with this new one.
+                        bestAoNDS.removeEntry(oldEntry);
+                        bestAoNDS.addEntry(new Entry(aonYValue, mXIndex));
+                    }
+                } else {
+                    // This is the first AoN time, so just add it as the best (and only) AoN time.
+                    bestAoNDS.addEntry(new Entry(aonYValue, mXIndex));
+                }
             }
         }
 
-        // If the new solve and all current averages were DNF or UNKNOWN, then no data was added
-        // to the chart, so do not add any X-axis value and do not increment the counter.
-        if (isSolveCharted) {
-            // TODO: Localize the order of the day and month fields in this label. For now, it is
-            // unchanged from the way it was done in the past. However, it should, for example,
-            // be ordered "MM/dd" for the USA, etc.
-            mChartData.addXValue(new DateTime(date).toString("dd'/'MM"));
-            mCount++;
+        if (isEntryAdded) {
+            // Add the X-axis value (a formatted solve date with just the day and month). The
+            // "date" value is interpreted as an instant in time relative to the Unix epoch in the
+            // UTC time zone. When "LocalDate" trims off the time to represent only a day, that
+            // day corresponds to a day in the system default (local) time zone that corresponds
+            // to that instant in time.
+            final LocalDate day = new LocalDate(date);
+
+            // The nature of the data means that sequential times will often be from the same
+            // session performed on the same day. Therefore, it is easy to optimise this a bit by
+            // not formatting the same day over-and-over. This may also save memory, as only a
+            // single "String" instance is created for each day.
+            final String xValue;
+
+            if (day.equals(mPrevEntryDay)) { // Also implies "mPrevEntryDay != null"
+                // Day has not changed, so re-use the previous X-value.
+                xValue = mPrevEntryXValue;
+            } else {
+                // A new day (or the very first day), so format the day to a string and cache it.
+                xValue = mPrevEntryXValue = mXValueFormatter.print(day);
+                mPrevEntryDay = day;
+            }
+
+            mChartData.addXValue(xValue);
+            mXIndex++;
         }
+        // If the new solve and all current averages were DNF or UNKNOWN, then no entry was added
+        // to the chart, so do not add any X-axis value and do not increment the X-index.
     }
 
     /**
@@ -260,78 +489,6 @@ public class ChartStatistics {
     // This methods takes away any confusion about what time value represents a DNF.
     public void addDNF(long date) {
         addTime(DNF, date);
-    }
-
-    /**
-     * Gets the chart data for all of the recorded solve times. The data includes line data sets
-     * for all solve times and for running averages of solve times.
-     *
-     * @param context
-     *     The context that may be used to access resources when configuring the elements of the
-     *     chart data. An application context is not sufficient, an activity context is required
-     *     to access the needed theme attributes for the line colors.
-     *
-     * @return
-     *     The chart data set.
-     *
-     * @throws IllegalStateException
-     *     If there are more than three average-of-N lines to be graphed.
-     */
-    public LineData getChartData(Context context) throws IllegalStateException {
-        // Not concerned that if this method is called more than once that the data sets will be
-        // configured more than once. Only one call is expected, but more will not break anything.
-
-        final Resources res = context.getResources();
-        final int[] lineColors = getLineColors(context, mChartData.getDataSetCount());
-        // If graphing only times for a session, there will be fewer, and a thicker line will look
-        // well. However, if all times are graphed, a thinner line will probably look better, as
-        // the finer details will be more visible.
-        final float lineWidth = isForCurrentSessionOnly() ? 2f : 1f;
-
-        final LineDataSet allDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
-
-        // A legend is enabled on the chart view in the graph fragment. The legend is created
-        // automatically, but requires a unique labels and colors on each data set.
-        allDataSet.setLabel(res.getString(R.string.graph_legend_all_times));
-        // If all times are graphed, a thinner line will probably look better.
-        allDataSet.setLineWidth(lineWidth);
-        // A dashed line can make peaks inaccurate. It also makes the graph look too "busy".
-        //allDataSet.enableDashedLine(10f, 10f, 0f);
-        allDataSet.setDrawCircles(false);
-        allDataSet.setColor(lineColors[DS_ALL]);
-        allDataSet.setHighlightEnabled(false);
-        allDataSet.setDrawValues(false);
-
-        final LineDataSet bestDataSet = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
-
-        // NOTE: If the circle radius or text size are changed, update "BEST_TIME_VALUES_Y_OFFSET".
-        bestDataSet.setLabel(res.getString(R.string.graph_legend_best_times));
-        bestDataSet.setLineWidth(lineWidth);
-        bestDataSet.enableDashedLine(3f, 6f, 0f);
-        bestDataSet.setColor(lineColors[DS_BEST]);
-        bestDataSet.setDrawCircles(true);
-        bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
-        bestDataSet.setCircleColor(lineColors[DS_BEST]);
-        bestDataSet.setHighlightEnabled(false);
-        bestDataSet.setDrawValues(true);
-        bestDataSet.setValueTextColor(lineColors[DS_BEST]);
-        bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
-        bestDataSet.setValueFormatter(new TimeChartValueFormatter());
-
-        final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
-
-        for (int i = 0; i < mNsOfAverages.length; i++) {
-            final LineDataSet avgDataSet = (LineDataSet) mChartData.getDataSetByIndex(i + DS_AVG_0);
-
-            avgDataSet.setLabel(avgPrefix + mNsOfAverages[i]); // e.g., "Ao12".
-            avgDataSet.setLineWidth(lineWidth);
-            avgDataSet.setDrawCircles(false);
-            avgDataSet.setColor(lineColors[DS_AVG_0 + i]); // "getLineColors" enforces bounds.
-            avgDataSet.setHighlightEnabled(false);
-            avgDataSet.setDrawValues(false);
-        }
-
-        return mChartData;
     }
 
     /**
