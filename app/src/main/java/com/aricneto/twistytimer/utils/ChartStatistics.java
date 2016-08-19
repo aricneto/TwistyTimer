@@ -2,9 +2,12 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.aricneto.twistify.R;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -14,6 +17,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Arrays;
 
 import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
@@ -32,16 +37,33 @@ public class ChartStatistics {
     // of trying to hide "Statistics.addTime", "Statistics.addDNF" and various other methods.
 
     /**
-     * The circle radius to use for the circles drawn at the data points for the "best" times. The
-     * value is in DIP units.
+     * The line width to use in the chart when a thicker line is appropriate. The value is in DIP
+     * units.
      */
-    private static final float BEST_TIME_CIRCLE_RADIUS_DP = 3.5f;
+    private static final float LINE_WIDTH_THICK_DP = 2.0f;
+
+    /**
+     * The line width to use in the chart when a thinner line is appropriate. The value is in DIP
+     * units.
+     */
+    private static final float LINE_WIDTH_THIN_DP = 1.0f;
+
+    /**
+     * The text size to use for limit line marking the mean time. The value is in DIP units.
+     */
+    private static final float MEAN_LIMIT_LINE_TEXT_SIZE_DP = 12f;
 
     /**
      * The text size to use for the value text shown near the data points for the best times. The
      * value is in DIP units.
      */
     private static final float BEST_TIME_VALUES_TEXT_SIZE_DP = 10f;
+
+    /**
+     * The circle radius to use for the circles drawn at the data points for the "best" times. The
+     * value is in DIP units.
+     */
+    private static final float BEST_TIME_CIRCLE_RADIUS_DP = 3.5f;
 
     /**
      * The Y-coordinate offset to apply to the value text of the "best" times to cause the text to
@@ -52,7 +74,7 @@ public class ChartStatistics {
     // the calculation (baseline is offset by -1.75 * circle-radius). Here, we reverse that offset
     // twice to set the reflected position of the top of the text *below* the point and then offset
     // by the text size to set the position on the new text baseline.
-    public static final float BEST_TIME_VALUES_Y_OFFSET_DP
+    private static final float BEST_TIME_VALUES_Y_OFFSET_DP
             = BEST_TIME_CIRCLE_RADIUS_DP * 1.75f * 2f + BEST_TIME_VALUES_TEXT_SIZE_DP;
 
     /**
@@ -133,6 +155,16 @@ public class ChartStatistics {
     private String mPrevEntryXValue;
 
     /**
+     * The label to apply to the "limit line".
+     */
+    private final String mLimitLineLabel;
+
+    /**
+     * The color to apply to the "limit line".
+     */
+    private final int mLimitLineColor;
+
+    /**
      * Creates a new collector for chart statistics that will chart all collected values and all
      * averages-of-N values collected by the given {@code Statistics}. Each instance of
      * {@code ChartStatistics} can collect statistics for the set of solve times for the current
@@ -184,10 +216,17 @@ public class ChartStatistics {
             addAoNDataSets(context, mNsOfAverages[nIndex], lineColors[DS_AVG_0 + nIndex]);
         }
 
-        // Set the formatter for the date label on the chart X-axis. Localise the format (mostly to
-        // support the "MM/DD" order for the USA). It will fall back to the most common "DD/MM"
-        // format (from "values/formats.xml") if no more specific localised format is found. This
-        // "pre-compiles" the pattern, making formatting faster later.
+        // Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
+        // the label and color of the line now (while a "Context" is available) and create the line
+        // later in "applyTo".
+        mLimitLineLabel = context.getString(R.string.graph_mean);
+        mLimitLineColor = ThemeUtils.fetchAttrColor(context, R.attr.colorChartMeanTime);
+
+        // Set the formatter for the date label on the chart X-axis. Localise the format, mostly to
+        // support the "MM/DD" order used in the USA. It will fall back to the most common "DD/MM"
+        // format (from "values/formats.xml") if no more specific localised format is found (such
+        // as in "values-en-rUS/formats.xml". This also "pre-compiles" the pattern, making the
+        // formatting operation faster later.
         mXValueFormatter = DateTimeFormat.forPattern(
                 context.getResources().getString(R.string.chartXAxisDateFormat));
     }
@@ -279,7 +318,7 @@ public class ChartStatistics {
         // If graphing only times for a session, there will be fewer, and a thicker line will look
         // well. However, if all times are graphed, a thinner line will probably look better, as
         // the finer details will be more visible.
-        dataSet.setLineWidth(isForCurrentSessionOnly() ? 2f : 1f);
+        dataSet.setLineWidth(getLineWidth());
         dataSet.setColor(color);
         dataSet.setHighlightEnabled(false);
 
@@ -340,22 +379,63 @@ public class ChartStatistics {
     }
 
     /**
-     * Gets the chart data for all of the recorded solve times. The data includes line data sets
-     * for all solve times and for running averages of solve times.
+     * Applies the data sets for the collected chart statistics to the given chart and sets the
+     * appropriate legend.
      *
-     * @return The chart data set.
+     * @param chart The chart to which to apply the collected statistics.
      */
-    public LineData getChartData() throws IllegalStateException {
-        return mChartData;
+    public void applyTo(LineChart chart) throws IllegalStateException {
+        // It seems that it is important to set the custom legend before setting the chart data.
+        // If it is done the other way around, some cached values related to the layout of the
+        // legend for the previous statistics are not updated to match the new data sets and
+        // crashes occur during rendering of the legend.
+        configureLegend(chart.getLegend());
+
+        chart.getAxisLeft().removeAllLimitLines();
+
+        if (getMeanTime() != AverageCalculator.UNKNOWN) { // At least one non-DNF solve time?
+            final LimitLine ll = new LimitLine(getMeanTime() / 1_000f, mLimitLineLabel);
+
+            ll.setLineColor(mLimitLineColor);
+            ll.setLineWidth(getLineWidth());
+            ll.enableDashedLine(20f, 10f, 0f);
+
+            ll.setTextColor(mLimitLineColor);
+            ll.setTextSize(MEAN_LIMIT_LINE_TEXT_SIZE_DP);
+            ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+
+            chart.getAxisLeft().addLimitLine(ll);
+        }
+
+        // The maximum number of values that can be visible above which the time values are not
+        // drawn on the chart beside their data points. However, values are only drawn for the few
+        // "best" times, and these are likely to be much fewer (i.e., spread out along the X-axis),
+        // so the maximum can be increased from the default of 100. Otherwise, if there are more
+        // than 100 times visible, the "best" times will not be shown until the user zooms into the
+        // chart quite a lot.
+        //
+        // One confusing aspect is that the visible count that the chart renderer compares to this
+        // maximum count includes all points from all data sets, even those that have not been set
+        // to show values (i.e., even when "setDrawValues(false)" is applied). For example, if
+        // there are 1,000 solve times in one data set and then 951 Ao50 times and 901 Ao100 times,
+        // and 8 "best" times, then the total number of visible data points is 2,860, even though
+        // the chart is only 1,000 points wide and even though only the 8 "best" times will show
+        // their values. Therefore, the maximum count needs to be about 3 times higher than the
+        // number of solve times that would give rise to the number of "best" times that could have
+        // their values shown without much visual overlap.
+        chart.setMaxVisibleValueCount(2_000);
+        // Use a custom renderer to draw the values of the best times *below* their data points.
+        chart.setRenderer(new OffsetValuesLineChartRenderer(chart, BEST_TIME_VALUES_Y_OFFSET_DP));
+
+        chart.setData(mChartData);
     }
 
     /**
-     * Configures the given {@code Legend} to correspond to the chart data provided by
-     * {@link #getChartData()}. This sets the
+     * Configures the given {@code Legend} for the data sets that will be displayed by the chart.
      *
      * @param legend The legend to be configured.
      */
-    public void configureLegend(Legend legend) {
+    private void configureLegend(Legend legend) {
         // NOTE: If "Legend" is allowed to configure itself automatically, it will add two entries
         // for each AoN/best-AoN pair of data sets, but only one should be shown. Go custom....
         final int numNs = mNsOfAverages.length;
@@ -380,6 +460,9 @@ public class ChartStatistics {
         }
 
         legend.setCustom(colors, labels);
+
+        Log.d("CUSTOM LEGEND", "Labels: " + Arrays.toString(labels));
+        Log.d("CUSTOM LEGEND", "Colors: " + Arrays.toString(colors));
     }
 
     /**
@@ -553,6 +636,17 @@ public class ChartStatistics {
      */
     public long getMeanTime() {
         return mStatistics.getSessionMeanTime();
+    }
+
+    /**
+     * Gets the width to use for all lines on the chart. The lines are shown slightly wider when
+     * only the session times are displayed, as there will be less data points on the chart.
+     *
+     * @return The line width (in DIP units).
+     */
+    private float getLineWidth() {
+        // Perhaps adjust this for the number of data points in the chart data.
+        return isForCurrentSessionOnly() ? LINE_WIDTH_THICK_DP : LINE_WIDTH_THIN_DP;
     }
 
     /**

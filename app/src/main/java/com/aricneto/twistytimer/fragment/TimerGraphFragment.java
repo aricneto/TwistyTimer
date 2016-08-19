@@ -21,13 +21,9 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.spans.TimeFormatter;
-import com.aricneto.twistytimer.utils.AverageCalculator;
-import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
 import com.aricneto.twistytimer.utils.ChartStatistics;
 import com.aricneto.twistytimer.utils.Statistics;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 
@@ -158,26 +154,6 @@ public class TimerGraphFragment extends Fragment {
         lineChartView.getAxisRight().setEnabled(false);
         lineChartView.getLegend().setTextColor(chartTextColor);
         lineChartView.setDescription("");
-        // The maximum number of values that can be visible above which the time values are not
-        // drawn on the chart beside their data points. However, values are only drawn for the few
-        // "best" times, and these are likely to be much fewer (i.e., spread out along the X-axis),
-        // so the maximum can be increased from the default of 100. Otherwise, if there are more
-        // than 100 times visible, the "best" times will not be shown until the user zooms into the
-        // chart quite a lot.
-        //
-        // One confusing aspect is that the visible count that the chart renderer compares to this
-        // maximum count includes all points from all data sets, even those that have not been set
-        // to show values (i.e., even when "setDrawValues(false)" is applied). For example, if
-        // there are 1,000 solve times in one data set and then 951 Ao50 times and 901 Ao100 times,
-        // and 8 "best" times, then the total number of visible data points is 2,860, even though
-        // the chart is only 1,000 points wide and even though only the 8 "best" times will show
-        // their values. Therefore, the maximum count needs to be about 3 times higher than the
-        // number of solve times that would give rise to the number of "best" times that could have
-        // their values shown without much visual overlap.
-        lineChartView.setMaxVisibleValueCount(2_000);
-        // Use the custom renderer to draw the values of the "best" times below their data points.
-        lineChartView.setRenderer(new OffsetValuesLineChartRenderer(
-                lineChartView, ChartStatistics.BEST_TIME_VALUES_Y_OFFSET_DP));
 
         final YAxis axisLeft = lineChartView.getAxisLeft();
         final XAxis xAxis = lineChartView.getXAxis();
@@ -255,30 +231,9 @@ public class TimerGraphFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ChartStatistics chartStats) {
-            // Horizontal mean time line.
-            final long mean = chartStats.getMeanTime();
-
-            lineChartView.getAxisLeft().removeAllLimitLines();
-            if (mean != AverageCalculator.UNKNOWN) {
-                final LimitLine ll
-                        = new LimitLine(mean / 1_000f, mContext.getString(R.string.graph_mean));
-                final int meanColor
-                        = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartMeanTime);
-
-                ll.setLineColor(meanColor);
-                ll.setLineWidth(1f);
-                ll.enableDashedLine(20f, 10f, 0f);
-                ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-                ll.setTextColor(meanColor);
-                ll.setTextSize(12f);
-
-                lineChartView.getAxisLeft().addLimitLine(ll);
-            }
-
-            // Add all times line, best times line and average-of-N times lines (with highlighted
-            // best AoN times) and identify them using the custom-configured legend.
-            lineChartView.setData(chartStats.getChartData());
-            chartStats.configureLegend(lineChartView.getLegend());
+            // Add all times line, best times line, average-of-N times lines (with highlighted
+            // best AoN times) and mean limit line and identify them all using a custom legend.
+            chartStats.applyTo(lineChartView);
 
             // Animate and refresh the chart.
             lineChartView.animateY(1_000);
