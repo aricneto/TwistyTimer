@@ -49,7 +49,12 @@ public class TimerGraphFragment extends Fragment {
 
     private String  currentPuzzle;
     private String  currentPuzzleSubtype;
-    private Context mContext;
+
+    // The context used by the AsyncTask instances. This is set to null when the Fragment is
+    // detached, to notify any still-running tasks to skip any UI changes when done. It would
+    // probably be much better to replace those tasks with "Loader" instances, which could be
+    // better integrated into the life-cycle of the fragment.
+    private volatile Context mContext;
 
     @Bind(R.id.linechart)           LineChart lineChartView;
     @Bind(R.id.personalBestTimes)   TextView  personalBestTimes;
@@ -68,6 +73,20 @@ public class TimerGraphFragment extends Fragment {
 
     private boolean history;
 
+    /**
+     * Indicates if the generation of the chart has been deferred because the fragment is not
+     * visible. Once the fragment becomes visible, the chart should be generated to ensure its is
+     * up to date.
+     */
+    private boolean mIsGenerateChartDeferred;
+
+    /**
+     * Indicates if the calculation of the statistics for the statistics table has been deferred
+     * because the fragment is not visible. Once the fragment becomes visible, the statistics
+     * should be calculated to ensure they are up to date.
+     */
+    private boolean mIsCalculateStatsDeferred;
+
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -77,17 +96,19 @@ public class TimerGraphFragment extends Fragment {
                     case "MOVED TO HISTORY":
                     case "TIME UPDATED":
                     case "REFRESH TIME":
+                    case "TIME ADDED":
+                        // The full history chart includes the times for the current session, so if
+                        // a new time is added to the current session, the chart needs to be updated
+                        // even it is showing the all-times "history".
                         generateChart();
                         calculateStats();
                         break;
-                    case "TIME ADDED":
-                        if (! history)
-                            generateChart();
-                        calculateStats();
-                        break;
+
                     case "HISTORY":
                         history = ! history;
                         generateChart();
+                        // Switching between the "history" of all times and the session times does
+                        // not affect the statistics table, which always shows statistics for both.
                         break;
                 }
             }
@@ -118,8 +139,6 @@ public class TimerGraphFragment extends Fragment {
             history = getArguments().getBoolean(HISTORY);
         }
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
-
-        mContext = getContext();
     }
 
     @Override
@@ -127,6 +146,10 @@ public class TimerGraphFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         ButterKnife.bind(this, root);
+
+        // The context used by the AsyncTasks must only be set when the fragment view exists. It
+        // must be reset to null in "onDestroyView".
+        mContext = getContext();
 
         // Setting for landscape mode
         if (getActivity().getResources().getConfiguration().orientation
@@ -175,24 +198,84 @@ public class TimerGraphFragment extends Fragment {
         axisLeft.setGridColor(axisColor);
         axisLeft.setValueFormatter(new TimeFormatter());
 
-        // Launch the background tasks to load the data for the chart and statistics.
-        // TODO: This should probably only be done when the fragment becomes visible, not when it
-        // is created. If the app is started, it shows the timer tab, but this graph fragment is
-        // created for another tab and triggers this loading, even though the graph and statistics
-        // are not yet visible. Triggering this only when the fragment is visible would speed the
-        // start-up of the app and the generation of the first scramble (if scrambles are enabled).
+        // Launch the background tasks to load the data for the chart and statistics. If this
+        // fragment is not visible, these tasks will be deferred automatically.
         generateChart();
         calculateStats();
 
         return root;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Any background tasks can update the UI as long as the fragment is attached to an
+        // activity context and has a fragment view. Once the view goes away, the context must be
+        // reset to null to ensure "AsyncTask.onPostExecute" methods do not attempt to change the
+        // UI after it is gone. This prevents crashes that happen if the activity is exited just
+        // after a background task starts.
+        //
+        // Using a "Loader" would probably be better, but this small fix will do for now.
+        mContext = null;
+    }
+
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
+    }
+
+    /**
+     * Notifies the fragment that it has become visible to the user. This is expected to be called
+     * by the {@code ViewPager} as the user changes tabs. Take care, as this method may be called
+     * outside of the fragment lifecycle.
+     *
+     * @param isVisibleToUser
+     *     {@code true} if the fragment has become visible to the user; or {@code false} if it is
+     *     not visible to the user.
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            // If "generateChart" or "calculateStats" was called when the fragment was not visible
+            // (i.e., when the tab was not selected), then the respective "mIs...Deferred" flag
+            // will have been raised to avoid performing unnecessary actions. However, now that the
+            // fragment has become visible, re-call those methods to execute the deferred actions.
+            if (mIsGenerateChartDeferred) {
+                generateChart();
+            }
+
+            if (mIsCalculateStatsDeferred) {
+                calculateStats();
+            }
+        } // else switching away from this tab. (TODO: could cancel any still-running tasks.)
+    }
+
     private void calculateStats() {
-        new CalculateStats().execute();
+        // (Re)calculate the statistics and display them.
+        if (getUserVisibleHint()) {
+            // If the fragment is visible (i.e., if the tab is selected), perform the action.
+            new CalculateStats().execute();
+            mIsCalculateStatsDeferred = false; // Any deferred action has now been executed.
+        } else {
+            // If the fragment is not visible (i.e., if the tab is not selected), defer the action.
+            // This avoids overloading the system at the same time as, say, the timer tab is trying
+            // to generate a scramble. It should help to make the start-up of the application a bit
+            // snappier. Once the fragment becomes visible, "setUserVisibleHint" will call this
+            // method again to perform the deferred action.
+            mIsCalculateStatsDeferred = true;
+        }
     }
 
     private void generateChart() {
-        new GenerateSolveList().execute(currentPuzzle, currentPuzzleSubtype);
+        // (Re)generate the chart and display it. Same approach as in "calculateStats".
+        if (getUserVisibleHint()) {
+            new GenerateSolveList().execute();
+            mIsGenerateChartDeferred = false;
+        } else {
+            mIsGenerateChartDeferred = true;
+        }
     }
 
     private void toggleCardStats(int visibility) {
@@ -211,26 +294,32 @@ public class TimerGraphFragment extends Fragment {
     /**
      * Generate a list of solves for the chart
      */
-    private class GenerateSolveList extends AsyncTask<String, Void, ChartStatistics> {
+    private class GenerateSolveList extends AsyncTask<Void, Void, ChartStatistics> {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected ChartStatistics doInBackground(Void... voids) {
+            final Context context = mContext; // Copy the field in case it changes on the UI thread.
 
-        @Override
-        protected ChartStatistics doInBackground(String... params) {
-            final ChartStatistics chartStats
-                    = history ? ChartStatistics.newAllTimeChartStatistics(mContext)
-                              : ChartStatistics.newCurrentSessionChartStatistics(mContext);
+            if (context != null) {
+                final ChartStatistics chartStats
+                        = history ? ChartStatistics.newAllTimeChartStatistics(context)
+                                  : ChartStatistics.newCurrentSessionChartStatistics(context);
 
-            TwistyTimer.getDBHandler().populateChartStatistics(
-                    currentPuzzle, currentPuzzleSubtype, chartStats);
+                TwistyTimer.getDBHandler().populateChartStatistics(
+                        currentPuzzle, currentPuzzleSubtype, chartStats);
 
-            return chartStats;
+                return chartStats;
+            }
+
+            return null;
         }
 
         @Override
         protected void onPostExecute(ChartStatistics chartStats) {
+            if (mContext == null || chartStats == null) {
+                // If there is no context, the UI has gone away since the task started. Do nothing.
+                return;
+            }
+
             // Add all times line, best times line, average-of-N times lines (with highlighted
             // best AoN times) and mean limit line and identify them all using a custom legend.
             chartStats.applyTo(lineChartView);
@@ -244,26 +333,38 @@ public class TimerGraphFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-            toggleCardStats(View.GONE);
+
+            if (mContext != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                toggleCardStats(View.GONE);
+            }
         }
 
         @Override
         protected Statistics doInBackground(Void... voids) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            final Context context = mContext; // Copy the field in case it changes on the UI thread.
 
-            final Statistics stats = Statistics.newAllTimeStatistics();
+            if (context != null) {
+                final Statistics stats = Statistics.newAllTimeStatistics();
 
-            TwistyTimer.getDBHandler().populateStatistics(
-                    currentPuzzle, currentPuzzleSubtype, stats);
+                TwistyTimer.getDBHandler().populateStatistics(
+                        currentPuzzle, currentPuzzleSubtype, stats);
 
-            return stats;
+                return stats;
+            }
+
+            return null;
         }
 
         @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(Statistics stats) {
             super.onPostExecute(stats);
+
+            if (mContext == null || stats == null) {
+                // If there is no context, the UI has gone away since the task started. Do nothing.
+                return;
+            }
 
             // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
             // values needed by "convertTimeToString".
@@ -358,11 +459,5 @@ public class TimerGraphFragment extends Fragment {
             toggleCardStats(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
     }
 }

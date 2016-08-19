@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.aricneto.twistify.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -17,8 +16,6 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Arrays;
 
 import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
@@ -254,14 +251,14 @@ public class ChartStatistics {
 
         bestDataSet.enableDashedLine(3f, 6f, 0f);
 
+        bestDataSet.setDrawCircles(true);
+        bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
+        bestDataSet.setCircleColor(bestColor);
+
         bestDataSet.setDrawValues(true);
         bestDataSet.setValueTextColor(bestColor);
         bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
         bestDataSet.setValueFormatter(new TimeChartValueFormatter());
-
-        bestDataSet.setDrawCircles(true);
-        bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
-        bestDataSet.setCircleColor(bestColor);
 
         mChartData.addDataSet(bestDataSet);
     }
@@ -291,10 +288,15 @@ public class ChartStatistics {
         bestAoNDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
         bestAoNDataSet.setCircleColor(color);
 
-        bestAoNDataSet.setDrawValues(true);
-        bestAoNDataSet.setValueTextColor(color);
-        bestAoNDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
-        bestAoNDataSet.setValueFormatter(new TimeChartValueFormatter());
+        // Drawing the value of the best AoN time for each "N" seems like it would be a good idea,
+        // but the values are really hard because they appear over other chart lines and sometimes
+        // over the values drawn for the best time progression. Disabling them is no great loss,
+        // as the statistics table shows the same values, anyway. Just showing a circle to mark
+        // the best AoN time looks well enough on its own.
+        bestAoNDataSet.setDrawValues(false);
+//        bestAoNDataSet.setValueTextColor(color);
+//        bestAoNDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
+//        bestAoNDataSet.setValueFormatter(new TimeChartValueFormatter());
 
         mChartData.addDataSet(bestAoNDataSet);
     }
@@ -460,9 +462,6 @@ public class ChartStatistics {
         }
 
         legend.setCustom(colors, labels);
-
-        Log.d("CUSTOM LEGEND", "Labels: " + Arrays.toString(labels));
-        Log.d("CUSTOM LEGEND", "Colors: " + Arrays.toString(colors));
     }
 
     /**
