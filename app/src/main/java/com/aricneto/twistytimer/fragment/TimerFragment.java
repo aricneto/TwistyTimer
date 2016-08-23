@@ -7,10 +7,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -23,7 +21,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.InputType;
@@ -55,22 +52,23 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
-import com.aricneto.twistytimer.utils.Broadcaster;
+import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
-import com.aricneto.twistytimer.utils.Statistics;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-import static com.aricneto.twistytimer.utils.AverageCalculator.tr;
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class TimerFragment extends BaseFragment {
 
@@ -126,35 +124,36 @@ public class TimerFragment extends BaseFragment {
     private int      mShortAnimationDuration;
     private Animator mCurrentAnimator;
 
-    @Bind(R.id.sessionDetailTimesAvg)  TextView detailTimesAvg;
-    @Bind(R.id.sessionDetailTimesMore) TextView detailTimesMore;
-    @Bind(R.id.detailLayout)           View     detailLayout;
+    private Unbinder mUnbinder;
+    @BindView(R.id.sessionDetailTimesAvg)  TextView detailTimesAvg;
+    @BindView(R.id.sessionDetailTimesMore) TextView detailTimesMore;
+    @BindView(R.id.detailLayout)           View     detailLayout;
 
-    @Bind(R.id.chronometer)     ChronometerMilli    chronometer;
-    @Bind(R.id.scrambleText)    TextView            scrambleText;
-    @Bind(R.id.scrambleImg)     ImageView           scrambleImg;
-    @Bind(R.id.expanded_image)  ImageView           expandedImageView;
-    @Bind(R.id.inspectionText)  TextView            inspectionText;
-    @Bind(R.id.progressSpinner) MaterialProgressBar progressSpinner;
+    @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
+    @BindView(R.id.scrambleText)    TextView            scrambleText;
+    @BindView(R.id.scrambleImg)     ImageView           scrambleImg;
+    @BindView(R.id.expanded_image)  ImageView           expandedImageView;
+    @BindView(R.id.inspectionText)  TextView            inspectionText;
+    @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
-    @Bind(R.id.hintCard)         CardView            hintCard;
-    @Bind(R.id.panelText)        TextView            panelText;
-    @Bind(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
-    @Bind(R.id.panelSpinnerText) TextView            panelSpinnerText;
+    @BindView(R.id.hintCard)         CardView            hintCard;
+    @BindView(R.id.panelText)        TextView            panelText;
+    @BindView(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
+    @BindView(R.id.panelSpinnerText) TextView            panelSpinnerText;
 
-    @Bind(R.id.button_delete)        ImageView        deleteButton;
-    @Bind(R.id.button_dnf)           ImageView        dnfButton;
-    @Bind(R.id.button_plustwo)       ImageView        plusTwoButton;
-    @Bind(R.id.button_comment)       ImageView        commentButton;
-    @Bind(R.id.button_undo)          ImageView        undoButton;
-    @Bind(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
-    @Bind(R.id.rippleBackground)     RippleBackground rippleBackground;
+    @BindView(R.id.button_delete)        ImageView        deleteButton;
+    @BindView(R.id.button_dnf)           ImageView        dnfButton;
+    @BindView(R.id.button_plustwo)       ImageView        plusTwoButton;
+    @BindView(R.id.button_comment)       ImageView        commentButton;
+    @BindView(R.id.button_undo)          ImageView        undoButton;
+    @BindView(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
+    @BindView(R.id.rippleBackground)     RippleBackground rippleBackground;
 
-    @Bind(R.id.root)                  RelativeLayout       rootLayout;
-    @Bind(R.id.startTimerLayout)      FrameLayout          startTimerLayout;
-    @Bind(R.id.sliding_layout) public SlidingUpPanelLayout slidingLayout;
+    @BindView(R.id.root)                  RelativeLayout       rootLayout;
+    @BindView(R.id.startTimerLayout)      FrameLayout          startTimerLayout;
+    @BindView(R.id.sliding_layout) public SlidingUpPanelLayout slidingLayout;
 
-    @Bind(R.id.congratsText) TextView congratsText;
+    @BindView(R.id.congratsText) TextView congratsText;
 
     private boolean buttonsEnabled;
     private boolean scrambleImgEnabled;
@@ -174,29 +173,37 @@ public class TimerFragment extends BaseFragment {
     private int currentBestTime;
     private int currentWorstTime;
 
-    // Receives broadcasts from the timer
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    // Receives broadcasts related to changes to the time data.
+    private TTFragmentBroadcastReceiver mTimeDataChangedReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_TIME_DATA_CHANGES) {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
-                switch (intent.getStringExtra("action")) {
-                    case "TIME UPDATED":
-                    case "TIME ADDED":
-                        updateStats();
-                        break;
-                    case "MOVED TO HISTORY":
-                        updateStats();
-                        break;
-                    case "SCROLLED PAGE":
-                        holdHandler.removeCallbacks(holdRunnable);
-                        chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                        isReady = false;
-                        break;
-                    case "TOOLBAR ENDED":
-                        showItems();
-                        animationDone = true;
-                        break;
-                }
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_TIME_ADDED:
+                case ACTION_TIMES_MODIFIED:
+                case ACTION_TIMES_MOVED_TO_HISTORY:
+                    updateStats();
+                    break;
+            }
+        }
+    };
+
+    // Receives broadcasts related to changes to the timer user interface.
+    private TTFragmentBroadcastReceiver mUIInteractionReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_SCROLLED_PAGE:
+                    holdHandler.removeCallbacks(holdRunnable);
+                    chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
+                    isReady = false;
+                    break;
+
+                case ACTION_TOOLBAR_RESTORED:
+                    showItems();
+                    animationDone = true;
+                    break;
             }
         }
     };
@@ -312,7 +319,7 @@ public class TimerFragment extends BaseFragment {
         } else {
             quickActionButtons.setVisibility(View.VISIBLE);
         }
-        Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME UPDATED");
+        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
     }
 
     public static TimerFragment newInstance(String puzzle, String puzzleSubType) {
@@ -344,7 +351,8 @@ public class TimerFragment extends BaseFragment {
 
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
+        registerReceiver(mTimeDataChangedReceiver);
+        registerReceiver(mUIInteractionReceiver);
     }
 
     @Override
@@ -353,7 +361,7 @@ public class TimerFragment extends BaseFragment {
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
-        ButterKnife.bind(this, root);
+        mUnbinder = ButterKnife.bind(this, root);
 
         statCalculatorAsync.execute();
 
@@ -679,7 +687,7 @@ public class TimerFragment extends BaseFragment {
         currentId = TwistyTimer.getDBHandler().addSolve(currentSolve);
         currentSolve.setId(currentId);
 
-        Broadcaster.broadcast(getActivity(), "TIMELIST", "TIME ADDED");
+        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED);
 
         currentPenalty = PuzzleUtils.NO_PENALTY;
     }
@@ -697,9 +705,7 @@ public class TimerFragment extends BaseFragment {
 
     private void showToolbar() {
         unlockOrientation(getActivity());
-        Intent sendIntent = new Intent("TIMER");
-        sendIntent.putExtra("action", "TIMER STOPPED");
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIMER_STOPPED);
     }
 
     private void showItems() {
@@ -757,13 +763,10 @@ public class TimerFragment extends BaseFragment {
     private void hideToolbar() {
         lockOrientation(getActivity());
         undone = false;
-        Intent sendIntent = new Intent("TIMER");
-        sendIntent.putExtra("action", "TIMER STARTED");
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIMER_STARTED);
 
         congratsText.setVisibility(View.GONE);
         congratsText.setCompoundDrawables(null, null, null, null);
-
 
         if (scrambleEnabled) {
             scrambleText.setEnabled(false);
@@ -854,10 +857,16 @@ public class TimerFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         // To fix memory leaks
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
-        ButterKnife.unbind(this);
+        unregisterReceiver(mTimeDataChangedReceiver);
+        unregisterReceiver(mUIInteractionReceiver);
         scrambleGeneratorAsync.cancel(true);
         statCalculatorAsync.cancel(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     public static void lockOrientation(Activity activity) {

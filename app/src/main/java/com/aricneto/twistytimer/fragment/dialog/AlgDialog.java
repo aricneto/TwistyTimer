@@ -1,7 +1,5 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -29,11 +26,14 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.TTIntent;
 
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
@@ -41,13 +41,24 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  */
 public class AlgDialog extends DialogFragment {
 
-    @Bind(R.id.editButton)     ImageView           editButton;
-    @Bind(R.id.progressButton) ImageView           progressButton;
-    @Bind(R.id.progressBar)    MaterialProgressBar progressBar;
-    @Bind(R.id.algText)        TextView            algText;
-    @Bind(R.id.nameText)       TextView            nameText;
-    @Bind(R.id.revertButton)   ImageView           revertButton;
-    @Bind(R.id.pll_arrows)     ImageView           pllArrows;
+    private Unbinder mUnbinder;
+
+    @BindViews({
+            R.id.sticker1,  R.id.sticker2,  R.id.sticker3,  R.id.sticker4,
+            R.id.sticker5,  R.id.sticker6,  R.id.sticker7,  R.id.sticker8,
+            R.id.sticker9,  R.id.sticker10, R.id.sticker11, R.id.sticker12,
+            R.id.sticker13, R.id.sticker14, R.id.sticker15, R.id.sticker16,
+            R.id.sticker17, R.id.sticker18, R.id.sticker19, R.id.sticker20,
+            R.id.sticker21,
+    }) View[] stickers;
+
+    @BindView(R.id.editButton)     ImageView           editButton;
+    @BindView(R.id.progressButton) ImageView           progressButton;
+    @BindView(R.id.progressBar)    MaterialProgressBar progressBar;
+    @BindView(R.id.algText)        TextView            algText;
+    @BindView(R.id.nameText)       TextView            nameText;
+    @BindView(R.id.revertButton)   ImageView           revertButton;
+    @BindView(R.id.pll_arrows)     ImageView           pllArrows;
 
     private long            mId;
     private Algorithm       algorithm;
@@ -84,6 +95,7 @@ public class AlgDialog extends DialogFragment {
                     }
                     dialog.show();
                     break;
+
                 case R.id.progressButton:
                     final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
                     seekBar.setProgress(algorithm.getProgress());
@@ -104,6 +116,7 @@ public class AlgDialog extends DialogFragment {
                             })
                             .show();
                     break;
+
                 case R.id.revertButton:
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.dialog_revert_title_confirmation)
@@ -135,7 +148,7 @@ public class AlgDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_alg_details, container);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         mId = getArguments().getLong("id");
 
@@ -178,76 +191,28 @@ public class AlgDialog extends DialogFragment {
     }
 
     private void updateList() {
-        if (dialogListener != null) {
-            dialogListener.onUpdateDialog();
-        } else {
-            Intent sendIntent = new Intent("ALGLIST");
-            sendIntent.putExtra("action", "ALG ADDED");
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
-        }
+        TTIntent.broadcast(TTIntent.CATEGORY_ALG_DATA_CHANGES, TTIntent.ACTION_ALGS_MODIFIED);
         //dismiss();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
         if (dialogListener != null)
             dialogListener.onDismissDialog();
     }
 
-    @Bind(R.id.sticker21) View sticker21;
-    @Bind(R.id.sticker20) View sticker20;
-    @Bind(R.id.sticker19) View sticker19;
-    @Bind(R.id.sticker13) View sticker13;
-    @Bind(R.id.sticker14) View sticker14;
-    @Bind(R.id.sticker15) View sticker15;
-    @Bind(R.id.sticker10) View sticker10;
-    @Bind(R.id.sticker11) View sticker11;
-    @Bind(R.id.sticker12) View sticker12;
-    @Bind(R.id.sticker18) View sticker18;
-    @Bind(R.id.sticker17) View sticker17;
-    @Bind(R.id.sticker16) View sticker16;
-    @Bind(R.id.sticker1)  View sticker1;
-    @Bind(R.id.sticker2)  View sticker2;
-    @Bind(R.id.sticker3)  View sticker3;
-    @Bind(R.id.sticker4)  View sticker4;
-    @Bind(R.id.sticker5)  View sticker5;
-    @Bind(R.id.sticker6)  View sticker6;
-    @Bind(R.id.sticker7)  View sticker7;
-    @Bind(R.id.sticker8)  View sticker8;
-    @Bind(R.id.sticker9)  View sticker9;
+    private void colorCube(final String state) {
+        // See the reference image to understand how this works
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final HashMap<Character, Integer> colorHash = AlgUtils.getColorLetterHashMap(sp);
 
-    private void colorCube(String state) {
-
-        Context mContext = getContext();
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-        HashMap<Character, Integer> colorHash = AlgUtils.getColorLetterHashMap(sp);
-        /*See the reference image to understand how this works
-        * Yeah, I know. It's shitty as hell */
-
-        char[] charState = state.toCharArray();
-        sticker1.setBackgroundColor(colorHash.get(charState[0]));
-        sticker2.setBackgroundColor(colorHash.get(charState[1]));
-        sticker3.setBackgroundColor(colorHash.get(charState[2]));
-        sticker4.setBackgroundColor(colorHash.get(charState[3]));
-        sticker5.setBackgroundColor(colorHash.get(charState[4]));
-        sticker6.setBackgroundColor(colorHash.get(charState[5]));
-        sticker7.setBackgroundColor(colorHash.get(charState[6]));
-        sticker8.setBackgroundColor(colorHash.get(charState[7]));
-        sticker9.setBackgroundColor(colorHash.get(charState[8]));
-        sticker10.setBackgroundColor(colorHash.get(charState[9]));
-        sticker11.setBackgroundColor(colorHash.get(charState[10]));
-        sticker12.setBackgroundColor(colorHash.get(charState[11]));
-        sticker13.setBackgroundColor(colorHash.get(charState[12]));
-        sticker14.setBackgroundColor(colorHash.get(charState[13]));
-        sticker15.setBackgroundColor(colorHash.get(charState[14]));
-        sticker16.setBackgroundColor(colorHash.get(charState[15]));
-        sticker17.setBackgroundColor(colorHash.get(charState[16]));
-        sticker18.setBackgroundColor(colorHash.get(charState[17]));
-        sticker19.setBackgroundColor(colorHash.get(charState[18]));
-        sticker20.setBackgroundColor(colorHash.get(charState[19]));
-        sticker21.setBackgroundColor(colorHash.get(charState[20]));
-
+        ButterKnife.apply(stickers, new ButterKnife.Action<View>() {
+            @Override
+            public void apply(@NonNull View sticker, int index) {
+                sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
+            }
+        });
     }
 }

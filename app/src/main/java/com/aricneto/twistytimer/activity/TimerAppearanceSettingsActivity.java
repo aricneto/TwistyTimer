@@ -25,12 +25,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.jenzz.materialpreference.Preference;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimerAppearanceSettingsActivity extends AppCompatActivity {
 
-    @Bind(R.id.actionbar) Toolbar mToolbar;
+    @BindView(R.id.actionbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

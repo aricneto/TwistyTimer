@@ -1,9 +1,11 @@
-package com.aricneto.twistytimer.utils;
+package com.aricneto.twistytimer.stats;
+
+import com.aricneto.twistytimer.stats.AverageCalculator;
 
 import org.junit.Test;
 
-import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
-import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
+import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
+import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 import static org.junit.Assert.*;
 
 /**

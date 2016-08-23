@@ -1,12 +1,12 @@
-package com.aricneto.twistytimer.utils;
+package com.aricneto.twistytimer.stats;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
-import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
+import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
+import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
 /**
  * A collection of {@link AverageCalculator} instances that distributes solve times to each

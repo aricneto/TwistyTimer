@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.InputType;
@@ -29,25 +28,29 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.TTIntent;
 
 import org.joda.time.DateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Shows the timeList dialog
  */
 public class TimeDialog extends DialogFragment {
 
-    @Bind(R.id.timeText)          TextView  timeText;
-    @Bind(R.id.puzzlePenaltyText) TextView  penaltyText;
-    @Bind(R.id.dateText)          TextView  dateText;
-    @Bind(R.id.scrambleText)      TextView  scrambleText;
-    @Bind(R.id.editButton)        ImageView editButton;
-    @Bind(R.id.commentButton)     ImageView commentButton;
-    @Bind(R.id.commentText)       TextView  commentText;
-    @Bind(R.id.overflowButton)    ImageView overflowButton;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.timeText)          TextView  timeText;
+    @BindView(R.id.puzzlePenaltyText) TextView  penaltyText;
+    @BindView(R.id.dateText)          TextView  dateText;
+    @BindView(R.id.scrambleText)      TextView  scrambleText;
+    @BindView(R.id.editButton)        ImageView editButton;
+    @BindView(R.id.commentButton)     ImageView commentButton;
+    @BindView(R.id.commentText)       TextView  commentText;
+    @BindView(R.id.overflowButton)    ImageView overflowButton;
 
     private long            mId;
     private Solve           solve;
@@ -176,7 +179,7 @@ public class TimeDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_time_details, container);
         //this.setEnterTransition(R.anim.activity_slide_in);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         mId = getArguments().getLong("id");
 
@@ -238,16 +241,14 @@ public class TimeDialog extends DialogFragment {
         if (dialogListener != null) {
             dialogListener.onUpdateDialog();
         } else {
-            Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME UPDATED");
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+            TTIntent.broadcast(TTIntent.CATEGORY_TIME_DATA_CHANGES, TTIntent.ACTION_TIMES_MODIFIED);
         }
         dismiss();
     }
 
     @Override
     public void onDestroyView() {
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
         if (dialogListener != null)
             dialogListener.onDismissDialog();
         super.onDestroyView();

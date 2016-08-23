@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.utils;
 
 import android.graphics.Canvas;
 
+import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;

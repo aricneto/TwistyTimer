@@ -1,4 +1,6 @@
-package com.aricneto.twistytimer.utils;
+package com.aricneto.twistytimer.stats;
+
+import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated

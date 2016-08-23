@@ -26,23 +26,25 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Ari on 09/02/2016.
  */
 public class SchemeSelectDialogMain extends DialogFragment {
 
+    private Unbinder mUnbinder;
 
-    @Bind(R.id.top)   View top;
-    @Bind(R.id.left)  View left;
-    @Bind(R.id.front) View front;
-    @Bind(R.id.right) View right;
-    @Bind(R.id.back)  View back;
-    @Bind(R.id.down)  View down;
-    @Bind(R.id.reset) TextView reset;
-    @Bind(R.id.done)  TextView done;
+    @BindView(R.id.top)   View top;
+    @BindView(R.id.left)  View left;
+    @BindView(R.id.front) View front;
+    @BindView(R.id.right) View right;
+    @BindView(R.id.back)  View back;
+    @BindView(R.id.down)  View down;
+    @BindView(R.id.reset) TextView reset;
+    @BindView(R.id.done)  TextView done;
 
     public static SchemeSelectDialogMain newInstance() {
         SchemeSelectDialogMain schemeSelectDialogMain = new SchemeSelectDialogMain();
@@ -129,7 +131,7 @@ public class SchemeSelectDialogMain extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_scheme_select_main, container);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -211,6 +213,6 @@ public class SchemeSelectDialogMain extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 }

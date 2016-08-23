@@ -2,10 +2,8 @@ package com.aricneto.twistytimer.fragment;
 
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -15,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -39,7 +36,6 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.Fab;
-import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.gordonwong.materialsheetfab.DimOverlayFrameLayout;
@@ -48,8 +44,11 @@ import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 
 import org.joda.time.DateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class TimerListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -61,28 +60,27 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     public MaterialSheetFab<Fab> materialSheetFab;
     // True if you want to search history, false if you only want to search session
     boolean         history;
-    @Bind(R.id.list)                 RecyclerView          recyclerView;
-    @Bind(R.id.nothing_here)         ImageView             nothingHere;
-    @Bind(R.id.nothing_text)         TextView              nothingText;
-    @Bind(R.id.send_to_history_card) CardView              moveToHistory;
-    @Bind(R.id.clear_button)         TextView              clearButton;
-    @Bind(R.id.divider01)            View                  dividerView;
-    @Bind(R.id.archive_button)       TextView              archiveButton;
-    @Bind(R.id.fab_button)           Fab                   fabButton;
-    @Bind(R.id.overlay)              DimOverlayFrameLayout overlay;
-    @Bind(R.id.fab_sheet)            CardView              fabSheet;
 
-    @Bind(R.id.fab_share_ao12)      TextView fabShareAo12;
-    @Bind(R.id.fab_share_ao5)       TextView fabShareAo5;
-    @Bind(R.id.fab_share_histogram) TextView fabShareHistogram;
-    @Bind(R.id.fab_add_time)        TextView fabAddTime;
-
-    @Bind(R.id.fab_scroll) ScrollView fabScroll;
+    private Unbinder mUnbinder;
+    @BindView(R.id.list)                 RecyclerView          recyclerView;
+    @BindView(R.id.nothing_here)         ImageView             nothingHere;
+    @BindView(R.id.nothing_text)         TextView              nothingText;
+    @BindView(R.id.send_to_history_card) CardView              moveToHistory;
+    @BindView(R.id.clear_button)         TextView              clearButton;
+    @BindView(R.id.divider01)            View                  dividerView;
+    @BindView(R.id.archive_button)       TextView              archiveButton;
+    @BindView(R.id.fab_button)           Fab                   fabButton;
+    @BindView(R.id.overlay)              DimOverlayFrameLayout overlay;
+    @BindView(R.id.fab_sheet)            CardView              fabSheet;
+    @BindView(R.id.fab_share_ao12)       TextView              fabShareAo12;
+    @BindView(R.id.fab_share_ao5)        TextView              fabShareAo5;
+    @BindView(R.id.fab_share_histogram)  TextView              fabShareHistogram;
+    @BindView(R.id.fab_add_time)         TextView              fabAddTime;
+    @BindView(R.id.fab_scroll)           ScrollView            fabScroll;
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
     private TimeCursorAdapter timeCursorAdapter;
-    private TimeTaskLoader    timeTaskLoader;
     private Context           mContext;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -116,7 +114,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                                 if (time != 0) {
                                     dbHandler.addSolve(new Solve(time, currentPuzzle,
                                         currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
-                                    Broadcaster.broadcast(mContext, "TIMELIST", "TIME ADDED");
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED);
                                 }
 
                             }
@@ -129,33 +127,38 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         }
     };
 
-
     // Receives broadcasts from the timer
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    private TTFragmentBroadcastReceiver mTimeDataChangedReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_TIME_DATA_CHANGES) {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
-                switch (intent.getStringExtra("action")) {
-                    case "REFRESH TIME":
-                    case "TIME UPDATED":
-                        resetList();
-                        break;
-                    case "TIME ADDED":
-                        if (! history)
-                            resetList();
-                        break;
-                    case "HISTORY":
-                        history = ! history;
-                        resetList();
-                        break;
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_TIME_ADDED:
+                    // When "history" is enabled, the list of times does not include times from
+                    // the current session. Times are only added to the current session, so
+                    // there is no need to refresh the "history" list on adding a session time.
+                    if (! history)
+                        reloadList();
+                    break;
 
-                    case "UNSELECT ALL":
-                        resetList();
-                        break;
-                    case "DELETE SELECTED":
-                        timeCursorAdapter.deleteAllSelected();
-                        break;
-                }
+                case ACTION_TIMES_MODIFIED:
+                    reloadList();
+                    break;
+
+                case ACTION_HISTORY_TIMES_SHOWN:
+                    history = true;
+                    reloadList();
+                    break;
+
+                case ACTION_SESSION_TIMES_SHOWN:
+                    history = false;
+                    reloadList();
+                    break;
+
+                case ACTION_DELETE_SELECTED_TIMES:
+                    // Operation will delete times and then broadcast "ACTION_TIMES_MODIFIED".
+                    timeCursorAdapter.deleteAllSelected();
+                    break;
             }
         }
     };
@@ -189,7 +192,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_list, container, false);
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
         mContext = getActivity().getApplicationContext();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -241,11 +244,8 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                         public void onClick(MaterialDialog dialog, DialogAction which) {
                             TwistyTimer.getDBHandler().moveAllSolvesToHistory(
                                     currentPuzzle, currentPuzzleSubtype);
-                            Intent sendIntent = new Intent("TIMELIST");
-                            sendIntent.putExtra("action", "MOVED TO HISTORY");
-                            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
-
-                            resetList();
+                            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
+                            reloadList();
                         }
                     })
                     .show();
@@ -265,8 +265,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                         public void onClick(MaterialDialog dialog, DialogAction which) {
                             TwistyTimer.getDBHandler().deleteAllFromSession(
                                     currentPuzzle, currentPuzzleSubtype);
-
-                            resetList();
+                            reloadList();
                         }
                     })
                     .show();
@@ -274,42 +273,35 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         });
 
         setupRecyclerView();
-
-        getTaskLoader();
-
         getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
         // Register a receiver to update if something has changed
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
+        registerReceiver(mTimeDataChangedReceiver);
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         // To fix memory leaks
-        ButterKnife.unbind(this);
-        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mReceiver);
+        unregisterReceiver(mTimeDataChangedReceiver);
         getLoaderManager().destroyLoader(TASK_LOADER_ID);
     }
 
-    public void resetList() {
-        getTaskLoader();
+    public void reloadList() {
         getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
-    }
-
-    /**
-     * This class gets the class loader appropriate to
-     * the params set on newInstance
-     */
-    private void getTaskLoader() {
-        timeTaskLoader = new TimeTaskLoader(mContext, currentPuzzle, currentPuzzleSubtype, history);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return timeTaskLoader;
+        return new TimeTaskLoader(mContext, currentPuzzle, currentPuzzleSubtype, history);
     }
 
     @Override
@@ -365,11 +357,5 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
         recyclerView.setAdapter(timeCursorAdapter);
 
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

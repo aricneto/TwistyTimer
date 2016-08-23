@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.psdev.licensesdialog.LicensesDialog;
 
@@ -23,14 +23,14 @@ public class AboutActivity extends AppCompatActivity {
     private final static String APP_TITLE = "Twisty Timer";
     private final static String APP_PNAME = "com.aricneto.twistytimer";
 
-    @Bind(R.id.toolbar)           Toolbar  toolbar;
-    @Bind(R.id.rateButton)        TextView rateButton;
-    @Bind(R.id.feedbackButton)    TextView feedbackButton;
-    @Bind(R.id.licenseButton)     TextView licenseButton;
-    @Bind(R.id.testersButton)     TextView testersButton;
-    @Bind(R.id.sourceButton)      TextView sourceButton;
-    @Bind(R.id.appVersion)        TextView appVersion;
-    @Bind(R.id.translatorsButton) TextView translatorsButton;
+    @BindView(R.id.toolbar)           Toolbar  toolbar;
+    @BindView(R.id.rateButton)        TextView rateButton;
+    @BindView(R.id.feedbackButton)    TextView feedbackButton;
+    @BindView(R.id.licenseButton)     TextView licenseButton;
+    @BindView(R.id.testersButton)     TextView testersButton;
+    @BindView(R.id.sourceButton)      TextView sourceButton;
+    @BindView(R.id.appVersion)        TextView appVersion;
+    @BindView(R.id.translatorsButton) TextView translatorsButton;
 
     Activity activity;
 

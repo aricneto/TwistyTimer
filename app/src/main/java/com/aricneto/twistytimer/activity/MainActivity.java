@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -15,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,9 +42,9 @@ import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
-import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
+import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -71,6 +69,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
     FileChooserDialog.FileCallback, ExportImportDialogInterface {
@@ -114,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getStringExtra("action")) {
-                case "GO BACK":
+            switch (intent.getAction()) {
+                case ACTION_GO_BACK:
                     goBack = true;
                     onBackPressed();
                     break;
@@ -158,8 +157,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         }
 
         handleDrawer(savedInstanceState);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter("ACTIVITY"));
-
+        TTIntent.registerReceiver(mReceiver, CATEGORY_APP_LEVEL_EVENTS);
     }
 
     @Override
@@ -449,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             super.onBackPressed();
             goBack = false;
         } else if (fragmentManager.findFragmentByTag("fragment_main") != null) { // If the main fragment is open
-            Broadcaster.broadcast(this, "TIMER", "BACK PRESSED"); // This broadcast goes to TimerFragmentMain
+            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GO_BACK); // This broadcast goes to TimerFragmentMain
         } else {
             super.onBackPressed();
         }
@@ -459,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     protected void onDestroy() {
         if (bp != null)
             bp.release();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
+        TTIntent.unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
@@ -784,7 +782,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     + "<br><b>" + parseErrors + "</b> " + getString(R.string.import_progress_content_errors)
                     + "</small></tt>"));
             }
-            Broadcaster.broadcast(mainActivity, "TIMELIST", "REFRESH TIME");
+            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
         }
     }
 
@@ -810,5 +808,4 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             this.runnable = runnable;
         }
     }
-
 }

@@ -37,7 +37,7 @@ dependencies {
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:percent:24.1.1'
     // Butterknife
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.2.1'
     // Observable scrollview
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     // Dialogs

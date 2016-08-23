@@ -1,6 +1,7 @@
 package com.aricneto.twistytimer;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.aricneto.twistytimer.database.DatabaseHandler;
@@ -16,11 +17,18 @@ public class TwistyTimer extends Application {
      */
     private static DatabaseHandler sDBHandler;
 
+    /**
+     * The cached reference to the application context.
+     */
+    private static Context sAppContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
         //LeakCanary.install(this);
+
+        sAppContext = getApplicationContext();
 
         // Create a singleton instance of the "DatabaseHandler" using the application context. This
         // avoids memory leaks elsewhere and is more convenient. There is ABSOLUTELY NO NEED to
@@ -65,5 +73,18 @@ public class TwistyTimer extends Application {
      */
     public static SQLiteDatabase getWritableDB() {
         return getDBHandler().getWritableDatabase();
+    }
+
+    /**
+     * Gets the application context. This is a convenience for cases where a full activity context
+     * is not required. A full activity context is required to access theme attributes, but for
+     * other uses, such as accessing string resources, databases, broadcast receivers, the
+     * application context is sufficient. Using the application context also avoid memory leaks
+     * that can occur if an activity context is used inappropriately.
+     *
+     * @return The application context.
+     */
+    public static Context getAppContext() {
+        return sAppContext;
     }
 }

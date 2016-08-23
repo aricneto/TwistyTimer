@@ -1,9 +1,7 @@
-package com.aricneto.twistytimer.utils;
+package com.aricneto.twistytimer.stats;
 
-import android.content.Context;
-import android.content.res.Resources;
-
-import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
+import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
@@ -17,9 +15,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import static com.aricneto.twistytimer.utils.AverageCalculator.DNF;
-import static com.aricneto.twistytimer.utils.AverageCalculator.UNKNOWN;
-import static com.aricneto.twistytimer.utils.ThemeUtils.fetchAttrColor;
+import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
+import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
 /**
  * A collector for solve times and related statistics (average times) to be presented in a chart.
@@ -32,6 +29,13 @@ public class ChartStatistics {
     // only a solve times to be added), but "ChartStatistics" is two-dimensional (requiring both
     // solve times and the date of each of the solve events). Re-use by containment avoids the mess
     // of trying to hide "Statistics.addTime", "Statistics.addDNF" and various other methods.
+
+    // NOTE: "ChartStatistics" is expected to be used from a Loader or AsyncTask, so it is
+    // preferable not to have this class depend on a Context, as that could lead to memory leaks.
+    // Instead, "ChartStyle" captures the necessary values from resources and theme attributes via
+    // a Context and then it can be passed when creating an instance of this class. Neither class
+    // then needs to hold a Context. "ChartStyle" can be created before the Loader or AsyncTask is
+    // invoked and passed in before execution.
 
     /**
      * The line width to use in the chart when a thicker line is appropriate. The value is in DIP
@@ -177,17 +181,17 @@ public class ChartStatistics {
      *     {@code true} if the solve times to be charted are only those solves added in the current
      *     sessions; or {@code false} if the solve times are only those solves added across all
      *     sessions.
-     * @param context
-     *     The context required to access string resources and the line colors defined for the
-     *     current theme. An application context is not sufficient to access the theme colors, so
-     *     an activity context is required.
+     * @param chartStyle
+     *     The styling information for the chart. This defines the labels and colors for the data
+     *     sets, among other information.
      *
      * @throws IllegalArgumentException
      *     If {@code statistics} is not configured for the current session only.
      * @throws IllegalStateException
      *     If there are more than three average-of-N lines to be graphed.
      */
-    private ChartStatistics(Statistics statistics, boolean isForCurrentSessionOnly, Context context)
+    private ChartStatistics(Statistics statistics, boolean isForCurrentSessionOnly,
+                            ChartStyle chartStyle)
                 throws IllegalArgumentException, IllegalStateException {
         if (!statistics.isForCurrentSessionOnly()) {
             // Enforcing this requirement means that there will be no excess clutter caused by
@@ -202,30 +206,28 @@ public class ChartStatistics {
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
 
-        final int numNs = mNsOfAverages.length;
-        final int[] lineColors = getLineColors(context, DS_AVG_0 + numNs); // May throw ISE.
-
         // The order in which the data sets are added is important to ensure that "DS_ALL", etc.
         // remain meaningful.
-        addMainDataSets(context, lineColors[DS_ALL], lineColors[DS_BEST]);
+        addMainDataSets(chartStyle.getAllTimesLabel(), chartStyle.getAllTimesColor(),
+                chartStyle.getBestTimesLabel(), chartStyle.getBestTimesColor());
 
         for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
-            addAoNDataSets(context, mNsOfAverages[nIndex], lineColors[DS_AVG_0 + nIndex]);
+            addAoNDataSets(chartStyle.getAverageOfNLabelPrefix() + (nIndex + 1),
+                    chartStyle.getExtraColor(nIndex));
         }
 
         // Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
         // the label and color of the line now (while a "Context" is available) and create the line
         // later in "applyTo".
-        mLimitLineLabel = context.getString(R.string.graph_mean);
-        mLimitLineColor = ThemeUtils.fetchAttrColor(context, R.attr.colorChartMeanTime);
+        mLimitLineLabel = chartStyle.getLimitLineLabel();
+        mLimitLineColor = chartStyle.getLimitLineColor();
 
         // Set the formatter for the date label on the chart X-axis. Localise the format, mostly to
         // support the "MM/DD" order used in the USA. It will fall back to the most common "DD/MM"
         // format (from "values/formats.xml") if no more specific localised format is found (such
         // as in "values-en-rUS/formats.xml". This also "pre-compiles" the pattern, making the
         // formatting operation faster later.
-        mXValueFormatter = DateTimeFormat.forPattern(
-                context.getResources().getString(R.string.chartXAxisDateFormat));
+        mXValueFormatter = DateTimeFormat.forPattern(chartStyle.getDateFormatSpec());
     }
 
     /**
@@ -234,20 +236,17 @@ public class ChartStatistics {
      * main line of all time using circles lined with a dashed line. This will appear to connect
      * the lowest troughs along the main line of all times.
      *
-     * @param context   The context required to access the labels required for the chart legend.
+     * @param allLabel  The label of the all-times line.
      * @param allColor  The color of the all-times line.
+     * @param bestLabel The label of the best-times line.
      * @param bestColor The color of the best-times line.
      */
-    private void addMainDataSets(Context context, int allColor, int bestColor) {
-        final Resources res = context.getResources();
-
+    private void addMainDataSets(String allLabel, int allColor, String bestLabel, int bestColor) {
         // Main data set for all solve times.
-        mChartData.addDataSet(
-                createDataSet(res.getString(R.string.graph_legend_all_times), allColor));
+        mChartData.addDataSet(createDataSet(allLabel, allColor));
 
         // Data set to show the progression of best times along the main line of all times.
-        final LineDataSet bestDataSet
-                = createDataSet(res.getString(R.string.graph_legend_best_times), bestColor);
+        final LineDataSet bestDataSet = createDataSet(bestLabel, bestColor);
 
         bestDataSet.enableDashedLine(3f, 6f, 0f);
 
@@ -269,20 +268,15 @@ public class ChartStatistics {
      * progression; only one time is shown and it superimposed on its main AoN line, rendered in
      * the same color as a circle and with the value drawn on the chart.
      *
-     * @param context The context required to access the labels required for the chart legend.
-     * @param n       The value of "N" for this average-of-N.
-     * @param color   The color of the AoN line and best AoN time marker.
+     * @param label The label of the AoN line and best AoN time marker.
+     * @param color The color of the AoN line and best AoN time marker.
      */
-    private void addAoNDataSets(Context context, int n, int color) {
-        final Resources res = context.getResources();
-        final String avgPrefix = res.getString(R.string.graph_legend_avg_prefix); // e.g., "Ao".
-        final String avgLabel = avgPrefix + n; // e.g., "Ao12".
-
+    private void addAoNDataSets(String label, int color) {
         // Main AoN data set for all AoN times for one value of "N".
-        mChartData.addDataSet(createDataSet(avgLabel, color));
+        mChartData.addDataSet(createDataSet(label, color));
 
         // Data set for the single best AoN time for this "N".
-        final LineDataSet bestAoNDataSet = createDataSet(avgLabel, color);
+        final LineDataSet bestAoNDataSet = createDataSet(label, color);
 
         bestAoNDataSet.setDrawCircles(true);
         bestAoNDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
@@ -335,16 +329,16 @@ public class ChartStatistics {
      * data for all solve times across all past and current sessions and the running averages of 50
      * and 100 consecutive times. These averages permit all but one solve to be a DNF solve.
      *
-     * @param context
-     *     The context required to access string resources and the line colors defined for the
-     *     current theme. An application context is not sufficient to access the theme colors, so
-     *     an activity context is required.
+     * @param chartStyle
+     *     The chart style information required for the data sets that will be populated with
+     *     statistics.
      *
      * @return
      *     The collector for chart statistics.
      */
-    public static ChartStatistics newAllTimeChartStatistics(Context context) {
-        return new ChartStatistics(Statistics.newAllTimeAveragesChartStatistics(), false, context);
+    public static ChartStatistics newAllTimeChartStatistics(ChartStyle chartStyle) {
+        return new ChartStatistics(
+                Statistics.newAllTimeAveragesChartStatistics(), false, chartStyle);
     }
 
     /**
@@ -353,17 +347,16 @@ public class ChartStatistics {
      * of 5 and 12 consecutive times. These averages permit no more than one solve to be a DNF
      * solve.
      *
-     * @param context
-     *     The context required to access string resources and the line colors defined for the
-     *     current theme. An application context is not sufficient to access the theme colors, so
-     *     an activity context is required.
+     * @param chartStyle
+     *     The chart style information required for the data sets that will be populated with
+     *     statistics.
      *
      * @return
      *     The collector for chart statistics.
      */
-    public static ChartStatistics newCurrentSessionChartStatistics(Context context) {
+    public static ChartStatistics newCurrentSessionChartStatistics(ChartStyle chartStyle) {
         return new ChartStatistics(
-                Statistics.newCurrentSessionAveragesChartStatistics(), true, context);
+                Statistics.newCurrentSessionAveragesChartStatistics(), true, chartStyle);
     }
 
     /**
@@ -571,56 +564,6 @@ public class ChartStatistics {
     // This methods takes away any confusion about what time value represents a DNF.
     public void addDNF(long date) {
         addTime(DNF, date);
-    }
-
-    /**
-     * Gets the line colors corresponding to the data sets of the chart. The colors should be
-     * applied to their corresponding data sets by using the data set index as the index into
-     * the returned array of colors. It is assumed that the first data set represents all times,
-     * the second data set represents the best times and the other data sets represent various
-     * average-of-N times.
-     *
-     * @param context
-     *     The context required to access the line colors defined for the current theme. An
-     *     application context is not sufficient, an activity context is required.
-     * @param numLines
-     *     The number of lines (data sets) for which colors are required.
-     *
-     * @return
-     *     The colors to be used when rendering the lines for the data sets.
-     *
-     * @throws IllegalStateException
-     *     If there are more than three average-of-N lines to be graphed.
-     */
-    public int[] getLineColors(Context context, int numLines) throws IllegalStateException {
-        if (numLines - DS_AVG_0 > 3) {
-            // This limit is determined by the number of "colorChartExtra<X>" theme attributes. If
-            // there are more than three lines, there need to be more than three colors and that
-            // will require new theme attributes to be declared and defined.
-            throw new IllegalStateException("Maximum of 3 average-of-N lines allowed.");
-        }
-
-        final int[] lineColors = new int[numLines];
-
-        switch (numLines) {
-            case 5:
-                lineColors[DS_AVG_0 + 2] = fetchAttrColor(context, R.attr.colorChartExtra3);
-                // Fall through.
-            case 4:
-                lineColors[DS_AVG_0 + 1] = fetchAttrColor(context, R.attr.colorChartExtra2);
-                // Fall through.
-            case 3:
-                lineColors[DS_AVG_0] = fetchAttrColor(context, R.attr.colorChartExtra1);
-                // Fall through.
-            case 2:
-                lineColors[DS_BEST] = fetchAttrColor(context, R.attr.colorChartBestTimes);
-                // Fall through.
-            case 1:
-                lineColors[DS_ALL] = fetchAttrColor(context, R.attr.colorChartAllTimes);
-                break;
-        }
-
-        return lineColors;
     }
 
     /**

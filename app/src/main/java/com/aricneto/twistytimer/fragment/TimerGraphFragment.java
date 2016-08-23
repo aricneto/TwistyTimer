@@ -2,17 +2,15 @@ package com.aricneto.twistytimer.fragment;
 
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +19,24 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.spans.TimeFormatter;
-import com.aricneto.twistytimer.utils.ChartStatistics;
-import com.aricneto.twistytimer.utils.Statistics;
+import com.aricneto.twistytimer.stats.ChartStatistics;
+import com.aricneto.twistytimer.stats.ChartStyle;
+import com.aricneto.twistytimer.stats.Statistics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-import static com.aricneto.twistytimer.utils.AverageCalculator.tr;
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,20 +58,19 @@ public class TimerGraphFragment extends Fragment {
     // better integrated into the life-cycle of the fragment.
     private volatile Context mContext;
 
-    @Bind(R.id.linechart)           LineChart lineChartView;
-    @Bind(R.id.personalBestTimes)   TextView  personalBestTimes;
-    @Bind(R.id.sessionBestTimes)    TextView  sessionBestTimes;
-    @Bind(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
-    @Bind(R.id.progressSpinner)     MaterialProgressBar progressBar;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.linechart)           LineChart lineChartView;
+    @BindView(R.id.personalBestTimes)   TextView  personalBestTimes;
+    @BindView(R.id.sessionBestTimes)    TextView  sessionBestTimes;
+    @BindView(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
+    @BindView(R.id.progressSpinner)     MaterialProgressBar progressBar;
 
     // Things that must be hidden/shown when refreshing the card.
-    // The names don't matter since we're just going to show/hide them anyway
-    @Bind(R.id.personalBestTitle)   View v1;
-    @Bind(R.id.sessionBestTitle)    View v2;
-    @Bind(R.id.sessionCurrentTitle) View v3;
-    @Bind(R.id.horizontalDivider02) View v4;
-    @Bind(R.id.verticalDivider02)   View v5;
-    @Bind(R.id.verticalDivider03)   View v6;
+    @BindViews({
+            R.id.personalBestTitle, R.id.sessionBestTitle, R.id.sessionCurrentTitle,
+            R.id.horizontalDivider02, R.id.verticalDivider02, R.id.verticalDivider03,
+    }) View[] statisticsTableViews;
 
     private boolean history;
 
@@ -87,30 +88,40 @@ public class TimerGraphFragment extends Fragment {
      */
     private boolean mIsCalculateStatsDeferred;
 
-    // Receives broadcasts from the timer
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
-                switch (intent.getStringExtra("action")) {
-                    case "MOVED TO HISTORY":
-                    case "TIME UPDATED":
-                    case "REFRESH TIME":
-                    case "TIME ADDED":
-                        // The full history chart includes the times for the current session, so if
-                        // a new time is added to the current session, the chart needs to be updated
-                        // even it is showing the all-times "history".
-                        generateChart();
-                        calculateStats();
-                        break;
+    /**
+     * The chart style information.
+     */
+    private ChartStyle mChartStyle;
 
-                    case "HISTORY":
-                        history = ! history;
-                        generateChart();
-                        // Switching between the "history" of all times and the session times does
-                        // not affect the statistics table, which always shows statistics for both.
-                        break;
-                }
+    // Receives broadcasts from the timer
+    private TTFragmentBroadcastReceiver mTimeDataChangedReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_TIME_DATA_CHANGES) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_TIME_ADDED:
+                    // TODO: Should add time details to intent and then add solve time to current
+                    // chart and stats without reloading everything from the database.
+                case ACTION_TIMES_MODIFIED:
+                case ACTION_TIMES_MOVED_TO_HISTORY:
+                    // The full history chart includes the times for the current session, so if
+                    // a new time is added to the current session, the chart needs to be updated
+                    // even it is showing the all-times "history".
+                    generateChart();
+                    calculateStats();
+                    break;
+
+                // Switching between the history of all times and the session times does
+                // not affect the statistics table, which always shows statistics for both.
+                case ACTION_HISTORY_TIMES_SHOWN:
+                    history = true;
+                    generateChart();
+                    break;
+
+                case ACTION_SESSION_TIMES_SHOWN:
+                    history = false;
+                    generateChart();
+                    break;
             }
         }
     };
@@ -138,14 +149,14 @@ public class TimerGraphFragment extends Fragment {
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
+        registerReceiver(mTimeDataChangedReceiver);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
-        ButterKnife.bind(this, root);
+        mUnbinder = ButterKnife.bind(this, root);
 
         // The context used by the AsyncTasks must only be set when the fragment view exists. It
         // must be reset to null in "onDestroyView".
@@ -198,6 +209,10 @@ public class TimerGraphFragment extends Fragment {
         axisLeft.setGridColor(axisColor);
         axisLeft.setValueFormatter(new TimeFormatter());
 
+        // "mChartStyle" allows the background tasks to be executed without the need to hold a
+        // reference to a context, which would be likely to cause memory leaks and crashes.
+        mChartStyle = new ChartStyle(getActivity());
+
         // Launch the background tasks to load the data for the chart and statistics. If this
         // fragment is not visible, these tasks will be deferred automatically.
         generateChart();
@@ -209,6 +224,7 @@ public class TimerGraphFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mUnbinder.unbind();
         // Any background tasks can update the UI as long as the fragment is attached to an
         // activity context and has a fragment view. Once the view goes away, the context must be
         // reset to null to ensure "AsyncTask.onPostExecute" methods do not attempt to change the
@@ -221,7 +237,7 @@ public class TimerGraphFragment extends Fragment {
 
     public void onDetach() {
         super.onDetach();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
+        unregisterReceiver(mTimeDataChangedReceiver);
     }
 
     /**
@@ -271,20 +287,20 @@ public class TimerGraphFragment extends Fragment {
     private void generateChart() {
         // (Re)generate the chart and display it. Same approach as in "calculateStats".
         if (getUserVisibleHint()) {
-            new GenerateSolveList().execute();
+            new GenerateChart().execute(mChartStyle);
             mIsGenerateChartDeferred = false;
         } else {
             mIsGenerateChartDeferred = true;
         }
     }
 
-    private void toggleCardStats(int visibility) {
-        v1.setVisibility(visibility);
-        v2.setVisibility(visibility);
-        v3.setVisibility(visibility);
-        v4.setVisibility(visibility);
-        v5.setVisibility(visibility);
-        v6.setVisibility(visibility);
+    private void toggleCardStats(final int visibility) {
+        ButterKnife.apply(statisticsTableViews, new ButterKnife.Action<View>() {
+            @Override
+            public void apply(@NonNull View view, int index) {
+                view.setVisibility(visibility);
+            }
+        });
 
         personalBestTimes.setVisibility(visibility);
         sessionBestTimes.setVisibility(visibility);
@@ -292,17 +308,17 @@ public class TimerGraphFragment extends Fragment {
     }
 
     /**
-     * Generate a list of solves for the chart
+     * Task that loads the data required for the chart and creates the data sets.
      */
-    private class GenerateSolveList extends AsyncTask<Void, Void, ChartStatistics> {
+    private class GenerateChart extends AsyncTask<ChartStyle, Void, ChartStatistics> {
         @Override
-        protected ChartStatistics doInBackground(Void... voids) {
+        protected ChartStatistics doInBackground(ChartStyle... chartStyles) {
             final Context context = mContext; // Copy the field in case it changes on the UI thread.
 
             if (context != null) {
                 final ChartStatistics chartStats
-                        = history ? ChartStatistics.newAllTimeChartStatistics(context)
-                                  : ChartStatistics.newCurrentSessionChartStatistics(context);
+                        = history ? ChartStatistics.newAllTimeChartStatistics(chartStyles[0])
+                                  : ChartStatistics.newCurrentSessionChartStatistics(chartStyles[0]);
 
                 TwistyTimer.getDBHandler().populateChartStatistics(
                         currentPuzzle, currentPuzzleSubtype, chartStats);

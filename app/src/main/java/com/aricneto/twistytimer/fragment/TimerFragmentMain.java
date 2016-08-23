@@ -5,10 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,7 +16,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SwitchCompat;
@@ -47,7 +44,6 @@ import com.aricneto.twistytimer.adapter.SpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.LockedViewPager;
-import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
@@ -56,25 +52,27 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
 
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class TimerFragmentMain extends BaseFragment {
 
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
     private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
-    @Bind(R.id.toolbar)       Toolbar         mToolbar;
-    @Bind(R.id.pager)         LockedViewPager viewPager;
-    @Bind(R.id.main_tabs)     TabLayout       tabLayout;
-    @Bind(R.id.toolbarLayout) LinearLayout    toolbarLayout;
+
+    private Unbinder mUnbinder;
+    @BindView(R.id.toolbar)       Toolbar         mToolbar;
+    @BindView(R.id.pager)         LockedViewPager viewPager;
+    @BindView(R.id.main_tabs)     TabLayout       tabLayout;
+    @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
     ActionMode      actionMode;
 
     int currentPage = 0;
-
-    private int primaryColor;
 
     // Stores the current state of the list switch
     boolean historyChecked = false;
@@ -85,7 +83,6 @@ public class TimerFragmentMain extends BaseFragment {
 
     private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
-    private TimerFragmentMain fragReference = this;
 
     private MaterialDialog removeSubtypeDialog;
     private MaterialDialog subtypeDialog;
@@ -128,9 +125,8 @@ public class TimerFragmentMain extends BaseFragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.delete:
-                    Intent sendIntent = new Intent("TIMELIST");
-                    sendIntent.putExtra("action", "DELETE SELECTED");
-                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+                    // Receiver will delete times and then broadcast "ACTION_TIMES_MODIFIED".
+                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_DELETE_SELECTED_TIMES);
                     mode.finish();
                     return true;
                 default:
@@ -141,120 +137,120 @@ public class TimerFragmentMain extends BaseFragment {
         // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "REFRESH TIME");
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
         }
     };
-    // Receives broadcasts from the timer
-    private BroadcastReceiver   mReceiver          = new BroadcastReceiver() {
+
+    // Receives broadcasts about changes to the time user interface.
+    private TTFragmentBroadcastReceiver mUIInteractionReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
-                switch (intent.getStringExtra("action")) {
-                    case "TIMER STARTED": // This was taken from PlusTimer (thanks :D)
-                        viewPager.setPagingEnabled(false);
-                        activateTabLayout(false);
-                        originalContentHeight = viewPager.getHeight();
-                        ObjectAnimator hideToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, - toolbarLayout.getHeight());
-                        hideToolbar.setDuration(300);
-                        hideToolbar.setInterpolator(new AccelerateInterpolator());
-                        hideToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                if (viewPager != null) {
-                                    LinearLayout.LayoutParams params =
-                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
-                                    params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
-                                    viewPager.setLayoutParams(params);
-                                    viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
-                                }
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_TIMER_STARTED: // This was taken from PlusTimer (thanks :D)
+                    viewPager.setPagingEnabled(false);
+                    activateTabLayout(false);
+                    originalContentHeight = viewPager.getHeight();
+                    ObjectAnimator hideToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, - toolbarLayout.getHeight());
+                    hideToolbar.setDuration(300);
+                    hideToolbar.setInterpolator(new AccelerateInterpolator());
+                    hideToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            if (viewPager != null) {
+                                LinearLayout.LayoutParams params =
+                                    (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
+                                viewPager.setLayoutParams(params);
+                                viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
                             }
-                        });
-                        AnimatorSet toolbarSet = new AnimatorSet();
-                        toolbarSet.play(hideToolbar);
-                        toolbarSet.start();
-                        break;
-                    case "TIMER STOPPED":
-                        ObjectAnimator showToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, 0);
-                        showToolbar.setDuration(300);
-                        showToolbar.setInterpolator(new DecelerateInterpolator());
-                        showToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                                if (viewPager != null) {
-                                    LinearLayout.LayoutParams params =
-                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
-                                    params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
-                                    viewPager.setLayoutParams(params);
-                                    viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
-                                }
-                            }
-                        });
-                        AnimatorSet animatorSet = new AnimatorSet();
-                        animatorSet.play(showToolbar);
-                        animatorSet.start();
-                        animatorSet.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                if (toolbarLayout != null) {
-                                    if (toolbarLayout.getTranslationY() == 0) {
-                                        LinearLayout.LayoutParams params =
-                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
-                                        params.height = originalContentHeight;
-                                        viewPager.setLayoutParams(params);
-                                        Intent sendIntent = new Intent("TIMELIST");
-                                        sendIntent.putExtra("action", "TOOLBAR ENDED");
-                                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
-                                    }
-                                }
-                            }
-                        });
-                        activateTabLayout(true);
-                        if (pagerEnabled)
-                            viewPager.setPagingEnabled(true);
-                        else
-                            viewPager.setPagingEnabled(false);
-                        break;
-
-                    case "SELECTIONMODE TRUE":
-                        selectCount = 0;
-                        actionMode = mToolbar.startActionMode(actionModeCallback);
-                        break;
-                    case "SELECTIONMODE FALSE":
-                        selectCount = 0;
-                        if (actionMode != null)
-                            actionMode.finish();
-                        break;
-                    case "LISTITEM SELECTED":
-                        selectCount += 1;
-                        actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
-                        break;
-                    case "LISTITEM UNSELECTED":
-                        selectCount -= 1;
-                        actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
-                        break;
-
-                    case "BACK PRESSED":
-                        boolean timerRunning = currentTimerFragmentInstance.isRunning;
-                        boolean panelShowing =
-                            currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
-                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
-                                currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING;
-
-                        boolean sheetShowing = currentTimerListFragmentInstance.materialSheetFab.isSheetVisible();
-                        if (timerRunning || panelShowing || sheetShowing) {
-                            if (timerRunning)
-                                currentTimerFragmentInstance.cancelChronometer();
-                            if (panelShowing)
-                                currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                            if (sheetShowing)
-                                currentTimerListFragmentInstance.materialSheetFab.hideSheet();
-                        } else {
-                            Broadcaster.broadcast(getActivity(), "ACTIVITY", "GO BACK");
                         }
-                        break;
-                }
+                    });
+                    AnimatorSet toolbarSet = new AnimatorSet();
+                    toolbarSet.play(hideToolbar);
+                    toolbarSet.start();
+                    break;
+
+                case ACTION_TIMER_STOPPED:
+                    ObjectAnimator showToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, 0);
+                    showToolbar.setDuration(300);
+                    showToolbar.setInterpolator(new DecelerateInterpolator());
+                    showToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            if (viewPager != null) {
+                                LinearLayout.LayoutParams params =
+                                    (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
+                                viewPager.setLayoutParams(params);
+                                viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
+                            }
+                        }
+                    });
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(showToolbar);
+                    animatorSet.start();
+                    animatorSet.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (toolbarLayout != null) {
+                                if (toolbarLayout.getTranslationY() == 0) {
+                                    LinearLayout.LayoutParams params =
+                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                    params.height = originalContentHeight;
+                                    viewPager.setLayoutParams(params);
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TOOLBAR_RESTORED);
+                                }
+                            }
+                        }
+                    });
+                    activateTabLayout(true);
+                    if (pagerEnabled)
+                        viewPager.setPagingEnabled(true);
+                    else
+                        viewPager.setPagingEnabled(false);
+                    break;
+
+                case ACTION_SELECTION_MODE_ON:
+                    selectCount = 0;
+                    actionMode = mToolbar.startActionMode(actionModeCallback);
+                    break;
+
+                case ACTION_SELECTION_MODE_OFF:
+                    selectCount = 0;
+                    if (actionMode != null)
+                        actionMode.finish();
+                    break;
+
+                case ACTION_TIME_SELECTED:
+                    selectCount += 1;
+                    actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
+                    break;
+
+                case ACTION_TIME_UNSELECTED:
+                    selectCount -= 1;
+                    actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
+                    break;
+
+                case ACTION_GO_BACK:
+                    boolean timerRunning = currentTimerFragmentInstance.isRunning;
+                    boolean panelShowing =
+                        currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                            currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED ||
+                            currentTimerFragmentInstance.slidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING;
+
+                    boolean sheetShowing = currentTimerListFragmentInstance.materialSheetFab.isSheetVisible();
+                    if (timerRunning || panelShowing || sheetShowing) {
+                        if (timerRunning)
+                            currentTimerFragmentInstance.cancelChronometer();
+                        if (panelShowing)
+                            currentTimerFragmentInstance.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                        if (sheetShowing)
+                            currentTimerListFragmentInstance.materialSheetFab.hideSheet();
+                    } else {
+                        // Propagate up to the application/main-activity level and exit app.
+                        broadcast(CATEGORY_APP_LEVEL_EVENTS, ACTION_GO_BACK);
+                    }
+                    break;
             }
         }
     };
@@ -288,7 +284,7 @@ public class TimerFragmentMain extends BaseFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
-        ButterKnife.bind(this, root);
+        mUnbinder = ButterKnife.bind(this, root);
 
         handleHeaderSpinner();
         setupToolbarForFragment(mToolbar);
@@ -327,7 +323,7 @@ public class TimerFragmentMain extends BaseFragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Broadcaster.broadcast(getActivity(), "TIMELIST", "SCROLLED PAGE");
+                broadcast(CATEGORY_UI_INTERACTIONS, ACTION_SCROLLED_PAGE);
             }
         });
 
@@ -340,9 +336,7 @@ public class TimerFragmentMain extends BaseFragment {
         });
 
         // Register a receiver to update if something has changed
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMER"));
-
-        primaryColor = ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimary);
+        registerReceiver(mUIInteractionReceiver);
 
         return root;
     }
@@ -385,8 +379,13 @@ public class TimerFragmentMain extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
-        ButterKnife.unbind(this);
+        unregisterReceiver(mUIInteractionReceiver);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     private void setupTypeDialogItem() {
@@ -433,7 +432,7 @@ public class TimerFragmentMain extends BaseFragment {
             currentPuzzleSubtype = subtypeList.get(0);
         }
         // Remove Subtype dialog
-        removeSubtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
+        removeSubtypeDialog = new MaterialDialog.Builder(getContext())
             .title(R.string.remove_subtype_title)
             .negativeText(R.string.action_cancel)
             .autoDismiss(true)
@@ -468,7 +467,7 @@ public class TimerFragmentMain extends BaseFragment {
             .build();
 
         //Rename subtype
-        renameSubtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
+        renameSubtypeDialog = new MaterialDialog.Builder(getContext())
             .title(R.string.rename_subtype_title)
             .negativeText(R.string.action_cancel)
             .autoDismiss(true)
@@ -499,7 +498,7 @@ public class TimerFragmentMain extends BaseFragment {
 
 
         // Select subtype dialog
-        subtypeDialog = new MaterialDialog.Builder(fragReference.getContext())
+        subtypeDialog = new MaterialDialog.Builder(getContext())
             .title(R.string.select_solve_type)
             .positiveText(R.string.w_new_subtype)
             .negativeText(R.string.action_rename)
@@ -564,18 +563,18 @@ public class TimerFragmentMain extends BaseFragment {
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                historyChecked = isChecked;
+
                 if (isChecked) {
                     switchCompat.setThumbDrawable(thumb_negative);
                     switchCompat.setTrackResource(R.drawable.track_negative);
-                    historyChecked = true;
                 } else {
                     switchCompat.setThumbDrawable(thumb_positive);
                     switchCompat.setTrackDrawable(track_positive);
-                    historyChecked = false;
                 }
-                Intent sendIntent = new Intent("TIMELIST");
-                sendIntent.putExtra("action", "HISTORY");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+
+                broadcast(CATEGORY_TIME_DATA_CHANGES,
+                        isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
             }
         });
     }

@@ -13,9 +13,9 @@ import android.util.Log;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.aricneto.twistytimer.utils.ChartStatistics;
+import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.aricneto.twistytimer.utils.Statistics;
+import com.aricneto.twistytimer.stats.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;

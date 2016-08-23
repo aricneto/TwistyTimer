@@ -22,8 +22,9 @@ import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Ari on 22/03/2016.
@@ -31,19 +32,22 @@ import butterknife.ButterKnife;
 public class ExportImportSelectionDialog extends DialogFragment {
 
     ExportImportDialogInterface dialogInterface;
-    @Bind(R.id.puzzleSpinner)   Spinner  puzzleSpinner;
-    @Bind(R.id.categorySpinner) Spinner  categorySpinner;
-    @Bind(R.id.importButton)    TextView importButton;
+
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.puzzleSpinner)   Spinner  puzzleSpinner;
+    @BindView(R.id.categorySpinner) Spinner  categorySpinner;
+    @BindView(R.id.importButton)    TextView importButton;
 
     public final static int TYPE_EXPORT = 1;
     public final static int TYPE_IMPORT = 2;
 
     private final static String TYPE = "type";
+    private static final String CURRENT_CATEGORY = "Normal";
 
     private int type;
 
     String currentPuzzle   = "333";
-    String currentCategory = "Normal";
 
     ArrayAdapter<String> categoryAdapter;
 
@@ -58,7 +62,8 @@ public class ExportImportSelectionDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View dialogView = inflater.inflate(R.layout.dialog_export_import_selection_dialog, container);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
+
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
         }
@@ -119,11 +124,11 @@ public class ExportImportSelectionDialog extends DialogFragment {
         final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
         final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
-            subtypeList.add("Normal");
-            dbHandler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+            subtypeList.add(CURRENT_CATEGORY);
+            dbHandler.addSolve(new Solve(1, currentPuzzle, CURRENT_CATEGORY, 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         }
         categoryAdapter =
-                new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, subtypeList);
+                new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, subtypeList);
         categorySpinner.setAdapter(categoryAdapter);
     }
 
@@ -131,7 +136,7 @@ public class ExportImportSelectionDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     public void setDialogInterface(ExportImportDialogInterface dialogInterface) {

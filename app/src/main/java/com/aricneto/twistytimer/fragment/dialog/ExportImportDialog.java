@@ -21,22 +21,24 @@ import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
 import com.aricneto.twistytimer.utils.AnimUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Ari on 09/02/2016.
  */
 public class ExportImportDialog extends DialogFragment {
 
+    private Unbinder mUnbinder;
 
-    //@Bind(R.id.help_button)     View helpButton;
-    @Bind(R.id.export_backup)   View exportBackup;
-    @Bind(R.id.export_external) View exportExternal;
-    @Bind(R.id.import_backup)   View importBackup;
-    @Bind(R.id.import_external) View importExternal;
-    @Bind(R.id.import_button)   View importButton;
-    @Bind(R.id.export_button)   View exportButton;
+    //@BindView(R.id.help_button)     View helpButton;
+    @BindView(R.id.export_backup)   View exportBackup;
+    @BindView(R.id.export_external) View exportExternal;
+    @BindView(R.id.import_backup)   View importBackup;
+    @BindView(R.id.import_external) View importExternal;
+    @BindView(R.id.import_button)   View importButton;
+    @BindView(R.id.export_button)   View exportButton;
 
     ExportImportDialogInterface dialogInterface;
     private FragmentActivity mActivity;
@@ -101,7 +103,7 @@ public class ExportImportDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_export_import, container);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         mActivity = getActivity();
 
@@ -122,7 +124,7 @@ public class ExportImportDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     private void quitDialog() {

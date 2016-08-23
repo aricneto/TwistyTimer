@@ -22,31 +22,32 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Ari on 09/02/2016.
  */
 public class ThemeSelectDialog extends DialogFragment {
 
+    private Unbinder mUnbinder;
 
-    @Bind(R.id.indigo)     TextView indigo;
-    @Bind(R.id.purple)     TextView purple;
-    @Bind(R.id.teal)       TextView teal;
-    @Bind(R.id.pink)       TextView pink;
-    @Bind(R.id.red)        TextView red;
-    @Bind(R.id.brown)      TextView brown;
-    @Bind(R.id.blue)       TextView blue;
-    @Bind(R.id.black)      TextView black;
-    @Bind(R.id.green)      TextView green;
-    @Bind(R.id.orange)     TextView orange;
-    @Bind(R.id.deepPurple) TextView deepPurple;
-    @Bind(R.id.blueGray)   TextView blueGray;
+    @BindView(R.id.indigo)     TextView indigo;
+    @BindView(R.id.purple)     TextView purple;
+    @BindView(R.id.teal)       TextView teal;
+    @BindView(R.id.pink)       TextView pink;
+    @BindView(R.id.red)        TextView red;
+    @BindView(R.id.brown)      TextView brown;
+    @BindView(R.id.blue)       TextView blue;
+    @BindView(R.id.black)      TextView black;
+    @BindView(R.id.green)      TextView green;
+    @BindView(R.id.orange)     TextView orange;
+    @BindView(R.id.deepPurple) TextView deepPurple;
+    @BindView(R.id.blueGray)   TextView blueGray;
 
     public static ThemeSelectDialog newInstance() {
-        ThemeSelectDialog themeSelectDialog = new ThemeSelectDialog();
-        return themeSelectDialog;
+        return new ThemeSelectDialog();
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -109,7 +110,7 @@ public class ThemeSelectDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_theme_select, container);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         setBlob(indigo, R.color.md_indigo_500);
         setBlob(purple, R.color.md_purple_500);
@@ -154,6 +155,6 @@ public class ThemeSelectDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 }
