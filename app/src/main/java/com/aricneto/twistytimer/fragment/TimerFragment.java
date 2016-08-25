@@ -26,6 +26,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -51,6 +52,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
+import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.utils.Broadcaster;
@@ -59,12 +61,22 @@ import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-public class TimerFragment extends BaseFragment {
+public class TimerFragment extends BaseFragment implements OnBackPressedInFragmentListener {
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TimerFragment.class.getSimpleName();
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
@@ -190,6 +202,9 @@ public class TimerFragment extends BaseFragment {
                         showItems();
                         animationDone = true;
                         break;
+                    case "GENERATE SCRAMBLE":
+                        generateNewScramble();
+                        break;
                 }
             }
         }
@@ -202,7 +217,6 @@ public class TimerFragment extends BaseFragment {
     private RubiksCubeOptimalCross  optimalCross;
     private RubiksCubeOptimalXCross optimalXCross;
     private SharedPreferences       sharedPreferences;
-
 
     public TimerFragment() {
         // Required empty public constructor
@@ -279,7 +293,7 @@ public class TimerFragment extends BaseFragment {
                         panelText.setGravity(Gravity.LEFT);
                         panelSpinner.setVisibility(View.VISIBLE);
                         panelSpinnerText.setVisibility(View.VISIBLE);
-                        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        slidingLayout.setPanelState(PanelState.EXPANDED);
                         crossCalculator = new GetOptimalCross();
                         crossCalculator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }
@@ -314,23 +328,18 @@ public class TimerFragment extends BaseFragment {
         args.putString(PUZZLE, puzzle);
         args.putString(PUZZLE_SUBTYPE, puzzleSubType);
         fragment.setArguments(args);
+        if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
         }
-
 
         dbHandler = new DatabaseHandler(getContext());
 
@@ -346,6 +355,7 @@ public class TimerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
@@ -381,7 +391,6 @@ public class TimerFragment extends BaseFragment {
         final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
         final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
 
-
         advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
         scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
         final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
@@ -412,7 +421,6 @@ public class TimerFragment extends BaseFragment {
         } else {
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
-
 
         buttonsEnabled = sharedPreferences.getBoolean("buttonsEnabled", true);
         scrambleImgEnabled = sharedPreferences.getBoolean("scrambleImageEnabled", true);
@@ -484,7 +492,6 @@ public class TimerFragment extends BaseFragment {
                 inspectionText.setVisibility(View.GONE);
             }
         };
-
 
         // Delay start
         holdHandler = new Handler();
@@ -626,6 +633,39 @@ public class TimerFragment extends BaseFragment {
         updateStats();
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        if (DEBUG_ME) Log.d(TAG, "onResume()");
+        super.onResume();
+        slidingLayout.setPanelState(PanelState.HIDDEN);
+    }
+
+    /**
+     * Hides the sliding panel showing the scramble image, or stops the chronometer, if either
+     * action is necessary.
+     *
+     * @return
+     *     {@code true} if the "Back" button press was consumed to hide the scramble or stop the
+     *     timer; or {@code false} if neither was necessary and the "Back" button press was ignored.
+     */
+    @Override
+    public boolean onBackPressedInFragment() {
+        if (DEBUG_ME) Log.d(TAG, "onBackPressedInFragment()");
+
+        if (isResumed()) {
+            if (isRunning) {
+                cancelChronometer();
+                return true;
+            } else if (slidingLayout != null
+                    && slidingLayout.getPanelState() != PanelState.HIDDEN
+                    && slidingLayout.getPanelState() != PanelState.COLLAPSED) {
+                slidingLayout.setPanelState(PanelState.HIDDEN);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -848,6 +888,7 @@ public class TimerFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
+        if (DEBUG_ME) Log.d(TAG, "onDetach()");
         super.onDetach();
         // To fix memory leaks
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
@@ -929,7 +970,7 @@ public class TimerFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled)
-                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                slidingLayout.setPanelState(PanelState.HIDDEN);
             canShowHint = false;
             scrambleText.setText(R.string.generating_scramble);
             scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -976,7 +1017,7 @@ public class TimerFragment extends BaseFragment {
                                     panelText.setGravity(Gravity.CENTER);
                                     panelSpinner.setVisibility(View.GONE);
                                     panelSpinnerText.setVisibility(View.GONE);
-                                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                                    slidingLayout.setPanelState(PanelState.EXPANDED);
                                 }
                             });
                         } else {
@@ -1039,7 +1080,6 @@ public class TimerFragment extends BaseFragment {
             int bestSession = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
             int worstSession = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
             int count = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
-
 
             return new int[] { avg5, avg12, avg50, avg100, mean, bestSession, worstSession, count };
         }
@@ -1107,7 +1147,6 @@ public class TimerFragment extends BaseFragment {
                 }
                 updateBestAndWorst();
             }
-
         }
     }
 
@@ -1127,14 +1166,12 @@ public class TimerFragment extends BaseFragment {
         }
     }
 
-
     private void zoomImageFromThumb(final View thumbView, Drawable image) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (mCurrentAnimator != null) {
             mCurrentAnimator.cancel();
         }
-
 
         // Calculate the starting and ending bounds for the zoomed-in image.
         // This step involves lots of math. Yay, math.
@@ -1261,6 +1298,4 @@ public class TimerFragment extends BaseFragment {
             }
         });
     }
-
-
 }

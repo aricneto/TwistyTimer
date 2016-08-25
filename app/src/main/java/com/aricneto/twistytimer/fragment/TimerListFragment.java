@@ -22,6 +22,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.Fab;
+import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.utils.Broadcaster;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -49,15 +51,29 @@ import org.joda.time.DateTime;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 
-public class TimerListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TimerListFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<Cursor>, OnBackPressedInFragmentListener {
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TimerListFragment.class.getSimpleName();
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
     private static final String HISTORY        = "history";
 
+    private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
+
     private static final int TASK_LOADER_ID = 14;
-    public MaterialSheetFab<Fab> materialSheetFab;
+    private MaterialSheetFab<Fab> materialSheetFab;
     DatabaseHandler dbHandler;
     // True if you want to search history, false if you only want to search session
     boolean         history;
@@ -85,8 +101,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private TimeTaskLoader    timeTaskLoader;
     private Context           mContext;
 
-
-    View.OnClickListener clickListener = new View.OnClickListener() {
+    private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
@@ -128,7 +143,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             }
         }
     };
-
 
     // Receives broadcasts from the timer
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -172,11 +186,13 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         args.putBoolean(HISTORY, history);
         args.putString(PUZZLE_SUBTYPE, puzzleType);
         fragment.setArguments(args);
+        if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
@@ -189,6 +205,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         View rootView = inflater.inflate(R.layout.fragment_time_list, container, false);
         ButterKnife.bind(this, rootView);
         mContext = getActivity().getApplicationContext();
@@ -286,7 +303,63 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (DEBUG_ME) Log.d(TAG, "setUserVisibleHint(isVisibleToUser=" + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isResumed()) {
+            if (isVisibleToUser) {
+                if (fabButton != null) {
+                    // Show FAB and intro (if intro was not already dismissed by the user in a
+                    // previous session) if the fragment has become visible.
+                    fabButton.show();
+                    new MaterialIntroView.Builder(getActivity())
+                            .enableDotAnimation(false)
+                            .setFocusGravity(FocusGravity.CENTER)
+                            .setDelayMillis(600)
+                            .enableFadeAnimation(true)
+                            .enableIcon(false)
+                            .performClick(true)
+                            .dismissOnTouch(true)
+                            .setInfoText(getString(R.string.showcase_fab_average))
+                            .setTarget(fabButton)
+                            .setUsageId(SHOWCASE_FAB_ID)
+                            .show();
+                }
+            } else if (materialSheetFab != null) {
+                // Hide sheet and FAB if the fragment is no longer visible.
+                materialSheetFab.hideSheetThenFab();
+            }
+        }
+    }
+
+    /**
+     * Hides the sheet for the floating action button, if the sheet is currently open.
+     *
+     * @return
+     *     {@code true} if the "Back" button press was consumed to close the sheet; or
+     *     {@code false} if the sheet is not showing and the "Back" button press was ignored.
+     */
+    @Override
+    public boolean onBackPressedInFragment() {
+        if (DEBUG_ME) Log.d(TAG, "onBackPressedInFragment()");
+        if (isResumed() && materialSheetFab != null && materialSheetFab.isSheetVisible()) {
+            materialSheetFab.hideSheet();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroyView()");
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
     public void onDetach() {
+        if (DEBUG_ME) Log.d(TAG, "onDetach()");
         super.onDetach();
         // To fix memory leaks
         dbHandler.closeDB();
@@ -310,11 +383,13 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        if (DEBUG_ME) Log.d(TAG, "onOnCreateLoader()");
         return timeTaskLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        if (DEBUG_ME) Log.d(TAG, "onLoadFinished()");
         timeCursorAdapter.swapCursor(cursor);
         recyclerView.getAdapter().notifyDataSetChanged();
         setEmptyState(cursor);
@@ -322,6 +397,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        if (DEBUG_ME) Log.d(TAG, "onLoaderReset()");
         timeCursorAdapter.swapCursor(null);
     }
 
@@ -365,12 +441,5 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
             recyclerView.setLayoutManager(gridLayoutManagerHorizontal);
 
         recyclerView.setAdapter(timeCursorAdapter);
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

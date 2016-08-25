@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,15 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  * create an instance of this fragment.
  */
 public class TimerGraphFragment extends Fragment {
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TimerGraphFragment.class.getSimpleName();
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
@@ -109,7 +119,6 @@ public class TimerGraphFragment extends Fragment {
         }
     };
 
-
     public TimerGraphFragment() {
         // Required empty public constructor
     }
@@ -122,11 +131,13 @@ public class TimerGraphFragment extends Fragment {
         args.putBoolean(HISTORY, history);
         args.putString(PUZZLE_SUBTYPE, puzzleType);
         fragment.setArguments(args);
+        if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
@@ -141,6 +152,7 @@ public class TimerGraphFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         ButterKnife.bind(this, root);
 
@@ -200,6 +212,14 @@ public class TimerGraphFragment extends Fragment {
         generateChart();
 
         return root;
+    }
+
+    @Override
+    public void onDetach() {
+        if (DEBUG_ME) Log.d(TAG, "onDetach()");
+        super.onDetach();
+        dbHandler.closeDB();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
     }
 
     private void calculateStats() {
@@ -389,13 +409,5 @@ public class TimerGraphFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             refreshLocked = false;
         }
-    }
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        dbHandler.closeDB();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
     }
 }
