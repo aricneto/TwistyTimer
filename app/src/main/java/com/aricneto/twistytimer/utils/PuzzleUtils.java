@@ -77,6 +77,31 @@ public class PuzzleUtils {
     }
 
     /**
+     * Gets the position of the given puzzle type when presented in a spinner or other list. This
+     * is the inverse of {@link #getPuzzleInPosition(int)}.
+     *
+     * @param puzzleType The name of the type of puzzle.
+     *
+     * @return The position (zero-based) of the puzzle within a list.
+     */
+    public static int getPositionOfPuzzle(String puzzleType) {
+        switch (puzzleType) {
+            default:
+            case PuzzleUtils.TYPE_333:     return  0;
+            case PuzzleUtils.TYPE_222:     return  1;
+            case PuzzleUtils.TYPE_444:     return  2;
+            case PuzzleUtils.TYPE_555:     return  3;
+            case PuzzleUtils.TYPE_666:     return  4;
+            case PuzzleUtils.TYPE_777:     return  5;
+            case PuzzleUtils.TYPE_CLOCK:   return  6;
+            case PuzzleUtils.TYPE_MEGA:    return  7;
+            case PuzzleUtils.TYPE_PYRA:    return  8;
+            case PuzzleUtils.TYPE_SKEWB:   return  9;
+            case PuzzleUtils.TYPE_SQUARE1: return 10;
+        }
+    }
+
+    /**
      * Gets the string id of the name of a puzzle
      *
      * @param puzzle

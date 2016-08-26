@@ -13,9 +13,7 @@ import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Solve;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,11 +44,6 @@ public final class TTIntent {
      * The name prefix for all extras.
      */
     private static final String EXTRA_PREFIX = BASE_PREFIX + "extra.";
-
-    /**
-     * The category for intents that communicate application-level events.
-     */
-    public static final String CATEGORY_APP_LEVEL_EVENTS = CATEGORY_PREFIX + "APP_LEVEL_EVENTS";
 
     /**
      * The category for intents that communicate interactions with, or changes to the state of, the
@@ -117,12 +110,10 @@ public final class TTIntent {
     public static final String ACTION_TOOLBAR_RESTORED = ACTION_PREFIX + "TOOLBAR_RESTORED";
 
     /**
-     * The user has activate the "Back" button, or other UI control, to "go back" to the previous
-     * activity or tab or to exit the application. The interpretation depends on the UI state at
-     * the time of the action and different receivers will be configured to react appropriately in
-     * each state.
+     * The tool bar button to generate a new scramble has been pressed and the receiver should
+     * perform that action.
      */
-    public static final String ACTION_GO_BACK = ACTION_PREFIX + "GO_BACK";
+    public static final String ACTION_GENERATE_SCRAMBLE = ACTION_PREFIX + "GENERATE_SCRAMBLE";
 
     /**
      * Selection mode has been turned on for the list of times.
@@ -216,12 +207,8 @@ public final class TTIntent {
                 ACTION_TIMER_STARTED,
                 ACTION_TIMER_STOPPED,
                 ACTION_TOOLBAR_RESTORED,
-                ACTION_GO_BACK,
+                ACTION_GENERATE_SCRAMBLE,
                 ACTION_SCROLLED_PAGE,
-        });
-
-        put(CATEGORY_APP_LEVEL_EVENTS, new String[] {
-                ACTION_GO_BACK,
         });
     }};
 

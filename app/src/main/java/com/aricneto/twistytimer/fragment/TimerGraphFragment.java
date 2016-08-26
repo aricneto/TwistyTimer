@@ -46,9 +46,14 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
  */
 public class TimerGraphFragment extends Fragment {
     /**
-     * A "tag" to identify log messages originating from this class.
+     * Flag to enable debug logging for this class.
      */
-    private static final String TAG = "CHART/STATS FRAG";
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TimerGraphFragment.class.getSimpleName();
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
@@ -78,19 +83,19 @@ public class TimerGraphFragment extends Fragment {
 
     // We have to put a boolean history here because it resets when we change puzzles.
     public static TimerGraphFragment newInstance(String puzzle, String puzzleType, boolean history) {
-        Log.d(TAG, "newInstance");
         TimerGraphFragment fragment = new TimerGraphFragment();
         Bundle args = new Bundle();
         args.putString(PUZZLE, puzzle);
         args.putBoolean(HISTORY, history);
         args.putString(PUZZLE_SUBTYPE, puzzleType);
         fragment.setArguments(args);
+        if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
@@ -103,7 +108,7 @@ public class TimerGraphFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
+        if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
@@ -153,12 +158,12 @@ public class TimerGraphFragment extends Fragment {
         // The loaders deliver different types of data, so two "LoaderCallbacks" are required.
         // However, this turns out to be simpler, as there will be no need to check loader IDs.
 
-        Log.d(TAG, "onActivityCreated -> restartLoader: CHART_DATA_LOADER_ID");
+        if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: CHART_DATA_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.CHART_DATA_LOADER_ID, null,
                 new LoaderManager.LoaderCallbacks<Wrapper<ChartStatistics>>() {
                     @Override
                     public Loader<Wrapper<ChartStatistics>> onCreateLoader(int id, Bundle args) {
-                        Log.d(TAG, "onCreateLoader: CHART_DATA_LOADER_ID");
+                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: CHART_DATA_LOADER_ID");
                         // "ChartStyle" allows the Loader to be executed without the need to hold a
                         // reference to an Activity context (required to access theme attributes),
                         // which would be likely to cause memory leaks and crashes.
@@ -170,30 +175,25 @@ public class TimerGraphFragment extends Fragment {
                     @Override
                     public void onLoadFinished(Loader<Wrapper<ChartStatistics>> loader,
                                                Wrapper<ChartStatistics> data) {
-                        Log.d(TAG, "onLoadFinished: CHART_DATA_LOADER_ID");
-                        if (isResumed()) {
-                            updateChart(data.content());
-                        }
+                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: CHART_DATA_LOADER_ID");
+                        updateChart(data.content());
                     }
 
                     @Override
                     public void onLoaderReset(Loader<Wrapper<ChartStatistics>> loader) {
-                        Log.d(TAG, "onLoaderReset: CHART_DATA_LOADER_ID");
+                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: CHART_DATA_LOADER_ID");
                         // Nothing to do here, as the "ChartStatistics" object was never retained.
                         // The view is most likely destroyed at this time, so no need to update it.
                     }
                 });
 
-        Log.d(TAG, "onActivityCreated -> restartLoader: STATS_TABLE_LOADER_ID");
+        if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATS_TABLE_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.STATS_TABLE_LOADER_ID, null,
                 new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
                     @Override
                     public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
-                        Log.d(TAG, "onCreateLoader: STATS_TABLE_LOADER_ID");
-                        if (isResumed()) {
-                            progressBar.setVisibility(View.VISIBLE);
-                            toggleCardStats(View.GONE);
-                        }
+                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: STATS_TABLE_LOADER_ID");
+                        setStatsTableVisibility(View.GONE);
                         return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
                                 currentPuzzle, currentPuzzleSubtype);
                     }
@@ -201,15 +201,13 @@ public class TimerGraphFragment extends Fragment {
                     @Override
                     public void onLoadFinished(Loader<Wrapper<Statistics>> loader,
                                                Wrapper<Statistics> data) {
-                        Log.d(TAG, "onLoadFinished: STATS_TABLE_LOADER_ID");
-                        if (isResumed()) {
-                            updateStatistics(data.content());
-                        }
+                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: STATS_TABLE_LOADER_ID");
+                        updateStatistics(data.content());
                     }
 
                     @Override
                     public void onLoaderReset(Loader<Wrapper<Statistics>> loader) {
-                        Log.d(TAG, "onLoaderReset: STATS_TABLE_LOADER_ID");
+                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: STATS_TABLE_LOADER_ID");
                         // Nothing to do here, as the "ChartStatistics" object was never retained.
                         // The view is most likely destroyed at this time, so no need to update it.
                     }
@@ -218,12 +216,27 @@ public class TimerGraphFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        Log.d(TAG, "onDestroyView");
+        if (DEBUG_ME) Log.d(TAG, "onDestroyView");
         super.onDestroyView();
         mUnbinder.unbind();
     }
 
-    private void toggleCardStats(final int visibility) {
+    /**
+     * Sets the visibility of the statistics table values columns. When loading starts, the columns
+     * should be hidden and a progress bar shown. When loading finishes, the columns should be
+     * populated with values and be shown and the progress bar hidden. No action will be taken if
+     * this fragment does not yet have a view, or if its view has been destroyed.
+     *
+     * @param visibility
+     *     The visibility to set on the statistics table columns. Use {@code View.GONE} or
+     *     {@code View.VISIBLE}. The opposite visibility will be applied to the progress bar.
+     */
+    private void setStatsTableVisibility(final int visibility) {
+        if (getView() == null) {
+            // Called before "onCreateView" or after "onDestroyView", so do nothing.
+            return;
+        }
+
         ButterKnife.apply(statisticsTableViews, new ButterKnife.Action<View>() {
             @Override
             public void apply(@NonNull View view, int index) {
@@ -234,17 +247,24 @@ public class TimerGraphFragment extends Fragment {
         personalBestTimes.setVisibility(visibility);
         sessionBestTimes.setVisibility(visibility);
         sessionCurrentTimes.setVisibility(visibility);
+
+        progressBar.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     /**
      * Called when the chart statistics loader has completed loading the chart data. The loader
      * listens for changes to the data and this method will be called each time the display of the
-     * chart needs to be refreshed.
+     * chart needs to be refreshed. If this fragment has no view, no update will be attempted.
      *
      * @param chartStats The chart statistics populated by the loader.
      */
     private void updateChart(ChartStatistics chartStats) {
-        Log.d(TAG, "updateChart");
+        if (DEBUG_ME) Log.d(TAG, "updateChart");
+
+        if (getView() == null) {
+            // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
+        }
 
         // Add all times line, best times line, average-of-N times lines (with highlighted
         // best AoN times) and mean limit line and identify them all using a custom legend.
@@ -257,13 +277,18 @@ public class TimerGraphFragment extends Fragment {
     /**
      * Called when the statistics loader has completed loading the statistics data. The loader
      * listens for changes to the data and this method will be called each time the display of the
-     * statistics needs to be refreshed.
+     * statistics needs to be refreshed. If this fragment has no view, no update will be attempted.
      *
      * @param stats The statistics populated by the loader.
      */
     @SuppressLint("SetTextI18n")
     private void updateStatistics(Statistics stats) {
-        Log.d(TAG, "updateStatistics");
+        if (DEBUG_ME) Log.d(TAG, "updateStatistics");
+
+        if (getView() == null) {
+            // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
+        }
 
         // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
         // values needed by "convertTimeToString".
@@ -353,7 +378,6 @@ public class TimerGraphFragment extends Fragment {
                         sessionWorstTime + "\n" +
                         sessionCount);
 
-        toggleCardStats(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+        setStatsTableVisibility(View.VISIBLE);
     }
 }

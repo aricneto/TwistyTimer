@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.fragment.TimerFragmentMain;
 
 /**
  * Wrapper class for {@code TabLayout} that intercepts {@code addTab} calls and adds an icon to
@@ -31,13 +32,13 @@ public class TimerTabLayout extends TabLayout {
     @Override
     public void addTab(@NonNull Tab tab, int position, boolean setSelected) {
         switch (position) {
-            case 0:
+            case TimerFragmentMain.TIMER_PAGE:
                 tab.setIcon(R.drawable.ic_timer_white_24dp);
                 break;
-            case 1:
+            case TimerFragmentMain.LIST_PAGE:
                 tab.setIcon(R.drawable.ic_format_list_bulleted_white_24dp);
                 break;
-            case 2:
+            case TimerFragmentMain.GRAPH_PAGE:
                 tab.setIcon(R.drawable.ic_timeline_white_24dp);
                 break;
         }

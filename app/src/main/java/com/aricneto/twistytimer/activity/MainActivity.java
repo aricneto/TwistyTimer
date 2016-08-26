@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +42,7 @@ import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
+import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -73,6 +74,15 @@ import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
     FileChooserDialog.FileCallback, ExportImportDialogInterface {
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int DEBUG_ID         = 11;
     private static final int TIMER_ID         = 1;
@@ -130,20 +140,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private Drawer          mDrawer;
     private MaterialDialog  progressDialog;
 
-    private boolean goBack = false;
     private boolean openExportImportDialog;
-
-    BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case ACTION_GO_BACK:
-                    goBack = true;
-                    onBackPressed();
-                    break;
-            }
-        }
-    };
 
     public void openDrawer() {
         mDrawer.openDrawer();
@@ -155,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         setTheme(ThemeUtils.getCurrentTheme(getBaseContext()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -180,11 +178,11 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         }
 
         handleDrawer(savedInstanceState);
-        TTIntent.registerReceiver(mReceiver, CATEGORY_APP_LEVEL_EVENTS);
     }
 
     @Override
     protected void onResume() {
+        if (DEBUG_ME) Log.d(TAG, "onResume()");
         super.onResume();
         if (openExportImportDialog) {
             ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
@@ -269,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                         .beginTransaction()
                                         .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
                                         .commit();
-
                                 }
                             });
                             break;
@@ -282,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                         .beginTransaction()
                                         .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL), "fragment_algs_oll")
                                         .commit();
-
                                 }
                             });
                             break;
@@ -295,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                         .beginTransaction()
                                         .replace(R.id.main_activity_container, AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL), "fragment_algs_pll")
                                         .commit();
-
                                 }
                             });
                             break;
@@ -325,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                         .show();
 
                                 } else {
-
                                     ActivityCompat.requestPermissions(activity,
                                         new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                                         STORAGE_PERMISSION_CODE);
@@ -383,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                         }
                                     })
                                     .show();
-
                             else
                                 Toast.makeText(activity, "Google Play not available", Toast.LENGTH_LONG).show();
 
@@ -398,7 +391,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                 }
                             });
                             break;
-
 
                         //case DEBUG_ID:
                         //    Random rand = new Random();
@@ -454,6 +446,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (DEBUG_ME) Log.d(TAG, "onActivityResult(requestCode=" + requestCode
+                + ", resultCode=" + resultCode + ", date=" + data + ")");
         if (! bp.handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SETTING) {
@@ -465,23 +459,32 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     @Override
     public void onBackPressed() {
+        if (DEBUG_ME) Log.d(TAG, "onBackPressed()");
+
         if (mDrawer.isDrawerOpen()) {
             mDrawer.closeDrawer();
-        } else if (goBack) {
-            super.onBackPressed();
-            goBack = false;
-        } else if (fragmentManager.findFragmentByTag("fragment_main") != null) { // If the main fragment is open
-            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GO_BACK); // This broadcast goes to TimerFragmentMain
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        final Fragment mainFragment = fragmentManager.findFragmentByTag("fragment_main");
+
+        if (mainFragment instanceof OnBackPressedInFragmentListener) { // => not null
+            // If the main fragment is open, let it and its "child" fragments consume the "Back"
+            // button press if necessary.
+            if (((OnBackPressedInFragmentListener) mainFragment).onBackPressedInFragment()) {
+                // Button press was consumed. Stop here.
+                return;
+            }
+        }
+
+        super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroy()");
         if (bp != null)
             bp.release();
-        TTIntent.unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
@@ -494,6 +497,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        if (DEBUG_ME) Log.d(TAG, "onSaveInstanceState()");
         outState = mDrawer.saveInstanceState(outState);
         //outState.putBoolean(OPEN_EXPORT_IMPORT_DIALOG, openExportImportDialog);
         super.onSaveInstanceState(outState);
@@ -516,7 +520,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             final ExportSolves exportSolves = new ExportSolves(this, fileDir, fileName, false);
             exportSolves.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-
     }
 
     @Override
@@ -676,7 +679,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         }
     }
 
-
     private class ImportSolves extends AsyncTask<Void, Integer, Void> {
 
         int parseErrors = 0;
@@ -738,7 +740,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             parseErrors++;
                         }
                     }
-
                 }
 
                 if (tag.equals("import_external")) {
@@ -771,7 +772,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                             parseErrors++;
                         }
                     }
-
                 }
 
                 final DatabaseHandler handler = TwistyTimer.getDBHandler();
