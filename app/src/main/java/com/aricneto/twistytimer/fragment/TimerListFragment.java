@@ -31,12 +31,14 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
+import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.Fab;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.gordonwong.materialsheetfab.DimOverlayFrameLayout;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
@@ -56,7 +58,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
     private static final String HISTORY        = "history";
 
-    private static final int TASK_LOADER_ID = 14;
     public MaterialSheetFab<Fab> materialSheetFab;
     // True if you want to search history, false if you only want to search session
     boolean         history;
@@ -81,7 +82,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
     private TimeCursorAdapter timeCursorAdapter;
-    private Context           mContext;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -112,11 +112,18 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 int time = PuzzleUtils.parseTime(input.toString());
                                 if (time != 0) {
-                                    dbHandler.addSolve(new Solve(time, currentPuzzle,
-                                        currentPuzzleSubtype, new DateTime().getMillis(), "", PuzzleUtils.NO_PENALTY, "", false));
-                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED);
-                                }
+                                    final Solve solve = new Solve(time, currentPuzzle,
+                                            currentPuzzleSubtype, new DateTime().getMillis(), "",
+                                            PuzzleUtils.NO_PENALTY, "", false);
 
+                                    dbHandler.addSolve(solve);
+                                    // The receiver might be able to use the new solve and avoid
+                                    // accessing the database.
+                                    new TTIntent.BroadcastBuilder(
+                                            CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
+                                            .solve(solve)
+                                            .broadcast();
+                                }
                             }
                         })
                         .positiveText(R.string.action_add)
@@ -127,7 +134,7 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         }
     };
 
-    // Receives broadcasts from the timer
+    // Receives broadcasts after changes have been made to time data or the selection of that data.
     private TTFragmentBroadcastReceiver mTimeDataChangedReceiver
             = new TTFragmentBroadcastReceiver(this, CATEGORY_TIME_DATA_CHANGES) {
         @Override
@@ -154,7 +161,16 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                     history = false;
                     reloadList();
                     break;
+            }
+        }
+    };
 
+    // Receives broadcasts about UI interactions that require actions to be taken.
+    private TTFragmentBroadcastReceiver mUIInteractionReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
                 case ACTION_DELETE_SELECTED_TIMES:
                     // Operation will delete times and then broadcast "ACTION_TIMES_MODIFIED".
                     timeCursorAdapter.deleteAllSelected();
@@ -193,7 +209,6 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
-        mContext = getActivity().getApplicationContext();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean clearEnabled = sharedPreferences.getBoolean("clearEnabled", false);
@@ -273,10 +288,10 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         });
 
         setupRecyclerView();
-        getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+        getLoaderManager().initLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
 
-        // Register a receiver to update if something has changed
         registerReceiver(mTimeDataChangedReceiver);
+        registerReceiver(mUIInteractionReceiver);
 
         return rootView;
     }
@@ -292,16 +307,17 @@ public class TimerListFragment extends BaseFragment implements LoaderManager.Loa
         super.onDetach();
         // To fix memory leaks
         unregisterReceiver(mTimeDataChangedReceiver);
-        getLoaderManager().destroyLoader(TASK_LOADER_ID);
+        unregisterReceiver(mUIInteractionReceiver);
+        getLoaderManager().destroyLoader(MainActivity.TIME_LIST_LOADER_ID);
     }
 
     public void reloadList() {
-        getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+        getLoaderManager().restartLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new TimeTaskLoader(mContext, currentPuzzle, currentPuzzleSubtype, history);
+        return new TimeTaskLoader(currentPuzzle, currentPuzzleSubtype, history);
     }
 
     @Override

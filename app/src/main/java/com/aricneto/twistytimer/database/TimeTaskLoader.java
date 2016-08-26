@@ -1,6 +1,5 @@
 package com.aricneto.twistytimer.database;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
 
@@ -13,8 +12,8 @@ public class TimeTaskLoader extends CursorLoader {
     String puzzleSubtype;
     boolean history = false;
 
-    public TimeTaskLoader(Context context, String puzzleType, String puzzleSubtype, boolean history) {
-        super(context);
+    public TimeTaskLoader(String puzzleType, String puzzleSubtype, boolean history) {
+        super(TwistyTimer.getAppContext());
         this.puzzleType = puzzleType;
         this.puzzleSubtype = puzzleSubtype;
         this.history = history;
@@ -36,10 +35,5 @@ public class TimeTaskLoader extends CursorLoader {
                             + DatabaseHandler.KEY_SUBTYPE + "=?" + " AND history = 0",
                     new String[] { puzzleType, puzzleSubtype, }, null, null,
                     DatabaseHandler.KEY_DATE + " DESC", null);
-    }
-
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
     }
 }

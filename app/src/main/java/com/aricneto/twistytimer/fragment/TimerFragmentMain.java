@@ -20,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -126,7 +127,7 @@ public class TimerFragmentMain extends BaseFragment {
             switch (item.getItemId()) {
                 case R.id.delete:
                     // Receiver will delete times and then broadcast "ACTION_TIMES_MODIFIED".
-                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_DELETE_SELECTED_TIMES);
+                    broadcast(CATEGORY_UI_INTERACTIONS, ACTION_DELETE_SELECTED_TIMES);
                     mode.finish();
                     return true;
                 default:
@@ -198,7 +199,7 @@ public class TimerFragmentMain extends BaseFragment {
                                         (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                     params.height = originalContentHeight;
                                     viewPager.setLayoutParams(params);
-                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TOOLBAR_RESTORED);
+                                    broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED);
                                 }
                             }
                         }
@@ -752,6 +753,14 @@ public class TimerFragmentMain extends BaseFragment {
 
         @Override
         protected Fragment createItem(int position) {
+            Log.d("TIMER MAIN FRAG", "Creating item for position " + position);
+            if (position == 2) {
+                try {
+                    throw new Throwable();
+                } catch (Throwable t) {
+                    Log.d("TIMER MAIN FRAG", Log.getStackTraceString(t));
+                }
+            }
             switch (position) {
                 case 0:
                     currentTimerFragmentInstance =

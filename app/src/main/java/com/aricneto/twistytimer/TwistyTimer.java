@@ -42,7 +42,7 @@ public class TwistyTimer extends Application {
         // be cached (by "SQLiteOpenHelper", which is the base class of "DatabaseHandler"). Those
         // two methods should really only be called from a background task, though, as opening the
         // database (particularly for the first time) can take some time.
-        sDBHandler = new DatabaseHandler(getApplicationContext());
+        sDBHandler = new DatabaseHandler();
     }
 
     /**
@@ -77,10 +77,10 @@ public class TwistyTimer extends Application {
 
     /**
      * Gets the application context. This is a convenience for cases where a full activity context
-     * is not required. A full activity context is required to access theme attributes, but for
-     * other uses, such as accessing string resources, databases, broadcast receivers, the
-     * application context is sufficient. Using the application context also avoid memory leaks
-     * that can occur if an activity context is used inappropriately.
+     * is not required. A full activity context is required to access theme attributes or inflate
+     * layouts, but for other uses, such as accessing string resources, databases, broadcast
+     * receivers, the application context is sufficient. Using the application context also avoid
+     * memory leaks that can occur if an activity context is used inappropriately.
      *
      * @return The application context.
      */

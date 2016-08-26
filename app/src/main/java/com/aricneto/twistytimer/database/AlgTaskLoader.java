@@ -1,6 +1,5 @@
 package com.aricneto.twistytimer.database;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
 
@@ -10,8 +9,8 @@ public class AlgTaskLoader extends CursorLoader {
 
     String subset;
 
-    public AlgTaskLoader(Context context, String subset) {
-        super(context);
+    public AlgTaskLoader(String subset) {
+        super(TwistyTimer.getAppContext());
         this.subset = subset;
     }
 
@@ -21,10 +20,5 @@ public class AlgTaskLoader extends CursorLoader {
                 DatabaseHandler.TABLE_ALGS, null,
                 DatabaseHandler.KEY_SUBSET + "=?",
                 new String[] { subset }, null, null, null, null);
-    }
-
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
     }
 }

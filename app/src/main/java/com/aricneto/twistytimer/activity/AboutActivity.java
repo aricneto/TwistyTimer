@@ -1,6 +1,5 @@
 package com.aricneto.twistytimer.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -32,9 +31,6 @@ public class AboutActivity extends AppCompatActivity {
     @BindView(R.id.appVersion)        TextView appVersion;
     @BindView(R.id.translatorsButton) TextView translatorsButton;
 
-    Activity activity;
-
-
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -45,7 +41,7 @@ public class AboutActivity extends AppCompatActivity {
                     startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_title)));
                     break;
                 case R.id.licenseButton:
-                    new LicensesDialog.Builder(activity)
+                    new LicensesDialog.Builder(AboutActivity.this)
                         .setNotices(R.raw.notices_app)
                         .build()
                         .show();
@@ -58,14 +54,14 @@ public class AboutActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.testersButton:
-                    new MaterialDialog.Builder(activity)
+                    new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.testers)
                         .content(R.string.testers_content)
                         .positiveText(R.string.action_ok)
                         .show();
                     break;
                 case R.id.translatorsButton:
-                    new MaterialDialog.Builder(activity)
+                    new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.translators)
                         .content(R.string.translators_content)
                         .positiveText(R.string.action_ok)
@@ -95,8 +91,6 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        activity = this;
-
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             appVersion.setText(versionName);
@@ -110,6 +104,5 @@ public class AboutActivity extends AppCompatActivity {
         testersButton.setOnClickListener(clickListener);
         sourceButton.setOnClickListener(clickListener);
         translatorsButton.setOnClickListener(clickListener);
-
     }
 }

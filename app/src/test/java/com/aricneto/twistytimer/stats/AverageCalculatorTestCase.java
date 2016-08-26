@@ -581,8 +581,22 @@ public class AverageCalculatorTestCase {
         assertEquals(800, ac.getWorstTime());
         assertEquals(2600, ac.getTotalTime());
         assertEquals(371, ac.getMeanTime()); // 2600 / 7 non-DNF solves.
-    }
 
+        // Test the "reset()" method, too.
+        ac.reset();
+
+        assertEquals(5, ac.getN()); // Should not be changed by a reset.
+        assertEquals(0, ac.getNumSolves());
+        assertEquals(0, ac.getNumDNFSolves());
+
+        assertEquals(UNKNOWN, ac.getCurrentAverage());
+        assertEquals(UNKNOWN, ac.getBestAverage());
+
+        assertEquals(UNKNOWN, ac.getBestTime());
+        assertEquals(UNKNOWN, ac.getWorstTime());
+        assertEquals(UNKNOWN, ac.getTotalTime());
+        assertEquals(UNKNOWN, ac.getMeanTime());
+    }
 
     /**
      * Tests the calculation of the average of five. For an average of five, a truncated mean

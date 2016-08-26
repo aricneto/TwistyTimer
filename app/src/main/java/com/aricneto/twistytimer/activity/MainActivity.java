@@ -91,7 +91,30 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     private static final String OPEN_EXPORT_IMPORT_DIALOG = "open_export_import_dialog";
 
-    final MainActivity mainActivity = this;
+    // NOTE: Loader IDs used by fragments need to be unique within the context of an activity that
+    // creates those fragments. Therefore, it is safer to define all of the IDs in the same place.
+
+    /**
+     * The loader ID for the loader that loads data presented in the statistics table on the timer
+     * graph fragment.
+     */
+    public static final int STATS_TABLE_LOADER_ID = 101;
+
+    /**
+     * The loader ID for the loader that loads chart data presented in on the timer graph fragment.
+     */
+    public static final int CHART_DATA_LOADER_ID = 102;
+
+    /**
+     * The loader ID for the loader that loads the list of solve times for the timer list fragment.
+     */
+    public static final int TIME_LIST_LOADER_ID = 103;
+
+    /**
+     * The loader ID for the loader that loads the list of algorithms for the algorithm list
+     * fragment.
+     */
+    public static final int ALG_LIST_LOADER_ID = 104;
 
     BillingProcessor bp;
 
@@ -165,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
         super.onResume();
         if (openExportImportDialog) {
             ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
-            exportImportDialog.setDialogInterface(mainActivity);
+            exportImportDialog.setDialogInterface(this);
             exportImportDialog.show(fragmentManager, "exportImport_dialog");
             openExportImportDialog = false;
         }
@@ -310,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                             } else {
                                 ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
-                                exportImportDialog.setDialogInterface(mainActivity);
+                                exportImportDialog.setDialogInterface(MainActivity.this);
                                 exportImportDialog.show(fragmentManager, "exportImport_dialog");
                             }
                             break;
@@ -435,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
             super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SETTING) {
             finish();
+            Log.d("MAIN ACTIVITY", "Restarting for some reason.... ");
             startActivity(new Intent(this, MainActivity.class));
         }
     }

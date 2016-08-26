@@ -17,8 +17,8 @@ public class AppRater {
     private final static int DAYS_UNTIL_PROMPT     = 7;
     private final static int LAUNCHES_UNTIL_PROMPT = 10;
 
-    public static void app_launched(Context mContext) {
-        SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);
+    public static void app_launched(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("apprater", 0);
         if (prefs.getBoolean("dontshowagain", false)) {
             return;
         }
@@ -40,15 +40,15 @@ public class AppRater {
         if (launch_count >= LAUNCHES_UNTIL_PROMPT) {
             if (System.currentTimeMillis() >= date_firstLaunch +
                     (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
-                showRateDialog(mContext, editor);
+                showRateDialog(context, editor);
             }
         }
 
         editor.apply();
     }
 
-    public static void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
-        new MaterialDialog.Builder(mContext)
+    public static void showRateDialog(final Context context, final SharedPreferences.Editor editor) {
+        new MaterialDialog.Builder(context)
                 .title(R.string.rate_dialog_title)
                 .content(R.string.rate_dialog_content)
                 .positiveText(R.string.rate_dialog_positive)
@@ -56,7 +56,7 @@ public class AppRater {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
                         if (editor != null) {
                             editor.putBoolean("dontshowagain", true);
                             editor.commit();

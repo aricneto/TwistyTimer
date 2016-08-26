@@ -25,6 +25,18 @@ android {
     }
 }
 
+// Required for Butterknife support.
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+apply plugin: 'com.neenbedankt.android-apt'
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':TNoodle')
@@ -36,8 +48,9 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:percent:24.1.1'
-    // Butterknife
+    // Butterknife ("apt" dependency is defined in root "build.gradle" script).
     compile 'com.jakewharton:butterknife:8.2.1'
+    apt     'com.jakewharton:butterknife-compiler:8.2.1'
     // Observable scrollview
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     // Dialogs

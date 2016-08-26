@@ -136,6 +136,19 @@ public class Statistics {
     }
 
     /**
+     * Resets all statistics and averages that have been collected previously.
+     */
+    public void reset() {
+        for (final AverageCalculator allTimeAC : mAllTimeACs.values()) {
+            allTimeAC.reset();
+        }
+
+        for (final AverageCalculator sessionAC : mSessionACs.values()) {
+            sessionAC.reset();
+        }
+    }
+
+    /**
      * Indicates if all of the solve time averages required are across the current session only. If
      * only times for the current session are required, a more efficient approach may be taken to
      * load the saved solve times.

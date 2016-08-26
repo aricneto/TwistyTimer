@@ -1,7 +1,6 @@
 package com.aricneto.twistytimer.database;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -10,12 +9,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.stats.ChartStatistics;
-import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.stats.Statistics;
+import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +82,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_PROGRESS + " INTEGER"
             + ")";
 
-    private Context mContext;
-
-
-    public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        // App context is less likely to cause memory leaks. Only used for resources.
-        mContext = context != null ? context.getApplicationContext() : null;
+    public DatabaseHandler() {
+        super(TwistyTimer.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // Creating Tables
@@ -109,7 +104,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             case 6:
                 db.execSQL("ALTER TABLE times ADD COLUMN " + KEY_HISTORY + " BOOLEAN DEFAULT 0");
             case 8:
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                SharedPreferences sharedPreferences
+                        = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("timerTextSize", sharedPreferences.getInt("timerTextSize", 10) * 10);
                 editor.apply();

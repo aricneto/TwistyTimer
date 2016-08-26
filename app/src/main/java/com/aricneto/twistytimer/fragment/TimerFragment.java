@@ -686,10 +686,12 @@ public class TimerFragment extends BaseFragment {
         }
         currentId = TwistyTimer.getDBHandler().addSolve(currentSolve);
         currentSolve.setId(currentId);
-
-        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED);
-
         currentPenalty = PuzzleUtils.NO_PENALTY;
+
+        // The receiver might be able to use the new solve and avoid accessing the database.
+        new BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
+                .solve(currentSolve)
+                .broadcast();
     }
 
     private void generateScrambleImage() {

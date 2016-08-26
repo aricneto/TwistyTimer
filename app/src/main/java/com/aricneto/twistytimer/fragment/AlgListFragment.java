@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
@@ -32,7 +33,6 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
 public class AlgListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int    TASK_LOADER_ID = 14;
     private static final String KEY_SUBSET     = "subset";
 
     private Unbinder mUnbinder;
@@ -40,13 +40,9 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
 
     private String currentSubset;
 
-
     private AlgCursorAdapter algCursorAdapter;
-    private AlgTaskLoader    algTaskLoader;
 
     @BindView(R.id.list) RecyclerView recyclerView;
-
-    private Context mContext;
 
     // Receives broadcasts about changes to the algorithm data.
     private TTFragmentBroadcastReceiver mAlgDataChangedReceiver
@@ -55,7 +51,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_ALGS_MODIFIED:
-                    resetList();
+                    reloadList();
                     break;
             }
         }
@@ -87,7 +83,6 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alg_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
-        mContext = getActivity().getApplicationContext();
 
         toolbar.setTitle(currentSubset);
 
@@ -95,9 +90,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
 
         setupRecyclerView();
 
-        getTaskLoader();
-
-        getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+        getLoaderManager().initLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
 
         // Register a receiver to update if something has changed
         registerReceiver(mAlgDataChangedReceiver);
@@ -116,25 +109,16 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         super.onDestroy();
         // To fix memory leaks
         unregisterReceiver(mAlgDataChangedReceiver);
-        getLoaderManager().destroyLoader(TASK_LOADER_ID);
+        getLoaderManager().destroyLoader(MainActivity.ALG_LIST_LOADER_ID);
     }
 
-    public void resetList() {
-        getTaskLoader();
-        getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
-    }
-
-    /**
-     * This class gets the class loader appropriate to
-     * the params set on newInstance
-     */
-    private void getTaskLoader() {
-        algTaskLoader = new AlgTaskLoader(mContext, currentSubset);
+    public void reloadList() {
+        getLoaderManager().restartLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return algTaskLoader;
+        return new AlgTaskLoader(currentSubset);
     }
 
     @Override
@@ -166,6 +150,5 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
             recyclerView.setLayoutManager(gridLayoutManagerHorizontal);
 
         recyclerView.setAdapter(algCursorAdapter);
-
     }
 }

@@ -2,6 +2,8 @@ package com.aricneto.twistytimer.stats;
 
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
+import java.util.Arrays;
+
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated
  * as each new solve is added. If the number of solve times is five or greater, the best and worst
@@ -103,27 +105,27 @@ public final class AverageCalculator {
      * results is given by {@code Math.min(mN, mNumSolves) - mNumCurrentDNFs}. A value of
      * {@link #UNKNOWN} indicates that there are no non-DNF results recorded.
      */
-    private long mCurrentSum = UNKNOWN;
+    private long mCurrentSum;
 
     /**
      * The sum of all non-DNF results ever recorded in {@code #mTimes}. The number of such results
      * is given by {@code mNumSolves - mNumAllTimeDNFs}. A value of {@link #UNKNOWN} indicates
      * that there are no non-DNF results recorded.
      */
-    private long mAllTimeSum = UNKNOWN;
+    private long mAllTimeSum;
 
     /**
      * The best time currently recorded in {@code #mTimes}. A value of {@link #UNKNOWN} indicates
      * that there is no non-DNF result recorded.
      */
-    private long mCurrentBestTime = UNKNOWN;
+    private long mCurrentBestTime;
 
     /**
      * The worst time (not a DNF) currently recorded in {@code #mTimes}. If any DNF is present, a
      * DNF will be taken instead as the worst time, if the calculation needs to exclude one. A
      * value of {@link #UNKNOWN} indicates that there is no non-DNF result recorded.
      */
-    private long mCurrentWorstTime = UNKNOWN;
+    private long mCurrentWorstTime;
 
     /**
      * The current average value calculated from all times stored in {@link #mTimes}. A value of
@@ -131,21 +133,21 @@ public final class AverageCalculator {
      * average, or that the calculation has not been performed. A value of {@link #DNF} indicates
      * that too many DNF results are present and the average is disqualified.
      */
-    private long mCurrentAverage = UNKNOWN;
+    private long mCurrentAverage;
 
     /**
      * The best time ever added to this calculator. This time may not currently be recorded in
      * {@code #mTimes}, as it may have been overwritten. A value of {@link #UNKNOWN} indicates that
      * there is no non-DNF result recorded.
      */
-    private long mAllTimeBestTime = UNKNOWN;
+    private long mAllTimeBestTime;
 
     /**
      * The worst time (not a DNF) ever added to this calculator. This time may not currently be
      * recorded in {@code #mTimes}, as it may have been overwritten. A value of {@link #UNKNOWN}
      * indicates that there is no non-DNF result recorded.
      */
-    private long mAllTimeWorstTime = UNKNOWN;
+    private long mAllTimeWorstTime;
 
     /**
      * The best average value calculated from all times added to date. A value of {@link #UNKNOWN}
@@ -153,7 +155,7 @@ public final class AverageCalculator {
      * value of {@link #DNF} indicates that averages could be calculated, but that every average
      * was disqualified as a DNF average.
      */
-    private long mAllTimeBestAverage = UNKNOWN;
+    private long mAllTimeBestAverage;
 
     /**
      * Creates a new calculator for the "average of <i>n</i>" solve times.
@@ -177,6 +179,30 @@ public final class AverageCalculator {
         mN = n;
         mTimes = new long[n];
         mDisqualifyDNFs = disqualifyDNFs;
+
+        // As "reset()" needs to be supported to ensure a sane state can be guaranteed before
+        // populating statistics from the database, it makes sense to use it to initialise the
+        // fields in one place.
+        reset();
+    }
+
+    /**
+     * Resets all statistics and averages that have been collected previously.
+     */
+    public void reset() {
+        Arrays.fill(mTimes, 0L);
+        mNext = 0;
+        mNumSolves = 0;
+        mNumCurrentDNFs = 0;
+        mNumAllTimeDNFs = 0;
+
+        mCurrentSum = UNKNOWN;
+        mAllTimeSum = UNKNOWN;
+        mCurrentBestTime = UNKNOWN;
+        mCurrentWorstTime = UNKNOWN;
+        mCurrentAverage = UNKNOWN;
+        mAllTimeBestTime = UNKNOWN;
+        mAllTimeBestAverage = UNKNOWN;
     }
 
     /**

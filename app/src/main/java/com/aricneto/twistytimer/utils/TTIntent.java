@@ -4,10 +4,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
+import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistytimer.TwistyTimer;
+import com.aricneto.twistytimer.items.Solve;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The actions for the broadcast intents that notify listeners of changes to the data or to the
@@ -31,6 +41,11 @@ public final class TTIntent {
      * The name prefix for all actions.
      */
     private static final String ACTION_PREFIX = BASE_PREFIX + "action.";
+
+    /**
+     * The name prefix for all extras.
+     */
+    private static final String EXTRA_PREFIX = BASE_PREFIX + "extra.";
 
     /**
      * The category for intents that communicate application-level events.
@@ -152,6 +167,65 @@ public final class TTIntent {
     public static final String ACTION_ALGS_MODIFIED = ACTION_PREFIX + "ALGS_MODIFIED";
 
     /**
+     * The name of an intent extra that can hold the name of the puzzle type.
+     */
+    public static final String EXTRA_PUZZLE_TYPE = EXTRA_PREFIX + "PUZZLE_TYPE";
+
+    /**
+     * The name of an intent extra that can hold the name of the puzzle subtype.
+     */
+    public static final String EXTRA_PUZZLE_SUBTYPE = EXTRA_PREFIX + "PUZZLE_SUBTYPE";
+
+    /**
+     * The name of an intent extra that can be used to record a {@link Solve}.
+     */
+    public static final String EXTRA_SOLVE = EXTRA_PREFIX + "SOLVE";
+
+    /**
+     * The actions that are allowed under each category. The category name is the key and the
+     * corresponding entry is a collection of action names that are supported for that category.
+     * An action may be supported by more than one category.
+     */
+    // NOTE: To match an "Intent", it is not sufficient for an "IntentFilter" to simply match all
+    // categories defined on the intent, it must also match the action on the "Intent" (unless the
+    // intent action is null, in which case it is always matched). For the purposes of receiving
+    // local broadcast intents in this app, it is no harm to ensure that intents are not broadcast
+    // with the wrong category, so requiring each category to have a defined list of supported
+    // actions (for use when creating the "IntentFilter") makes things clearer. It also allows some
+    // defensive checks in the "broadcast" methods that might highlight bugs in the code.
+    private static final Map<String, String[]> ACTIONS_SUPPORTED_BY_CATEGORY
+            = new HashMap<String, String[]>() {{
+        put(CATEGORY_TIME_DATA_CHANGES, new String[] {
+                ACTION_TIME_ADDED,
+                ACTION_TIMES_MODIFIED,
+                ACTION_TIMES_MOVED_TO_HISTORY,
+                ACTION_HISTORY_TIMES_SHOWN,
+                ACTION_SESSION_TIMES_SHOWN,
+        });
+
+        put(CATEGORY_ALG_DATA_CHANGES, new String[] {
+                ACTION_ALGS_MODIFIED,
+        });
+
+        put(CATEGORY_UI_INTERACTIONS, new String[] {
+                ACTION_TIME_SELECTED,
+                ACTION_TIME_UNSELECTED,
+                ACTION_DELETE_SELECTED_TIMES,
+                ACTION_SELECTION_MODE_ON,
+                ACTION_SELECTION_MODE_OFF,
+                ACTION_TIMER_STARTED,
+                ACTION_TIMER_STOPPED,
+                ACTION_TOOLBAR_RESTORED,
+                ACTION_GO_BACK,
+                ACTION_SCROLLED_PAGE,
+        });
+
+        put(CATEGORY_APP_LEVEL_EVENTS, new String[] {
+                ACTION_GO_BACK,
+        });
+    }};
+
+    /**
      * Private constructor to prevent instantiation of this class containing only constants and
      * utility methods.
      */
@@ -214,6 +288,8 @@ public final class TTIntent {
         @Override
         public final void onReceive(Context context, Intent intent) {
             if (mFragment.isAdded()) {
+                Log.d("TTIntent", mFragment.getClass().getSimpleName()
+                        + ": onReceiveWhileAdded: " + intent);
                 onReceiveWhileAdded(context, intent);
             }
         }
@@ -229,42 +305,61 @@ public final class TTIntent {
     }
 
     /**
-     * Broadcasts an intent for the given category and action.
+     * Broadcasts an intent for the given category and action. To add more details to the intent
+     * (via intent extras), use a {@link BroadcastBuilder}.
      *
      * @param category The category of the action.
      * @param action   The action.
      */
     public static void broadcast(String category, String action) {
-        final Intent intent = new Intent(action);
-
-        intent.addCategory(category);
-        LocalBroadcastManager.getInstance(TwistyTimer.getAppContext()).sendBroadcast(intent);
+        new BroadcastBuilder(category, action).broadcast();
     }
 
     /**
      * Registers a broadcast receiver. The receiver will only be notified of intents that require
-     * the category given, or intents that require no category. (The latter is not a use-case that
-     * is expected in this application.) If the receiver is used by a fragment, create an instance
-     * of {@link TTFragmentBroadcastReceiver} and register it with the
-     * {@link #registerReceiver(TTFragmentBroadcastReceiver)} method instead, as it will be easier
-     * to maintain.
+     * the category given and only for the actions that are supported for that category. If the
+     * receiver is used by a fragment, create an instance of {@link TTFragmentBroadcastReceiver}
+     * and register it with the {@link #registerReceiver(TTFragmentBroadcastReceiver)} method
+     * instead, as it will be easier to maintain.
      *
-     * @param receiver The fragment broadcast receiver to be registered.
+     * @param receiver
+     *     The broadcast receiver to be registered.
+     * @param category
+     *     The category for the actions to be received. Must not be {@code null} and must be a
+     *     supported category.
+     *
+     * @throws IllegalArgumentException
+     *     If the category is {@code null}, or is not one of the supported categories.
      */
     public static void registerReceiver(BroadcastReceiver receiver, String category) {
+        final String[] actions = ACTIONS_SUPPORTED_BY_CATEGORY.get(category);
+
+        if (category == null || actions.length == 0) {
+            throw new IllegalArgumentException("Category is not supported: " + category);
+        }
+
         final IntentFilter filter = new IntentFilter();
 
         filter.addCategory(category);
+
+        for (String action : actions) {
+            // IntentFilter will only match Intents with one of these actions.
+            filter.addAction(action);
+        }
+
         LocalBroadcastManager.getInstance(TwistyTimer.getAppContext())
                 .registerReceiver(receiver, filter);
     }
 
     /**
      * Registers a fragment broadcast receiver. The receiver will only be notified of intents that
-     * require the category defined for the {@code TTFragmentBroadcastReceiver}, or intents that
-     * require no category. (The latter is not a use-case that is expected in this application.)
+     * require the category defined for the {@code TTFragmentBroadcastReceiver} and only for the
+     * actions supported by that category.
      *
      * @param receiver The fragment broadcast receiver to be registered.
+     *
+     * @throws IllegalArgumentException
+     *     If the receiver does not define the name of a supported category.
      */
     public static void registerReceiver(TTFragmentBroadcastReceiver receiver) {
         registerReceiver(receiver, receiver.getCategory());
@@ -277,5 +372,132 @@ public final class TTIntent {
      */
     public static void unregisterReceiver(BroadcastReceiver receiver) {
         LocalBroadcastManager.getInstance(TwistyTimer.getAppContext()).unregisterReceiver(receiver);
+    }
+
+    /**
+     * Gets the name of the puzzle type from an intent extra.
+     *
+     * @param intent The intent from which to get the puzzle type.
+     * @return The puzzle type, or {@code null} if the intent does not specify a puzzle type.
+     */
+    public static String getPuzzleType(Intent intent) {
+        return intent.getStringExtra(EXTRA_PUZZLE_TYPE);
+    }
+
+    /**
+     * Gets the name of the puzzle subtype from an intent extra.
+     *
+     * @param intent The intent from which to get the puzzle subtype.
+     * @return The puzzle subtype, or {@code null} if the intent does not specify a puzzle subtype.
+     */
+    public static String getPuzzleSubtype(Intent intent) {
+        return intent.getStringExtra(EXTRA_PUZZLE_SUBTYPE);
+    }
+
+    /**
+     * Gets the solve specified in an intent extra.
+     *
+     * @param intent The intent from which to get the solve.
+     * @return The solve, or {@code null} if the intent does not specify a solve.
+     */
+    public static Solve getSolve(Intent intent) {
+        final Parcelable solve = intent.getParcelableExtra(EXTRA_SOLVE);
+
+        return solve == null ? null : (Solve) solve;
+    }
+
+    /**
+     * A builder for local broadcasts.
+     *
+     * @author damo
+     */
+    public static class BroadcastBuilder {
+        /**
+         * The intent that will be broadcast when building is complete.
+         */
+        private Intent mIntent;
+
+        /**
+         * Creates a new broadcast builder for the given intent category and action.
+         *
+         * @param category The category of the action. Must not be {@code null}.
+         * @param action   The action. Must not be {@code null}.
+         */
+        public BroadcastBuilder(String category, String action) {
+            mIntent = new Intent(action);
+            mIntent.addCategory(category); // Will throw NPE if category is null, but that is OK.
+        }
+
+        /**
+         * Broadcasts the intent configured by this builder.
+         *
+         * @throws IllegalStateException
+         *     If the category specified on the intent does not support the defined action.
+         */
+        public void broadcast() {
+            // For sanity, check that the category and action on the intent are supported. This
+            // will unearth bugs in the code where actions have the wrong category and will not
+            // end up where they are expected. Only do this if this is a debug build, as it would
+            // be a waste of time in a release build.
+            if (BuildConfig.DEBUG) {
+                final String action = mIntent.getAction();
+
+                if (action == null) {
+                    throw new IllegalStateException("An intent action is expected.");
+                }
+                if (mIntent.getCategories().size() != 1) {
+                    throw new IllegalStateException("Exactly one intent category is expected.");
+                }
+
+                final String category = mIntent.getCategories().iterator().next(); // First entry.
+                final String[] actions = ACTIONS_SUPPORTED_BY_CATEGORY.get(category);
+
+                if (!Arrays.asList(actions).contains(mIntent.getAction())) {
+                    throw new IllegalStateException(
+                            "Action '" + action + "' not allowed for category '" + category + "'.");
+                }
+            }
+
+            LocalBroadcastManager.getInstance(TwistyTimer.getAppContext()).sendBroadcast(mIntent);
+        }
+
+        /**
+         * Sets extras that identify the puzzle type and subtype related to the action of the
+         * intent that will be broadcast. The receiver can retrieve the type and subtype by calling
+         * {@link TTIntent#getPuzzleType(Intent)} and {@link TTIntent#getPuzzleSubtype(Intent)}.
+         *
+         * @param puzzleType    The name of the type of puzzle.
+         * @param puzzleSubtype The name of the subtype of puzzle.
+         *
+         * @return {@code this} broadcast builder, allowing method calls to be chained.
+         */
+        public BroadcastBuilder puzzle(String puzzleType, String puzzleSubtype) {
+            if (puzzleType != null) {
+                mIntent.putExtra(EXTRA_PUZZLE_TYPE, puzzleType);
+            }
+            if (puzzleSubtype != null) {
+                mIntent.putExtra(EXTRA_PUZZLE_SUBTYPE, puzzleSubtype);
+            }
+
+            return this;
+        }
+
+        /**
+         * Sets an optional extra that identifies a solve time related to the action of the intent
+         * that will be broadcast. The receiver can call {@link TTIntent#getSolve(Intent)} to
+         * retrieve the solve from the intent.
+         *
+         * @param solve The solve to be added to the broadcast intent.
+         *
+         * @return {@code this} broadcast builder, allowing method calls to be chained.
+         */
+        public BroadcastBuilder solve(Solve solve) {
+            if (solve != null) {
+                // "Solve" implements "Parcelable" to allow it to be passed in an intent extra.
+                mIntent.putExtra(EXTRA_SOLVE, solve);
+            }
+
+            return this;
+        }
     }
 }

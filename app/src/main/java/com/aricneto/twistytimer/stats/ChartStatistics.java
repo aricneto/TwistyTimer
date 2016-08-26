@@ -105,18 +105,12 @@ public class ChartStatistics {
     private final Statistics mStatistics;
 
     /**
-     * The chart data for all solves and for each "average-of-N". The first data set (index zero)
-     * is the data set for all solves. The other data sets correspond to the data sets for each
-     * average-of-N, starting at index one and in the order of the entries in the
-     * {@link #mNsOfAverages} array (i.e., the entry at index zero of that array is the value of
-     * "N" for the average values in the data set at index one in the chart data).
+     * The styles that will be applied to the data sets of the chart.
      */
-    // At present, a line chart is shown, but it could be changed to show a mix of different types
-    // of charts in the future, so the field is "mChartData", not "mLineData".
-    private final LineData mChartData = new LineData();
+    private final ChartStyle mChartStyle;
 
     /**
-     * The values of "N" for all "average-of-N" data sets to be charted. In the
+     * The values of "N" for all "average-of-N" data sets to be charted.
      */
     private final int[] mNsOfAverages;
 
@@ -127,6 +121,17 @@ public class ChartStatistics {
     private final boolean mIsForCurrentSessionOnly;
 
     /**
+     * The chart data for all solves and for each "average-of-N". The first data set (index zero)
+     * is the data set for all solves. The other data sets correspond to the data sets for each
+     * average-of-N, starting at index one and in the order of the entries in the
+     * {@link #mNsOfAverages} array (i.e., the entry at index zero of that array is the value of
+     * "N" for the average values in the data set at index one in the chart data).
+     */
+    // At present, a line chart is shown, but it could be changed to show a mix of different types
+    // of charts in the future, so the field is "mChartData", not "mLineData".
+    private LineData mChartData;
+
+    /**
      * The current X-index for the solve time added to the chart.
      */
     private int mXIndex;
@@ -134,7 +139,7 @@ public class ChartStatistics {
     /**
      * The current best solve time recorded so far (in milliseconds).
      */
-    private long mBestTime = Long.MAX_VALUE;
+    private long mBestTime;
 
     /**
      * The "pre-compiled" date formatter for the X-axis labels.
@@ -203,18 +208,9 @@ public class ChartStatistics {
         }
 
         mStatistics = statistics;
+        mChartStyle = chartStyle;
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
-
-        // The order in which the data sets are added is important to ensure that "DS_ALL", etc.
-        // remain meaningful.
-        addMainDataSets(chartStyle.getAllTimesLabel(), chartStyle.getAllTimesColor(),
-                chartStyle.getBestTimesLabel(), chartStyle.getBestTimesColor());
-
-        for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
-            addAoNDataSets(chartStyle.getAverageOfNLabelPrefix() + (nIndex + 1),
-                    chartStyle.getExtraColor(nIndex));
-        }
 
         // Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
         // the label and color of the line now (while a "Context" is available) and create the line
@@ -228,6 +224,34 @@ public class ChartStatistics {
         // as in "values-en-rUS/formats.xml". This also "pre-compiles" the pattern, making the
         // formatting operation faster later.
         mXValueFormatter = DateTimeFormat.forPattern(chartStyle.getDateFormatSpec());
+
+        // Initialise and reset everything to a sane, empty state.
+        reset();
+    }
+
+    /**
+     * Resets all chart data and statistics to their initial, empty state.
+     */
+    public void reset() {
+        mStatistics.reset();
+        mXIndex = 0;
+        mBestTime = Long.MAX_VALUE;
+        mPrevEntryDay = null;
+        mPrevEntryXValue = null;
+
+        // There does not seem to be an easy way to clear existing Y-values *and* X-values from
+        // each data set in the chart data. Just create a new one instead.
+        mChartData = new LineData();
+
+        // The order in which the data sets are added is important to ensure that "DS_ALL", etc.
+        // remain meaningful.
+        addMainDataSets(mChartData, mChartStyle.getAllTimesLabel(), mChartStyle.getAllTimesColor(),
+                mChartStyle.getBestTimesLabel(), mChartStyle.getBestTimesColor());
+
+        for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
+            addAoNDataSets(mChartData, mChartStyle.getAverageOfNLabelPrefix() + (nIndex + 1),
+                    mChartStyle.getExtraColor(nIndex));
+        }
     }
 
     /**
@@ -236,14 +260,16 @@ public class ChartStatistics {
      * main line of all time using circles lined with a dashed line. This will appear to connect
      * the lowest troughs along the main line of all times.
      *
+     * @param chartData The chart data to which to add the new data sets.
      * @param allLabel  The label of the all-times line.
      * @param allColor  The color of the all-times line.
      * @param bestLabel The label of the best-times line.
      * @param bestColor The color of the best-times line.
      */
-    private void addMainDataSets(String allLabel, int allColor, String bestLabel, int bestColor) {
+    private void addMainDataSets(LineData chartData, String allLabel, int allColor,
+                                 String bestLabel, int bestColor) {
         // Main data set for all solve times.
-        mChartData.addDataSet(createDataSet(allLabel, allColor));
+        chartData.addDataSet(createDataSet(allLabel, allColor));
 
         // Data set to show the progression of best times along the main line of all times.
         final LineDataSet bestDataSet = createDataSet(bestLabel, bestColor);
@@ -259,7 +285,7 @@ public class ChartStatistics {
         bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
         bestDataSet.setValueFormatter(new TimeChartValueFormatter());
 
-        mChartData.addDataSet(bestDataSet);
+        chartData.addDataSet(bestDataSet);
     }
 
     /**
@@ -268,12 +294,13 @@ public class ChartStatistics {
      * progression; only one time is shown and it superimposed on its main AoN line, rendered in
      * the same color as a circle and with the value drawn on the chart.
      *
-     * @param label The label of the AoN line and best AoN time marker.
-     * @param color The color of the AoN line and best AoN time marker.
+     * @param chartData The chart data to which to add the new data sets.
+     * @param label     The label of the AoN line and best AoN time marker.
+     * @param color     The color of the AoN line and best AoN time marker.
      */
-    private void addAoNDataSets(String label, int color) {
+    private void addAoNDataSets(LineData chartData, String label, int color) {
         // Main AoN data set for all AoN times for one value of "N".
-        mChartData.addDataSet(createDataSet(label, color));
+        chartData.addDataSet(createDataSet(label, color));
 
         // Data set for the single best AoN time for this "N".
         final LineDataSet bestAoNDataSet = createDataSet(label, color);
@@ -292,7 +319,7 @@ public class ChartStatistics {
 //        bestAoNDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
 //        bestAoNDataSet.setValueFormatter(new TimeChartValueFormatter());
 
-        mChartData.addDataSet(bestAoNDataSet);
+        chartData.addDataSet(bestAoNDataSet);
     }
 
     /**
