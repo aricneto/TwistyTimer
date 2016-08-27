@@ -389,51 +389,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Gets the worst time
-     *
-     * @param best    True if you want the best time, false if worse
-     * @param session True if time should be from this session
-     * @param puzzle  The puzzle name in database
-     * @param subtype The puzzle subtype (category) in database
-     *
-     * @return The time
-     */
-    public int getBestOrWorstTime(boolean best, boolean session, String puzzle, String subtype) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        int time = 0;
-
-        String minOrMax;
-        if (best)
-            minOrMax = "MIN(time)";
-        else
-            minOrMax = "MAX(time)";
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date DESC ";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
-
-        try {
-            cursor = db.rawQuery("SELECT " + minOrMax + " FROM " + TABLE_TIMES + sqlSelection,
-                new String[] { puzzle, subtype });
-
-            if (cursor.moveToFirst())
-                time = cursor.getInt(0);
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return time;
-    }
-
-    /**
      * Populates the collection of statistics (average calculators) with the solve times recorded
      * in the database. The statistics will manage the segregation of solves for the current session
      * only from those from all past and current sessions. If all average calculators are for the

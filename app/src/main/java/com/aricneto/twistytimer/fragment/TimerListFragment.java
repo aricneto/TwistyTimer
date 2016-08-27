@@ -39,6 +39,8 @@ import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.Fab;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
+import com.aricneto.twistytimer.stats.Statistics;
+import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -57,11 +59,12 @@ import co.mobiwise.materialintro.view.MaterialIntroView;
 import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 public class TimerListFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, OnBackPressedInFragmentListener {
+        implements LoaderManager.LoaderCallbacks<Cursor>, OnBackPressedInFragmentListener,
+        StatisticsCache.StatisticsObserver {
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -99,11 +102,16 @@ public class TimerListFragment extends BaseFragment
     private String            currentPuzzleSubtype;
     private TimeCursorAdapter timeCursorAdapter;
 
+    /**
+     * The most recently notified solve time statistics. These may be used when sharing averages.
+     */
+    private Statistics mRecentStatistics;
+
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-
+            // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.fab_share_ao12:
                     if (!PuzzleUtils.shareAverageOf(12, currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
@@ -312,6 +320,11 @@ public class TimerListFragment extends BaseFragment
         registerReceiver(mTimeDataChangedReceiver);
         registerReceiver(mUIInteractionReceiver);
 
+        // If the statistics are already loaded, the update notification will have been missed,
+        // so fire that notification now and start observing further updates.
+        onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
+        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
+
         return rootView;
     }
 
@@ -320,11 +333,13 @@ public class TimerListFragment extends BaseFragment
         if (DEBUG_ME) Log.d(TAG, "onDestroyView()");
         super.onDestroyView();
         mUnbinder.unbind();
+        StatisticsCache.getInstance().unregisterObserver(this);
+        mRecentStatistics = null;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (DEBUG_ME) Log.d(TAG, "setUserVisibleHint(isVisibleToUser=" + isVisibleToUser);
+        if (DEBUG_ME) Log.d(TAG, "setUserVisibleHint(isVisibleToUser=" + isVisibleToUser + ")");
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isResumed()) {
@@ -380,13 +395,24 @@ public class TimerListFragment extends BaseFragment
         getLoaderManager().destroyLoader(MainActivity.TIME_LIST_LOADER_ID);
     }
 
+    /**
+     * Records the latest statistics for use when sharing such information.
+     *
+     * @param stats The updated statistics. These will not be modified. May be {@code null}.
+     */
+    @Override
+    public void onStatisticsUpdated(Statistics stats) {
+        if (DEBUG_ME) Log.d(TAG, "onStatisticsUpdated(" + stats + ")");
+        mRecentStatistics = stats;
+    }
+
     public void reloadList() {
         getLoaderManager().restartLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        if (DEBUG_ME) Log.d(TAG, "onOnCreateLoader()");
+        if (DEBUG_ME) Log.d(TAG, "onCreateLoader()");
         return new TimeTaskLoader(currentPuzzle, currentPuzzleSubtype, history);
     }
 

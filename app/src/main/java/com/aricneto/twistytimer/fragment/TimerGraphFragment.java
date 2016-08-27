@@ -1,8 +1,10 @@
 package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,7 @@ import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
 import com.aricneto.twistytimer.stats.ChartStyle;
 import com.aricneto.twistytimer.stats.Statistics;
-import com.aricneto.twistytimer.stats.StatisticsLoader;
+import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -44,11 +46,11 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
  * Use the {@link TimerGraphFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimerGraphFragment extends Fragment {
+public class TimerGraphFragment extends Fragment implements StatisticsCache.StatisticsObserver {
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -61,6 +63,7 @@ public class TimerGraphFragment extends Fragment {
 
     private String  currentPuzzle;
     private String  currentPuzzleSubtype;
+    private boolean history;
 
     private Unbinder mUnbinder;
     @BindView(R.id.linechart)           LineChart lineChartView;
@@ -74,8 +77,6 @@ public class TimerGraphFragment extends Fragment {
             R.id.personalBestTitle, R.id.sessionBestTitle, R.id.sessionCurrentTitle,
             R.id.horizontalDivider02, R.id.verticalDivider02, R.id.verticalDivider03,
     }) View[] statisticsTableViews;
-
-    private boolean history;
 
     public TimerGraphFragment() {
         // Required empty public constructor
@@ -142,6 +143,43 @@ public class TimerGraphFragment extends Fragment {
         axisLeft.setValueFormatter(new TimeFormatter());
         axisLeft.setDrawLimitLinesBehindData(true);
 
+        // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
+        // statistics table will likely almost fill the screen. The automatic layout causes the
+        // chart to use only the remaining space after the statistics table takes its space.
+        // However, this may lead to the whole chart being squeezed into a few vertical pixels.
+        // Therefore, set a fixed height for the chart that will force the statistics table to be
+        // scrolled down to allow the chart to fit.
+        if (getActivity().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            root.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (container != null && lineChartView != null) {
+                        final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+
+                        if (params != null) {
+                            params.height = container.getHeight();
+                            lineChartView.setLayoutParams(params);
+                            lineChartView.requestLayout();
+                        }
+                    }
+                }
+            });
+        }
+
+        // If the statistics are already loaded, the update notification will have been missed,
+        // so fire that notification now. If the statistics are non-null, they will be displayed.
+        // If they are null (i.e., not yet loaded), the progress bar will be displayed until this
+        // fragment, as a registered observer, is notified when loading is complete. Post the
+        // firing of the event, so that it is received after "onCreateView" returns.
+        root.post(new Runnable() {
+            @Override
+            public void run() {
+                onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
+            }
+        });
+        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
+
         return root;
     }
 
@@ -155,9 +193,7 @@ public class TimerGraphFragment extends Fragment {
         //
         // Starting loaders here in "onActivityCreated" ensures that "onCreateView" is complete.
         //
-        // The loaders deliver different types of data, so two "LoaderCallbacks" are required.
-        // However, this turns out to be simpler, as there will be no need to check loader IDs.
-
+        // An anonymous inner class is neater than implementing "LoaderCallbacks".
         if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: CHART_DATA_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.CHART_DATA_LOADER_ID, null,
                 new LoaderManager.LoaderCallbacks<Wrapper<ChartStatistics>>() {
@@ -186,39 +222,14 @@ public class TimerGraphFragment extends Fragment {
                         // The view is most likely destroyed at this time, so no need to update it.
                     }
                 });
-
-        if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATS_TABLE_LOADER_ID");
-        getLoaderManager().restartLoader(MainActivity.STATS_TABLE_LOADER_ID, null,
-                new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
-                    @Override
-                    public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
-                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: STATS_TABLE_LOADER_ID");
-                        setStatsTableVisibility(View.GONE);
-                        return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
-                                currentPuzzle, currentPuzzleSubtype);
-                    }
-
-                    @Override
-                    public void onLoadFinished(Loader<Wrapper<Statistics>> loader,
-                                               Wrapper<Statistics> data) {
-                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: STATS_TABLE_LOADER_ID");
-                        updateStatistics(data.content());
-                    }
-
-                    @Override
-                    public void onLoaderReset(Loader<Wrapper<Statistics>> loader) {
-                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: STATS_TABLE_LOADER_ID");
-                        // Nothing to do here, as the "ChartStatistics" object was never retained.
-                        // The view is most likely destroyed at this time, so no need to update it.
-                    }
-                });
     }
 
     @Override
     public void onDestroyView() {
-        if (DEBUG_ME) Log.d(TAG, "onDestroyView");
+        if (DEBUG_ME) Log.d(TAG, "onDestroyView()");
         super.onDestroyView();
         mUnbinder.unbind();
+        StatisticsCache.getInstance().unregisterObserver(this);
     }
 
     /**
@@ -259,7 +270,7 @@ public class TimerGraphFragment extends Fragment {
      * @param chartStats The chart statistics populated by the loader.
      */
     private void updateChart(ChartStatistics chartStats) {
-        if (DEBUG_ME) Log.d(TAG, "updateChart");
+        if (DEBUG_ME) Log.d(TAG, "updateChart()");
 
         if (getView() == null) {
             // Must have arrived after "onDestroyView" was called, so do nothing.
@@ -275,18 +286,26 @@ public class TimerGraphFragment extends Fragment {
     }
 
     /**
-     * Called when the statistics loader has completed loading the statistics data. The loader
-     * listens for changes to the data and this method will be called each time the display of the
-     * statistics needs to be refreshed. If this fragment has no view, no update will be attempted.
+     * Refreshes the display of the statistics. If this fragment has no view, no update will be
+     * attempted.
      *
-     * @param stats The statistics populated by the loader.
+     * @param stats
+     *     The updated statistics. These will not be modified. If {@code null}, a progress bar will
+     *     be displayed until non-{@code null} statistics are passed to this method in a later call.
      */
     @SuppressLint("SetTextI18n")
-    private void updateStatistics(Statistics stats) {
-        if (DEBUG_ME) Log.d(TAG, "updateStatistics");
+    @Override
+    public void onStatisticsUpdated(Statistics stats) {
+        if (DEBUG_ME) Log.d(TAG, "onStatisticsUpdated(" + stats + ")");
 
         if (getView() == null) {
             // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
+        }
+
+        if (stats == null) {
+            // Hide the statistics and show the progress bar until the statistics become ready.
+            setStatsTableVisibility(View.GONE);
             return;
         }
 
@@ -378,6 +397,7 @@ public class TimerGraphFragment extends Fragment {
                         sessionWorstTime + "\n" +
                         sessionCount);
 
+        // Display the statistics and hide the progress bar.
         setStatsTableVisibility(View.VISIBLE);
     }
 }

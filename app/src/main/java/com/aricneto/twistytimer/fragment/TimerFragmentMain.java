@@ -12,10 +12,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SwitchCompat;
@@ -41,13 +44,18 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
+import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.SpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.LockedViewPager;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
+import com.aricneto.twistytimer.stats.Statistics;
+import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.stats.StatisticsLoader;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
+import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -63,7 +71,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -99,11 +107,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
     ActionMode      actionMode;
 
-    int currentPage = TIMER_PAGE;
-
-    // Stores the current state of the list switch
-    boolean historyChecked = false;
-
     private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
 
@@ -115,7 +118,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     // Stores the current puzzle being timed/shown
     private String currentPuzzle        = PuzzleUtils.TYPE_333;
     private String currentPuzzleSubtype = "Normal";
+    // Stores the current state of the list switch
+    boolean history                     = false;
 
+    int currentPage = TIMER_PAGE;
     private boolean pagerEnabled;
 
     private int originalContentHeight;
@@ -346,6 +352,45 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         return root;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // The "StatisticsLoader" is managed from this fragment, as it has the necessary access to
+        // the puzzle type, subtype and history values.
+        //
+        // "restartLoader" ensures that any old loader with the wrong puzzle type/subtype will not
+        // be reused. For now, those arguments are just passed via their respective fields to
+        // "onCreateLoader".
+
+        if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATISTICS_LOADER_ID");
+        getLoaderManager().restartLoader(MainActivity.STATISTICS_LOADER_ID, null,
+                new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
+                    @Override
+                    public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
+                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: STATISTICS_LOADER_ID");
+                        return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
+                                currentPuzzle, currentPuzzleSubtype);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<Wrapper<Statistics>> loader,
+                                               Wrapper<Statistics> data) {
+                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: STATISTICS_LOADER_ID");
+                        // Other fragments can get the statistics from the cache when they are
+                        // created and can register themselves as observers of further updates.
+                        StatisticsCache.getInstance().updateAndNotify(data.content());
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Wrapper<Statistics>> loader) {
+                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: STATISTICS_LOADER_ID");
+                        // Clear the cache and notify all observers that the statistics are "null".
+                        StatisticsCache.getInstance().updateAndNotify(null);
+                    }
+                });
+    }
+
     private void handleIcons(int index) {
         // Icons are set in "TimerTabLayout".
         switch (index) {
@@ -436,7 +481,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 @Override
                 public void onInput(MaterialDialog materialDialog, CharSequence input) {
                     dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-                    historyChecked = false; // Resets the checked state of the switch
+                    history = false; // Resets the checked state of the switch
                     currentPuzzleSubtype = input.toString();
                     editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
                     editor.apply();
@@ -535,7 +580,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     currentPuzzleSubtype = subtypeList.get(which);
                     editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
                     editor.apply();
-                    historyChecked = false; // Resets the checked state of the switch
+                    history = false; // Resets the checked state of the switch
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
                     subtypeDialog.dismiss();
@@ -571,7 +616,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_history_negative, R.attr.colorPrimaryDark);
         final Drawable track_positive = ThemeUtils.tintDrawable(getContext(), R.drawable.track_positive, R.attr.colorPrimaryDark);
 
-        if (historyChecked) {
+        if (history) {
             switchCompat.setChecked(true);
             switchCompat.setThumbDrawable(thumb_negative);
             switchCompat.setTrackResource(R.drawable.track_negative);
@@ -584,7 +629,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                historyChecked = isChecked;
+                history = isChecked;
 
                 if (isChecked) {
                     switchCompat.setThumbDrawable(thumb_negative);
@@ -734,16 +779,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     return TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype);
                 case LIST_PAGE:
                     return TimerListFragment.newInstance(
-                            currentPuzzle, currentPuzzleSubtype, historyChecked);
+                            currentPuzzle, currentPuzzleSubtype, history);
                 case GRAPH_PAGE:
                     return TimerGraphFragment.newInstance(
-                            currentPuzzle, currentPuzzleSubtype, historyChecked);
+                            currentPuzzle, currentPuzzleSubtype, history);
             }
             return TimerFragment.newInstance(PuzzleUtils.TYPE_333, "Normal");
         }
 
         /**
-         * Notifies each fragment (that is listening)  that the "Back" button has been pressed.
+         * Notifies each fragment (that is listening) that the "Back" button has been pressed.
          * Stops when the first fragment consumes the event.
          *
          * @return

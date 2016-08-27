@@ -19,8 +19,9 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
 
 /**
  * <p>
- * A loader used to populate a {@link Statistics} object from the database for use in the main
- * statistics table in the {@link com.aricneto.twistytimer.fragment.TimerGraphFragment}.
+ * A loader used to populate a {@link Statistics} object from the database for use in the timer
+ * and timer graph (statistics table) fragments. The main timer fragment will manage the listener
+ * and notify its subordinate fragments of any updates.
  * </p>
  * <p>
  * It is expected that the fragment will be destroyed and recreated if the puzzle type or subtype

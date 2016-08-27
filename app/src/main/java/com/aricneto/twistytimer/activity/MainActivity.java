@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
     /**
      * The loader ID for the loader that loads data presented in the statistics table on the timer
-     * graph fragment.
+     * graph fragment and the summary statistics on the timer fragment.
      */
-    public static final int STATS_TABLE_LOADER_ID = 101;
+    public static final int STATISTICS_LOADER_ID = 101;
 
     /**
      * The loader ID for the loader that loads chart data presented in on the timer graph fragment.

@@ -80,26 +80,6 @@ public class Statistics {
     }
 
     /**
-     * Creates a new set of statistical averages for the summary statistics reported for the current
-     * session on the timer tab. Averages of 5, 12, 50 and 100 are added for the current session
-     * only. The averages of 5 and 12 permit no more than one DNF solves. The averages of 50 and 100
-     * permit all but one solve to be a DNF solve.
-     *
-     * @return The summary set of solve time statistics.
-     */
-    public static Statistics newCurrentSessionStatistics() {
-        final Statistics stats = new Statistics();
-
-        // Averages for the current session only.
-        stats.addAverageOf(5, true, true);
-        stats.addAverageOf(12, true, true);
-        stats.addAverageOf(50, false, true);
-        stats.addAverageOf(100, false, true);
-
-        return stats;
-    }
-
-    /**
      * Creates a new set of statistical averages for the averages displayed in the graph of the
      * times from the all past and current sessions. Averages of 50 and 100 are added for the
      * <i>current session only</i> (a requirement for the {@link ChartStatistics} constructor, even
@@ -317,12 +297,23 @@ public class Statistics {
 
     /**
      * Gets the total number of solve times (including DNFs) that were added to these statistics
-     * for the current session.
+     * for the current session. To get the number of non-DNF solves, subtract the result of
+     * {@link #getSessionNumDNFSolves()}.
      *
      * @return The number of solve times that were added for the current session.
      */
     public int getSessionNumSolves() {
         return mOneSessionAC != null ? mOneSessionAC.getNumSolves() : 0;
+    }
+
+    /**
+     * Gets the total number of DNF solves that were added to these statistics for the current
+     * session.
+     *
+     * @return The number of DNF solves that were added for the current session.
+     */
+    public int getSessionNumDNFSolves() {
+        return mOneSessionAC != null ? mOneSessionAC.getNumDNFSolves() : 0;
     }
 
     /**
@@ -367,12 +358,23 @@ public class Statistics {
 
     /**
      * Gets the total number of solve times (including DNFs) that were added to these statistics
-     * for all past and current sessions.
+     * for all past and current sessions. To get the number of non-DNF solves, subtract the result
+     * of {@link #getAllTimeNumDNFSolves()}.
      *
      * @return The number of solve times that were added for all past and current sessions.
      */
     public int getAllTimeNumSolves() {
         return mOneAllTimeAC != null ? mOneAllTimeAC.getNumSolves() : 0;
+    }
+
+    /**
+     * Gets the total number of DNF solves that were added to these statistics for all past and
+     * current sessions.
+     *
+     * @return The number of DNF solves that were added for all past and current sessions.
+     */
+    public int getAllTimeNumDNFSolves() {
+        return mOneAllTimeAC != null ? mOneAllTimeAC.getNumDNFSolves() : 0;
     }
 
     /**

@@ -55,6 +55,7 @@ import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.stats.Statistics;
+import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -70,14 +71,18 @@ import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 import static com.aricneto.twistytimer.utils.TTIntent.*;
 
-public class TimerFragment extends BaseFragment implements OnBackPressedInFragmentListener {
+public class TimerFragment extends BaseFragment
+        implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -120,18 +125,13 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
     // True If the scrambler is done calculating and can calculate a new hint.
     private boolean canShowHint = false;
 
-    // True If the user pressed the undo button
-    private boolean undone = false;
-
     private ScrambleGenerator generator;
 
     private GenerateScrambleSequence scrambleGeneratorAsync;
     private GenerateScrambleImage    scrambleImageGenerator;
-    private CalculateStats           statCalculatorAsync;
-    private CalculateBestAndWorst    bestAndWorstCalculatorAsync;
     private GetOptimalCross          crossCalculator;
 
-    private int currentPenalty = PuzzleUtils.NO_PENALTY;
+    private int currentPenalty = NO_PENALTY;
 
     private int      mShortAnimationDuration;
     private Animator mCurrentAnimator;
@@ -181,24 +181,12 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
     private boolean showHints;
     private boolean showHintsXCross;
 
-    // Global best/worst
-    private int currentBestTime;
-    private int currentWorstTime;
-
-    // Receives broadcasts related to changes to the time data.
-    private TTFragmentBroadcastReceiver mTimeDataChangedReceiver
-            = new TTFragmentBroadcastReceiver(this, CATEGORY_TIME_DATA_CHANGES) {
-        @Override
-        public void onReceiveWhileAdded(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case ACTION_TIME_ADDED:
-                case ACTION_TIMES_MODIFIED:
-                case ACTION_TIMES_MOVED_TO_HISTORY:
-                    updateStats();
-                    break;
-            }
-        }
-    };
+    /**
+     * The most recently notified solve time statistics. When {@link #addNewSolve()} is called to
+     * add a new time, the new time can be compared to these statistics to determine if the new
+     * time sets a record.
+     */
+    private Statistics mRecentStatistics;
 
     // Receives broadcasts related to changes to the timer user interface.
     private TTFragmentBroadcastReceiver mUIInteractionReceiver
@@ -241,6 +229,12 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
         public void onClick(View view) {
             final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
 
+            // On most of these changes to the current solve, the Statistics and ChartStatistics
+            // need to be updated to reflect the change. It would probably be too complicated to
+            // add facilities to "AverageCalculator" to handle modification of the last added time
+            // or an "undo" facility and then to integrate that into the loaders. Therefore, a full
+            // reload will probably be required.
+
             switch (view.getId()) {
                 case R.id.button_delete:
                     new MaterialDialog.Builder(getContext())
@@ -251,30 +245,27 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
                                     dbHandler.deleteSolve(currentSolve);
-
-                                    handleButtons(true);
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                                 }
                             })
                             .show();
                     break;
                 case R.id.button_dnf:
-                    currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.PENALTY_DNF);
+                    currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_DNF);
                     chronometer.setText("DNF");
                     dbHandler.updateSolve(currentSolve);
-
-                    handleButtons(true);
-                    undoButton.setVisibility(View.VISIBLE);
+                    hideButtons(true, false);
+                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     break;
                 case R.id.button_plustwo:
-                    if (currentPenalty != PuzzleUtils.PENALTY_PLUSTWO) {
-                        currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.PENALTY_PLUSTWO);
+                    if (currentPenalty != PENALTY_PLUSTWO) {
+                        currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_PLUSTWO);
                         chronometer.setText(Html.fromHtml(
                                 PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime()) + " <small>+</small>"));
                         dbHandler.updateSolve(currentSolve);
+                        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     }
-
-                    handleButtons(true);
-                    undoButton.setVisibility(View.VISIBLE);
+                    hideButtons(true, false);
                     break;
                 case R.id.button_comment:
                     MaterialDialog dialog = new MaterialDialog.Builder(getContext())
@@ -284,8 +275,11 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     currentSolve.setComment(input.toString());
                                     dbHandler.updateSolve(currentSolve);
+                                    // NOTE: At present, the Statistics and ChartStatistics do not
+                                    // need to know about changes to a comment, so a notification
+                                    // of this change does not need to be broadcast.
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
-                                    handleButtons(false);
+                                    hideButtons(false, true);
                                 }
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
@@ -314,27 +308,23 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
                     }
                     break;
                 case R.id.button_undo:
-                    currentSolve = PuzzleUtils.applyPenalty(currentSolve, PuzzleUtils.NO_PENALTY);
+                    // Undo the setting of a DNF or +2 penalty (does not undo a delete or comment).
+                    currentSolve = PuzzleUtils.applyPenalty(currentSolve, NO_PENALTY);
                     chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(currentSolve.getTime())));
                     dbHandler.updateSolve(currentSolve);
-                    undoButton.setVisibility(View.GONE);
-                    undone = true;
-                    handleButtons(false);
+                    hideButtons(false, true);
+                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     break;
             }
         }
     };
 
     /**
-     * Handle the delete/dnf/plustwo butons and sends a broadcast
+     * Hides (or shows) the delete/dnf/plus-two quick action buttons and the undo button.
      */
-    private void handleButtons(boolean hideButtons) {
-        if (hideButtons) {
-            quickActionButtons.setVisibility(View.GONE);
-        } else {
-            quickActionButtons.setVisibility(View.VISIBLE);
-        }
-        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
+    private void hideButtons(boolean hideQuickActionButtons, boolean hideUndoButton) {
+        quickActionButtons.setVisibility(hideQuickActionButtons ? View.GONE : View.VISIBLE);
+        undoButton.setVisibility(hideUndoButton ? View.GONE : View.VISIBLE);
     }
 
     public static TimerFragment newInstance(String puzzle, String puzzleSubType) {
@@ -357,12 +347,9 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
         }
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
-        statCalculatorAsync = new CalculateStats();
-        updateBestAndWorst();
 
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
-        registerReceiver(mTimeDataChangedReceiver);
         registerReceiver(mUIInteractionReceiver);
     }
 
@@ -374,8 +361,6 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
         mUnbinder = ButterKnife.bind(this, root);
-
-        statCalculatorAsync.execute();
 
         // Necessary for the scramble image to show
         scrambleImg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -481,7 +466,7 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
             @Override
             public void onFinish() {
                 chronometer.setText("+2");
-                currentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
+                currentPenalty = PENALTY_PLUSTWO;
                 plusTwoCountdown.start();
             }
         };
@@ -501,7 +486,7 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
                 chronometer.setText("DNF");
                 showToolbar();
                 chronometer.setTextColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText));
-                currentPenalty = PuzzleUtils.PENALTY_DNF;
+                currentPenalty = PENALTY_DNF;
                 addNewSolve();
                 inspectionText.setVisibility(View.GONE);
             }
@@ -633,7 +618,7 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && chronometer.getTimeElapsed() >= 80) {
                         animationDone = false;
                         stopChronometer();
-                        if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO)
+                        if (currentPenalty == PENALTY_PLUSTWO)
                             chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal((int) chronometer.getTimeElapsed() + 2000) + " <small>+</small>"));
                         addNewSolve();
 
@@ -644,7 +629,18 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
             }
         });
 
-        updateStats();
+        // If the statistics are already loaded, the update notification will have been missed,
+        // so fire that notification now. If the statistics are non-null, they will be displayed.
+        // If they are null (i.e., not yet loaded), nothing will be displayed until this fragment,
+        // as a registered observer, is notified when loading is complete. Post the firing of the
+        // event, so that it is received after "onCreateView" returns.
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
+            }
+        });
+        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         return root;
     }
@@ -716,35 +712,161 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
     }
 
     private void addNewSolve() {
-        if (currentPenalty != PuzzleUtils.PENALTY_DNF) {
+        if (currentPenalty != PENALTY_DNF) {
             currentSolve = new Solve(
-                    currentPenalty == PuzzleUtils.PENALTY_PLUSTWO ?
-                            (int) chronometer.getTimeElapsed() + 2000 : (int) chronometer.getTimeElapsed()
+                    (currentPenalty == PENALTY_PLUSTWO) ?
+                            ((int) chronometer.getTimeElapsed() + 2000) : (int) chronometer.getTimeElapsed()
                     , currentPuzzle, currentPuzzleSubtype,
                     System.currentTimeMillis(), currentScramble, currentPenalty, "", false);
+
+            declareRecordTimes(currentSolve);
         } else {
             currentSolve = new Solve(0, currentPuzzle, currentPuzzleSubtype,
-                    System.currentTimeMillis(), currentScramble, PuzzleUtils.PENALTY_DNF, "", false);
+                    System.currentTimeMillis(), currentScramble, PENALTY_DNF, "", false);
         }
+
         currentId = TwistyTimer.getDBHandler().addSolve(currentSolve);
         currentSolve.setId(currentId);
-        currentPenalty = PuzzleUtils.NO_PENALTY;
+        currentPenalty = NO_PENALTY;
 
-        // The receiver might be able to use the new solve and avoid accessing the database.
+        // The receiver might be able to use the new solve and avoid accessing the database, so
+        // parcel it up in the intent.
         new BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
                 .solve(currentSolve)
                 .broadcast();
     }
 
+    /**
+     * Declares a new all-time best or worst solve time, if the new solve time sets a record. The
+     * first valid solve time will not set any records; it is itself the best and worst time and
+     * only later times will be compared to it. If the solve time is not greater than zero, or if
+     * the solve is a DNF, the solve will be ignored and no new records will be declared.
+     *
+     * @param solve The solve (time) to be tested.
+     */
+    private void declareRecordTimes(Solve solve) {
+        // NOTE: The old approach did not check for PB/record solves until at least 4 previous
+        // solves had been recorded for the *current session*. This seemed a bit arbitrary. Perhaps
+        // it had to do with waiting for the best and worst times to be loaded. If a user records
+        // their *first* solve for the current session and it beats the best time from *any* past
+        // session, it should be reported *immediately*, not ignored just because the session has
+        // only started. However, the limit should perhaps have been 4 previous solves in the full
+        // history of all past and current sessions. If this is the first ever session, then it
+        // would be annoying if each of the first few times were reported as a record of some sort.
+        // Therefore, do not report PB records until at least 4 previous *non-DNF* times have been
+        // recorded in the database across all sessions, including the current session.
+
+        final long newTime = solve.getTime();
+
+        if (solve.getPenalty() == PENALTY_DNF || newTime <= 0
+                || mRecentStatistics == null
+                || mRecentStatistics.getAllTimeNumSolves()
+                   - mRecentStatistics.getAllTimeNumDNFSolves() < 4) {
+            // Not a valid time, or there are no previous statistics, or not enough previous times
+            // to make reporting meaningful (or non-annoying), so cannot check for a new PB.
+            return;
+        }
+
+        if (bestSolveEnabled) {
+            final long previousBestTime = mRecentStatistics.getAllTimeBestTime();
+
+            // If "previousBestTime" is a DNF or UNKNOWN, it will be less than zero, so the new
+            // solve time cannot better (i.e., lower).
+            if (newTime < previousBestTime ) {
+                rippleBackground.startRippleAnimation();
+                congratsText.setText(getString(R.string.personal_best_message,
+                        PuzzleUtils.convertTimeToString(previousBestTime - newTime)));
+                congratsText.setVisibility(View.VISIBLE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (rippleBackground != null)
+                            rippleBackground.stopRippleAnimation();
+                    }
+                }, 2940);
+            }
+        }
+
+        if (worstSolveEnabled) {
+            final long previousWorstTime = mRecentStatistics.getAllTimeWorstTime();
+
+            // If "previousWorstTime" is a DNF or UNKNOWN, it will be less than zero. Therefore,
+            // make sure it is at least greater than zero before testing against the new time.
+            if (previousWorstTime > 0 && newTime > previousWorstTime) {
+                congratsText.setText(getString(R.string.personal_worst_message,
+                        PuzzleUtils.convertTimeToString(newTime - previousWorstTime)));
+
+                if (backgroundEnabled)
+                    congratsText.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.ic_emoticon_poop_white_18dp, 0,
+                            R.drawable.ic_emoticon_poop_white_18dp, 0);
+                else
+                    congratsText.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.ic_emoticon_poop_black_18dp, 0,
+                            R.drawable.ic_emoticon_poop_black_18dp, 0);
+
+                congratsText.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * Refreshes the display of the statistics. If this fragment has no view, or if the given
+     * statistics are {@code null}, no update will be attempted.
+     *
+     * @param stats
+     *     The updated statistics. These will not be modified.
+     */
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onStatisticsUpdated(Statistics stats) {
+        if (DEBUG_ME) Log.d(TAG, "onStatisticsUpdated(" + stats + ")");
+
+        if (getView() == null) {
+            // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
+        }
+
+        // Save these for later. The best and worst times can be retrieved and compared to the next
+        // new solve time to be added via "addNewSolve".
+        mRecentStatistics = stats; // May be null.
+
+        if (stats == null) {
+            return;
+        }
+
+        String sessionCount
+                = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
+        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
+        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
+        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
+
+        String sessionCurrentAvg5 = convertTimeToString(
+                tr(stats.getAverageOf(5, true).getCurrentAverage()));
+        String sessionCurrentAvg12 = convertTimeToString(
+                tr(stats.getAverageOf(12, true).getCurrentAverage()));
+        String sessionCurrentAvg50 = convertTimeToString(
+                tr(stats.getAverageOf(50, true).getCurrentAverage()));
+        String sessionCurrentAvg100 = convertTimeToString(
+                tr(stats.getAverageOf(100, true).getCurrentAverage()));
+
+        detailTimesAvg.setText(
+                sessionCurrentAvg5 + "\n" +
+                        sessionCurrentAvg12 + "\n" +
+                        sessionCurrentAvg50 + "\n" +
+                        sessionCurrentAvg100);
+
+        detailTimesMore.setText(
+                sessionMeanTime + "\n" +
+                        sessionBestTime + "\n" +
+                        sessionWorstTime + "\n" +
+                        sessionCount);
+    }
+
     private void generateScrambleImage() {
         scrambleImageGenerator = new GenerateScrambleImage();
         scrambleImageGenerator.execute();
-    }
-
-    private void updateStats() {
-        statCalculatorAsync.cancel(true);
-        statCalculatorAsync = new CalculateStats();
-        statCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showToolbar() {
@@ -806,7 +928,6 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
 
     private void hideToolbar() {
         lockOrientation(getActivity());
-        undone = false;
         broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIMER_STARTED);
 
         congratsText.setVisibility(View.GONE);
@@ -902,16 +1023,16 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
         if (DEBUG_ME) Log.d(TAG, "onDetach()");
         super.onDetach();
         // To fix memory leaks
-        unregisterReceiver(mTimeDataChangedReceiver);
         unregisterReceiver(mUIInteractionReceiver);
         scrambleGeneratorAsync.cancel(true);
-        statCalculatorAsync.cancel(true);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        StatisticsCache.getInstance().unregisterObserver(this);
+        mRecentStatistics = null;
     }
 
     public static void lockOrientation(Activity activity) {
@@ -999,8 +1120,7 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
 
         @Override
         protected String doInBackground(String... params) {
-            String scramble = generator.getPuzzle().generateScramble();
-            return scramble;
+            return generator.getPuzzle().generateScramble();
         }
 
         @Override
@@ -1060,8 +1180,7 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
 
         @Override
         protected Drawable doInBackground(Void... voids) {
-            Drawable finalImg = generator.generateImageFromScramble(sharedPreferences, realScramble);
-            return finalImg;
+            return generator.generateImageFromScramble(sharedPreferences, realScramble);
         }
 
         @Override
@@ -1078,109 +1197,6 @@ public class TimerFragment extends BaseFragment implements OnBackPressedInFragme
             if (expandedImageView != null)
                 expandedImageView.setImageDrawable(drawable);
         }
-    }
-
-    private class CalculateStats extends AsyncTask<Void, Void, Statistics> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Statistics doInBackground(Void... voids) {
-            final Statistics stats = Statistics.newCurrentSessionStatistics();
-
-            TwistyTimer.getDBHandler().populateStatistics(currentPuzzle, currentPuzzleSubtype, stats);
-
-            return stats;
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        protected void onPostExecute(Statistics stats) {
-            super.onPostExecute(stats);
-
-            final int count = stats.getSessionNumSolves();
-            String sessionCount = String.format(Locale.getDefault(), "%,d", count);
-            String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
-            String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
-            String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
-
-            String sessionCurrentAvg5 = convertTimeToString(
-                    tr(stats.getAverageOf(5, true).getCurrentAverage()));
-            String sessionCurrentAvg12 = convertTimeToString(
-                    tr(stats.getAverageOf(12, true).getCurrentAverage()));
-            String sessionCurrentAvg50 = convertTimeToString(
-                    tr(stats.getAverageOf(50, true).getCurrentAverage()));
-            String sessionCurrentAvg100 = convertTimeToString(
-                    tr(stats.getAverageOf(100, true).getCurrentAverage()));
-
-            detailTimesAvg.setText(
-                    sessionCurrentAvg5 + "\n" +
-                            sessionCurrentAvg12 + "\n" +
-                            sessionCurrentAvg50 + "\n" +
-                            sessionCurrentAvg100);
-
-            detailTimesMore.setText(
-                    sessionMeanTime + "\n" +
-                            sessionBestTime + "\n" +
-                            sessionWorstTime + "\n" +
-                            sessionCount);
-
-            if (count == 3) {
-                updateBestAndWorst();
-            }
-
-            // Check best/worst solve
-            if (currentSolve != null && currentPenalty != PuzzleUtils.PENALTY_DNF && ! undone) {
-                if (count >= 4 && currentSolve.getTime() != 0) { // Start counting records at 5 solves
-                    if (bestSolveEnabled) {
-                        if (currentSolve.getTime() < currentBestTime) { // best
-                            rippleBackground.startRippleAnimation();
-                            congratsText.setText(getString(R.string.personal_best_message,
-                                    PuzzleUtils.convertTimeToString(currentBestTime - currentSolve.getTime())));
-                            congratsText.setVisibility(View.VISIBLE);
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (rippleBackground != null)
-                                        rippleBackground.stopRippleAnimation();
-                                }
-                            }, 2940);
-                        }
-                    } if (worstSolveEnabled) {
-                        if (currentSolve.getTime() > currentWorstTime) { // worst
-                            congratsText.setText(getString(R.string.personal_worst_message,
-                                    PuzzleUtils.convertTimeToString(currentSolve.getTime() - currentWorstTime)));
-
-                            if (backgroundEnabled)
-                                congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_white_18dp, 0, R.drawable.ic_emoticon_poop_white_18dp, 0);
-                            else
-                                congratsText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emoticon_poop_black_18dp, 0, R.drawable.ic_emoticon_poop_black_18dp, 0);
-                            congratsText.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-                updateBestAndWorst();
-            }
-        }
-    }
-
-    private class CalculateBestAndWorst extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-
-            currentBestTime = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-            currentWorstTime = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
-            return null;
-        }
-    }
-
-    private void updateBestAndWorst() {
-        bestAndWorstCalculatorAsync = new CalculateBestAndWorst();
-        bestAndWorstCalculatorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void zoomImageFromThumb(final View thumbView, Drawable image) {

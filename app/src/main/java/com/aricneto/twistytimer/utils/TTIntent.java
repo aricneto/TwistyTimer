@@ -25,6 +25,16 @@ import java.util.Map;
  */
 public final class TTIntent {
     /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TTIntent.class.getSimpleName();
+
+    /**
      * The name prefix for all categories and actions to ensure that their names do not clash with
      * any system names.
      */
@@ -275,7 +285,7 @@ public final class TTIntent {
         @Override
         public final void onReceive(Context context, Intent intent) {
             if (mFragment.isAdded()) {
-                Log.d("TTIntent", mFragment.getClass().getSimpleName()
+                if (DEBUG_ME) Log.d(TAG, mFragment.getClass().getSimpleName()
                         + ": onReceiveWhileAdded: " + intent);
                 onReceiveWhileAdded(context, intent);
             }
