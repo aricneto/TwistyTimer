@@ -103,7 +103,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     }
 
     public void deleteAllSelected() {
-        TwistyTimer.getDBHandler().deleteAllFromList(selectedItems);
+        TwistyTimer.getDBHandler().deleteSolvesByID(selectedItems, null); // Ignore progress.
         broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
     }
 
