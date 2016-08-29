@@ -249,7 +249,8 @@ public class ChartStatistics {
                 mChartStyle.getBestTimesLabel(), mChartStyle.getBestTimesColor());
 
         for (int nIndex = 0; nIndex < mNsOfAverages.length; nIndex++) {
-            addAoNDataSets(mChartData, mChartStyle.getAverageOfNLabelPrefix() + (nIndex + 1),
+            addAoNDataSets(mChartData,
+                    mChartStyle.getAverageOfNLabelPrefix() + mNsOfAverages[nIndex],
                     mChartStyle.getExtraColor(nIndex));
         }
     }
