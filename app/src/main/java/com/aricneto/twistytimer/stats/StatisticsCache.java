@@ -50,7 +50,7 @@ import android.database.Observable;
 // IMPLEMENTATION NOTE: While a LocalBroadcastManager could be used to pass around the update
 // notifications, this "Observable" implementation makes the code much neater, particularly since
 // many of the BroadcastReceivers in the fragments have been moved to the new Loader classes, so
-// some of the fragments would have a "bulky" receiver for only one simple purpose.
+// some of the fragments would have a "bulky" receiver for only this one simple purpose.
 //
 // NOTE: If different "Statistics" are required, it would not be too difficult to change this
 // class to a non-singleton pattern and then to hold different instances of the cache in, say,

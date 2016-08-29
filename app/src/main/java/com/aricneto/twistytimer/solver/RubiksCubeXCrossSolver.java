@@ -26,12 +26,12 @@ public class RubiksCubeXCrossSolver {
     }
 
     // constants
-    private static int N_CORNERS_COMBINATIONS = 8;
-    private static int N_CORNERS_PERMUTATIONS = 1;
-    private static int N_CORNERS_ORIENTATIONS = 3;
-    private static int N_EDGES_COMBINATIONS = 792;
-    private static int N_EDGES_PERMUTATIONS = 120;
-    private static int N_EDGES_ORIENTATIONS = 32;
+    private static final int N_CORNERS_COMBINATIONS = 8;
+    private static final int N_CORNERS_PERMUTATIONS = 1;
+    private static final int N_CORNERS_ORIENTATIONS = 3;
+    private static final int N_EDGES_COMBINATIONS = 792;
+    private static final int N_EDGES_PERMUTATIONS = 120;
+    private static final int N_EDGES_ORIENTATIONS = 32;
 
     private static int goalCornersPermutation;
     private static int goalCornersOrientation;
@@ -326,7 +326,7 @@ public class RubiksCubeXCrossSolver {
         int edgesOrientationIndex =
                 indices[3] * N_EDGES_ORIENTATIONS + indices[5];
 
-        ArrayList<String[]> solutions = new ArrayList<String[]>();
+        ArrayList<String[]> solutions = new ArrayList<>();
 
         for (int depth = 0; ; depth++) {
             int[] path = new int[depth];

@@ -16,7 +16,7 @@ import android.util.TypedValue;
 import com.aricneto.twistify.R;
 
 /**
- * Util to make theming easier
+ * Util to make themeing easier
  */
 public class ThemeUtils {
 

@@ -44,8 +44,7 @@ public class ExportImportDialog extends DialogFragment {
     private FragmentActivity mActivity;
 
     public static ExportImportDialog newInstance() {
-        ExportImportDialog exportImportDialog = new ExportImportDialog();
-        return exportImportDialog;
+        return new ExportImportDialog();
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {

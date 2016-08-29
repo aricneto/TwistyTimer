@@ -232,11 +232,6 @@ public class TimeDialog extends DialogFragment {
         dialogListener = listener;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void updateList() {
         if (dialogListener != null) {
             dialogListener.onUpdateDialog();

@@ -1072,12 +1072,6 @@ public class TimerFragment extends BaseFragment
     }
 
     private class GetOptimalCross extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         @Override
         protected String doInBackground(Void... voids) {
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);

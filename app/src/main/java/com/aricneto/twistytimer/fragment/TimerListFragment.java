@@ -114,17 +114,20 @@ public class TimerListFragment extends BaseFragment
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.fab_share_ao12:
-                    if (!PuzzleUtils.shareAverageOf(12, currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                    if (!PuzzleUtils.shareAverageOf(
+                            12, currentPuzzle, mRecentStatistics, getActivity())) {
                         Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.fab_share_ao5:
-                    if (!PuzzleUtils.shareAverageOf(5, currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                    if (!PuzzleUtils.shareAverageOf(
+                            5, currentPuzzle, mRecentStatistics, getActivity())) {
                         Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.fab_share_histogram:
-                    if (!PuzzleUtils.shareHistogramOf(currentPuzzle, currentPuzzleSubtype, dbHandler, getContext())) {
+                    if (!PuzzleUtils.shareHistogramOf(
+                            currentPuzzle, mRecentStatistics, getActivity())) {
                         Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
                     }
                     break;

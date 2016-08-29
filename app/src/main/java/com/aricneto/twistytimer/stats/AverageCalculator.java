@@ -44,7 +44,8 @@ public final class AverageCalculator {
      */
     // Deliberately avoiding using "PuzzleUtils.TIME_DNF" as the canonical flag value, as there is
     // no guarantee that it will remain with its current value of "-1" and this class needs to be
-    // sure that the value will be negative and will not clash with "UNKNOWN".
+    // sure that the value will be negative and will not clash with "UNKNOWN". If changing these,
+    // use values that can also be represented as in "int".
     public static final long DNF = -665L;
 
     /**
@@ -202,6 +203,7 @@ public final class AverageCalculator {
         mCurrentWorstTime = UNKNOWN;
         mCurrentAverage = UNKNOWN;
         mAllTimeBestTime = UNKNOWN;
+        mAllTimeWorstTime = UNKNOWN;
         mAllTimeBestAverage = UNKNOWN;
     }
 
@@ -515,7 +517,7 @@ public final class AverageCalculator {
      *
      * @return
      *     The current (truncated( arithmetic mean of the most recently added values. If fewer
-     *     times have been added that the number required, the result will be {@link #UNKNOWN).
+     *     times have been added that the number required, the result will be {@link #UNKNOWN}.
      *     If too many DNF solves are included in the recently-added times, the result is
      *     {@code DNF}. The returned integer value of the average is truncated (rounded down).
      */
@@ -532,7 +534,7 @@ public final class AverageCalculator {
      *
      * @return
      *     The best truncated arithmetic mean across all added values. If fewer times have been
-     *     added that the number required, the result will be {@link #UNKNOWN). If too many DNF
+     *     added that the number required, the result will be {@link #UNKNOWN}. If too many DNF
      *     solves are included in <i>all</i> sequences of times, the result is {@link #DNF}.
      */
     public long getBestAverage() {
@@ -543,7 +545,7 @@ public final class AverageCalculator {
      * Gets the best time of all those added to this calculator.
      *
      * @return
-     *     The best time ever added to this calculator. The result will be {@link #UNKNOWN) if no
+     *     The best time ever added to this calculator. The result will be {@link #UNKNOWN} if no
      *     times have been added, or if all added times were {@link #DNF}s.
      */
     public long getBestTime() {
@@ -554,7 +556,7 @@ public final class AverageCalculator {
      * Gets the worst time (not a DNF) of all those added to this calculator.
      *
      * @return
-     *     The worst time ever added to this calculator. The result will be {@link #UNKNOWN) if no
+     *     The worst time ever added to this calculator. The result will be {@link #UNKNOWN} if no
      *     times have been added, or if all added times were {@link #DNF}s.
      */
     public long getWorstTime() {
@@ -587,7 +589,7 @@ public final class AverageCalculator {
      *
      * @return
      *     The total time of all non-DNF solves that were added to this calculator. The result
-     *     will be {@link #UNKNOWN) if no times have been added, or if all added times were
+     *     will be {@link #UNKNOWN} if no times have been added, or if all added times were
      *     {@link #DNF}s.
      */
     public long getTotalTime() {
@@ -601,11 +603,20 @@ public final class AverageCalculator {
      *
      * @return
      *     The mean time of all non-DNF solves that were added to this calculator. The result
-     *     will be {@link #UNKNOWN) if no times have been added, or if all added times were
+     *     will be {@link #UNKNOWN} if no times have been added, or if all added times were
      *     {@link #DNF}s.
      */
     public long getMeanTime() {
         return mAllTimeSum != UNKNOWN ? mAllTimeSum / (mNumSolves - mNumAllTimeDNFs) : UNKNOWN;
+    }
+
+    /**
+     * Captures the details of the average-of-N calculation including the most recently added time.
+     *
+     * @return The details for the average-of-N calculation.
+     */
+    public AverageOfN getAverageOfN() {
+        return new AverageOfN(this);
     }
 
     /**
@@ -627,5 +638,156 @@ public final class AverageCalculator {
             return PuzzleUtils.TIME_DNF;
         }
         return time;
+    }
+
+    /**
+     * A summary of the average of the mostly recently added times. All times are provided in an
+     * array and the calculated average, best time and worst time are identified, if appropriate.
+     */
+    public static class AverageOfN {
+        /**
+         * The array of values that contributed to the calculation of the average-of-N. If too few
+         * values have been recorded (less than "N"), the array will be {@code null}. The times
+         * will be ordered with the oldest recorded time first.
+         */
+        private final long[] mTimes;
+
+        /**
+         * The index within {@link #mTimes} of the best time. The index will be -1 if that array is
+         * {@code null}, or if the average calculation for the value of "N" does not eliminate the
+         * best time, or if all of the times are DNFs, or if DNFs do not cause disqualification,
+         * but there is only one non-DNF time recorded.
+         */
+        private final int mBestTimeIndex;
+
+        /**
+         * The index within {@link #mTimes} of the worst time. The index will be -1 if that array is
+         * {@code null}, or if the average calculation for the value of "N" does not eliminate the
+         * best time, or if all of the times are DNFs. The worst time may be a DNF.
+         */
+        private final int mWorstTimeIndex;
+
+        /**
+         * The average-of-N value calculated for the times. May be {@link #DNF} if there are too
+         * many DNF solves, or {@link #UNKNOWN} if the are too few times (less than "N").
+         */
+        private final long mAverage;
+
+        /**
+         * Creates a new record of the most recent "average-of-N" recorded by an average calculator.
+         *
+         * @param ac The average calculator from which to capture the information.
+         */
+        private AverageOfN(AverageCalculator ac) {
+            final int n = ac.getN();
+
+            mAverage = ac.getCurrentAverage();
+
+            if (mAverage != UNKNOWN && ac.getNumSolves() >= n) {
+                mTimes = new long[n];
+
+                // The oldest time recorded in "ac.mTimes" is not necessarily the first one, as
+                // that array operates as a circular queue. "ac.mNext" marks one index past the
+                // last added time. However, the array should be full, so this should also be the
+                // index of the first (oldest) time. If "ac.mNext" equals "n", then we wrap around
+                // to start at index zero.
+                final int oldestIndex = ac.mNext == n ? 0 : ac.mNext;
+
+                System.arraycopy(ac.mTimes, oldestIndex, mTimes, 0, n - oldestIndex);
+                System.arraycopy(ac.mTimes, 0, mTimes, n - oldestIndex, oldestIndex);
+
+                // "-1" is the convention for an unknown *index*, so "UNKNOWN" is not used.
+                int bestIdx = -1;
+                int worstIdx = -1;
+
+                // IF the threshold value of "N" for the calculation of a truncated mean is not
+                // reached, no best or worst times will be identified for elimination.
+                //
+                // IF all times are DNFs, no best or worst times will be identified for elimination.
+                //
+                // IF only one time is not a DNF, no best time will be identified for elimination.
+                //
+                // IF DNFs are present, a DNF will be identified as the worst time instead of
+                // "mCurrentWorstTime", as "mCurrentWorstTime" is never set to DNF.
+                if (n >= MIN_N_TO_ALLOW_ONE_DNF && n > ac.mNumCurrentDNFs) { // At least 1 non-DNF.
+                    // Do not identify the only non-DNF time as the best time.
+                    final long bestTime
+                            = (n - ac.mNumCurrentDNFs > 1) ? ac.mCurrentBestTime : UNKNOWN;
+                    // Identify a DNF as the worst time if DNFs are present.
+                    final long worstTime = ac.mNumCurrentDNFs == 0 ? ac.mCurrentWorstTime : DNF;
+
+                    for (int i = 0; i < n && (bestIdx == -1 || worstIdx == -1); i++) {
+                        // Use if...else... here to ensure that the best and worst times are not
+                        // recorded at the same index (e.g., if all times are DNFs or all equal).
+                        if (bestIdx == -1 && mTimes[i] == bestTime) {
+                            bestIdx = i;
+                        } else if (worstIdx == -1 && mTimes[i] == worstTime) {
+                            worstIdx = i;
+                        }
+                    }
+                }
+
+                mBestTimeIndex = bestIdx;
+                mWorstTimeIndex = worstIdx;
+            } else {
+                mTimes = null;
+                mBestTimeIndex = -1;
+                mWorstTimeIndex = -1;
+            }
+        }
+
+        /**
+         * Gets the array of values that contributed to the calculation of the average-of-N. If
+         * too few values have been recorded (less than "N"), the array will be {@code null}. The
+         * times will be ordered with the oldest recorded time first and may include {@link #DNF}
+         * values. The best and worst times can be identified with {@link #getBestTimeIndex()} and
+         * {@link #getWorstTimeIndex()}.
+         *
+         * @return
+         *     The array of times used to calculate the average. May be {@code null}.
+         */
+        public long[] getTimes() {
+            return mTimes;
+        }
+
+        /**
+         * Gets the calculated average-of-N value. The calculation follows the normal rules for
+         * the value of "N" that are applied by the average calculator from which this object was
+         * captured.
+         *
+         * @return
+         *     The average-of-N value. May be {@link #DNF} if the average was disqualified, or
+         *     {@link #UNKNOWN} if too few times have been recorded (i.e., less than "N").
+         */
+        public long getAverage() {
+            return mAverage;
+        }
+
+        /**
+         * Gets the index within the array returned by {@link #getTimes()} of the best time
+         * eliminated for the average-of-N calculation. If there were insufficient times, or if the
+         * value of "N" is lower than the threshold where best times are eliminated, or if there
+         * are less than two non-DNF times, the result will be -1. When DNFs do not disqualify the
+         * average and there is only one non-DNF time, that time is not identified as the "best"
+         * time, so it is not eliminated; instead that single time becomes the average time.
+         *
+         * @return The index of the best time value, or -1 if it is not known.
+         */
+        public int getBestTimeIndex() {
+            return mBestTimeIndex;
+        }
+
+        /**
+         * Gets the index within the array returned by {@link #getTimes()} of the worst time
+         * eliminated for the average-of-N calculation. If there were insufficient times, or if the
+         * value of "N" is lower than the threshold where worst times are eliminated, or if all of
+         * the times are DNF times, the result will be -1. If DNFs are present and at least one
+         * time is not a DNF, the first DNF will be marked as the worst time.
+         *
+         * @return The index of the worst time value, or -1 if it is not known.
+         */
+        public int getWorstTimeIndex() {
+            return mWorstTimeIndex;
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.aricneto.twistytimer.stats;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
@@ -31,15 +32,30 @@ public class Statistics {
     private final Map<Integer, AverageCalculator> mSessionACs = new HashMap<>();
 
     /**
-     * An average calculator for solves only in the current session. May be {@code null}.
+     * The frequencies of solve times across all sessions. The keys are the solve times in
+     * milliseconds, but truncated to whole seconds, and the values are the number of solve times.
+     * {@link AverageCalculator#DNF} may also be a key.
      */
-    private AverageCalculator mOneSessionAC;
+    // NOTE: A "TreeMap" ensures that the entries are ordered by key (time) value.
+    private final TreeMap<Long, Integer> mAllTimeTimeFreqs = new TreeMap<>();
+
+    /**
+     * The frequencies of solve times for the current session. The keys are the solve times in
+     * milliseconds, but truncated to whole seconds and the values are the number of solve times.
+     * {@link AverageCalculator#DNF} may also be a key.
+     */
+    private final TreeMap<Long, Integer> mSessionTimeFreqs = new TreeMap<>();
 
     /**
      * An average calculator for solves across all past sessions and the current session. May be
      * {@code null}.
      */
     private AverageCalculator mOneAllTimeAC;
+
+    /**
+     * An average calculator for solves only in the current session. May be {@code null}.
+     */
+    private AverageCalculator mOneSessionAC;
 
     /**
      * Creates a new collection for statistics. Use a factory method to create a standard set of
@@ -116,7 +132,8 @@ public class Statistics {
     }
 
     /**
-     * Resets all statistics and averages that have been collected previously.
+     * Resets all statistics and averages that have been collected previously. The average-of-N
+     * calculators and time frequencies are reset, but the average-of-N calculators are not removed.
      */
     public void reset() {
         for (final AverageCalculator allTimeAC : mAllTimeACs.values()) {
@@ -126,6 +143,9 @@ public class Statistics {
         for (final AverageCalculator sessionAC : mSessionACs.values()) {
             sessionAC.reset();
         }
+
+        mAllTimeTimeFreqs.clear();
+        mSessionTimeFreqs.clear();
     }
 
     /**
@@ -255,6 +275,18 @@ public class Statistics {
                 sessionAC.addTime(time);
             }
         }
+
+        // Updated the time frequencies.
+        final long timeForFreq = time == DNF ? DNF : (time - time % 1_000);
+        Integer oldFreq;
+
+        oldFreq = mAllTimeTimeFreqs.get(timeForFreq);
+        mAllTimeTimeFreqs.put(timeForFreq, oldFreq == null ? 1 : oldFreq + 1);
+
+        if (isForCurrentSession) {
+            oldFreq = mSessionTimeFreqs.get(timeForFreq);
+            mSessionTimeFreqs.put(timeForFreq, oldFreq == null ? 1 : oldFreq + 1);
+        }
     }
 
     /**
@@ -331,6 +363,21 @@ public class Statistics {
     }
 
     /**
+     * Gets the solve time frequencies for the current sessions. The times are truncated to whole
+     * seconds, but still expressed as milliseconds. The keys are the times (and
+     * {@link AverageCalculator#DNF} can be a key), and the values are the number of solves times
+     * that fell into the one-second interval for that key. For example, if the key is "4", the
+     * value is the number of solve times of "four-point-something seconds".
+     *
+     * @return
+     *     The solve time frequencies. The iteration order of the map begins with any DNF solves
+     *     and then continues in increasing order of time value. This may be modified freely.
+     */
+    public Map<Long, Integer> getSessionTimeFrequencies() {
+        return new TreeMap<>(mSessionTimeFreqs);
+    }
+
+    /**
      * Gets the best solve time of all those added to these statistics for a solve in all past
      * and current sessions.
      *
@@ -389,5 +436,20 @@ public class Statistics {
      */
     public long getAllTimeMeanTime() {
         return mOneAllTimeAC != null ? mOneAllTimeAC.getMeanTime() : UNKNOWN;
+    }
+
+    /**
+     * Gets the solve time frequencies for all past and current sessions. The times are truncated
+     * to whole seconds, but still expressed as milliseconds. The keys are the times (and
+     * {@link AverageCalculator#DNF} can be a key), and the values are the number of solves times
+     * that fell into the one-second interval for that key. For example, if the key is "4", the
+     * value is the number of solve times of "four-point-something seconds".
+     *
+     * @return
+     *     The solve time frequencies. The iteration order of the map begins with any DNF solves
+     *     and then continues in increasing order of time value. This may be modified freely.
+     */
+    public Map<Long, Integer> getAllTimeTimeFrequencies() {
+        return new TreeMap<>(mAllTimeTimeFreqs);
     }
 }

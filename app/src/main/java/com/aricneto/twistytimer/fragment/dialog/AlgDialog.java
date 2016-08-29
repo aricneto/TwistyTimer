@@ -185,11 +185,6 @@ public class AlgDialog extends DialogFragment {
         dialogListener = listener;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void updateList() {
         TTIntent.broadcast(TTIntent.CATEGORY_ALG_DATA_CHANGES, TTIntent.ACTION_ALGS_MODIFIED);
         //dismiss();

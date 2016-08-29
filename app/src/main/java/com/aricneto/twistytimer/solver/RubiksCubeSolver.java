@@ -5,6 +5,7 @@ package com.aricneto.twistytimer.solver;
 //             http://www.jaapsch.net/puzzles/compcube.htm
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class RubiksCubeSolver {
@@ -52,7 +53,7 @@ public class RubiksCubeSolver {
             return state;
         }
 
-        public static HashMap<String, State> moves;
+        public static final HashMap<String, State> moves;
 
         static {
             State moveU = new State(new byte[] { 3, 0, 1, 2, 4, 5, 6, 7 }, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }, new byte[] { 0, 1, 2, 3, 7, 4, 5, 6, 8, 9, 10, 11 }, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -62,7 +63,7 @@ public class RubiksCubeSolver {
             State moveF = new State(new byte[] { 0, 1, 3, 7, 4, 5, 2, 6 }, new byte[] { 0, 0, 1, 2, 0, 0, 2, 1 }, new byte[] { 0, 1, 6, 10, 4, 5, 3, 7, 8, 9, 2, 11 }, new byte[] { 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0 });
             State moveB = new State(new byte[] { 1, 5, 2, 3, 0, 4, 6, 7 }, new byte[] { 1, 2, 0, 0, 2, 1, 0, 0 }, new byte[] { 4, 8, 2, 3, 1, 5, 6, 7, 0, 9, 10, 11 }, new byte[] { 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 });
 
-            moves = new HashMap<String, State>();
+            moves = new HashMap<>();
             moves.put("U", moveU);
             moves.put("U2", moveU.multiply(moveU));
             moves.put("U'", moveU.multiply(moveU).multiply(moveU));
@@ -285,10 +286,7 @@ public class RubiksCubeSolver {
             for (int j = 0; j < moves2.length; j++) {
                 State result = state.multiply(moves2[j]);
 
-                byte[] eEdges = new byte[4];
-                for (int k = 0; k < eEdges.length; k++) {
-                    eEdges[k] = result.edgesPermutation[k];
-                }
+                byte[] eEdges = Arrays.copyOf(result.edgesPermutation, 4);
 
                 eEdgesPermutationMove[i][j] = IndexMapping.permutationToIndex(eEdges);
             }
@@ -421,8 +419,8 @@ public class RubiksCubeSolver {
     }
 
     // search
-    private static int MAX_SOLUTION_LENGTH         = 23;
-    private static int MAX_PHASE_2_SOLUTION_LENGTH = 12;
+    private static final int MAX_SOLUTION_LENGTH         = 23;
+    private static final int MAX_PHASE_2_SOLUTION_LENGTH = 12;
 
     private static State              initialState;
     private static ArrayList<Integer> solution1;
@@ -445,9 +443,9 @@ public class RubiksCubeSolver {
         int eEdgesCombination = IndexMapping.combinationToIndex(isEEdge, 4);
 
         for (int depth = 0; ; depth++) {
-            solution1 = new ArrayList<Integer>(MAX_SOLUTION_LENGTH);
+            solution1 = new ArrayList<>(MAX_SOLUTION_LENGTH);
             if (search1(cornersOrientation, edgesOrientation, eEdgesCombination, depth)) {
-                ArrayList<String> sequence = new ArrayList<String>();
+                ArrayList<String> sequence = new ArrayList<>();
                 for (int moveIndex : solution1) {
                     sequence.add(moveNames1[moveIndex]);
                 }
@@ -523,7 +521,7 @@ public class RubiksCubeSolver {
         // corners permutation index
         int cornersPermutation = IndexMapping.permutationToIndex(state.cornersPermutation);
 
-        // u and d eges permutation index
+        // u and d edges permutation index
         byte[] uDEdges = new byte[8];
         for (int i = 0; i < uDEdges.length; i++) {
             uDEdges[i] = (byte) (state.edgesPermutation[i + 4] - 4);
@@ -531,14 +529,11 @@ public class RubiksCubeSolver {
         int uDEdgesPermutation = IndexMapping.permutationToIndex(uDEdges);
 
         // e edges permutation index
-        byte[] eEdges = new byte[4];
-        for (int i = 0; i < eEdges.length; i++) {
-            eEdges[i] = state.edgesPermutation[i];
-        }
+        byte[] eEdges = Arrays.copyOf(state.edgesPermutation, 4);
         int eEdgesPermutation = IndexMapping.permutationToIndex(eEdges);
 
         for (int depth = 0; depth < Math.min(MAX_PHASE_2_SOLUTION_LENGTH, maxDepth); depth++) {
-            solution2 = new ArrayList<Integer>(MAX_SOLUTION_LENGTH);
+            solution2 = new ArrayList<>(MAX_SOLUTION_LENGTH);
             if (search2(cornersPermutation, uDEdgesPermutation, eEdgesPermutation, depth)) {
                 return true;
             }
@@ -560,7 +555,7 @@ public class RubiksCubeSolver {
             }
 
             for (int i = 0; i < moves2.length; i++) {
-                // avoid superflous moves between phases
+                // avoid superfluous moves between phases
                 if (solution2.size() == 0) {
                     int lastPhase1Axis = Integer.MAX_VALUE;
                     if (solution1.size() > 0) {
@@ -594,7 +589,7 @@ public class RubiksCubeSolver {
     public static String[] generate(State state) {
         String[] solution = solution(state);
 
-        HashMap<String, String> inverseMoveNames = new HashMap<String, String>();
+        HashMap<String, String> inverseMoveNames = new HashMap<>();
         inverseMoveNames.put("U", "U'");
         inverseMoveNames.put("U2", "U2");
         inverseMoveNames.put("U'", "U");

@@ -45,7 +45,6 @@ import com.aricneto.twistytimer.listener.ExportImportDialogInterface;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
-import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -70,7 +69,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-import static com.aricneto.twistytimer.utils.TTIntent.*;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler,
     FileChooserDialog.FileCallback, ExportImportDialogInterface {

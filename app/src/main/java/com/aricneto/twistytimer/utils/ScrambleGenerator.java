@@ -26,7 +26,6 @@ import puzzle.TwoByTwoCubePuzzle;
  */
 public class ScrambleGenerator {
     private Puzzle puzzle;
-    private String finalScramble;
     private String puzzleType;
 
     public ScrambleGenerator(String type) {
@@ -108,7 +107,6 @@ public class ScrambleGenerator {
         }
 
         String cubeImg = null;
-        SVG cubeSvg = null;
         Drawable pic = null;
 
         try {
@@ -119,8 +117,7 @@ public class ScrambleGenerator {
 
         if (cubeImg != null) {
             try {
-                cubeSvg = SVG.getFromString(cubeImg);
-                pic = new PictureDrawable(cubeSvg.renderToPicture());
+                pic = new PictureDrawable(SVG.getFromString(cubeImg).renderToPicture());
             } catch (SVGParseException e) {
                 e.printStackTrace();
             }

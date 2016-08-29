@@ -181,32 +181,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns all solves from history or session, from puzzle and category with a limit
-     * @param type
-     * @param subtype
-     * @return
-     */
-    public Cursor getAllSolvesFromWithLimit(int limit, String type, String subtype, boolean history) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection;
-        if (! history)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date ASC LIMIT " + limit;
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 1 ORDER BY date ASC LIMIT " + limit;
-
-        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
-    }
-
-    /**
      * Returns all solves from puzzle and category
      * @param type
      * @param subtype
      * @return
      */
-
     public Cursor getAllSolvesFrom(String type, String subtype) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -235,7 +214,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_TIMES, values, KEY_TYPE + " = ? AND " + KEY_SUBTYPE + " =?",
             new String[] { type, subtype });
     }
-
 
     // Adding new solve
     public long addSolve(Solve solve) {
@@ -336,56 +314,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.close();
         return subtypesList;
-    }
-
-    /**
-     * Returns the solve count with limit
-     *
-     * @return
-     */
-    public int getSolveCountWithLimit(int limit, String type, String subtype, boolean session) {
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 LIMIT " + limit;
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 LIMIT " + limit;
-
-        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
-
-        int count = cursor.getCount();
-        cursor.close();
-        // Return count
-        return count;
-    }
-
-    /**
-     * Gets the number of solves recorded in the database (including DNFs). The solves for the
-     * current session only or the solves for all past and current sessions can be counted.
-     *
-     * @param type
-     *     The type of the puzzle.
-     * @param subtype
-     *     The sub-type of the puzzle.
-     * @param session
-     *     {@code true} to count only solves from the current session; or {@code false} to count
-     *     all solves from all past and current sessions.
-     *
-     * @return
-     *     The number of solves recorded in the database for the given puzzle type and sub-type.
-     *     The count includes DNF solves.
-     */
-    public int getSolveCount(String type, String subtype, boolean session) {
-        final String sqlSelection
-                = "type=? AND subtype=? AND penalty!=10" + (session ? " AND history=0" : "");
-
-        return (int) DatabaseUtils.queryNumEntries(
-                getReadableDatabase(), TABLE_TIMES, sqlSelection,
-                new String[] { type, subtype });
     }
 
     /**
@@ -504,70 +432,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.close();
         }
     }
-
-    /**
-     * Returns a truncated average of n, along with a list containing all times from that average.
-     *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True 2 DNFs disqualify the attempt
-     *
-     * @return
-     */
-
-    public ArrayList<Integer> getListOfTruncatedAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        ArrayList<Integer> timeList = new ArrayList<>(n + 1);
-
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
-            new String[] { puzzle, type });
-
-        if (cursor.getCount() >= n) {
-
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
-
-            if (cursor.moveToFirst()) {
-                int worst = 0;
-                int best = Integer.MAX_VALUE;
-                int sum = 0;
-                int dnfCount = 0;
-                for (int i = 0; i < n; i++) {
-                    int time = cursor.getInt(timeIndex); // time
-                    sum += time;
-
-                    if (time > worst && dnfCount == 0)
-                        worst = time;
-                    if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                        best = time;
-
-                    if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
-                        worst = time;
-                        time = PuzzleUtils.TIME_DNF;
-                        dnfCount += 1;
-                    }
-
-                    timeList.add(time);
-
-                    cursor.moveToNext();
-                }
-                if (disqualifyDNF && dnfCount > 1)
-                    timeList.add(PuzzleUtils.TIME_DNF);
-                else
-                    timeList.add((sum - worst - best) / (n - 2));
-            }
-        }
-        cursor.close();
-        return timeList;
-    }
-
 
     // Delete an entry with an id
     public int deleteFromId(long id) {

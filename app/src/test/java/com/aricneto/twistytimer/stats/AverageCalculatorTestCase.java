@@ -1,12 +1,15 @@
 package com.aricneto.twistytimer.stats;
 
-import com.aricneto.twistytimer.stats.AverageCalculator;
+import com.aricneto.twistytimer.stats.AverageCalculator.AverageOfN;
 
 import org.junit.Test;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the {@link AverageCalculator} class. Averages are tests for 1, 3 and 5 solves. This covers
@@ -724,4 +727,342 @@ public class AverageCalculatorTestCase {
         assertEquals(2700, ac.getTotalTime());
         assertEquals(337, ac.getMeanTime()); // 2700 / 8 non-DNF solves.
     }
+
+    /**
+     * Tests the {@link AverageOfN} class to ensure it presents the times in the correct order
+     * and identifies the best and worst times correctly. This test covers the case where best
+     * and worst times should not be identified because the value of "N" is low. DNFs do not
+     * disqualify the average unless all times are DNFs. The implementation is known to rely on
+     * its parent class for much of the details, and those are tested in other methods, so these
+     * tests are not comprehensive.
+     *
+     * @throws Exception If the test fails to run.
+     */
+    @Test
+    public void testAverageOfNDetailsForThreeAllowDNFs() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(3, false);
+        AverageOfN aoN;
+
+        // Providing the times in the correct order (oldest first) is important. The source array
+        // that is used to fill the result of "getTimes" is a circular queue, so test the cases
+        // where the tail pointer ("AverageCalculator.mNext") is at the start, middle, end and just
+        // beyond the end and then ensure that the tricky copy to "AverageOfN.mTimes" is correct.
+        // Below, the possible values of "mNext" are 0, 1, 2, 3. It only matters once "N" times
+        // have been added. The values of "mNext" are noted in comments to show that all are tested.
+        // "mNext" is zero at the very start, but is 3 (just off the end of the array) instead of
+        // zero after that, so the zero case is not directly testable.
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(500, 250);
+        aoN = ac.getAverageOfN();
+
+        assertNull(aoN.getTimes());
+        assertEquals(UNKNOWN, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Complete the first three times. Average can now be calculated.
+        ac.addTime(150);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 500, 250, 150 }, aoN.getTimes()); // mNext == 3
+        assertEquals(300, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 1 DNF does not disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 250, 150, DNF }, aoN.getTimes()); // mNext == 1
+        assertEquals(200, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 2 DNFs do not disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 150, DNF, DNF }, aoN.getTimes()); // mNext == 2
+        assertEquals(150, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 3 DNFs disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { DNF, DNF, DNF }, aoN.getTimes()); // mNext == 3
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+   }
+
+    /**
+     * Tests the {@link AverageOfN} class to ensure it presents the times in the correct order
+     * and identifies the best and worst times correctly. This test covers the case where best
+     * and worst times should not be identified because the value of "N" is low. DNFs disqualify
+     * the average.
+     *
+     * @throws Exception If the test fails to run.
+     */
+    @Test
+    public void testAverageOfNDetailsForThreeDisqualifyDNFs() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(3, true);
+        AverageOfN aoN;
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(500, 250);
+        aoN = ac.getAverageOfN();
+
+        assertNull(aoN.getTimes());
+        assertEquals(UNKNOWN, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Complete the first three times. Average can now be calculated.
+        ac.addTime(150);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 500, 250, 150 }, aoN.getTimes()); // mNext == 3
+        assertEquals(300, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 1 DNF disqualifies the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 250, 150, DNF }, aoN.getTimes()); // mNext == 1
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 2 DNFs disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 150, DNF, DNF }, aoN.getTimes()); // mNext == 2
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // 3 DNFs disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { DNF, DNF, DNF }, aoN.getTimes()); // mNext == 3
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+
+        // No DNFs and the result is valid again.
+        ac.addTimes(100, 200, 600);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 100, 200, 600 }, aoN.getTimes()); // mNext == 3
+        assertEquals(300, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());  // No elimination of best time for N=3.
+        assertEquals(-1, aoN.getWorstTimeIndex()); // No elimination of worst time for N=3.
+   }
+
+    /**
+     * Tests the {@link AverageOfN} class to ensure it presents the times in the correct order
+     * and identifies the best and worst times correctly. This test covers the case where best
+     * and worst times must be identified because the value of "N" is high enough to trigger the
+     * calculation of a truncated mean. DNFs do not disqualify the average unless all times are
+     * DNFs. The "best" time is not eliminated if there is only one non-DNF time present.
+     *
+     * @throws Exception If the test fails to run.
+     */
+    @Test
+    public void testAverageOfNDetailsForFiveAllowDNFs() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(5, false);
+        AverageOfN aoN;
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(500, 150, 250, 600);
+        aoN = ac.getAverageOfN();
+
+        assertNull(aoN.getTimes());
+        assertEquals(UNKNOWN, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Complete the first five times. Average can now be calculated.
+        ac.addTime(350);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 500, 150, 250, 600, 350 }, aoN.getTimes()); // mNext == 5
+        assertEquals(366, aoN.getAverage()); // Mean of 500+250+350. 150 and 600 are eliminated.
+        assertEquals(1, aoN.getBestTimeIndex());  // 150
+        assertEquals(3, aoN.getWorstTimeIndex()); // 600
+
+        // 1 DNF does not disqualify the result. DNF becomes the "worst" time.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 150, 250, 600, 350, DNF }, aoN.getTimes()); // mNext == 1
+        assertEquals(400, aoN.getAverage()); // Mean of 250+600+350. 150 and DNF are eliminated.
+        assertEquals(0, aoN.getBestTimeIndex());  // 150
+        assertEquals(4, aoN.getWorstTimeIndex()); // DNF
+
+        // 2 DNFs do not disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 250, 600, 350, DNF, DNF }, aoN.getTimes()); // mNext == 2
+        assertEquals(475, aoN.getAverage()); // Mean of 600+350. 250, DNF1 eliminated. DNF2 ignored.
+        assertEquals(0, aoN.getBestTimeIndex());  // 250
+        assertEquals(3, aoN.getWorstTimeIndex()); // First DNF
+
+        // 3 DNFs do not disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 600, 350, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 3
+        assertEquals(600, aoN.getAverage()); // 350, DNF1 eliminated. DNF2, DNF3 ignored.
+        assertEquals(1, aoN.getBestTimeIndex());  // 350
+        assertEquals(2, aoN.getWorstTimeIndex()); // First DNF
+
+        // 4 DNFs do not disqualify the result, but no best time will be eliminated.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 350, DNF, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 4
+        assertEquals(350, aoN.getAverage()); // All DNFs are ignored.
+        assertEquals(-1, aoN.getBestTimeIndex()); // No elimination of the only non-DNF time.
+        assertEquals(1, aoN.getWorstTimeIndex()); // First DNF
+
+        // 5 DNFs disqualify the result. No eliminations.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { DNF, DNF, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 5
+        assertEquals(DNF, aoN.getAverage()); // Average is disqualified.
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Where all times are the same, the best and worst eliminations must not be the at the
+        // same index. Expect the best to identified first and the worst second.
+        ac.addTimes(100, 100, 100, 100, 100);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 100, 100, 100, 100, 100 }, aoN.getTimes());
+        assertEquals(100, aoN.getAverage());
+        assertEquals(0, aoN.getBestTimeIndex());  // First time is "best".
+        assertEquals(1, aoN.getWorstTimeIndex()); // Next time is "worst".
+   }
+
+    /**
+     * Tests the {@link AverageOfN} class to ensure it presents the times in the correct order
+     * and identifies the best and worst times correctly. This test covers the case where best
+     * and worst times must be identified because the value of "N" is high enough to trigger the
+     * calculation of a truncated mean. More than one DNF disqualifies the average. The "best" and
+     * worst times are identified in the same manner as when DNFs do not cause disqualifications,
+     * even where the average is disqualified.
+     *
+     * @throws Exception If the test fails to run.
+     */
+    @Test
+    public void testAverageOfNDetailsForFiveDisqualifyDNFs() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(5, true);
+        AverageOfN aoN;
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(500, 150, 250, 600);
+        aoN = ac.getAverageOfN();
+
+        assertNull(aoN.getTimes());
+        assertEquals(UNKNOWN, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Complete the first five times. Average can now be calculated.
+        ac.addTime(350);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 500, 150, 250, 600, 350 }, aoN.getTimes()); // mNext == 5
+        assertEquals(366, aoN.getAverage()); // Mean of 500+250+350. 150 and 600 are eliminated.
+        assertEquals(1, aoN.getBestTimeIndex());  // 150
+        assertEquals(3, aoN.getWorstTimeIndex()); // 600
+
+        // 1 DNF does not disqualify the result. DNF becomes the "worst" time.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 150, 250, 600, 350, DNF }, aoN.getTimes()); // mNext == 1
+        assertEquals(400, aoN.getAverage()); // Mean of 250+600+350. 150 and DNF are eliminated.
+        assertEquals(0, aoN.getBestTimeIndex());  // 150
+        assertEquals(4, aoN.getWorstTimeIndex()); // DNF
+
+        // 2 DNFs disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 250, 600, 350, DNF, DNF }, aoN.getTimes()); // mNext == 2
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(0, aoN.getBestTimeIndex());  // 250
+        assertEquals(3, aoN.getWorstTimeIndex()); // First DNF
+
+        // 3 DNFs disqualify the result.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 600, 350, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 3
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(1, aoN.getBestTimeIndex());  // 350
+        assertEquals(2, aoN.getWorstTimeIndex()); // First DNF
+
+        // 4 DNFs disqualify the result, and no best time will be identified.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 350, DNF, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 4
+        assertEquals(DNF, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex()); // No identification of the only non-DNF time.
+        assertEquals(1, aoN.getWorstTimeIndex()); // First DNF
+
+        // 5 DNFs disqualify the result. No eliminations.
+        ac.addTime(DNF);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { DNF, DNF, DNF, DNF, DNF }, aoN.getTimes()); // mNext == 5
+        assertEquals(DNF, aoN.getAverage()); // Average is disqualified.
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        // Where all times are the same, the best and worst eliminations must not be the at the
+        // same index. Expect the best to identified first and the worst second.
+        ac.addTimes(100, 100, 100, 100, 100);
+        aoN = ac.getAverageOfN();
+
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 100, 100, 100, 100, 100 }, aoN.getTimes());
+        assertEquals(100, aoN.getAverage());
+        assertEquals(0, aoN.getBestTimeIndex());  // First time is "best".
+        assertEquals(1, aoN.getWorstTimeIndex()); // Next time is "worst".
+   }
 }

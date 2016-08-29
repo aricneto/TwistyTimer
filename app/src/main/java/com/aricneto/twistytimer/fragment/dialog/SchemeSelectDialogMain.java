@@ -1,7 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -47,8 +46,7 @@ public class SchemeSelectDialogMain extends DialogFragment {
     @BindView(R.id.done)  TextView done;
 
     public static SchemeSelectDialogMain newInstance() {
-        SchemeSelectDialogMain schemeSelectDialogMain = new SchemeSelectDialogMain();
-        return schemeSelectDialogMain;
+        return new SchemeSelectDialogMain();
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -203,11 +201,6 @@ public class SchemeSelectDialogMain extends DialogFragment {
         DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
         wrap = wrap.mutate();
         view.setBackground(wrap);
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
     }
 
     @Override
