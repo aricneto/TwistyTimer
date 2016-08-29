@@ -49,7 +49,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = true;
+    private static final boolean DEBUG_ME = false;
 
     /**
      * A "tag" to identify this class in log messages.
