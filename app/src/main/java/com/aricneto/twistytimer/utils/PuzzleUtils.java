@@ -172,18 +172,6 @@ public class PuzzleUtils {
             return new DateTime(time, DateTimeZone.UTC).toString("s");
     }
 
-    public static String convertPenaltyToString(int penalty) {
-        switch (penalty) {
-            case NO_PENALTY:
-                return "--";
-            case PENALTY_PLUSTWO:
-                return "+2";
-            case PENALTY_DNF:
-                return "DNF";
-        }
-        return "";
-    }
-
     /**
      * Converts times in the format "M:SS.s", or "S.s" into an integer number of milliseconds. The
      * minutes value may be padded with zeros. The "ss" is the fractional number of seconds and may
