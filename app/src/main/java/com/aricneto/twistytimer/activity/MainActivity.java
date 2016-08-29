@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private static final int REQUEST_ABOUT             = 23;
     private static final int STORAGE_PERMISSION_CODE   = 11;
 
-    private static final String OPEN_EXPORT_IMPORT_DIALOG = "open_export_import_dialog";
-
     // NOTE: Loader IDs used by fragments need to be unique within the context of an activity that
     // creates those fragments. Therefore, it is safer to define all of the IDs in the same place.
 
@@ -141,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     private Drawer          mDrawer;
     private MaterialDialog  progressDialog;
 
-    private boolean openExportImportDialog;
-
     public void openDrawer() {
         mDrawer.openDrawer();
     }
@@ -170,12 +166,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                 .beginTransaction()
                 .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
                 .commit();
-            try {
-                openExportImportDialog = savedInstanceState.getBoolean(OPEN_EXPORT_IMPORT_DIALOG);
-            } catch (Exception e) {
-                e.printStackTrace();
-                openExportImportDialog = false;
-            }
         }
 
         handleDrawer(savedInstanceState);
@@ -185,12 +175,6 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     protected void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume()");
         super.onResume();
-        if (openExportImportDialog) {
-            ExportImportDialog exportImportDialog = ExportImportDialog.newInstance();
-            exportImportDialog.setDialogInterface(this);
-            exportImportDialog.show(fragmentManager, "exportImport_dialog");
-            openExportImportDialog = false;
-        }
     }
 
     private void handleDrawer(Bundle savedInstanceState) {
@@ -621,8 +605,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
                 if (isBackup) {
                     Cursor cursor = handler.getAllSolves();
-                    publishProgress(0, cursor.getCount());
                     if (cursor != null) {
+                        publishProgress(0, cursor.getCount());
                         out.write(csvHeader);
                         while (cursor.moveToNext()) {
                             csvValues = "\"" + cursor.getString(1) + "\";";
@@ -642,8 +626,8 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                     returnCode = true;
                 } else {
                     Cursor cursor = handler.getAllSolvesFrom(exportImportPuzzle, exportImportCategory);
-                    publishProgress(0, cursor.getCount());
                     if (cursor != null) {
+                        publishProgress(0, cursor.getCount());
                         while (cursor.moveToNext()) {
                             csvValues = "\"" + PuzzleUtils.convertTimeToString(cursor.getInt(3)) + "\";";
                             csvValues += "\"" + cursor.getString(5) + "\";";
@@ -753,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
                                 int time = PuzzleUtils.parseTime(line[0]);
                                 String scramble = "";
                                 long date = DateTime.now().getMillis();
-                                ;
+
                                 if (line.length >= 2) {
                                     scramble = line[1];
                                 }

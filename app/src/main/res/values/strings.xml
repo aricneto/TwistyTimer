@@ -142,7 +142,7 @@
     <string name="sent_to_session">Moved to session</string>
     <string name="sent_to_history">Moved to history</string>
     <string name="move_solves_to_history">Move solves to history?</string>
-    <string name="move_solves_to_history_content">You\'ll be able to acess them by tapping the history switch</string>
+    <string name="move_solves_to_history_content">You\'ll be able to access them by tapping the history switch</string>
     <string name="action_move">Move</string>
     <string name="invalid_time">Invalid time</string>
     <string name="pagerEnabledTitle">Allow swiping between tabs</string>
