@@ -189,13 +189,15 @@ public class TimerFragment extends BaseFragment
     private Statistics mRecentStatistics;
 
     // Receives broadcasts related to changes to the timer user interface.
-    private TTFragmentBroadcastReceiver mUIInteractionReceiver
+    private final TTFragmentBroadcastReceiver mUIInteractionReceiver
             = new TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_SCROLLED_PAGE:
-                    holdHandler.removeCallbacks(holdRunnable);
+                    if (holdEnabled) {
+                        holdHandler.removeCallbacks(holdRunnable);
+                    }
                     chronometer.setHighlighted(false);
                     chronometer.cancelHoldForStart();
                     isReady = false;
@@ -225,7 +227,7 @@ public class TimerFragment extends BaseFragment
         // Required empty public constructor
     }
 
-    private View.OnClickListener buttonClickListener = new View.OnClickListener() {
+    private final View.OnClickListener buttonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
