@@ -1,12 +1,10 @@
 package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.preference.PreferenceManager;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -16,76 +14,52 @@ import android.util.TypedValue;
 import com.aricneto.twistify.R;
 
 /**
- * Util to make themeing easier
+ * Utility class to make themeing easier.
  */
-public class ThemeUtils {
+public final class ThemeUtils {
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private ThemeUtils() {
+    }
 
-    public static int getCurrentTheme(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", true);
-        switch (sharedPreferences.getString("theme", "indigo")) {
+    /**
+     * Gets the user's preferred theme. This is the theme that has been selected and saved to the
+     * settings (or the default theme); it is not necessarily the same as the theme that is
+     * currently applied to the user interface.
+     *
+     * @return The user's chosen preferred theme.
+     */
+    public static int getPreferredTheme() {
+        final boolean bgEnabled = Prefs.getBoolean(R.string.pk_timer_bg_enabled, true);
+
+        switch (Prefs.getString(R.string.pk_theme, "indigo")) {
+            default:
             case "indigo":
-                if (backgroundEnabled)
-                    return R.style.DefaultTheme;
-                else
-                    return R.style.DefaultTheme_NoBackground;
+                return bgEnabled ? R.style.DefaultTheme    : R.style.DefaultTheme_NoBackground;
             case "purple":
-                if (backgroundEnabled)
-                    return R.style.PurpleTheme;
-                else
-                    return R.style.PurpleTheme_NoBackground;
+                return bgEnabled ? R.style.PurpleTheme     : R.style.PurpleTheme_NoBackground;
             case "teal":
-                if (backgroundEnabled)
-                    return R.style.TealTheme;
-                else
-                    return R.style.TealTheme_NoBackground;
+                return bgEnabled ? R.style.TealTheme       : R.style.TealTheme_NoBackground;
             case "pink":
-                if (backgroundEnabled)
-                    return R.style.PinkTheme;
-                else
-                    return R.style.PinkTheme_NoBackground;
+                return bgEnabled ? R.style.PinkTheme       : R.style.PinkTheme_NoBackground;
             case "red":
-                if (backgroundEnabled)
-                    return R.style.RedTheme;
-                else
-                    return R.style.RedTheme_NoBackground;
+                return bgEnabled ? R.style.RedTheme        : R.style.RedTheme_NoBackground;
             case "brown":
-                if (backgroundEnabled)
-                    return R.style.BrownTheme;
-                else
-                    return R.style.BrownTheme_NoBackground;
+                return bgEnabled ? R.style.BrownTheme      : R.style.BrownTheme_NoBackground;
             case "blue":
-                if (backgroundEnabled)
-                    return R.style.BlueTheme;
-                else
-                    return R.style.BlueTheme_NoBackground;
+                return bgEnabled ? R.style.BlueTheme       : R.style.BlueTheme_NoBackground;
             case "black":
-                if (backgroundEnabled)
-                    return R.style.BlackTheme;
-                else
-                    return R.style.BlackTheme_NoBackground;
+                return bgEnabled ? R.style.BlackTheme      : R.style.BlackTheme_NoBackground;
             case "orange":
-                if (backgroundEnabled)
-                    return R.style.OrangeTheme;
-                else
-                    return R.style.OrangeTheme_NoBackground;
+                return bgEnabled ? R.style.OrangeTheme     : R.style.OrangeTheme_NoBackground;
             case "green":
-                if (backgroundEnabled)
-                    return R.style.GreenTheme;
-                else
-                    return R.style.GreenTheme_NoBackground;
+                return bgEnabled ? R.style.GreenTheme      : R.style.GreenTheme_NoBackground;
             case "deepPurple":
-                if (backgroundEnabled)
-                    return R.style.DeepPurpleTheme;
-                else
-                    return R.style.DeepPurpleTheme_NoBackground;
+                return bgEnabled ? R.style.DeepPurpleTheme : R.style.DeepPurpleTheme_NoBackground;
             case "blueGray":
-                if (backgroundEnabled)
-                    return R.style.BlueGrayTheme;
-                else
-                    return R.style.BlueGrayTheme_NoBackground;
+                return bgEnabled ? R.style.BlueGrayTheme   : R.style.BlueGrayTheme_NoBackground;
         }
-        return R.style.DefaultTheme;
     }
 
     /**
@@ -109,7 +83,6 @@ public class ThemeUtils {
 
         return wrap;
     }
-
 
     // The following two functions are used to tint the history switch
 
@@ -146,5 +119,4 @@ public class ThemeUtils {
 
         return new LayerDrawable(layers);
     }
-
 }

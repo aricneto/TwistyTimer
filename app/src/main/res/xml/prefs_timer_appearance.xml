@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_backgroundEnabled"
-        android:key="backgroundEnabled"
+        android:key="@string/pk_timer_bg_enabled"
         android:summary="@string/backgroundEnabledSummary"
         android:title="@string/backgroundEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_millisecondsEnabled"
-        android:key="millisecondsEnabled"
+        android:key="@string/pk_show_hi_res_timer"
         android:summary="@string/millisecondsEnabledSummary"
         android:title="@string/millisecondsEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_hideTime"
-        android:key="hideTimeEnabled"
+        android:key="@string/pk_hide_time_while_running"
         android:summary="@string/hideTimeSummary"
         android:title="@string/hideTimeTitle" />
 
-
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_buttonEnabled"
-        android:key="scrambleImageEnabled"
+        android:key="@string/pk_show_scramble_image"
         android:summary="@string/scrambleImageEnabledSummary"
         android:title="@string/scrambleImageEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_buttonEnabled"
-        android:key="sessionStatsEnabled"
+        android:key="@string/pk_show_session_stats"
         android:summary="@string/sessionStatsEnabledSummary"
         android:title="@string/sessionStatsEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_buttonEnabled"
-        android:key="buttonsEnabled"
+        android:key="@string/pk_show_quick_actions"
         android:summary="@string/buttonsEnabledSummary"
         android:title="@string/buttonsEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_bestSolve"
-        android:key="bestSolveEnabled"
+        android:key="@string/pk_show_best_time"
         android:summary="@string/bestSolveEnabledSummary"
         android:title="@string/bestSolveEnabledTitle" />
 
     <com.jenzz.materialpreference.SwitchPreference
         android:defaultValue="@bool/default_worstSolve"
-        android:key="worstSolveEnabled"
+        android:key="@string/pk_show_worst_time"
         android:summary="@string/worstSolveEnabledSummary"
         android:title="@string/worstSolveEnabledTitle" />
 
     <com.jenzz.materialpreference.Preference
         android:defaultValue="@integer/defaultScrambleTextSize"
-        android:key="scrambleTextSize"
+        android:key="@string/pk_scramble_text_size"
         android:summary="@string/scramble_text_size_summary"
         android:title="@string/scramble_text_size" />
 
@@ -63,35 +61,34 @@
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/defaultAdvancedEnabled"
-            android:key="enableAdvanced"
+            android:key="@string/pk_advanced_timer_settings_enabled"
             android:title="@string/enable_advanced" />
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultTimeTextSize"
-            android:dependency="enableAdvanced"
-            android:key="timerTextSize"
+            android:dependency="@string/pk_advanced_timer_settings_enabled"
+            android:key="@string/pk_timer_text_size"
             android:title="@string/timer_text_size"
             android:summary="@string/timer_text_size_summary"/>
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultTimeTextOffset"
-            android:dependency="enableAdvanced"
-            android:key="timerTextOffset"
+            android:dependency="@string/pk_advanced_timer_settings_enabled"
+            android:key="@string/pk_timer_text_offset"
             android:title="@string/timer_text_offset"
             android:summary="@string/timer_text_offset_summary"/>
 
-
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/defaultScrambleImageSize"
-            android:dependency="enableAdvanced"
-            android:key="scrambleImageSize"
+            android:dependency="@string/pk_advanced_timer_settings_enabled"
+            android:key="@string/pk_scramble_image_size"
             android:title="@string/scrambleImageSize_text"
             android:summary="@string/scrambleImageSize_summary"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_large_quickaction"
-            android:dependency="enableAdvanced"
-            android:key="quickActionLarge"
+            android:dependency="@string/pk_advanced_timer_settings_enabled"
+            android:key="@string/pk_large_quick_actions_enabled"
             android:title="@string/quick_action_button_large_title"
             android:summary="@string/quick_action_button_large_summary"/>
 

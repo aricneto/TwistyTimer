@@ -1,14 +1,10 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +17,7 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
+import com.aricneto.twistytimer.utils.Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,57 +50,35 @@ public class ThemeSelectDialog extends DialogFragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            final String oldTheme = Prefs.getString(R.string.pk_theme, "indigo");
+            final String newTheme;
 
             switch (view.getId()) {
-                case R.id.indigo:
-                    editor.putString("theme", "indigo");
-                    break;
-                case R.id.purple:
-                    editor.putString("theme", "purple");
-                    break;
-                case R.id.teal:
-                    editor.putString("theme", "teal");
-                    break;
-                case R.id.pink:
-                    editor.putString("theme", "pink");
-                    break;
-                case R.id.red:
-                    editor.putString("theme", "red");
-                    break;
-                case R.id.brown:
-                    editor.putString("theme", "brown");
-                    break;
-                case R.id.blue:
-                    editor.putString("theme", "blue");
-                    break;
-                case R.id.black:
-                    editor.putString("theme", "black");
-                    break;
-                case R.id.orange:
-                    editor.putString("theme", "orange");
-                    break;
-                case R.id.green:
-                    editor.putString("theme", "green");
-                    break;
-                case R.id.deepPurple:
-                    editor.putString("theme", "deepPurple");
-                    break;
-                case R.id.blueGray:
-                    editor.putString("theme", "blueGray");
-                    break;
+                case R.id.indigo:     newTheme = "indigo"; break;
+                case R.id.purple:     newTheme = "purple"; break;
+                case R.id.teal:       newTheme = "teal"; break;
+                case R.id.pink:       newTheme = "pink"; break;
+                case R.id.red:        newTheme = "red"; break;
+                case R.id.brown:      newTheme = "brown"; break;
+                case R.id.blue:       newTheme = "blue"; break;
+                case R.id.black:      newTheme = "black"; break;
+                case R.id.orange:     newTheme = "orange"; break;
+                case R.id.green:      newTheme = "green"; break;
+                case R.id.deepPurple: newTheme = "deepPurple"; break;
+                case R.id.blueGray:   newTheme = "blueGray"; break;
+                default:              newTheme = oldTheme;
             }
 
-            editor.apply();
+            // If the theme has been changed, then the activity will need to be recreated. The
+            // theme can only be applied properly during the inflation of the layouts, so it has
+            // to go back to "Activity.onCreate()" to do that.
+            if (!newTheme.equals(oldTheme)) {
+                Prefs.edit().putString(R.string.pk_theme, newTheme).apply();
+
+                ((MainActivity) getActivity()).onRecreateRequired();
+            }
+
             dismiss();
-
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.finish();
-                activity.startActivity(new Intent(activity, MainActivity.class));
-            }
-
         }
     };
 
@@ -112,44 +87,34 @@ public class ThemeSelectDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_theme_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        setBlob(indigo, R.color.md_indigo_500);
-        setBlob(purple, R.color.md_purple_500);
-        setBlob(teal, R.color.md_teal_500);
-        setBlob(pink, R.color.md_pink_500);
-        setBlob(red, R.color.md_red_500);
-        setBlob(brown, R.color.md_brown_500);
-        setBlob(blue, R.color.md_blue_500);
-        setBlob(black, R.color.md_black_1000);
-        setBlob(orange, R.color.md_deep_orange_500);
-        setBlob(green, R.color.md_green_500);
-        setBlob(deepPurple, R.color.md_deep_purple_500);
-        setBlob(blueGray, R.color.md_blue_grey_500);
-
-        indigo.setOnClickListener(clickListener);
-        purple.setOnClickListener(clickListener);
-        teal.setOnClickListener(clickListener);
-        pink.setOnClickListener(clickListener);
-        red.setOnClickListener(clickListener);
-        brown.setOnClickListener(clickListener);
-        blue.setOnClickListener(clickListener);
-        black.setOnClickListener(clickListener);
-        orange.setOnClickListener(clickListener);
-        green.setOnClickListener(clickListener);
-        deepPurple.setOnClickListener(clickListener);
-        blueGray.setOnClickListener(clickListener);
+        setBlob(indigo,     R.color.md_indigo_500).setOnClickListener(clickListener);
+        setBlob(purple,     R.color.md_purple_500).setOnClickListener(clickListener);
+        setBlob(teal,       R.color.md_teal_500).setOnClickListener(clickListener);
+        setBlob(pink,       R.color.md_pink_500).setOnClickListener(clickListener);
+        setBlob(red,        R.color.md_red_500).setOnClickListener(clickListener);
+        setBlob(brown,      R.color.md_brown_500).setOnClickListener(clickListener);
+        setBlob(blue,       R.color.md_blue_500).setOnClickListener(clickListener);
+        setBlob(black,      R.color.md_black_1000).setOnClickListener(clickListener);
+        setBlob(orange,     R.color.md_deep_orange_500).setOnClickListener(clickListener);
+        setBlob(green,      R.color.md_green_500).setOnClickListener(clickListener);
+        setBlob(deepPurple, R.color.md_deep_purple_500).setOnClickListener(clickListener);
+        setBlob(blueGray,   R.color.md_blue_grey_500).setOnClickListener(clickListener);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         return dialogView;
     }
 
-    private void setBlob(TextView view, @ColorRes int colorRes) {
+    private View setBlob(TextView view, @ColorRes int colorRes) {
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.thumb_circle);
         Drawable wrap = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(wrap, ContextCompat.getColor(getContext(), colorRes));
         DrawableCompat.setTintMode(wrap, PorterDuff.Mode.SRC_IN);
         wrap = wrap.mutate();
         view.setCompoundDrawablesWithIntrinsicBounds(wrap, null, null, null);
+
+        return view;
     }
 
     @Override

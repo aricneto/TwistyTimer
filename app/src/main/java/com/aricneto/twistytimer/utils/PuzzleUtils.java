@@ -47,6 +47,7 @@ public class PuzzleUtils {
     }
 
     public static String getPuzzleInPosition(int position) {
+        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
         switch (position) {
             default:
             case  0: return TYPE_333;
@@ -72,6 +73,7 @@ public class PuzzleUtils {
      * @return The position (zero-based) of the puzzle within a list.
      */
     public static int getPositionOfPuzzle(String puzzleType) {
+        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
         switch (puzzleType) {
             default:
             case TYPE_333:     return  0;
