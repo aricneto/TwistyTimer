@@ -301,8 +301,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         handleHeaderSpinner();
         setupToolbarForFragment(mToolbar);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        pagerEnabled = sharedPreferences.getBoolean("pagerEnabled", true);
+        pagerEnabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(
+                getString(R.string.pk_tab_swiping_enabled), true);
 
         if (pagerEnabled)
             viewPager.setPagingEnabled(true);

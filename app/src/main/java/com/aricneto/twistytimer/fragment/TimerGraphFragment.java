@@ -258,7 +258,8 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         sessionBestTimes.setVisibility(visibility);
         sessionCurrentTimes.setVisibility(visibility);
 
-        progressBar.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
+        // NOTE: Use "INVISIBLE", not "GONE", or there will be problems with vertical centering.
+        progressBar.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
     }
 
     /**

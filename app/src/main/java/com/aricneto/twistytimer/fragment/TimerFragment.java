@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -56,6 +55,7 @@ import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.skyfishjy.library.RippleBackground;
@@ -221,7 +221,6 @@ public class TimerFragment extends BaseFragment
 
     private RubiksCubeOptimalCross  optimalCross;
     private RubiksCubeOptimalXCross optimalXCross;
-    private SharedPreferences       sharedPreferences;
 
     public TimerFragment() {
         // Required empty public constructor
@@ -392,15 +391,16 @@ public class TimerFragment extends BaseFragment
         undoButton.setOnClickListener(buttonClickListener);
 
         // Preferences //
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        final boolean inspectionEnabled = sharedPreferences.getBoolean("inspectionEnabled", false);
-        final int inspectionTime = sharedPreferences.getInt("inspectionTime", 15);
-        final boolean advancedEnabled = sharedPreferences.getBoolean("enableAdvanced", false);
-        final float scrambleTextSize = ((float) sharedPreferences.getInt("scrambleTextSize", 100)) / 100f;
-        final boolean quickActionLarge = sharedPreferences.getBoolean("quickActionLarge", false);
-        final float timerTextSize = ((float) sharedPreferences.getInt("timerTextSize", 100)) / 100f;
-        final float scrambleImageSize = ((float) sharedPreferences.getInt("scrambleImageSize", 100)) / 100f;
-        final int timerTextOffset = sharedPreferences.getInt("timerTextOffset", 0);
+        final boolean inspectionEnabled = Prefs.getBoolean(R.string.pk_inspection_enabled, false);
+        final int inspectionTime = Prefs.getInt(R.string.pk_inspection_time, 15);
+        final boolean quickActionLarge
+                = Prefs.getBoolean(R.string.pk_large_quick_actions_enabled, false);
+        final float timerTextSize = Prefs.getInt(R.string.pk_timer_text_size, 100) / 100f;
+        final int timerTextOffset = Prefs.getInt(R.string.pk_timer_text_offset, 0);
+        float scrambleImageSize = Prefs.getInt(R.string.pk_scramble_image_size, 100) / 100f;
+        final float scrambleTextSize = Prefs.getInt(R.string.pk_scramble_text_size, 100) / 100f;
+        final boolean advancedEnabled
+                = Prefs.getBoolean(R.string.pk_advanced_timer_settings_enabled, false);
 
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
 
@@ -426,17 +426,19 @@ public class TimerFragment extends BaseFragment
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
 
-        buttonsEnabled = sharedPreferences.getBoolean("buttonsEnabled", true);
-        scrambleImgEnabled = sharedPreferences.getBoolean("scrambleImageEnabled", true);
-        sessionStatsEnabled = sharedPreferences.getBoolean("sessionStatsEnabled", true);
-        worstSolveEnabled = sharedPreferences.getBoolean("worstSolveEnabled", false);
-        bestSolveEnabled = sharedPreferences.getBoolean("bestSolveEnabled", true);
-        holdEnabled = sharedPreferences.getBoolean("holdEnabled", false);
-        scrambleEnabled = sharedPreferences.getBoolean("scrambleEnabled", true);
-        backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", false);
-        startCueEnabled = sharedPreferences.getBoolean("startCue", false);
-        showHints = sharedPreferences.getBoolean("showHints", true);
-        showHintsXCross = sharedPreferences.getBoolean("showHintsXCross", false);
+        buttonsEnabled = Prefs.getBoolean(R.string.pk_show_quick_actions, true);
+        holdEnabled = Prefs.getBoolean(R.string.pk_hold_to_start_enabled, false);
+        startCueEnabled = Prefs.getBoolean(R.string.pk_start_cue_enabled, false);
+
+        sessionStatsEnabled = Prefs.getBoolean(R.string.pk_show_session_stats, true);
+        bestSolveEnabled = Prefs.getBoolean(R.string.pk_show_best_time, true);
+        worstSolveEnabled = Prefs.getBoolean(R.string.pk_show_worst_time, false);
+        backgroundEnabled = Prefs.getBoolean(R.string.pk_timer_bg_enabled, false);
+
+        scrambleEnabled = Prefs.getBoolean(R.string.pk_scramble_enabled, true);
+        scrambleImgEnabled = Prefs.getBoolean(R.string.pk_show_scramble_image, true);
+        showHints = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
+        showHintsXCross = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
 
         if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
             hintCard.setVisibility(View.VISIBLE);
@@ -1193,7 +1195,9 @@ public class TimerFragment extends BaseFragment
 
         @Override
         protected Drawable doInBackground(Void... voids) {
-            return generator.generateImageFromScramble(sharedPreferences, realScramble);
+            return generator.generateImageFromScramble(
+                    PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext()),
+                    realScramble);
         }
 
         @Override

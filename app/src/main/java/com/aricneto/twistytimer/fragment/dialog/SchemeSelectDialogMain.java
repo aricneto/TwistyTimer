@@ -1,7 +1,5 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -180,10 +178,8 @@ public class SchemeSelectDialogMain extends DialogFragment {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    activity.finish();
-                    activity.startActivity(new Intent(activity, MainActivity.class));
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).onRecreateRequired();
                 }
                 dismiss();
             }
