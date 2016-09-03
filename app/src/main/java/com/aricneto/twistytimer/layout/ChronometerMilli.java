@@ -5,16 +5,15 @@ package com.aricneto.twistytimer.layout;
  */
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import org.joda.time.DateTime;
@@ -142,10 +141,8 @@ public class ChronometerMilli extends TextView {
         // The implementation assumes that different colors for different states will not be used.
         mNormalColor = getCurrentTextColor();
 
-        final SharedPreferences sharedPreferences
-                = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mShowHiRes = sharedPreferences.getBoolean("millisecondsEnabled", true);
-        hideTimeEnabled = sharedPreferences.getBoolean("hideTimeEnabled", false);
+        mShowHiRes = Prefs.getBoolean(R.string.pk_show_hi_res_timer, true);
+        hideTimeEnabled = Prefs.getBoolean(R.string.pk_hide_time_while_running, false);
         hideTimeText = getContext().getString(R.string.hideTimeText);
 
         // The initial state will cause "0.00" to be displayed.

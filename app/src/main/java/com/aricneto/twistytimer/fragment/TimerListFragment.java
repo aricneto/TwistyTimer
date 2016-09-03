@@ -4,12 +4,10 @@ package com.aricneto.twistytimer.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -41,6 +39,7 @@ import com.aricneto.twistytimer.layout.Fab;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -240,13 +239,11 @@ public class TimerListFragment extends BaseFragment
         View rootView = inflater.inflate(R.layout.fragment_time_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean clearEnabled = sharedPreferences.getBoolean("clearEnabled", false);
-
-        if (clearEnabled) {
+        if (Prefs.getBoolean(R.string.pk_show_clear_button, false)) {
             dividerView.setVisibility(View.VISIBLE);
             clearButton.setVisibility(View.VISIBLE);
-            archiveButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer_sand_black_18dp, 0, 0, 0);
+            archiveButton.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_timer_sand_black_18dp, 0, 0, 0);
         }
 
         materialSheetFab = new MaterialSheetFab<>(
