@@ -1,21 +1,24 @@
 package com.aricneto.twistytimer.database;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.stats.ChartStatistics;
+import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,6 +39,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_COMMENT  = "comment";
     public static final String KEY_HISTORY  = "history";
 
+    // Index value of the keys of the "times" table *only* for a full "SELECT * FROM times".
+    // Added these to make code in places like "MainActivity" (export/import) a bit more readable,
+    // as it was using "magic numbers". However, it would be better if such ad hoc reads were moved
+    // back into this class.
+    public static final int IDX_ID       = 0;
+    public static final int IDX_TYPE     = 1;
+    public static final int IDX_SUBTYPE  = 2;
+    public static final int IDX_TIME     = 3;
+    public static final int IDX_DATE     = 4;
+    public static final int IDX_SCRAMBLE = 5;
+    public static final int IDX_PENALTY  = 6;
+    public static final int IDX_COMMENT  = 7;
+    public static final int IDX_HISTORY  = 8;
+
     // Algs table
     public static final String TABLE_ALGS   = "algs";
     public static final String KEY_SUBSET   = "subset";
@@ -46,7 +63,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public static final String SUBSET_OLL = "OLL";
     public static final String SUBSET_PLL = "PLL";
-
 
     private static final String RED                = "R";
     private static final String GRE                = "G";
@@ -80,12 +96,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + KEY_ALGS + " TEXT,"
             + KEY_PROGRESS + " INTEGER"
             + ")";
-    private Context mContext;
 
+    /**
+     * An interface for notification of the progress of bulk database operations.
+     */
+    public interface ProgressListener {
+        /**
+         * Notifies the listener of the progress of a bulk operation. This may be called many
+         * times during the operation.
+         *
+         * @param numCompleted
+         *     The number of sub-operations of the bulk operation that have been completed.
+         * @param total
+         *     The total number of sub-operations that must be completed before the the bulk
+         *     operation is complete.
+         */
+        void onProgress(int numCompleted, int total);
+    }
 
-    public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
+    public DatabaseHandler() {
+        super(TwistyTimer.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // Creating Tables
@@ -105,13 +135,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         switch (oldVersion) {
             case 6:
                 db.execSQL("ALTER TABLE times ADD COLUMN " + KEY_HISTORY + " BOOLEAN DEFAULT 0");
+                // Fall through to the next upgrade step.
             case 8:
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("timerTextSize", sharedPreferences.getInt("timerTextSize", 10) * 10);
-                editor.apply();
+                Prefs.edit()
+                        .putInt(R.string.pk_timer_text_size,
+                                Prefs.getInt(R.string.pk_timer_text_size, 10) * 10)
+                        .apply();
         }
-
     }
 
     private void createAlg(SQLiteDatabase db, String subset, String name, String state, String algs) {
@@ -124,25 +154,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_ALGS, null, values);
     }
 
-    public Algorithm getAlgorithm(long id) {
+    /**
+     * Loads an algorithm from the database for the given algorithm ID.
+     *
+     * @param algID
+     *     The ID of the algorithm to be loaded.
+     *
+     * @return
+     *     An {@link Algorithm} object created from the details loaded from the database for the
+     *     algorithm record matching the given ID, or {@code null} if no algorithm matching the
+     *     given ID was found.
+     */
+    public Algorithm getAlgorithm(long algID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_ALGS, new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS }, KEY_ID + "=?",
-            new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        Cursor cursor = db.query(TABLE_ALGS,
+                new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS },
+                KEY_ID + "=?", new String[] { String.valueOf(algID) }, null, null, null, null);
 
-        Algorithm algorithm = new Algorithm(
-            cursor.getLong(0),  // id
-            cursor.getString(1), // subset
-            cursor.getString(2), // name
-            cursor.getString(3), // state
-            cursor.getString(4), // algs
-            cursor.getInt(5)); // progress
+        try {
+            if (cursor.moveToFirst()) {
+                return new Algorithm(
+                        cursor.getLong(0),   // id
+                        cursor.getString(1), // subset
+                        cursor.getString(2), // name
+                        cursor.getString(3), // state
+                        cursor.getString(4), // algs
+                        cursor.getInt(5));   // progress
+            }
 
-        // Return alg
-        cursor.close();
-        return algorithm;
+            // No algorithm matched the given ID.
+            return null;
+        } finally {
+            cursor.close();
+        }
     }
 
     public int updateAlgorithmAlg(long id, String alg) {
@@ -167,56 +212,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { String.valueOf(id) });
     }
 
-
-    /**
-     * Returns all solves from history or session, from puzzle and category
-     * @param type
-     * @param subtype
-     * @return
-     */
-    public Cursor getAllSolvesFrom(String type, String subtype, boolean history) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection;
-        if (! history)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date ASC ";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 1 ORDER BY date ASC ";
-
-        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
-    }
-
-    /**
-     * Returns all solves from history or session, from puzzle and category with a limit
-     * @param type
-     * @param subtype
-     * @return
-     */
-    public Cursor getAllSolvesFromWithLimit(int limit, String type, String subtype, boolean history) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection;
-        if (! history)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date ASC LIMIT " + limit;
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 1 ORDER BY date ASC LIMIT " + limit;
-
-        return db.rawQuery("SELECT * FROM times" + sqlSelection, new String[] { type, subtype });
-    }
-
     /**
      * Returns all solves from puzzle and category
      * @param type
      * @param subtype
      * @return
      */
-
     public Cursor getAllSolvesFrom(String type, String subtype) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -246,16 +247,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { type, subtype });
     }
 
-
-    // Adding new solve
+    /**
+     * Adds a new solve to the database.
+     *
+     * @param solve The solve to be added to the database.
+     * @return The new ID of the stored solve record.
+     */
     public long addSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        return addSolveInternal(getWritableDatabase(), solve);
+    }
 
+    /**
+     * Adds a new solve to the given database.
+     *
+     * @param db    The database to which to add the solve.
+     * @param solve The solve to be added to the database.
+     * @return The new ID of the stored solve record.
+     */
+    private long addSolveInternal(SQLiteDatabase db, Solve solve) {
         // Cutting off last digit to fix rounding errors
         int time = solve.getTime();
         time = time - (time % 10);
 
         ContentValues values = new ContentValues();
+
         values.put(KEY_TYPE, solve.getPuzzle());
         values.put(KEY_SUBTYPE, solve.getSubtype());
         values.put(KEY_TIME, time);
@@ -267,6 +282,63 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         return db.insert(TABLE_TIMES, null, values);
+    }
+
+    /**
+     * Adds a collection of new solves to the given database. The solves are added in a single
+     * transaction, so this operation is much faster than adding them one-by-one using the
+     * {@link #addSolve(Solve)} method. Any given solve that matches a solve already in the
+     * database will not be inserted.
+     *
+     * @param solves
+     *     The collection of solves to be added to the database. Must not be {@code null}, but may
+     *     be empty.
+     * @param listener
+     *     An optional progress listener that will be notified as each new solve is inserted into
+     *     the database. Before the first new solve is added, this will be called to report that
+     *     zero of the total number of solves have been inserted (even if {@code solves} is empty).
+     *     Thereafter, it will be notified after each insertion. May be {@code null} if no progress
+     *     updates are required.
+     *
+     * @return
+     *     The number of unique solves inserted. Solves that are duplicates of existing solves
+     *     (by {@link #solveExists(Solve)}) are not inserted.
+     */
+    public int addSolves(Collection<Solve> solves, ProgressListener listener) {
+        final int total = solves.size();
+        int numProcessed = 0; // Whether inserted or not (i.e., includes duplicates).
+
+        if (listener != null) {
+            listener.onProgress(numProcessed, total);
+        }
+
+        int numInserted = 0; // Only those actually inserted (i.e., excludes duplicates).
+
+        if (total > 0) {
+            final SQLiteDatabase db = getWritableDatabase();
+
+            try{
+                // Wrapping the insertions in a transaction is about 50x faster!
+                db.beginTransaction();
+
+                for (Solve solve : solves) {
+                    if (!solveExists(solve)) {
+                        addSolveInternal(db, solve);
+                        numInserted++;
+                    }
+
+                    if (listener != null) {
+                        listener.onProgress(++numProcessed, total);
+                    }
+                }
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
+        return numInserted;
     }
 
     public int updateSolve(Solve solve) {
@@ -287,28 +359,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             new String[] { String.valueOf(solve.getId()) });
     }
 
-    public Solve getSolve(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    /**
+     * Loads a solve from the database for the given solve ID.
+     *
+     * @param solveID
+     *     The ID of the solve to be loaded.
+     *
+     * @return
+     *     A {@link Solve} object created from the details loaded from the database for the solve
+     *     time matching the given ID, or {@code null} if no solve time matching the given ID was
+     *     found.
+     */
+    public Solve getSolve(long solveID) {
+        final Cursor cursor = getReadableDatabase().query(TABLE_TIMES,
+                new String[] {
+                        KEY_ID, KEY_TIME, KEY_TYPE, KEY_SUBTYPE, KEY_DATE, KEY_SCRAMBLE,
+                        KEY_PENALTY, KEY_COMMENT, KEY_HISTORY },
+                KEY_ID + "=?", new String[] { String.valueOf(solveID) }, null, null, null, null);
 
-        Cursor cursor = db.query(TABLE_TIMES, new String[] { KEY_ID, KEY_TIME, KEY_TYPE, KEY_SUBTYPE, KEY_DATE, KEY_SCRAMBLE, KEY_PENALTY, KEY_COMMENT, KEY_HISTORY }, KEY_ID + "=?",
-            new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        try {
+            if (cursor.moveToFirst()) {
+                return new Solve(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getLong(4),
+                        cursor.getString(5),
+                        cursor.getInt(6),
+                        cursor.getString(7),
+                        getBoolean(cursor, 8));
+            }
 
-        Solve solve = new Solve(
-            cursor.getInt(0),
-            cursor.getInt(1),
-            cursor.getString(2),
-            cursor.getString(3),
-            cursor.getLong(4),
-            cursor.getString(5),
-            cursor.getInt(6),
-            cursor.getString(7),
-            getBoolean(cursor, 8));
-
-        // Return solve
-        cursor.close();
-        return solve;
+            // No solve matched the given ID.
+            return null;
+        } finally {
+            cursor.close();
+        }
     }
 
     public boolean getBoolean(Cursor cursor, int columnIndex) {
@@ -334,397 +421,223 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns the solve count with limit
+     * Populates the collection of statistics (average calculators) with the solve times recorded
+     * in the database. The statistics will manage the segregation of solves for the current session
+     * only from those from all past and current sessions. If all average calculators are for the
+     * current session only, only the times for the current session will be read from the database.
      *
-     * @return
+     * @param puzzleType
+     *     The name of the puzzle type.
+     * @param puzzleSubtype
+     *     The name of the puzzle subtype.
+     * @param statistics
+     *     The statistics in which to record the solve times. This may contain any mix of average
+     *     calculators for all sessions or only the current session. The database read will be
+     *     adapted automatically to read the minimum number of rows to satisfy the collection of
+     *     the required statistics.
      */
-    public int getSolveCountWithLimit(int limit, String type, String subtype, boolean session) {
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 LIMIT " + limit;
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 LIMIT " + limit;
+    public void populateStatistics(
+            String puzzleType, String puzzleSubtype, Statistics statistics) {
+        final boolean isStatisticsForCurrentSessionOnly = statistics.isForCurrentSessionOnly();
+        final String sql;
 
-        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
-        SQLiteDatabase db = this.getReadableDatabase();
+        // Sort into ascending order of date (oldest solves first), so that the "current"
+        // average is, in the end, calculated to be that of the most recent solves.
+        if (isStatisticsForCurrentSessionOnly) {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + " FROM " + TABLE_TIMES
+                    + " WHERE " + KEY_TYPE + "=? AND " + KEY_SUBTYPE + "=? AND "
+                    + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME + " AND "
+                    + KEY_HISTORY + "=0 ORDER BY " + KEY_DATE + " ASC";
+        } else {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_HISTORY
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " ORDER BY " + KEY_DATE + " ASC";
+        }
 
-        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
-
-        int count = cursor.getCount();
-        cursor.close();
-        // Return count
-        return count;
-    }
-
-    /**
-     * Returns the solve count
-     *
-     * @return
-     */
-    public int getSolveCount(String type, String subtype, boolean session) {
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10";
-
-        String countQuery = "SELECT * FROM " + TABLE_TIMES + sqlSelection;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(countQuery, new String[] { type, subtype });
-
-        int count = cursor.getCount();
-        cursor.close();
-        // Return count
-        return count;
-    }
-
-    /**
-     * Gets the worst time
-     *
-     * @param best    True if you want the best time, false if worse
-     * @param session True if time should be from this session
-     * @param puzzle  The puzzle name in database
-     * @param subtype The puzzle subtype (category) in database
-     *
-     * @return The time
-     */
-    public int getBestOrWorstTime(boolean best, boolean session, String puzzle, String subtype) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        int time = 0;
-
-        String minOrMax;
-        if (best)
-            minOrMax = "MIN(time)";
-        else
-            minOrMax = "MAX(time)";
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0 ORDER BY date DESC ";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
+        final Cursor cursor
+                = getReadableDatabase().rawQuery(sql, new String[] { puzzleType, puzzleSubtype });
 
         try {
-            cursor = db.rawQuery("SELECT " + minOrMax + " FROM " + TABLE_TIMES + sqlSelection,
-                new String[] { puzzle, subtype });
+            final int timeCol = cursor.getColumnIndex(KEY_TIME);
+            final int penaltyCol = cursor.getColumnIndex(KEY_PENALTY);
+            final int historyCol
+                    = isStatisticsForCurrentSessionOnly ? -1 : cursor.getColumnIndex(KEY_HISTORY);
 
-            if (cursor.moveToFirst())
-                time = cursor.getInt(0);
+            while (cursor.moveToNext()) {
+                final boolean isForCurrentSession
+                        = isStatisticsForCurrentSessionOnly || cursor.getInt(historyCol) == 0;
+
+                if (cursor.getInt(penaltyCol) == PuzzleUtils.PENALTY_DNF) {
+                    statistics.addDNF(isForCurrentSession);
+                } else {
+                    statistics.addTime(cursor.getLong(timeCol), isForCurrentSession);
+                }
+            }
+        } finally {
+            // As elsewhere in this class, assume "cursor" is not null.
             cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-        return time;
-    }
-
-    public int getMean(boolean session, String puzzle, String type) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-        int mean = 0;
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
-
-        cursor = db.rawQuery("SELECT AVG(time) FROM " + TABLE_TIMES + sqlSelection,
-            new String[] { puzzle, type });
-        cursor.moveToFirst();
-
-        if (cursor.getCount() != 0)
-            mean = cursor.getInt(0);
-
-        cursor.close();
-        return mean;
     }
 
     /**
-     * Returns a truncated average of n.
+     * Populates the chart statistics with the solve times recorded in the database. If all
+     * statistics are for the current session only, only the times for the current session will be
+     * read from the database.
      *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True 2 DNFs disqualify the attempt
+     * @param puzzleType
+     *     The name of the puzzle type.
+     * @param puzzleSubtype
+     *     The name of the puzzle subtype.
+     * @param statistics
+     *     The chart statistics in which to record the solve times. This may require solve times for
+     *     all sessions or only the current session. The database read will be adapted automatically
+     *     to read the minimum number of rows to satisfy the collection of the required statistics.
+     */
+    public void populateChartStatistics(
+            String puzzleType, String puzzleSubtype, ChartStatistics statistics) {
+        final boolean isStatisticsForCurrentSessionOnly = statistics.isForCurrentSessionOnly();
+        final String sql;
+
+        // Sort into ascending order of date (oldest solves first), so that the "current"
+        // average is, in the end, calculated to be that of the most recent solves.
+        if (isStatisticsForCurrentSessionOnly) {
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_DATE
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " AND " + KEY_HISTORY + "=0 ORDER BY " + KEY_DATE + " ASC";
+        } else {
+            // NOTE: A change from the old approach: the "all time" option include those from the
+            // current session, too. This is consistent with the way "all time statistics" are
+            // calculated for the table of statistics.
+            sql = "SELECT " + KEY_TIME + ", " + KEY_PENALTY + ", " + KEY_DATE
+                    + " FROM " + TABLE_TIMES + " WHERE " + KEY_TYPE + "=? AND "
+                    + KEY_SUBTYPE + "=? AND " + KEY_PENALTY + "!=" + PuzzleUtils.PENALTY_HIDETIME
+                    + " ORDER BY " + KEY_DATE + " ASC";
+        }
+
+        final Cursor cursor
+                = getReadableDatabase().rawQuery(sql, new String[] { puzzleType, puzzleSubtype });
+
+        try {
+            final int timeCol = cursor.getColumnIndex(KEY_TIME);
+            final int penaltyCol = cursor.getColumnIndex(KEY_PENALTY);
+            final int dateCol = cursor.getColumnIndex(KEY_DATE);
+
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(penaltyCol) == PuzzleUtils.PENALTY_DNF) {
+                    statistics.addDNF(cursor.getLong(dateCol));
+                } else {
+                    statistics.addTime(cursor.getLong(timeCol), cursor.getLong(dateCol));
+                }
+            }
+        } finally {
+            // As elsewhere in this class, assume "cursor" is not null.
+            cursor.close();
+        }
+    }
+
+    /**
+     * Deletes a single solve matching the given ID from the database.
+     *
+     * @param solveID
+     *     The ID of the solve record in the "times" table of the database.
      *
      * @return
+     *     The number of records deleted. If no record matches {@code solveID}, the result is zero.
      */
+    public int deleteSolveByID(long solveID) {
+        return deleteSolveByIDInternal(getWritableDatabase(), solveID);
+    }
 
-    public int getTruncatedAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    /**
+     * Deletes a single solve from the database.
+     *
+     * @param solve
+     *     The solve to be deleted. The corresponding database record to be deleted from the "times"
+     *     table is matched using the ID returned from {@link Solve#getId()}.
+     *
+     * @return
+     *     The number of records deleted. If no record matches the ID of the solve, the result is
+     *     zero.
+     */
+    public int deleteSolve(Solve solve) {
+        return deleteSolveByIDInternal(getWritableDatabase(), solve.getId());
+    }
 
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
+    /**
+     * Deletes multiple solves from the database that match the solve record IDs in the given
+     * collection. The solves are deleted in the context of a single database transaction.
+     *
+     * @param solveIDs
+     *     The IDs of the solve records in the "times" table of the database to be deleted. Must
+     *     not be {@code null}, but may be empty.
+     * @param listener
+     *     An optional progress listener that will be notified as each solve is deleted from the
+     *     database. Before the first solve is deleted, this will be called to report that zero of
+     *     the total number of solves have been deleted (even if {@code solveIDs} is empty).
+     *     Thereafter, it will be notified after each attempted deletion by ID, whether a matching
+     *     solve was found or not. May be {@code null} if no progress reports are required.
+     *
+     * @return
+     *     The number of records deleted. If an ID from {@code solveIDs} does not match any record,
+     *     or if an ID is a duplicate of an ID that has already been deleted, that ID is ignored,
+     *     so the result may be less than the number of solve IDs in the collection.
+     */
+    public int deleteSolvesByID(Collection<Long> solveIDs, ProgressListener listener) {
+        final int total = solveIDs.size();
+        int numProcessed = 0; // Whether deleted or not (i.e., includes RNF and duplicates).
 
-        Cursor cursor;
+        if (listener != null) {
+            listener.onProgress(numProcessed, total);
+        }
 
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
-            new String[] { puzzle, type });
+        int numDeleted = 0; // Only those actually deleted (i.e., excludes RNF and duplicates).
 
-        if (cursor.getCount() >= n) {
+        if (total > 0) {
+            final SQLiteDatabase db = getWritableDatabase();
 
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
+            try{
+                // Wrap the bulk delete operations in a transaction; it is *much* faster,
+                db.beginTransaction();
 
-            if (cursor.moveToFirst()) {
-                int worst = 0;
-                int best = Integer.MAX_VALUE;
-                int sum = 0;
-                int dnfCount = 0;
-                for (int i = 0; i < n; i++) {
-                    int time = cursor.getInt(timeIndex); // time
-                    sum += time;
+                for (long id : solveIDs) {
+                    // May not change if RNF or if ID is a duplicate and is already deleted.
+                    numDeleted += deleteSolveByIDInternal(db, id);
 
-                    if (time > worst && dnfCount == 0)
-                        worst = time;
-                    if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                        best = time;
-
-                    if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
-                        worst = time;
-                        dnfCount += 1;
+                    if (listener != null) {
+                        listener.onProgress(++numProcessed, total);
                     }
-
-                    cursor.moveToNext();
                 }
-                cursor.close();
-                if (disqualifyDNF && dnfCount > 1)
-                    return - 1;
-                else
-                    return (sum - worst - best) / (n - 2);
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
         }
-        cursor.close();
-        return 0;
+
+        return numDeleted;
     }
 
     /**
-     * Returns an average of n. It's faster than other functions but it isn't a real "best of".
+     * Deletes a single solve matching the given ID from the database.
      *
-     * @param n       The "average of" (5, 12...)
-     * @param puzzle  The puzzle name in database
-     * @param type    The puzzle type in database
-     * @param session True if it's in session
-     *
-     * @return
-     */
-
-    public int getFastAverageOf(int n, String puzzle, String type, boolean session) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        int time = 0;
-
-        String sqlSelection;
-        if (session)
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF + " AND history = 0";
-        else
-            sqlSelection =
-                " WHERE type =? AND subtype =? AND penalty!=10 AND penalty!="
-                    + PuzzleUtils.PENALTY_DNF;
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time FROM " + TABLE_TIMES + sqlSelection + " LIMIT " + n,
-            new String[] { puzzle, type });
-
-        if (cursor.getCount() >= n) {
-            cursor = db.rawQuery("SELECT AVG(time) FROM (SELECT * FROM " + TABLE_TIMES + sqlSelection + " ORDER BY date DESC LIMIT " + n + ")",
-                new String[] { puzzle, type });
-            if (cursor.moveToFirst())
-                time = cursor.getInt(0);
-        }
-
-        cursor.close();
-        return time;
-    }
-
-
-    /**
-     * Returns a truncated average of n, along with a list containing all times from that average.
-     *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True 2 DNFs disqualify the attempt
+     * @param db
+     *     The database from which to delete the solve.
+     * @param solveID
+     *     The ID of the solve record in the "times" table of the database.
      *
      * @return
+     *     The number of records deleted. If no record matches {@code solveID}, the result is zero.
      */
-
-    public ArrayList<Integer> getListOfTruncatedAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        ArrayList<Integer> timeList = new ArrayList<>(n + 1);
-
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 AND history = 0 ORDER BY date DESC ";
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection + "LIMIT " + n,
-            new String[] { puzzle, type });
-
-        if (cursor.getCount() >= n) {
-
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
-
-            if (cursor.moveToFirst()) {
-                int worst = 0;
-                int best = Integer.MAX_VALUE;
-                int sum = 0;
-                int dnfCount = 0;
-                for (int i = 0; i < n; i++) {
-                    int time = cursor.getInt(timeIndex); // time
-                    sum += time;
-
-                    if (time > worst && dnfCount == 0)
-                        worst = time;
-                    if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                        best = time;
-
-                    if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) { // penalty
-                        worst = time;
-                        time = PuzzleUtils.TIME_DNF;
-                        dnfCount += 1;
-                    }
-
-                    timeList.add(time);
-
-                    cursor.moveToNext();
-                }
-                if (disqualifyDNF && dnfCount > 1)
-                    timeList.add(PuzzleUtils.TIME_DNF);
-                else
-                    timeList.add((sum - worst - best) / (n - 2));
-            }
-        }
-        cursor.close();
-        return timeList;
-    }
-
-    /**
-     * Returns best average of n.
-     *
-     * @param n             The "average of" (5, 12...)
-     * @param puzzle        The puzzle name in database
-     * @param type          The puzzle type in database
-     * @param disqualifyDNF True if 2 DNFs disqualify the attempt
-     *
-     * @return
-     */
-
-    public int getBestAverageOf(int n, String puzzle, String type, boolean disqualifyDNF) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlSelection =
-            " WHERE type =? AND subtype =? AND penalty!=10 ORDER BY date DESC";
-
-        Cursor cursor;
-
-        cursor = db.rawQuery("SELECT time, penalty FROM " + TABLE_TIMES + sqlSelection,
-            new String[] { puzzle, type });
-        cursor.moveToFirst();
-
-        int bestAverage = Integer.MAX_VALUE;
-        int count = cursor.getCount();
-
-        if (count >= n) {
-            int timeIndex = cursor.getColumnIndex(KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(KEY_PENALTY);
-
-            if (cursor.moveToFirst()) {
-
-                for (int i = 0; i < count - n + 1; i++) {
-                    int worst = Integer.MIN_VALUE;
-                    int best = Integer.MAX_VALUE;
-                    int sum = 0;
-                    int dnfCount = 0;
-
-                    for (int j = 0; j < n; j++) {
-                        cursor.moveToPosition(i + j);
-                        int time = cursor.getInt(timeIndex);
-                        sum += time;
-
-                        if (time > worst && dnfCount == 0)
-                            worst = time;
-                        if (time < best && cursor.getInt(penaltyIndex) != PuzzleUtils.PENALTY_DNF)
-                            best = time;
-
-                        if (disqualifyDNF) {
-                            if (cursor.getInt(penaltyIndex) == PuzzleUtils.PENALTY_DNF) {
-                                worst = time;
-                                dnfCount += 1;
-                            }
-                        }
-
-                    }
-
-                    if (! (disqualifyDNF && dnfCount > 1)) {
-                        int average = Integer.MAX_VALUE;
-
-                        if (n == 3) {
-                            if (dnfCount == 0)
-                                average = sum / 3;
-                        } else
-                            average = (sum - worst - best) / (n - 2);
-
-                        if (average < bestAverage)
-                            bestAverage = average;
-                    }
-
-                }
-                cursor.close();
-                if (bestAverage == Integer.MAX_VALUE)
-                    return 0;
-                else
-                    return bestAverage;
-            }
-        }
-        cursor.close();
-        return 0;
-    }
-
-
-    // Delete an entry with an id
-    public int deleteFromId(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(id) });
-    }
-
-    // Delete entries with an id list
-    public void deleteAllFromList(List<Long> idList) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        for (int i = 0; i < idList.size(); i++) {
-            db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { Long.toString(idList.get(i)) });
-        }
+    private int deleteSolveByIDInternal(SQLiteDatabase db, long solveID) {
+        return db.delete(TABLE_TIMES, KEY_ID + "=?", new String[] { Long.toString(solveID) });
     }
 
     // Delete entries from session
     public int deleteAllFromSession(String type, String subtype) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ? AND " + KEY_HISTORY + "=0", new String[] { type, subtype });
-    }
-
-    // Delete a single solve
-    public int deleteSolve(Solve solve) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_TIMES, KEY_ID + " = ?", new String[] { String.valueOf(solve.getId()) });
     }
 
     /**
@@ -736,18 +649,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_TIMES, KEY_TYPE + "=? AND " + KEY_SUBTYPE + " = ?",
             new String[] { type, subtype });
-    }
-
-    /**
-     * Check if a record exists
-     */
-
-    public boolean idExists(long _id, String table) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT 1 FROM " + table + " WHERE _id=" + _id, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
     }
 
     /**
@@ -771,9 +672,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         return DatabaseUtils.queryNumEntries(db, TABLE_TIMES, "type=? AND subtype =? AND time=? AND scramble=? AND date=?", new String[] { solve.getPuzzle(), solve.getSubtype(), String.valueOf(solve.getTime()), solve.getScramble(), String.valueOf(solve.getDate()) }) > 0;
-
     }
-
 
     // TODO: this info should REALLY be in a separate file. I'll get to it when I add other alg sets.
 
@@ -837,7 +736,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createAlg(db, SUBSET_OLL, "OLL 56", "NNNYYYNNNNYNYNYNYNYNY", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 56"));
         createAlg(db, SUBSET_OLL, "OLL 57", "YNYYYYYNYNYNNNNNYNNNN", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 57"));
 
-
         // PLL
         createAlg(db, SUBSET_PLL, "H", "YYYYYYYYYOROGBGRORBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "H"));
         createAlg(db, SUBSET_PLL, "Ua", "YYYYYYYYYOBOGOGRRRBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "Ua"));
@@ -860,13 +758,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         createAlg(db, SUBSET_PLL, "T", "YYYYYYYYYOOGRBOGRRBGB", AlgUtils.getDefaultAlgs(SUBSET_PLL, "T"));
         createAlg(db, SUBSET_PLL, "V", "YYYYYYYYYRGOGOBORRBBG", AlgUtils.getDefaultAlgs(SUBSET_PLL, "V"));
         createAlg(db, SUBSET_PLL, "Y", "YYYYYYYYYRBOGGBORRBOG", AlgUtils.getDefaultAlgs(SUBSET_PLL, "Y"));
-
     }
-
-    public void closeDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        if (db != null && db.isOpen())
-            db.close();
-    }
-
 }

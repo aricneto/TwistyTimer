@@ -24,10 +24,6 @@
             android:name="com.aricneto.twistytimer.activity.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
-        <activity
-            android:name="com.aricneto.twistytimer.activity.TimerAppearanceSettingsActivity"
-            android:label="@string/timerAppearancePrefTitle">
-        </activity>
         <activity android:name="com.aricneto.twistytimer.activity.AboutActivity">
         </activity>
 

@@ -1,13 +1,11 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
+import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
@@ -35,7 +34,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHolder> implements DialogListener {
     private final Context          mContext;  // Current context
     private final FragmentManager  mFragmentManager;
-    private final AlgCursorAdapter thisThing; // HOLY MOTHER OF WORKAROUNDS
     HashMap<Character, Integer> colorHash;
 
     // Locks opening new windows until the last one is dismissed
@@ -47,7 +45,6 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         this.mFragmentManager = listFragment.getFragmentManager();
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         colorHash = AlgUtils.getColorLetterHashMap(sp);
-        thisThing = this;
     }
 
     @Override
@@ -77,9 +74,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     @Override
     public void onUpdateDialog() {
-        Intent sendIntent = new Intent("ALGLIST");
-        sendIntent.putExtra("action", "ALG ADDED");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(sendIntent);
+        // Do nothing.
     }
 
     @Override
@@ -93,7 +88,6 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         final String pState = cursor.getString(3);
         final int pProgress = cursor.getInt(5);
 
-
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +95,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
                     setIsLocked(true);
                     AlgDialog algDialog = AlgDialog.newInstance(mId);
                     algDialog.show(mFragmentManager, "alg_dialog");
-                    algDialog.setDialogListener(thisThing);
+                    algDialog.setDialogListener(AlgCursorAdapter.this);
                 }
 
             }
@@ -119,34 +113,14 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     }
 
-    private void colorCube(AlgHolder holder, String state) {
-
-        /*See the reference image to understand how this works
-        * Yeah, I know. It's shitty as hell */
-
-        char[] charState = state.toCharArray();
-        holder.sticker1.setBackgroundColor(colorHash.get(charState[0]));
-        holder.sticker2.setBackgroundColor(colorHash.get(charState[1]));
-        holder.sticker3.setBackgroundColor(colorHash.get(charState[2]));
-        holder.sticker4.setBackgroundColor(colorHash.get(charState[3]));
-        holder.sticker5.setBackgroundColor(colorHash.get(charState[4]));
-        holder.sticker6.setBackgroundColor(colorHash.get(charState[5]));
-        holder.sticker7.setBackgroundColor(colorHash.get(charState[6]));
-        holder.sticker8.setBackgroundColor(colorHash.get(charState[7]));
-        holder.sticker9.setBackgroundColor(colorHash.get(charState[8]));
-        holder.sticker10.setBackgroundColor(colorHash.get(charState[9]));
-        holder.sticker11.setBackgroundColor(colorHash.get(charState[10]));
-        holder.sticker12.setBackgroundColor(colorHash.get(charState[11]));
-        holder.sticker13.setBackgroundColor(colorHash.get(charState[12]));
-        holder.sticker14.setBackgroundColor(colorHash.get(charState[13]));
-        holder.sticker15.setBackgroundColor(colorHash.get(charState[14]));
-        holder.sticker16.setBackgroundColor(colorHash.get(charState[15]));
-        holder.sticker17.setBackgroundColor(colorHash.get(charState[16]));
-        holder.sticker18.setBackgroundColor(colorHash.get(charState[17]));
-        holder.sticker19.setBackgroundColor(colorHash.get(charState[18]));
-        holder.sticker20.setBackgroundColor(colorHash.get(charState[19]));
-        holder.sticker21.setBackgroundColor(colorHash.get(charState[20]));
-
+    private void colorCube(AlgHolder holder, final String state) {
+        // See the reference image to understand how this works.
+        ButterKnife.apply(holder.stickers, new ButterKnife.Action<View>() {
+            @Override
+            public void apply(@NonNull View sticker, int index) {
+                sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
+            }
+        });
     }
 
     public boolean isLocked() {
@@ -158,38 +132,23 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     }
 
     static class AlgHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.name)       TextView  name;
-        @Bind(R.id.pll_arrows) ImageView pllArrows;
-        @Bind(R.id.sticker1)   View      sticker1;
-        @Bind(R.id.sticker2)   View      sticker2;
-        @Bind(R.id.sticker3)   View      sticker3;
-        @Bind(R.id.sticker4)   View      sticker4;
-        @Bind(R.id.sticker5)   View      sticker5;
-        @Bind(R.id.sticker6)   View      sticker6;
-        @Bind(R.id.sticker7)   View      sticker7;
-        @Bind(R.id.sticker8)   View      sticker8;
-        @Bind(R.id.sticker9)   View      sticker9;
-        @Bind(R.id.sticker10)  View      sticker10;
-        @Bind(R.id.sticker11)  View      sticker11;
-        @Bind(R.id.sticker12)  View      sticker12;
-        @Bind(R.id.sticker13)  View      sticker13;
-        @Bind(R.id.sticker14)  View      sticker14;
-        @Bind(R.id.sticker15)  View      sticker15;
-        @Bind(R.id.sticker16)  View      sticker16;
-        @Bind(R.id.sticker17)  View      sticker17;
-        @Bind(R.id.sticker18)  View      sticker18;
-        @Bind(R.id.sticker19)  View      sticker19;
-        @Bind(R.id.sticker20)  View      sticker20;
-        @Bind(R.id.sticker21)  View      sticker21;
+        @BindView(R.id.name)        TextView            name;
+        @BindView(R.id.pll_arrows)  ImageView           pllArrows;
+        @BindView(R.id.progressBar) MaterialProgressBar progressBar;
+        @BindView(R.id.root)        RelativeLayout      root;
 
-        @Bind(R.id.progressBar) MaterialProgressBar progressBar;
-        @Bind(R.id.root)        RelativeLayout      root;
-        @Bind(R.id.card)        CardView            card;
+        @BindViews({
+                R.id.sticker1,  R.id.sticker2,  R.id.sticker3,  R.id.sticker4,
+                R.id.sticker5,  R.id.sticker6,  R.id.sticker7,  R.id.sticker8,
+                R.id.sticker9,  R.id.sticker10, R.id.sticker11, R.id.sticker12,
+                R.id.sticker13, R.id.sticker14, R.id.sticker15, R.id.sticker16,
+                R.id.sticker17, R.id.sticker18, R.id.sticker19, R.id.sticker20,
+                R.id.sticker21,
+        }) View[] stickers;
 
         public AlgHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
-
 }

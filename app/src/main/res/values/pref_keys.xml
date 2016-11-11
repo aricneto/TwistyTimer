@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The names of the preference keys. These can be accessed in code as "R.string.some_key" and
+referenced as "@string/some_key" from the "android:key" attribute in the preferences XML.
+
+The resource names can be changed to make them more meaningful if necessary (i.e., the value of
+the "name" attribute of the "<string>" can be changed). However the string *value*, which is the
+actual key that is used to save and load values from the preferences, cannot be changed once it
+has been released to the wild (at least not without proper consideration of the effect it will have
+on users who have older installations of the app).
+
+To avoid confusion with other string resources, these keys are kept in this separate resource file
+and each resource name begins with "pk_" to indicate the string resource is a "preference key".
+
+THESE KEYS MUST NOT BE LOCALIZED!
+-->
+<resources>
+
+    <!--
+    Keys for preferences referenced from the "Settings" activity and its preferences XML files.
+    -->
+    <string translatable="false" name="pk_inspection_enabled">inspectionEnabled</string>
+    <string translatable="false" name="pk_inspection_time">inspectionTime</string>
+
+    <string translatable="false" name="pk_hold_to_start_enabled">holdEnabled</string>
+    <string translatable="false" name="pk_start_cue_enabled">startCue</string>
+
+    <string translatable="false" name="pk_tab_swiping_enabled">pagerEnabled</string>
+    <string translatable="false" name="pk_show_clear_button">clearEnabled</string>
+
+    <string translatable="false" name="pk_scramble_enabled">scrambleEnabled</string>
+    <string translatable="false" name="pk_show_scramble_hints">showHints</string>
+    <string translatable="false" name="pk_show_scramble_x_cross_hints">showHintsXCross</string>
+    <string translatable="false" name="pk_show_scramble_image">scrambleImageEnabled</string>
+    <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
+    <string translatable="false" name="pk_scramble_image_size">scrambleImageSize</string>
+
+    <string translatable="false" name="pk_open_timer_appearance_settings">timerAppearance</string>
+
+    <string translatable="false" name="pk_timer_bg_enabled">backgroundEnabled</string>
+    <string translatable="false" name="pk_show_hi_res_timer">millisecondsEnabled</string>
+    <string translatable="false" name="pk_hide_time_while_running">hideTimeEnabled</string>
+
+    <string translatable="false" name="pk_show_session_stats">sessionStatsEnabled</string>
+    <string translatable="false" name="pk_show_best_time">bestSolveEnabled</string>
+    <string translatable="false" name="pk_show_worst_time">worstSolveEnabled</string>
+
+    <string translatable="false" name="pk_large_quick_actions_enabled">quickActionLarge</string>
+    <string translatable="false" name="pk_show_quick_actions">buttonsEnabled</string>
+    <string translatable="false" name="pk_timer_text_size">timerTextSize</string>
+    <string translatable="false" name="pk_timer_text_offset">timerTextOffset</string>
+    <string translatable="false" name="pk_advanced_timer_settings_enabled">enableAdvanced</string>
+
+    <!--
+    Keys for preferences referenced only from code.
+    -->
+    <string translatable="false" name="pk_theme">theme</string>
+
+</resources>

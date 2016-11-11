@@ -7,6 +7,13 @@
     <attr format="color" name="colorItemListBackgroundSelected"/>
     <attr format="color" name="colorItemListBackground"/>
     <attr format="color" name="mainColorBackground"/>
-
     <attr format="color" name="textColorContrastBackground"/>
+
+    <attr format="color" name="colorChartAllTimes"/>
+    <attr format="color" name="colorChartBestTimes"/>
+    <attr format="color" name="colorChartMeanTime"/>
+    <attr format="color" name="colorChartExtra1"/>
+    <attr format="color" name="colorChartExtra2"/>
+    <attr format="color" name="colorChartExtra3"/>
+
 </resources>
