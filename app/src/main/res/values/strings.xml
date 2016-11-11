@@ -67,9 +67,9 @@
     <string name="action_ok">OK</string>
     <string name="drawer_title_changeTheme">App theme</string>
     <string name="graph_stats_title">Stats</string>
-    <string name="graph_card_global">Best</string>
-    <string name="graph_card_session">Session</string>
-    <string name="graph_card_refresh_text">Tap to load statistics</string>
+    <string name="graph_card_global">All Time\nBest</string>
+    <string name="graph_card_session_current">Session\nCurrent</string>
+    <string name="graph_card_session_best">Session\nBest</string>
     <string name="graph_mean">Mean</string>
     <string name="color_indigo">Indigo</string>
     <string name="color_purple">Purple</string>
@@ -142,7 +142,7 @@
     <string name="sent_to_session">Moved to session</string>
     <string name="sent_to_history">Moved to history</string>
     <string name="move_solves_to_history">Move solves to history?</string>
-    <string name="move_solves_to_history_content">You\'ll be able to acess them by tapping the history switch</string>
+    <string name="move_solves_to_history_content">You\'ll be able to access them by tapping the history switch</string>
     <string name="action_move">Move</string>
     <string name="invalid_time">Invalid time</string>
     <string name="pagerEnabledTitle">Allow swiping between tabs</string>
@@ -164,6 +164,9 @@
     <string name="action_clear">Clear</string>
     <string name="action_archive">Archive</string>
     <string name="enable_advanced">Enable advanced settings</string>
+    <string name="graph_legend_all_times">Everything</string>
+    <string name="graph_legend_best_times">Best</string>
+    <string name="graph_legend_avg_prefix">Ao</string>
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
     <string name="source">Source</string>

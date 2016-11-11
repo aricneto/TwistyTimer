@@ -1,2 +1,8 @@
 configurations.create("default")
 artifacts.add("default", file('TNoodle.jar'))
+
+task testClasses {
+    doLast {
+        logger.info('Dummy "testClasses" task to allow Android Studio to run unit tests on "app" module.')
+    }
+}

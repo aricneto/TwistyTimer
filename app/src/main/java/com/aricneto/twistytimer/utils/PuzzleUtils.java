@@ -1,23 +1,20 @@
 package com.aricneto.twistytimer.utils;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.annotation.StringRes;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.stats.AverageCalculator;
+import com.aricneto.twistytimer.stats.Statistics;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.Map;
+
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
 /**
  * Created by Ari on 17/01/2016.
@@ -48,31 +45,47 @@ public class PuzzleUtils {
     }
 
     public static String getPuzzleInPosition(int position) {
+        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
         switch (position) {
-            case 0: // 333
-                return PuzzleUtils.TYPE_333;
-            case 1: // 222
-                return PuzzleUtils.TYPE_222;
-            case 2: // 444
-                return PuzzleUtils.TYPE_444;
-            case 3: // 555
-                return PuzzleUtils.TYPE_555;
-            case 4: // 666
-                return PuzzleUtils.TYPE_666;
-            case 5: // 777
-                return PuzzleUtils.TYPE_777;
-            case 6: // Clock
-                return PuzzleUtils.TYPE_CLOCK;
-            case 7: // Mega
-                return PuzzleUtils.TYPE_MEGA;
-            case 8: // Pyra
-                return PuzzleUtils.TYPE_PYRA;
-            case 9: // Skewb
-                return PuzzleUtils.TYPE_SKEWB;
-            case 10: // Square-1
-                return PuzzleUtils.TYPE_SQUARE1;
+            default:
+            case  0: return TYPE_333;
+            case  1: return TYPE_222;
+            case  2: return TYPE_444;
+            case  3: return TYPE_555;
+            case  4: return TYPE_666;
+            case  5: return TYPE_777;
+            case  6: return TYPE_CLOCK;
+            case  7: return TYPE_MEGA;
+            case  8: return TYPE_PYRA;
+            case  9: return TYPE_SKEWB;
+            case 10: return TYPE_SQUARE1;
         }
-        return PuzzleUtils.TYPE_333;
+    }
+
+    /**
+     * Gets the position of the given puzzle type when presented in a spinner or other list. This
+     * is the inverse of {@link #getPuzzleInPosition(int)}.
+     *
+     * @param puzzleType The name of the type of puzzle.
+     *
+     * @return The position (zero-based) of the puzzle within a list.
+     */
+    public static int getPositionOfPuzzle(String puzzleType) {
+        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
+        switch (puzzleType) {
+            default:
+            case TYPE_333:     return  0;
+            case TYPE_222:     return  1;
+            case TYPE_444:     return  2;
+            case TYPE_555:     return  3;
+            case TYPE_666:     return  4;
+            case TYPE_777:     return  5;
+            case TYPE_CLOCK:   return  6;
+            case TYPE_MEGA:    return  7;
+            case TYPE_PYRA:    return  8;
+            case TYPE_SKEWB:   return  9;
+            case TYPE_SQUARE1: return 10;
+        }
     }
 
     /**
@@ -86,33 +99,22 @@ public class PuzzleUtils {
     @StringRes
     int getPuzzleName(String puzzle) {
         switch (puzzle) {
-            case PuzzleUtils.TYPE_333: // 333
-                return R.string.cube_333_informal;
-            case PuzzleUtils.TYPE_222: // 222
-                return R.string.cube_222_informal;
-            case PuzzleUtils.TYPE_444: // 444
-                return R.string.cube_444_informal;
-            case PuzzleUtils.TYPE_555: // 555
-                return R.string.cube_555_informal;
-            case PuzzleUtils.TYPE_666: // 666
-                return R.string.cube_666_informal;
-            case PuzzleUtils.TYPE_777: // 777
-                return R.string.cube_777_informal;
-            case PuzzleUtils.TYPE_CLOCK: // Clock
-                return R.string.cube_clock;
-            case PuzzleUtils.TYPE_MEGA: // Mega
-                return R.string.cube_mega;
-            case PuzzleUtils.TYPE_PYRA: // Pyra
-                return R.string.cube_pyra;
-            case PuzzleUtils.TYPE_SKEWB: // Skewb
-                return R.string.cube_skewb;
-            case PuzzleUtils.TYPE_SQUARE1: // Square-1
-                return R.string.cube_sq1;
+            case TYPE_333:     return R.string.cube_333_informal;
+            case TYPE_222:     return R.string.cube_222_informal;
+            case TYPE_444:     return R.string.cube_444_informal;
+            case TYPE_555:     return R.string.cube_555_informal;
+            case TYPE_666:     return R.string.cube_666_informal;
+            case TYPE_777:     return R.string.cube_777_informal;
+            case TYPE_CLOCK:   return R.string.cube_clock;
+            case TYPE_MEGA:    return R.string.cube_mega;
+            case TYPE_PYRA:    return R.string.cube_pyra;
+            case TYPE_SKEWB:   return R.string.cube_skewb;
+            case TYPE_SQUARE1: return R.string.cube_sq1;
+            default:           return 0;
         }
-        return 0;
     }
 
-    public static String convertTimeToString(int time) {
+    public static String convertTimeToString(long time) {
 
         if (time == TIME_DNF)
             return "DNF";
@@ -120,21 +122,19 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("k':'mm':'ss");
-
         else if (minutes > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'.'SS");
-
         else
             return new DateTime(time, DateTimeZone.UTC).toString("s'.'SS");
     }
 
-    public static String convertTimeToStringWithSmallDecimal(int time) {
+    public static String convertTimeToStringWithSmallDecimal(long time) {
 
         if (time == TIME_DNF)
             return "DNF";
@@ -142,21 +142,19 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
-
         else if (minutes > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'<small>.'SS'</small>'");
-
         else
             return new DateTime(time, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
     }
 
-    public static String convertTimeToStringWithoutMilli(int time) {
+    public static String convertTimeToStringWithoutMilli(long time) {
 
         if (time == - 1)
             return "DNF";
@@ -164,90 +162,63 @@ public class PuzzleUtils {
             return "--";
 
         // Magic (not-so-magic actually) numbers below
-        int hours = time / 3600000; // 3600 * 1000
-        int remaining = time % 3600000; // 3600 * 1000
-        int minutes = remaining / 60000; // 60 * 1000
+        long hours = time / 3600000; // 3600 * 1000
+        long remaining = time % 3600000; // 3600 * 1000
+        long minutes = remaining / 60000; // 60 * 1000
 
         if (hours > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("kk':'mm':'ss");
-
         else if (minutes > 0)
             return new DateTime(time, DateTimeZone.UTC).toString("mm':'ss");
-
         else
             return new DateTime(time, DateTimeZone.UTC).toString("s");
     }
 
-
-    public static String convertPenaltyToString(int penalty) {
-        switch (penalty) {
-            case NO_PENALTY:
-                return "--";
-            case PENALTY_PLUSTWO:
-                return "+2";
-            case PENALTY_DNF:
-                return "DNF";
-        }
-        return "";
-    }
-
-
     /**
-     * Converts times such as 00:00.00 into int for storage
-     * Code shamelessly stolen from Prisma Puzzle Timer (love you).
+     * Converts times in the format "M:SS.s", or "S.s" into an integer number of milliseconds. The
+     * minutes value may be padded with zeros. The "ss" is the fractional number of seconds and may
+     * be given to any desired precision, but will be rounded to a whole number of milliseconds.
+     * For example, "1:23.45" is parsed to 83,450 ms and "95.6789" is parsed to 95,679 ms. Where
+     * minutes are present, the seconds can be padded with zeros or not, but the number of seconds
+     * must be less than 60, or the time will be treated as invalid. Where minutes are not present,
+     * the number of seconds can be 60 or greater.
      *
-     * @param input
+     * @param time
+     *     The time string to be parsed. Leading and trailing whitespace will be trimmed before
+     *     the time is parsed. If minus signs are present, the result is not defined.
      *
-     * @return time in millis
+     * @return
+     *     The parsed time in milliseconds. The value is rounded to the nearest multiple of 10
+     *     milliseconds. If the time cannot be parsed because the format does not conform to the
+     *     requirements, zero is returned.
      */
-    public static int parseTime(String input) {
-        Scanner scanner = new Scanner(input.trim());
-        scanner.useLocale(Locale.ENGLISH);
+    public static int parseTime(String time) {
+        final String timeStr = time.trim();
+        final int colonIdx = timeStr.indexOf(':');
+        int parsedTime = 0;
 
-        int time;
+        try {
+            if (colonIdx != -1) {
+                if (colonIdx > 0 && colonIdx < timeStr.length()) {
+                    // At least one digit for the minutes, so still a valid time format. Format is
+                    // expected to be "M:S.s" (zero padding to "MM" and "SS" is optional).
+                    final int minutes = Integer.parseInt(timeStr.substring(0, colonIdx));
+                    final float seconds = Float.parseFloat(timeStr.substring(colonIdx + 1));
 
-        // 00:00.00
-        if (input.contains(":")) {
-            scanner.useDelimiter(":");
-
-            if (! scanner.hasNextLong()) {
-                return 0;
+                    if (seconds < 60f) {
+                        parsedTime += 60_000 * minutes + Math.round(seconds * 1_000f);
+                    } // else "parsedTime" remains zero as seconds value is out of range (>= 60).
+                } // else "parsedTime" remains zero as there is nothing before or after the colon.
+            } else {
+                // Format is expected to be "S.s", with arbitrary precision and padding.
+                parsedTime = Math.round(Float.parseFloat(timeStr.substring(colonIdx + 1)) * 1_000f);
             }
-
-            long minutes = scanner.nextLong();
-            if (minutes < 0) {
-                return 0;
-            }
-
-            if (! scanner.hasNextDouble()) {
-                return 0;
-            }
-
-            double seconds = scanner.nextDouble();
-            if (seconds < 0.0 || seconds >= 60.0) {
-                return 0;
-            }
-
-            time = (int) (60000 * minutes + 1000 * seconds);
+        } catch (NumberFormatException ignore) {
+            parsedTime = 0; // Invalid time format.
         }
 
-        // 00.00
-        else {
-            if (! scanner.hasNextDouble()) {
-                return 0;
-            }
-
-            double seconds = scanner.nextDouble();
-            if (seconds < 0.0) {
-                return 0;
-            }
-
-            time = (int) (1000 * seconds);
-        }
-
-        return 10 * ((time + 5) / 10);
+        return 10 * ((parsedTime + 5) / 10);
     }
-
 
     /**
      * This function applies a penalty to a solve
@@ -279,165 +250,154 @@ public class PuzzleUtils {
     }
 
     /**
-     * Returns the nearest even int
+     * Formats the details of the most recent average-of-N calculation for times recorded in the
+     * current session. The string shows the average value and the list of times that contributed
+     * to the calculation of that average. If the average calculation requires the elimination of
+     * the best and worst times, these times are shown in parentheses.
      *
-     * @param num
-     * @param roundUp True for rounding up, false for rounding douwn
+     * @param n     The value of "N" for which the "average-of-N" is required.
+     * @param stats The statistics from which to get the details of the average calculation.
      *
      * @return
+     *     The average-of-N in string format; or {@code null} if there is no average calculated for
+     *     that value of "N", or if insufficient (less than "N") times have been recorded in the
+     *     current session, of if {@code stats} is {@code null}.
      */
-
-    public static int nearestEvenInt(int num, boolean roundUp) {
-        if (num % 2 == 0) {
-            return num;
-        } else {
-            if (roundUp)
-                return num + 1;
-            else
-                return num - 1;
+    private static String formatAverageOfN(int n, Statistics stats) {
+        if (stats == null || stats.getAverageOf(n, true) == null) {
+            return null;
         }
-    }
 
+        final AverageCalculator.AverageOfN aoN = stats.getAverageOf(n, true).getAverageOfN();
+        final long[] times = aoN.getTimes();
+        final long average = aoN.getAverage();
 
-    /**
-     * Creates a list of averages from a number.
-     * Useful for sharing
-     *
-     * @param currentPuzzle
-     * @param currentPuzzleSubtype
-     * @param dbHandler
-     * @param n
-     *
-     * @return the list
-     */
-    private static String createAverageList(int n, String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
-        int average;
-
-        ArrayList<Integer> aoList = dbHandler.getListOfTruncatedAverageOf(n, currentPuzzle, currentPuzzleSubtype, true);
-        average = aoList.get(n);
-        aoList.remove(n);
-
-        int best = Integer.MAX_VALUE;
-        // If we do Collections.max(), you'll get DNFs as best solves since they have time -1,
-        // so we have to do this workaround
-        for (int time : aoList) {
-            if (time != -1 && time < best)
-                best = time;
+        if (average == AverageCalculator.UNKNOWN || times == null) {
+            return null;
         }
-        // In the rare case that all solves are DNFs, the best solve will be a DNF.
-        if (best == Integer.MAX_VALUE)
-            best = -1;
 
-        int worst;
-        if (aoList.contains(- 1))
-            worst = - 1;
-        else
-            worst = Collections.max(aoList);
+        final StringBuilder s = new StringBuilder(convertTimeToString(tr(average)));
 
-        // So the last solves come first
-        Collections.reverse(aoList);
+        s.append(" = ");
 
-        StringBuilder aoStringList = new StringBuilder(convertTimeToString(average) + " = ");
+        for (int i = 0; i < n; i++) {
+            final String time = convertTimeToString(tr(times[i]));
 
-        boolean markedMax = false;
-        boolean markedMin = false;
-
-        for (int time : aoList) {
-            if (time == worst && ! markedMax) {
-                aoStringList.append("(");
-                aoStringList.append(convertTimeToString(time));
-                aoStringList.append("), ");
-                markedMax = true;
-            } else if (time == best && ! markedMin) {
-                aoStringList.append("(");
-                aoStringList.append(convertTimeToString(time));
-                aoStringList.append("), ");
-                markedMin = true;
+            // The best and worst indices may be -1, but that is OK: they just will not be marked.
+            if (i == aoN.getBestTimeIndex() || i == aoN.getWorstTimeIndex()) {
+                s.append('(').append(time).append(')');
             } else {
-                aoStringList.append(convertTimeToString(time));
-                aoStringList.append(", ");
+                s.append(time);
+            }
+
+            if (i < n - 1) {
+                s.append(", ");
             }
         }
 
-        // The substring is there to remove the last ", "
-        return aoStringList.substring(0, aoStringList.length() - 2);
+        return s.toString();
     }
 
     /**
-     * Shares an average of n
+     * Shares an average-of-N, formatted to a simple string.
      *
      * @param n
-     * @param currentPuzzle
-     * @param currentPuzzleSubtype
-     * @param dbHandler
-     * @param context
+     *     The value of "N" for which the average is required.
+     * @param puzzleType
+     *     The name of the type of puzzle being shared.
+     * @param stats
+     *     The statistics that contain the required details about the average.
+     * @param activityContext
+     *     An activity context required to start the sharing activity. An application context is
+     *     not appropriate, as using it may disrupt the task stack.
      *
-     * @return True if it's possible to share
+     * @return
+     *     {@code true} if it is possible to share the average; or {@code false} if it is not.
      */
-    public static boolean shareAverageOf(int n, String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler, Context context) {
-        if (dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true) >= n) {
-            Intent shareIntent = new Intent();
+    public static boolean shareAverageOf(
+            int n, String puzzleType, Statistics stats, Activity activityContext) {
+        final String averageOfN = formatAverageOfN(n, stats);
+
+        if (averageOfN != null) {
+            final Intent shareIntent = new Intent();
+
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT,
-                context.getString(PuzzleUtils.getPuzzleName(currentPuzzle)) + ": " +
-                    PuzzleUtils.createAverageList(n, currentPuzzle, currentPuzzleSubtype, dbHandler));
+                    activityContext.getString(getPuzzleName(puzzleType))
+                            + ": " + formatAverageOfN(n, stats));
             shareIntent.setType("text/plain");
-            context.startActivity(shareIntent);
+            activityContext.startActivity(shareIntent);
+
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
+    /**
+     * Creates a histogram of the frequencies of solve times for the current session. Times are
+     * truncated to whole seconds.
+     *
+     * @param stats The statistics from which to get the frequencies.
+     *
+     * @return
+     *     A multi-line string presenting the histogram using "ASCII art"; or an empty string if
+     *     the statistics are {@code null}, or if no times have been recorded.
+     */
+    public static String createHistogramOf(Statistics stats) {
+        final StringBuilder histogram = new StringBuilder(1_000);
 
-    public static String createHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler) {
-        Cursor cursor = dbHandler.getAllSolvesFromWithLimit(100, currentPuzzle, currentPuzzleSubtype, false);
+        if (stats != null) {
+            final Map<Long, Integer> timeFreqs = stats.getSessionTimeFrequencies();
 
-
-        ArrayList<Integer> timeList = new ArrayList<>();
-        int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
-        int penaltyIndex = cursor.getColumnIndex(DatabaseHandler.KEY_PENALTY);
-        while (cursor.moveToNext()) {
-            // Cut off decimals
-            int time = cursor.getInt(timeIndex);
-            int penalty = cursor.getInt(penaltyIndex);
-            if (penalty != PuzzleUtils.PENALTY_DNF)
-                time = time - (time % 1000);
-            else
-                time = - 1;
-            timeList.add(time);
-        }
-
-        StringBuilder histogram = new StringBuilder();
-
-        Set<Integer> set = new HashSet<>(timeList);
-        //HashMap<Integer, Integer> frequencies = new HashMap();
-        for (int time : set) {
-            //frequencies.put(time, Collections.frequency(timeList, time));
-            histogram.append("\n" +
-                PuzzleUtils.convertTimeToStringWithoutMilli(time) + ": " + convertToBars(Collections.frequency(timeList, time)));
+            // Iteration order starts with DNF and then goes by increasing time.
+            for (Long time : timeFreqs.keySet()) {
+                histogram
+                        .append('\n')
+                        .append(convertTimeToStringWithoutMilli(tr(time)))
+                        .append(": ")
+                        .append(convertToBars(timeFreqs.get(time))); // frequency value.
+            }
         }
 
         return histogram.toString();
     }
 
-    public static boolean shareHistogramOf(String currentPuzzle, String currentPuzzleSubtype, DatabaseHandler dbHandler, Context context) {
-        int solveCount = dbHandler.getSolveCountWithLimit(100, currentPuzzle, currentPuzzleSubtype, true);
+    /**
+     * Shares a histogram showing the frequency of solve times falling into intervals of one
+     * second. Only times for the current session are presented in the histogram.
+     *
+     * @param puzzleType
+     *     The name of the type of puzzle being shared.
+     * @param stats
+     *     The statistics that contain the required details to present the histogram.
+     * @param activityContext
+     *     An activity context required to start the sharing activity. An application context is
+     *     not appropriate, as using it may disrupt the task stack.
+     *
+     * @return
+     *     {@code true} if it is possible to share the histogram; or {@code false} if it is not.
+     */
+    public static boolean shareHistogramOf(
+            String puzzleType, Statistics stats, Activity activityContext) {
+        final int solveCount = stats != null ? stats.getSessionNumSolves() : 0; // Includes DNFs.
+
         if (solveCount > 0) {
-            Intent shareIntent = new Intent();
+            final Intent shareIntent = new Intent();
+
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT,
-                context.getString(R.string.fab_share_histogram_solvecount,
-                    context.getString(PuzzleUtils.getPuzzleName(currentPuzzle)), solveCount) + ":" +
-                    PuzzleUtils.createHistogramOf(currentPuzzle, currentPuzzleSubtype, dbHandler));
+                activityContext.getString(R.string.fab_share_histogram_solvecount,
+                    activityContext.getString(getPuzzleName(puzzleType)), solveCount) + ":" +
+                    createHistogramOf(stats));
             shareIntent.setType("text/plain");
-            context.startActivity(shareIntent);
-            return true;
-        } else {
-            return false;
-        }
-    }
+            activityContext.startActivity(shareIntent);
 
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Takes an int N and converts it to bars █. Used for histograms

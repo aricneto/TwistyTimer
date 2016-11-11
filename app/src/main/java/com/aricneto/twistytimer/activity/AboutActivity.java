@@ -1,6 +1,5 @@
 package com.aricneto.twistytimer.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.psdev.licensesdialog.LicensesDialog;
 
@@ -23,17 +22,14 @@ public class AboutActivity extends AppCompatActivity {
     private final static String APP_TITLE = "Twisty Timer";
     private final static String APP_PNAME = "com.aricneto.twistytimer";
 
-    @Bind(R.id.toolbar)           Toolbar  toolbar;
-    @Bind(R.id.rateButton)        TextView rateButton;
-    @Bind(R.id.feedbackButton)    TextView feedbackButton;
-    @Bind(R.id.licenseButton)     TextView licenseButton;
-    @Bind(R.id.testersButton)     TextView testersButton;
-    @Bind(R.id.sourceButton)      TextView sourceButton;
-    @Bind(R.id.appVersion)        TextView appVersion;
-    @Bind(R.id.translatorsButton) TextView translatorsButton;
-
-    Activity activity;
-
+    @BindView(R.id.toolbar)           Toolbar  toolbar;
+    @BindView(R.id.rateButton)        TextView rateButton;
+    @BindView(R.id.feedbackButton)    TextView feedbackButton;
+    @BindView(R.id.licenseButton)     TextView licenseButton;
+    @BindView(R.id.testersButton)     TextView testersButton;
+    @BindView(R.id.sourceButton)      TextView sourceButton;
+    @BindView(R.id.appVersion)        TextView appVersion;
+    @BindView(R.id.translatorsButton) TextView translatorsButton;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -45,7 +41,7 @@ public class AboutActivity extends AppCompatActivity {
                     startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_title)));
                     break;
                 case R.id.licenseButton:
-                    new LicensesDialog.Builder(activity)
+                    new LicensesDialog.Builder(AboutActivity.this)
                         .setNotices(R.raw.notices_app)
                         .build()
                         .show();
@@ -58,14 +54,14 @@ public class AboutActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.testersButton:
-                    new MaterialDialog.Builder(activity)
+                    new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.testers)
                         .content(R.string.testers_content)
                         .positiveText(R.string.action_ok)
                         .show();
                     break;
                 case R.id.translatorsButton:
-                    new MaterialDialog.Builder(activity)
+                    new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.translators)
                         .content(R.string.translators_content)
                         .positiveText(R.string.action_ok)
@@ -95,8 +91,6 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        activity = this;
-
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             appVersion.setText(versionName);
@@ -110,6 +104,5 @@ public class AboutActivity extends AppCompatActivity {
         testersButton.setOnClickListener(clickListener);
         sourceButton.setOnClickListener(clickListener);
         translatorsButton.setOnClickListener(clickListener);
-
     }
 }

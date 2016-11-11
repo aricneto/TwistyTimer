@@ -1,11 +1,9 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,9 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.fragment.dialog.TimeDialog;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.fragment.TimerListFragment;
+import com.aricneto.twistytimer.fragment.dialog.TimeDialog;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -28,8 +26,10 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.aricneto.twistytimer.utils.TTIntent.*;
 
 /**
  * Created by Ari on 05/06/2015.
@@ -38,7 +38,6 @@ import butterknife.ButterKnife;
 public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHolder> implements DialogListener {
     private final Context           mContext;  // Current context
     private final FragmentManager   mFragmentManager;
-    private final TimeCursorAdapter thisThing; // HOLY MOTHER OF WORKAROUNDS
 
     int cardColor;
     int selectedCardColor;
@@ -56,7 +55,6 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         this.mFragmentManager = listFragment.getFragmentManager();
         cardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackground);
         selectedCardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackgroundSelected);
-        thisThing = this;
     }
 
     @Override
@@ -82,14 +80,11 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     public void onBindViewHolderCursor(final RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
         TimeHolder holder = (TimeHolder) viewHolder;
         handleTime(holder, cursor);
-
     }
 
     @Override
     public void onUpdateDialog() {
-        Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME UPDATED");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(sendIntent);
+        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
     }
 
     @Override
@@ -104,43 +99,29 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     public void unselectAll() {
         selectedItems.clear();
         isInSelectionMode = false;
-        broadcastToMain("SELECTIONMODE FALSE");
+        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_SELECTION_MODE_OFF);
     }
 
     public void deleteAllSelected() {
-        DatabaseHandler handler = new DatabaseHandler(mContext);
-        handler.deleteAllFromList(selectedItems);
-        handler.closeDB();
-        resetList();
-    }
-
-    private void resetList() {
-        Intent sendIntent = new Intent("TIMELIST");
-        sendIntent.putExtra("action", "TIME ADDED");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(sendIntent);
+        TwistyTimer.getDBHandler().deleteSolvesByID(selectedItems, null); // Ignore progress.
+        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
     }
 
     private void toggleSelection(long id, CardView card) {
         if (! isSelected(id)) {
-            broadcastToMain("LISTITEM SELECTED");
+            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIME_SELECTED);
             selectedItems.add(id);
             card.setCardBackgroundColor(selectedCardColor);
         } else {
-            broadcastToMain("LISTITEM UNSELECTED");
+            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIME_UNSELECTED);
             selectedItems.remove(id);
             card.setCardBackgroundColor(cardColor);
         }
 
         if (selectedItems.size() == 0) {
-            broadcastToMain("SELECTIONMODE FALSE");
+            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_SELECTION_MODE_OFF);
             isInSelectionMode = false;
         }
-    }
-
-    private void broadcastToMain(String message) {
-        Intent sendIntent = new Intent("TIMER");
-        sendIntent.putExtra("action", message);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(sendIntent);
     }
 
     private void handleTime(final TimeHolder holder, final Cursor cursor) {
@@ -166,9 +147,8 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
                     setIsLocked(true);
                     TimeDialog timeDialog = TimeDialog.newInstance(mId);
                     timeDialog.show(mFragmentManager, "time_dialog");
-                    timeDialog.setDialogListener(thisThing);
+                    timeDialog.setDialogListener(TimeCursorAdapter.this);
                 }
-
             }
         });
 
@@ -177,7 +157,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
             public boolean onLongClick(View view) {
                 if (! isInSelectionMode) {
                     isInSelectionMode = true;
-                    broadcastToMain("SELECTIONMODE TRUE");
+                    broadcast(CATEGORY_UI_INTERACTIONS, ACTION_SELECTION_MODE_ON);
                     toggleSelection(mId, holder.card);
                 }
                 return true;
@@ -219,17 +199,16 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     }
 
     static class TimeHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.card)        CardView       card;
-        @Bind(R.id.root)        RelativeLayout root;
-        @Bind(R.id.timeText)    TextView       timeText;
-        @Bind(R.id.penaltyText) TextView       penaltyText;
-        @Bind(R.id.date)        TextView       dateText;
-        @Bind(R.id.commentIcon) ImageView      commentIcon;
+        @BindView(R.id.card)        CardView       card;
+        @BindView(R.id.root)        RelativeLayout root;
+        @BindView(R.id.timeText)    TextView       timeText;
+        @BindView(R.id.penaltyText) TextView       penaltyText;
+        @BindView(R.id.date)        TextView       dateText;
+        @BindView(R.id.commentIcon) ImageView      commentIcon;
 
         public TimeHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
-
 }

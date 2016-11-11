@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.InputType;
@@ -23,39 +22,45 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.TTIntent;
 
 import org.joda.time.DateTime;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Shows the timeList dialog
  */
 public class TimeDialog extends DialogFragment {
 
-    @Bind(R.id.timeText)          TextView  timeText;
-    @Bind(R.id.puzzlePenaltyText) TextView  penaltyText;
-    @Bind(R.id.dateText)          TextView  dateText;
-    @Bind(R.id.scrambleText)      TextView  scrambleText;
-    @Bind(R.id.editButton)        ImageView editButton;
-    @Bind(R.id.commentButton)     ImageView commentButton;
-    @Bind(R.id.commentText)       TextView  commentText;
-    @Bind(R.id.overflowButton)    ImageView overflowButton;
+    private Unbinder mUnbinder;
+
+    @BindView(R.id.timeText)          TextView  timeText;
+    @BindView(R.id.puzzlePenaltyText) TextView  penaltyText;
+    @BindView(R.id.dateText)          TextView  dateText;
+    @BindView(R.id.scrambleText)      TextView  scrambleText;
+    @BindView(R.id.editButton)        ImageView editButton;
+    @BindView(R.id.commentButton)     ImageView commentButton;
+    @BindView(R.id.commentText)       TextView  commentText;
+    @BindView(R.id.overflowButton)    ImageView overflowButton;
 
     private long            mId;
-    private DatabaseHandler handler;
     private Solve           solve;
     private DialogListener  dialogListener;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+
             switch (view.getId()) {
                 case R.id.overflowButton:
                     PopupMenu popupMenu = new PopupMenu(getActivity(), overflowButton);
@@ -75,20 +80,20 @@ public class TimeDialog extends DialogFragment {
                                     getContext().startActivity(shareIntent);
                                     break;
                                 case R.id.remove:
-                                    handler.deleteFromId(mId);
+                                    dbHandler.deleteSolveByID(mId);
                                     updateList();
                                     break;
                                 case R.id.history_to:
                                     solve.setHistory(true);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_history), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
                                 case R.id.history_from:
                                     solve.setHistory(false);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_session), Toast.LENGTH_SHORT).show();
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     updateList();
                                     dismiss();
                                     break;
@@ -116,7 +121,7 @@ public class TimeDialog extends DialogFragment {
                                             solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
                                             break;
                                     }
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     // dismiss dialog
                                     updateList();
                                     return true;
@@ -132,7 +137,7 @@ public class TimeDialog extends DialogFragment {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     solve.setComment(input.toString());
-                                    handler.updateSolve(solve);
+                                    dbHandler.updateSolve(solve);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     updateList();
                                 }
@@ -174,10 +179,9 @@ public class TimeDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_time_details, container);
         //this.setEnterTransition(R.anim.activity_slide_in);
-        ButterKnife.bind(this, dialogView);
+        mUnbinder = ButterKnife.bind(this, dialogView);
 
         mId = getArguments().getLong("id");
-        handler = new DatabaseHandler(getActivity());
 
         //Log.d("TIME DIALOG", "mId: " + mId + "\nexists: " + handler.idExists(mId));
 
@@ -185,8 +189,10 @@ public class TimeDialog extends DialogFragment {
         //getDialog().getWindow().setWindowAnimations(R.style.DialogAnimationScale);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        if (handler.idExists(mId, DatabaseHandler.TABLE_TIMES)) {
-            solve = handler.getSolve(mId);
+        final Solve matchedSolve = TwistyTimer.getDBHandler().getSolve(mId);
+
+        if (matchedSolve != null) {
+            solve = matchedSolve;
 
             timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
             dateText.setText(new DateTime(solve.getDate()).toString("d MMM y'\n'H':'mm"));
@@ -219,7 +225,6 @@ public class TimeDialog extends DialogFragment {
 
         }
 
-
         return dialogView;
     }
 
@@ -227,30 +232,20 @@ public class TimeDialog extends DialogFragment {
         dialogListener = listener;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void updateList() {
         if (dialogListener != null) {
             dialogListener.onUpdateDialog();
         } else {
-            Intent sendIntent = new Intent("TIMELIST");
-            sendIntent.putExtra("action", "TIME UPDATED");
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(sendIntent);
+            TTIntent.broadcast(TTIntent.CATEGORY_TIME_DATA_CHANGES, TTIntent.ACTION_TIMES_MODIFIED);
         }
         dismiss();
     }
 
-
     @Override
     public void onDestroyView() {
-        handler.closeDB();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
         if (dialogListener != null)
             dialogListener.onDismissDialog();
         super.onDestroyView();
     }
-
 }

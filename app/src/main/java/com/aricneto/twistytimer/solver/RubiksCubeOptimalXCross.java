@@ -57,43 +57,37 @@ public class RubiksCubeOptimalXCross implements Tip {
         StringBuilder tip = new StringBuilder();
 
         // x-cross on U
-        State stateU =
-                x.multiply(x).multiply(state).multiply(x).multiply(x);
-        tip.append(description + " U" + ":\n");
+        State stateU = x.multiply(x).multiply(state).multiply(x).multiply(x);
+        tip.append(description).append(" U:\n");
         tip.append(getOptimalSolutions(stateU, "x2 "));
         tip.append("\n");
 
         // x-cross on D
-        State stateD = state;
-        tip.append(description + " D" + ":\n");
-        tip.append(getOptimalSolutions(stateD, ""));
+        tip.append(description).append(" D:\n");
+        tip.append(getOptimalSolutions(state, "")); // state == "stateD"
         tip.append("\n");
 
         // x-cross on L
-        State stateL =
-                z.multiply(state).multiply(z).multiply(z).multiply(z);
-        tip.append(description + " L" + ":\n");
+        State stateL = z.multiply(state).multiply(z).multiply(z).multiply(z);
+        tip.append(description).append(" L:\n");
         tip.append(getOptimalSolutions(stateL, "z' "));
         tip.append("\n");
 
         // x-cross on R
-        State stateR =
-                z.multiply(z).multiply(z).multiply(state).multiply(z);
-        tip.append(description + " R" + ":\n");
+        State stateR = z.multiply(z).multiply(z).multiply(state).multiply(z);
+        tip.append(description).append(" R:\n");
         tip.append(getOptimalSolutions(stateR, "z "));
         tip.append("\n");
 
         // x-cross on F
-        State stateF =
-                x.multiply(state).multiply(x).multiply(x).multiply(x);
-        tip.append(description + " F" + ":\n");
+        State stateF = x.multiply(state).multiply(x).multiply(x).multiply(x);
+        tip.append(description).append(" F:\n");
         tip.append(getOptimalSolutions(stateF, "x' "));
         tip.append("\n");
 
         // x-cross on B
-        State stateB =
-                x.multiply(x).multiply(x).multiply(state).multiply(x);
-        tip.append(description + " B" + ":\n");
+        State stateB = x.multiply(x).multiply(x).multiply(state).multiply(x);
+        tip.append(description).append(" B:\n");
         tip.append(getOptimalSolutions(stateB, "x "));
         tip.append("\n");
 
@@ -103,12 +97,11 @@ public class RubiksCubeOptimalXCross implements Tip {
     private String getOptimalSolutions(State state, String prefix) {
         int count = 0;
 
-        ArrayList<String> prefixes = new ArrayList<String>();
-        ArrayList<String[]> solutions = new ArrayList<String[]>();
+        ArrayList<String> prefixes = new ArrayList<>();
+        ArrayList<String[]> solutions = new ArrayList<>();
 
         // id
-        State stateId = state;
-        for (String[] solution : RubiksCubeXCrossSolver.solve(stateId)) {
+        for (String[] solution : RubiksCubeXCrossSolver.solve(state)) {
             prefixes.add(prefix);
             solutions.add(solution);
             count++;
@@ -119,8 +112,7 @@ public class RubiksCubeOptimalXCross implements Tip {
 
         // y
         count = 0;
-        State stateY =
-                y.multiply(y).multiply(y).multiply(state).multiply(y);
+        State stateY = y.multiply(y).multiply(y).multiply(state).multiply(y);
         for (String[] solution : RubiksCubeXCrossSolver.solve(stateY)) {
             prefixes.add(prefix + "y ");
             solutions.add(solution);
@@ -132,8 +124,7 @@ public class RubiksCubeOptimalXCross implements Tip {
 
         // y2
         count = 0;
-        State stateY2 =
-                y.multiply(y).multiply(state).multiply(y).multiply(y);
+        State stateY2 = y.multiply(y).multiply(state).multiply(y).multiply(y);
         for (String[] solution : RubiksCubeXCrossSolver.solve(stateY2)) {
             prefixes.add(prefix + "y2 ");
             solutions.add(solution);
@@ -145,8 +136,7 @@ public class RubiksCubeOptimalXCross implements Tip {
 
         // y'
         count = 0;
-        State stateY3 =
-                y.multiply(state).multiply(y).multiply(y).multiply(y);
+        State stateY3 = y.multiply(state).multiply(y).multiply(y).multiply(y);
         for (String[] solution : RubiksCubeXCrossSolver.solve(stateY3)) {
             prefixes.add(prefix + "y' ");
             solutions.add(solution);
@@ -166,10 +156,10 @@ public class RubiksCubeOptimalXCross implements Tip {
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < solutions.size(); i++) {
             if (solutions.get(i).length == minLength) {
-                output.append(
-                        String.format("  %s%s\n",
-                                prefixes.get(i),
-                                StringUtils.join(" ", solutions.get(i))));
+                output.append("  ")
+                        .append(prefixes.get(i))
+                        .append(StringUtils.join(" ", solutions.get(i)))
+                        .append('\n');
             }
         }
 

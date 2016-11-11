@@ -39,12 +39,12 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/importButton"
+            android:id="@+id/selectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:padding="8dp"
-            tools:text="Import"
+            tools:text="@string/action_ok"
             android:textAllCaps="true"
             android:textColor="?colorAccent"
             android:textStyle="bold" />

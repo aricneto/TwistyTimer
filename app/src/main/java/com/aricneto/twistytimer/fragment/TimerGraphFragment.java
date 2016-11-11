@@ -1,51 +1,60 @@
 package com.aricneto.twistytimer.fragment;
 
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.CardView;
-import android.util.Pair;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.spans.TimeFormatter;
-import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.stats.ChartStatistics;
+import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
+import com.aricneto.twistytimer.stats.ChartStyle;
+import com.aricneto.twistytimer.stats.Statistics;
+import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
-import org.joda.time.DateTime;
+import java.util.Locale;
 
-import java.util.ArrayList;
-
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TimerGraphFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimerGraphFragment extends Fragment {
+public class TimerGraphFragment extends Fragment implements StatisticsCache.StatisticsObserver {
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    /**
+     * A "tag" to identify this class in log messages.
+     */
+    private static final String TAG = TimerGraphFragment.class.getSimpleName();
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
@@ -53,62 +62,20 @@ public class TimerGraphFragment extends Fragment {
 
     private String  currentPuzzle;
     private String  currentPuzzleSubtype;
-    private Context mContext;
-
-    @Bind(R.id.linechart)         LineChart lineChartView;
-    @Bind(R.id.personalBestTimes) TextView  personalBestTimes;
-    @Bind(R.id.sessionBestTimes)  TextView  sessionBestTimes;
-
-    @Bind(R.id.progressSpinner) MaterialProgressBar progressBar;
-    @Bind(R.id.refreshText)     TextView            refreshText;
-    @Bind(R.id.bestCard)        CardView            bestsCard;
-
-    // Things that must be hidden/shown when refreshing the card.
-    // The names don't matter since we're just going to show/hide them anyway
-    @Bind(R.id.globalBestTitle)  View rl1;
-    @Bind(R.id.divider03)        View rl2;
-    @Bind(R.id.divider04)        View rl3;
-    @Bind(R.id.sessionBestTitle) View r14;
-
-    DatabaseHandler dbHandler;
-
     private boolean history;
 
-    // To prevent an user from crashing the app by refreshing really fast
-    private boolean refreshLocked;
+    private Unbinder mUnbinder;
+    @BindView(R.id.linechart)           LineChart lineChartView;
+    @BindView(R.id.personalBestTimes)   TextView  personalBestTimes;
+    @BindView(R.id.sessionBestTimes)    TextView  sessionBestTimes;
+    @BindView(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
+    @BindView(R.id.progressSpinner)     MaterialProgressBar progressBar;
 
-    // Receives broadcasts from the timer
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isAdded()) { // The fragment has to check if it is attached to an activity. Removing this will bug the app
-                switch (intent.getStringExtra("action")) {
-                    case "MOVED TO HISTORY":
-                    case "TIME UPDATED":
-                    case "REFRESH TIME":
-                        generateChart();
-                        if (refreshText.getVisibility() == View.GONE) {
-                            refreshText.setVisibility(View.VISIBLE);
-                            toggleCardStats(View.GONE);
-                        }
-                        break;
-                    case "TIME ADDED":
-                        if (! history)
-                            generateChart();
-                        if (refreshText.getVisibility() == View.GONE) {
-                            refreshText.setVisibility(View.VISIBLE);
-                            toggleCardStats(View.GONE);
-                        }
-                        break;
-                    case "HISTORY":
-                        history = ! history;
-                        generateChart();
-                        break;
-                }
-            }
-        }
-    };
-
+    // Things that must be hidden/shown when refreshing the card.
+    @BindViews({
+            R.id.personalBestTitle, R.id.sessionBestTitle, R.id.sessionCurrentTitle,
+            R.id.horizontalDivider02, R.id.verticalDivider02, R.id.verticalDivider03,
+    }) View[] statisticsTableViews;
 
     public TimerGraphFragment() {
         // Required empty public constructor
@@ -122,280 +89,315 @@ public class TimerGraphFragment extends Fragment {
         args.putBoolean(HISTORY, history);
         args.putString(PUZZLE_SUBTYPE, puzzleType);
         fragment.setArguments(args);
+        if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
-        dbHandler = new DatabaseHandler(getContext());
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("TIMELIST"));
-        mContext = getContext();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
-        ButterKnife.bind(this, root);
+        mUnbinder = ButterKnife.bind(this, root);
 
-        // Bests stats
-        bestsCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (! refreshLocked) {
-                    refreshLocked = true;
-                    calculateStats();
-                }
-            }
-        });
+        // The color for the text in the legend and for the values along the chart's axes.
+        final int chartTextColor = Color.WHITE;
 
-        // Setting for landscape mode
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        lineChartView.setPinchZoom(true);
+        lineChartView.setBackgroundColor(Color.TRANSPARENT);
+        lineChartView.setDrawGridBackground(false);
+        lineChartView.getAxisRight().setEnabled(false);
+        lineChartView.getLegend().setTextColor(chartTextColor);
+        lineChartView.setDescription("");
+
+        final YAxis axisLeft = lineChartView.getAxisLeft();
+        final XAxis xAxis = lineChartView.getXAxis();
+        final int axisColor = ContextCompat.getColor(getActivity(), R.color.white_secondary_icon);
+
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineColor(axisColor);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setTextColor(chartTextColor);
+        xAxis.setAvoidFirstLastClipping(true);
+
+        axisLeft.setDrawGridLines(true);
+        axisLeft.setDrawAxisLine(true);
+        axisLeft.setTextColor(chartTextColor);
+        axisLeft.enableGridDashedLine(10f, 8f, 0f);
+        axisLeft.setAxisLineColor(axisColor);
+        axisLeft.setGridColor(axisColor);
+        axisLeft.setValueFormatter(new TimeFormatter());
+        axisLeft.setDrawLimitLinesBehindData(true);
+
+        // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
+        // statistics table will likely almost fill the screen. The automatic layout causes the
+        // chart to use only the remaining space after the statistics table takes its space.
+        // However, this may lead to the whole chart being squeezed into a few vertical pixels.
+        // Therefore, set a fixed height for the chart that will force the statistics table to be
+        // scrolled down to allow the chart to fit.
+        if (getActivity().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
             root.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (container != null) {
-                        LineChart.LayoutParams params = lineChartView.getLayoutParams();
-                        params.height = container.getHeight();
-                        lineChartView.setLayoutParams(params);
-                        lineChartView.requestLayout();
-                        root.findViewById(R.id.graphScroll).setScrollY(params.height / 2);
+                    if (container != null && lineChartView != null) {
+                        final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+
+                        if (params != null) {
+                            params.height = container.getHeight();
+                            lineChartView.setLayoutParams(params);
+                            lineChartView.requestLayout();
+                        }
                     }
                 }
             });
         }
 
-        // Setting the chart up
-        lineChartView.setPinchZoom(true);
-        YAxis axisLeft = lineChartView.getAxisLeft();
-        XAxis xAxis = lineChartView.getXAxis();
-
-        lineChartView.setBackgroundColor(Color.TRANSPARENT);
-        lineChartView.setDrawGridBackground(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisLineColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
-        xAxis.setDrawAxisLine(true);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setAvoidFirstLastClipping(true);
-        lineChartView.getAxisRight().setEnabled(false);
-        lineChartView.getLegend().setEnabled(false);
-        lineChartView.setDescription("");
-
-        axisLeft.setDrawLimitLinesBehindData(true);
-        axisLeft.setDrawGridLines(true);
-        axisLeft.setDrawAxisLine(true);
-        axisLeft.setTextColor(Color.WHITE);
-        axisLeft.enableGridDashedLine(10f, 8f, 0f);
-        axisLeft.setValueFormatter(new TimeFormatter());
-        axisLeft.setAxisLineColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
-        axisLeft.setGridColor(ContextCompat.getColor(mContext, R.color.white_secondary_icon));
-
-        generateChart();
+        // If the statistics are already loaded, the update notification will have been missed,
+        // so fire that notification now. If the statistics are non-null, they will be displayed.
+        // If they are null (i.e., not yet loaded), the progress bar will be displayed until this
+        // fragment, as a registered observer, is notified when loading is complete. Post the
+        // firing of the event, so that it is received after "onCreateView" returns.
+        root.post(new Runnable() {
+            @Override
+            public void run() {
+                onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
+            }
+        });
+        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         return root;
     }
 
-    private void calculateStats() {
-        new CalculateStats().execute();
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // "restartLoader" ensures that any old loader with the wrong puzzle type/subtype will not
+        // be reused. For now, those arguments are just passed via their respective fields to
+        // "onCreateLoader".
+        //
+        // Starting loaders here in "onActivityCreated" ensures that "onCreateView" is complete.
+        //
+        // An anonymous inner class is neater than implementing "LoaderCallbacks".
+        if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: CHART_DATA_LOADER_ID");
+        getLoaderManager().restartLoader(MainActivity.CHART_DATA_LOADER_ID, null,
+                new LoaderManager.LoaderCallbacks<Wrapper<ChartStatistics>>() {
+                    @Override
+                    public Loader<Wrapper<ChartStatistics>> onCreateLoader(int id, Bundle args) {
+                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: CHART_DATA_LOADER_ID");
+                        // "ChartStyle" allows the Loader to be executed without the need to hold a
+                        // reference to an Activity context (required to access theme attributes),
+                        // which would be likely to cause memory leaks and crashes.
+                        return new ChartStatisticsLoader(
+                                getContext(), new ChartStyle(getActivity()), currentPuzzle,
+                                currentPuzzleSubtype, !history);
+                    }
+
+                    @Override
+                    public void onLoadFinished(Loader<Wrapper<ChartStatistics>> loader,
+                                               Wrapper<ChartStatistics> data) {
+                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: CHART_DATA_LOADER_ID");
+                        updateChart(data.content());
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Wrapper<ChartStatistics>> loader) {
+                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: CHART_DATA_LOADER_ID");
+                        // Nothing to do here, as the "ChartStatistics" object was never retained.
+                        // The view is most likely destroyed at this time, so no need to update it.
+                    }
+                });
     }
 
-    private void generateChart() {
-        new GenerateSolveList().execute(currentPuzzle, currentPuzzleSubtype);
-    }
-
-    private void toggleCardStats(int visibility) {
-        rl1.setVisibility(visibility);
-        rl2.setVisibility(visibility);
-        rl3.setVisibility(visibility);
-        r14.setVisibility(visibility);
-        personalBestTimes.setVisibility(visibility);
-        sessionBestTimes.setVisibility(visibility);
+    @Override
+    public void onDestroyView() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroyView()");
+        super.onDestroyView();
+        mUnbinder.unbind();
+        StatisticsCache.getInstance().unregisterObserver(this);
     }
 
     /**
-     * Generate a list of solves for the chart
+     * Sets the visibility of the statistics table values columns. When loading starts, the columns
+     * should be hidden and a progress bar shown. When loading finishes, the columns should be
+     * populated with values and be shown and the progress bar hidden. No action will be taken if
+     * this fragment does not yet have a view, or if its view has been destroyed.
+     *
+     * @param visibility
+     *     The visibility to set on the statistics table columns. Use {@code View.GONE} or
+     *     {@code View.VISIBLE}. The opposite visibility will be applied to the progress bar.
      */
-    private class GenerateSolveList extends AsyncTask<String, Void, Pair<ArrayList<Entry>, ArrayList<String>>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    private void setStatsTableVisibility(final int visibility) {
+        if (getView() == null) {
+            // Called before "onCreateView" or after "onDestroyView", so do nothing.
+            return;
         }
 
-        @Override
-        protected Pair<ArrayList<Entry>, ArrayList<String>> doInBackground(String... params) {
-            ArrayList<Entry> yVals = new ArrayList<>();
-            ArrayList<String> xVals = new ArrayList<>();
-
-            Pair<ArrayList<Entry>, ArrayList<String>> tempPair = new Pair<>(yVals, xVals);
-
-            Cursor cursor = dbHandler.getAllSolvesFrom(currentPuzzle, currentPuzzleSubtype, history);
-
-            // Looping through all rows and adding to list
-            int timeIndex = cursor.getColumnIndex(DatabaseHandler.KEY_TIME);
-            int penaltyIndex = cursor.getColumnIndex(DatabaseHandler.KEY_DATE);
-            int count = 0;
-            if (cursor.getCount() > 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        tempPair.first.add(new Entry((float) cursor.getInt(timeIndex) / 1000,
-                                count));
-                        tempPair.second.add(new DateTime(cursor.getLong(penaltyIndex)).toString("dd'/'MM"));
-                        count++;
-                    } while (cursor.moveToNext());
-                }
+        ButterKnife.apply(statisticsTableViews, new ButterKnife.Action<View>() {
+            @Override
+            public void apply(@NonNull View view, int index) {
+                view.setVisibility(visibility);
             }
+        });
 
-            // Adding the mean to the string arraylist, so we don't have
-            // to create another variable to store it in (remember to remove it from the list in the next step)
-            tempPair.second.add(String.valueOf(dbHandler.getMean(! history, currentPuzzle, currentPuzzleSubtype) / 1000));
+        personalBestTimes.setVisibility(visibility);
+        sessionBestTimes.setVisibility(visibility);
+        sessionCurrentTimes.setVisibility(visibility);
 
-            cursor.close();
-            return tempPair;
-        }
-
-        @Override
-        protected void onPostExecute(Pair<ArrayList<Entry>, ArrayList<String>> objects) {
-            super.onPostExecute(objects);
-
-            //Getting the mean and removing it from the list so it doesn't interfere with the times
-            float mean = Float.parseFloat(objects.second.get(objects.second.size() - 1));
-            objects.second.remove(objects.second.size() - 1);
-
-            LineDataSet lineDataSet = new LineDataSet(objects.first, "yVals");
-
-            lineChartView.getAxisLeft().removeAllLimitLines();
-            // Mean line
-            LimitLine ll = new LimitLine(mean, mContext.getString(R.string.graph_mean));
-            ll.setLineColor(ContextCompat.getColor(mContext, R.color.yellow_material_700));
-            ll.setLineWidth(1f);
-            ll.enableDashedLine(20f, 10f, 0f);
-            ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
-            ll.setTextColor(ContextCompat.getColor(mContext, R.color.yellow_material_700));
-            ll.setTextSize(12f);
-            lineChartView.getAxisLeft().addLimitLine(ll);
-
-            lineDataSet.setLineWidth(2f);
-            lineDataSet.enableDashedLine(10f, 10f, 0);
-            lineDataSet.setDrawCircles(false);
-            //lineDataSet.setCircleRadius(3f);
-            lineDataSet.setColor(Color.WHITE);
-            lineDataSet.setHighlightEnabled(false);
-            //lineDataSet.setCircleColor(Color.WHITE);
-            lineDataSet.setDrawValues(false);
-
-            LineData lineData = new LineData(objects.second, lineDataSet);
-
-            lineChartView.setData(lineData);
-            // Animates and refreshes the chart
-            lineChartView.animateY(1000);
-        }
+        // NOTE: Use "INVISIBLE", not "GONE", or there will be problems with vertical centering.
+        progressBar.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
     }
 
-    private class CalculateStats extends AsyncTask<Void, Void, int[]> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-            refreshText.setVisibility(View.GONE);
-            toggleCardStats(View.GONE);
+    /**
+     * Called when the chart statistics loader has completed loading the chart data. The loader
+     * listens for changes to the data and this method will be called each time the display of the
+     * chart needs to be refreshed. If this fragment has no view, no update will be attempted.
+     *
+     * @param chartStats The chart statistics populated by the loader.
+     */
+    private void updateChart(ChartStatistics chartStats) {
+        if (DEBUG_ME) Log.d(TAG, "updateChart()");
+
+        if (getView() == null) {
+            // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
         }
 
-        @Override
-        protected int[] doInBackground(Void... voids) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            int BestAvg3 = dbHandler.getBestAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg5 = dbHandler.getBestAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg12 = dbHandler.getBestAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int BestAvg100 = dbHandler.getBestAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg50 = dbHandler.getBestAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int BestAvg1000 = dbHandler.getBestAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int BestMean = dbHandler.getMean(false, currentPuzzle, currentPuzzleSubtype);
-            int BestBest = dbHandler.getBestOrWorstTime(true, false, currentPuzzle, currentPuzzleSubtype);
-            int BestWorst = dbHandler.getBestOrWorstTime(false, false, currentPuzzle, currentPuzzleSubtype);
-            int BestSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, false);
+        // Add all times line, best times line, average-of-N times lines (with highlighted
+        // best AoN times) and mean limit line and identify them all using a custom legend.
+        chartStats.applyTo(lineChartView);
 
-            int SessionAvg3 = dbHandler.getFastAverageOf(3, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg5 = dbHandler.getTruncatedAverageOf(5, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg12 = dbHandler.getTruncatedAverageOf(12, currentPuzzle, currentPuzzleSubtype, true);
-            int SessionAvg100 = dbHandler.getTruncatedAverageOf(100, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg50 = dbHandler.getTruncatedAverageOf(50, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionAvg1000 = dbHandler.getTruncatedAverageOf(1000, currentPuzzle, currentPuzzleSubtype, false);
-            int SessionMean = dbHandler.getMean(true, currentPuzzle, currentPuzzleSubtype);
-            int SessionBest = dbHandler.getBestOrWorstTime(true, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionWorst = dbHandler.getBestOrWorstTime(false, true, currentPuzzle, currentPuzzleSubtype);
-            int SessionSolveCount = dbHandler.getSolveCount(currentPuzzle, currentPuzzleSubtype, true);
-
-            return new int[] { BestAvg5, BestAvg12, BestAvg100, BestMean, BestBest, BestWorst, BestSolveCount,
-                               SessionAvg5, SessionAvg12, SessionAvg100, SessionMean, SessionBest, SessionWorst, SessionSolveCount,
-                               BestAvg50, BestAvg1000, SessionAvg50, SessionAvg1000, BestAvg3, SessionAvg3 };
-        }
-
-        @Override
-        protected void onPostExecute(int[] times) {
-            super.onPostExecute(times);
-
-            String BestAvg3 = PuzzleUtils.convertTimeToString(times[18]);
-            String BestAvg5 = PuzzleUtils.convertTimeToString(times[0]);
-            String BestAvg12 = PuzzleUtils.convertTimeToString(times[1]);
-            String BestAvg50 = PuzzleUtils.convertTimeToString(times[14]);
-            String BestAvg100 = PuzzleUtils.convertTimeToString(times[2]);
-            String BestAvg1000 = PuzzleUtils.convertTimeToString(times[15]);
-            String BestMean = PuzzleUtils.convertTimeToString(times[3]);
-            String BestBest = PuzzleUtils.convertTimeToString(times[4]);
-            String BestWorst = PuzzleUtils.convertTimeToString(times[5]);
-
-            String SessionAvg3 = PuzzleUtils.convertTimeToString(times[19]);
-            String SessionAvg5 = PuzzleUtils.convertTimeToString(times[7]);
-            String SessionAvg12 = PuzzleUtils.convertTimeToString(times[8]);
-            String SessionAvg50 = PuzzleUtils.convertTimeToString(times[16]);
-            String SessionAvg100 = PuzzleUtils.convertTimeToString(times[9]);
-            String SessionAvg1000 = PuzzleUtils.convertTimeToString(times[17]);
-            String SessionMean = PuzzleUtils.convertTimeToString(times[10]);
-            String SessionBest = PuzzleUtils.convertTimeToString(times[11]);
-            String SessionWorst = PuzzleUtils.convertTimeToString(times[12]);
-
-            // The following code makes androidstudio throw a fit, but it's alright since we're not going to be translating NUMBERS.
-            personalBestTimes.setText(
-                    BestAvg3 + "\n" +
-                            BestAvg5 + "\n" +
-                            BestAvg12 + "\n" +
-                            BestAvg50 + "\n" +
-                            BestAvg100 + "\n" +
-                            BestAvg1000 + "\n" +
-                            BestMean + "\n" +
-                            BestBest + "\n" +
-                            BestWorst + "\n" +
-                            times[6]);
-            sessionBestTimes.setText(
-                    SessionAvg3 + "\n" +
-                            SessionAvg5 + "\n" +
-                            SessionAvg12 + "\n" +
-                            SessionAvg50 + "\n" +
-                            SessionAvg100 + "\n" +
-                            SessionAvg1000 + "\n" +
-                            SessionMean + "\n" +
-                            SessionBest + "\n" +
-                            SessionWorst + "\n" +
-                            times[13]);
-
-            toggleCardStats(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            refreshLocked = false;
-        }
+        // Animate and refresh the chart.
+        lineChartView.animateY(1_000);
     }
 
-
+    /**
+     * Refreshes the display of the statistics. If this fragment has no view, no update will be
+     * attempted.
+     *
+     * @param stats
+     *     The updated statistics. These will not be modified. If {@code null}, a progress bar will
+     *     be displayed until non-{@code null} statistics are passed to this method in a later call.
+     */
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onDetach() {
-        super.onDetach();
-        dbHandler.closeDB();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
+    public void onStatisticsUpdated(Statistics stats) {
+        if (DEBUG_ME) Log.d(TAG, "onStatisticsUpdated(" + stats + ")");
+
+        if (getView() == null) {
+            // Must have arrived after "onDestroyView" was called, so do nothing.
+            return;
+        }
+
+        if (stats == null) {
+            // Hide the statistics and show the progress bar until the statistics become ready.
+            setStatsTableVisibility(View.GONE);
+            return;
+        }
+
+        // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
+        // values needed by "convertTimeToString".
+
+        String allTimeBestAvg3 = convertTimeToString(
+                tr(stats.getAverageOf(3, false).getBestAverage()));
+        String allTimeBestAvg5 = convertTimeToString(
+                tr(stats.getAverageOf(5, false).getBestAverage()));
+        String allTimeBestAvg12 = convertTimeToString(
+                tr(stats.getAverageOf(12, false).getBestAverage()));
+        String allTimeBestAvg50 = convertTimeToString(
+                tr(stats.getAverageOf(50, false).getBestAverage()));
+        String allTimeBestAvg100 = convertTimeToString(
+                tr(stats.getAverageOf(100, false).getBestAverage()));
+        String allTimeBestAvg1000 = convertTimeToString(
+                tr(stats.getAverageOf(1_000, false).getBestAverage()));
+
+        String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()));
+        String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()));
+        String allTimeWorstTime = convertTimeToString(tr(stats.getAllTimeWorstTime()));
+        // Format count using appropriate grouping separators, e.g., "1,234", not "1234".
+        String allTimeCount = String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves());
+
+        String sessionBestAvg3 = convertTimeToString(
+                tr(stats.getAverageOf(3, true).getBestAverage()));
+        String sessionBestAvg5 = convertTimeToString(
+                tr(stats.getAverageOf(5, true).getBestAverage()));
+        String sessionBestAvg12 = convertTimeToString(
+                tr(stats.getAverageOf(12, true).getBestAverage()));
+        String sessionBestAvg50 = convertTimeToString(
+                tr(stats.getAverageOf(50, true).getBestAverage()));
+        String sessionBestAvg100 = convertTimeToString(
+                tr(stats.getAverageOf(100, true).getBestAverage()));
+        String sessionBestAvg1000 = convertTimeToString(
+                tr(stats.getAverageOf(1_000, true).getBestAverage()));
+
+        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
+        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
+        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
+        String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
+
+        String sessionCurrentAvg3 = convertTimeToString(
+                tr(stats.getAverageOf(3, true).getCurrentAverage()));
+        String sessionCurrentAvg5 = convertTimeToString(
+                tr(stats.getAverageOf(5, true).getCurrentAverage()));
+        String sessionCurrentAvg12 = convertTimeToString(
+                tr(stats.getAverageOf(12, true).getCurrentAverage()));
+        String sessionCurrentAvg50 = convertTimeToString(
+                tr(stats.getAverageOf(50, true).getCurrentAverage()));
+        String sessionCurrentAvg100 = convertTimeToString(
+                tr(stats.getAverageOf(100, true).getCurrentAverage()));
+        String sessionCurrentAvg1000 = convertTimeToString(
+                tr(stats.getAverageOf(1_000, true).getCurrentAverage()));
+
+        personalBestTimes.setText(
+                allTimeBestAvg3 + "\n" +
+                        allTimeBestAvg5 + "\n" +
+                        allTimeBestAvg12 + "\n" +
+                        allTimeBestAvg50 + "\n" +
+                        allTimeBestAvg100 + "\n" +
+                        allTimeBestAvg1000 + "\n" +
+                        allTimeMeanTime + "\n" +
+                        allTimeBestTime + "\n" +
+                        allTimeWorstTime + "\n" +
+                        allTimeCount);
+        sessionBestTimes.setText(
+                sessionBestAvg3 + "\n" +
+                        sessionBestAvg5 + "\n" +
+                        sessionBestAvg12 + "\n" +
+                        sessionBestAvg50 + "\n" +
+                        sessionBestAvg100 + "\n" +
+                        sessionBestAvg1000 + "\n" +
+                        sessionMeanTime + "\n" +
+                        sessionBestTime + "\n" +
+                        sessionWorstTime + "\n" +
+                        sessionCount);
+        sessionCurrentTimes.setText(
+                sessionCurrentAvg3 + "\n" +
+                        sessionCurrentAvg5 + "\n" +
+                        sessionCurrentAvg12 + "\n" +
+                        sessionCurrentAvg50 + "\n" +
+                        sessionCurrentAvg100 + "\n" +
+                        sessionCurrentAvg1000 + "\n" +
+                        // Last few are the same for "Session Best" and "Session Current".
+                        sessionMeanTime + "\n" +
+                        sessionBestTime + "\n" +
+                        sessionWorstTime + "\n" +
+                        sessionCount);
+
+        // Display the statistics and hide the progress bar.
+        setStatsTableVisibility(View.VISIBLE);
     }
 }

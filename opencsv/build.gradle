@@ -1,2 +1,8 @@
 configurations.maybeCreate("default")
 artifacts.add("default", file('opencsv-3.7.jar'))
+
+task testClasses {
+    doLast {
+        logger.info('Dummy "testClasses" task to allow Android Studio to run unit tests on "app" module.')
+    }
+}

@@ -8,7 +8,7 @@ public class StringUtils {
 
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < values.length - 1; i++) {
-            s.append(values[i] + separator);
+            s.append(values[i]).append(separator);
         }
         s.append(values[values.length - 1]);
 

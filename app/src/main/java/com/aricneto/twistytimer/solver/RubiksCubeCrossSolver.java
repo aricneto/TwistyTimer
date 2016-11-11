@@ -221,7 +221,7 @@ public class RubiksCubeCrossSolver {
         int edgesOrientationIndex =
                 indices[0] * N_EDGES_ORIENTATIONS + indices[2];
 
-        ArrayList<String[]> solutions = new ArrayList<String[]>();
+        ArrayList<String[]> solutions = new ArrayList<>();
 
         for (int depth = 0; ; depth++) {
             int[] path = new int[depth];

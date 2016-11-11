@@ -11,10 +11,10 @@ package com.aricneto.twistytimer.adapter;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,7 +24,6 @@ package com.aricneto.twistytimer.adapter;
  * SOFTWARE.
  */
 
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Filter;
@@ -47,7 +46,7 @@ import android.widget.Filterable;
  * @see android.support.v7.widget.RecyclerView.Adapter
  * @see android.widget.CursorAdapter
  * @see Filterable
- * @see fr.shywim.tools.adapter.CursorFilter.CursorFilterClient
+ * See fr.shywim.tools.adapter.CursorFilter.CursorFilterClient
  */
 public abstract class CursorRecyclerAdapter<VH
         extends android.support.v7.widget.RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH>
@@ -149,7 +148,7 @@ public abstract class CursorRecyclerAdapter<VH
      *
      * @param newCursor The new cursor to be used.
      *
-     * @return Returns the previously set Cursor, or null if there wasa not one.
+     * @return Returns the previously set Cursor, or null if there was not one.
      * If the given new Cursor is the same instance is the previously set
      * Cursor, null is also returned.
      */
@@ -256,27 +255,14 @@ public abstract class CursorRecyclerAdapter<VH
     public void setFilterQueryProvider(FilterQueryProvider filterQueryProvider) {
         mFilterQueryProvider = filterQueryProvider;
     }
-
-    /**
-     * Called when the {@link ContentObserver} on the cursor receives a change notification.
-     * Can be implemented by sub-class.
-     *
-     * @see ContentObserver#onChange(boolean)
-     */
-    protected void onContentChanged() {
-
-    }
-
-
-    /**
-     * <p>The CursorFilter delegates most of the work to the CursorAdapter.
-     * Subclasses should override these delegate methods to run the queries
-     * and convert the results into String that can be used by auto-completion
-     * widgets.</p>
-     */
-
 }
 
+/**
+ * <p>The CursorFilter delegates most of the work to the CursorAdapter.
+ * Subclasses should override these delegate methods to run the queries
+ * and convert the results into String that can be used by auto-completion
+ * widgets.</p>
+ */
 class CursorFilter extends Filter {
 
     CursorFilterClient mClient;
