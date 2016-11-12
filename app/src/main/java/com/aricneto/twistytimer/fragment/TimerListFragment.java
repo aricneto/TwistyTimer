@@ -307,6 +307,7 @@ public class TimerListFragment extends BaseFragment
                         public void onClick(MaterialDialog dialog, DialogAction which) {
                             TwistyTimer.getDBHandler().deleteAllFromSession(
                                     currentPuzzle, currentPuzzleSubtype);
+                            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                             reloadList();
                         }
                     })
