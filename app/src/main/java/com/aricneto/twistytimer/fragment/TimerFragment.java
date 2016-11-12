@@ -1020,12 +1020,15 @@ public class TimerFragment extends BaseFragment
         chronometer.start();
         chronometer.setHighlighted(false); // Clear any start cue or hold-for-start highlight.
 
+        // isRunning should be set before generateNewScramble so the loading spinner doesn't appear
+        // during a solve, since generateNewScramble checks if isRunning is false before setting
+        // the spinner to visible.
+        isRunning = true;
+
         if (scrambleEnabled) {
             currentScramble = realScramble;
             generateNewScramble();
         }
-
-        isRunning = true;
     }
 
     /**
