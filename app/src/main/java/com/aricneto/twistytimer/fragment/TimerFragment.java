@@ -658,7 +658,7 @@ public class TimerFragment extends BaseFragment
     }
 
     /**
-     * Hides the sliding panel showing the scramble image, or stops the chronometer, if either
+     * Hides the sliding panel showing the hints, or stops the chronometer, if either
      * action is necessary.
      *
      * @return
@@ -1060,7 +1060,14 @@ public class TimerFragment extends BaseFragment
     }
 
     @Override
+    public void onDestroy() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
     public void onDestroyView() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroyView()");
         super.onDestroyView();
         mUnbinder.unbind();
         StatisticsCache.getInstance().unregisterObserver(this);

@@ -177,7 +177,7 @@
     <string name="scramble_text_size_summary">Controls the size of the scramble sequence text show in the timer</string>
     <string name="hideTimeTitle">Hide time when solving</string>
     <string name="hideTimeSummary">The timer will display your time when you finish</string>
-    <string name="hideTimeText">…</string>
+    <string name="hideTimeText" translatable="false">…</string>
     <string name="scrambleImageSize_text">Scramble image size</string>
     <string name="panel_swipe_down_to_hide">Swipe down to hide</string>
     <string name="optimal_cross">Optimal cross on</string>

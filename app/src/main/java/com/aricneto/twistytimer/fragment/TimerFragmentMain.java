@@ -327,7 +327,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         else
             viewPager.setPagingEnabled(false);
 
-        viewPagerAdapter = new NavigationAdapter(getFragmentManager());
+        viewPagerAdapter = new NavigationAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(NUM_PAGES - 1);
         tabLayout.setupWithViewPager(viewPager);
