@@ -118,17 +118,14 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
     private Unbinder mUnbinder;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.pager)
-    LockedViewPager viewPager;
-    @BindView(R.id.main_tabs)
-    TabLayout tabLayout;
-    @BindView(R.id.toolbarLayout)
-    LinearLayout toolbarLayout;
+
+    @BindView(R.id.toolbar)       Toolbar         mToolbar;
+    @BindView(R.id.pager)         LockedViewPager viewPager;
+    @BindView(R.id.main_tabs)     TabLayout       tabLayout;
+    @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
     ActionMode actionMode;
 
-    private LinearLayout tabStrip;
+    private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
 
     private MaterialDialog removeSubtypeDialog;
@@ -137,7 +134,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private MaterialDialog renameSubtypeDialog;
 
     // Stores the current puzzle being timed/shown
-    private String currentPuzzle = PuzzleUtils.TYPE_333;
+    private String currentPuzzle        = PuzzleUtils.TYPE_333;
     private String currentPuzzleSubtype = "Normal";
     // Stores the current state of the list switch
     boolean history = false;
@@ -393,30 +390,33 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             Log.d(TAG, "Puzzle and subtype: " + currentPuzzle + " // " + currentPuzzleSubtype);
         if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATISTICS_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.STATISTICS_LOADER_ID, null,
-                new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
-                    @Override
-                    public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
-                        if (DEBUG_ME) Log.d(TAG, "onCreateLoader: STATISTICS_LOADER_ID");
-                        return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
-                                currentPuzzle, currentPuzzleSubtype);
-                    }
+                                         new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
+                                             @Override
+                                             public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
+                                                 if (DEBUG_ME)
+                                                     Log.d(TAG, "onCreateLoader: STATISTICS_LOADER_ID");
+                                                 return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
+                                                                             currentPuzzle, currentPuzzleSubtype);
+                                             }
 
-                    @Override
-                    public void onLoadFinished(Loader<Wrapper<Statistics>> loader,
-                                               Wrapper<Statistics> data) {
-                        if (DEBUG_ME) Log.d(TAG, "onLoadFinished: STATISTICS_LOADER_ID");
-                        // Other fragments can get the statistics from the cache when they are
-                        // created and can register themselves as observers of further updates.
-                        StatisticsCache.getInstance().updateAndNotify(data.content());
-                    }
+                                             @Override
+                                             public void onLoadFinished(Loader<Wrapper<Statistics>> loader,
+                                                                        Wrapper<Statistics> data) {
+                                                 if (DEBUG_ME)
+                                                     Log.d(TAG, "onLoadFinished: STATISTICS_LOADER_ID");
+                                                 // Other fragments can get the statistics from the cache when they are
+                                                 // created and can register themselves as observers of further updates.
+                                                 StatisticsCache.getInstance().updateAndNotify(data.content());
+                                             }
 
-                    @Override
-                    public void onLoaderReset(Loader<Wrapper<Statistics>> loader) {
-                        if (DEBUG_ME) Log.d(TAG, "onLoaderReset: STATISTICS_LOADER_ID");
-                        // Clear the cache and notify all observers that the statistics are "null".
-                        StatisticsCache.getInstance().updateAndNotify(null);
-                    }
-                });
+                                             @Override
+                                             public void onLoaderReset(Loader<Wrapper<Statistics>> loader) {
+                                                 if (DEBUG_ME)
+                                                     Log.d(TAG, "onLoaderReset: STATISTICS_LOADER_ID");
+                                                 // Clear the cache and notify all observers that the statistics are "null".
+                                                 StatisticsCache.getInstance().updateAndNotify(null);
+                                             }
+                                         });
     }
 
     private void handleIcons(int index) {
@@ -496,9 +496,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     }
 
     private void createDialogs() {
-        final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        final DatabaseHandler          dbHandler         = TwistyTimer.getDBHandler();
+        SharedPreferences              sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final SharedPreferences.Editor editor            = sharedPreferences.edit();
 
         // Create Subtype dialog
         createSubtypeDialog = new MaterialDialog.Builder(getContext())
@@ -537,7 +537,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         new MaterialDialog.Builder(getContext())
                                 .title(R.string.remove_subtype_confirmation)
                                 .content(getString(R.string.remove_subtype_confirmation_content) +
-                                        " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
+                                                 " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
                                 .positiveText(R.string.action_remove)
                                 .negativeText(R.string.action_cancel)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -670,7 +670,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 }
 
                 broadcast(CATEGORY_TIME_DATA_CHANGES,
-                        isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
+                          isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
             }
         });
     }
@@ -725,8 +725,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
      * the last subtype when it's changed, and to set the subtipe.
      */
     private void updateCurrentSubtype() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
+        SharedPreferences.Editor editor            = sharedPreferences.edit();
         final List<String> subtypeList
                 = TwistyTimer.getDBHandler().getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
