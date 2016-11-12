@@ -31,7 +31,6 @@ import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.AppRater;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
@@ -158,8 +157,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        AppRater.app_launched(this);
 
         bp = new BillingProcessor(this, null, this);
 

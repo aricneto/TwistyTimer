@@ -5,12 +5,12 @@ android {
         config {
         }
     }
-    compileSdkVersion 24
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 25
+    buildToolsVersion '25'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 18
         versionName "1.3.3"
     }
@@ -41,13 +41,13 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':TNoodle')
     compile project(':opencsv')
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:support-v4:24.1.1'
-    compile 'com.android.support:cardview-v7:24.1.1'
-    compile 'com.android.support:recyclerview-v7:24.1.1'
-    compile 'com.android.support:gridlayout-v7:24.1.1'
-    compile 'com.android.support:design:24.1.1'
-    compile 'com.android.support:percent:24.1.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:support-v4:25.0.0'
+    compile 'com.android.support:cardview-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:gridlayout-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:percent:25.0.0'
     // Butterknife ("apt" dependency is defined in root "build.gradle" script).
     compile 'com.jakewharton:butterknife:8.2.1'
     apt     'com.jakewharton:butterknife-compiler:8.2.1'
@@ -81,7 +81,7 @@ dependencies {
     // Inapp Billing
     compile 'com.anjlab.android.iab.v3:library:1.0.31'
     // Material color picker
-    compile 'com.pes.materialcolorpicker:library:1.0.1'
+    compile 'com.pavelsikun:vintage-chroma:1.5'
     // Sliding Up Panel
     compile 'com.sothree.slidinguppanel:library:3.2.1'
 

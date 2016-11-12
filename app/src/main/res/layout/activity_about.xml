@@ -67,13 +67,15 @@
         android:textSize="14sp" />
 
     <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/rateButton"
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true">
 
         <TableRow
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -107,6 +109,7 @@
         </TableRow>
 
         <TableRow
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -137,6 +140,7 @@
         </TableRow>
 
         <TableRow
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -149,6 +153,17 @@
                 android:gravity="center"
                 android:drawablePadding="8dp"
                 android:text="@string/translators"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white_text"
+                android:padding="8dp"
+                android:id="@+id/contributorsButton"
+                android:drawableLeft="@drawable/ic_code_white_24dp"
+                android:gravity="center"
+                android:drawablePadding="8dp"
+                android:text="@string/contributors"
                 android:textSize="14sp" />
 
         </TableRow>

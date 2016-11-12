@@ -402,6 +402,10 @@ public class TimerFragment extends BaseFragment
         final boolean advancedEnabled
                 = Prefs.getBoolean(R.string.pk_advanced_timer_settings_enabled, false);
 
+        /*
+        *  Scramble text size preference. It doesn't need to be in the "advanced" settings since
+        *  it detects if it's clipping and automatically compensates for that by creating a button.
+        */
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
 
         if (advancedEnabled) {
@@ -523,11 +527,13 @@ public class TimerFragment extends BaseFragment
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                if (!animationDone || isLocked) {
+                if (!animationDone || isLocked && !isRunning) {
                     // Not ready to start the timer, yet. May be waiting on the animation of the
                     // restoration of the tool-bars after the timer was stopped, or waiting on the
-                    // generation of a scramble ("isLocked" flag). In these states, the timer cannot
-                    // be running or counting down, so touches are ignored for now.
+                    // generation of a scramble ("isLocked" flag).
+                    // To compensate for long generating times, the timer generates a scramble
+                    // while it is counting down. In this case, it's necessary to check if the timer
+                    // is running, so the user can stop the it.
                     return false;
                 }
 
@@ -587,7 +593,9 @@ public class TimerFragment extends BaseFragment
 
                         case MotionEvent.ACTION_UP:
 
-                            if (holdingDNF) { // Checks if the user was holding the screen in a previous DNF by inspection timeout
+                            if (holdingDNF) {
+                                // Checks if the user was holding the screen when the inspection
+                                // timed out and saved a DNF
                                 holdingDNF = false;
                             } else if (inspectionEnabled) {
                                 hideToolbar();
@@ -615,6 +623,9 @@ public class TimerFragment extends BaseFragment
                     animationDone = false;
                     stopChronometer();
                     if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO) {
+                        // If a user has inspection on and went past his inspection time, he has
+                        // two extra seconds do start his time, but with a +2 penalty. This penalty
+                        // is recorded above (see plusTwoCountdown), and the timer checks if it's true here.
                         chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
                     }
                     addNewSolve();

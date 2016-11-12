@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -14,14 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.aricneto.twistytimer.spans.ChromaDialogFixed;
+import com.pavelsikun.vintagechroma.IndicatorMode;
+import com.pavelsikun.vintagechroma.OnColorSelectedListener;
+import com.pavelsikun.vintagechroma.colormode.ColorMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +54,7 @@ public class SchemeSelectDialogMain extends DialogFragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
             final SharedPreferences.Editor editor = sp.edit();
             String currentHex = "FFFFFF";
             switch (view.getId()) {
@@ -74,52 +78,45 @@ public class SchemeSelectDialogMain extends DialogFragment {
                     break;
             }
 
-
-            final ColorPicker picker = new ColorPicker(getActivity(),
-                    Integer.parseInt(currentHex.substring(0, 2), 16),
-                    Integer.parseInt(currentHex.substring(2, 4), 16),
-                    Integer.parseInt(currentHex.substring(4), 16));
-
-            /* Show color picker dialog */
-            picker.show();
-
-    /* On Click listener for the dialog, when the user select the color */
-            Button okColor = (Button) picker.findViewById(R.id.okColorButton);
-            okColor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    String hexColor = Integer.toHexString(picker.getColor()).substring(2);
-                    switch (view.getId()) {
-                        case R.id.top:
-                            setColor(top, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeTop", hexColor);
-                            break;
-                        case R.id.left:
-                            setColor(left, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeLeft", hexColor);
-                            break;
-                        case R.id.front:
-                            setColor(front, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeFront", hexColor);
-                            break;
-                        case R.id.right:
-                            setColor(right, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeRight", hexColor);
-                            break;
-                        case R.id.back:
-                            setColor(back, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeBack", hexColor);
-                            break;
-                        case R.id.down:
-                            setColor(down, Color.parseColor("#" + hexColor));
-                            editor.putString("cubeDown", hexColor);
-                            break;
-                    }
-                    editor.apply();
-                    picker.dismiss();
-                }
-            });
+            new ChromaDialogFixed.Builder()
+                    .initialColor(Color.parseColor("#" + currentHex))
+                    .colorMode(ColorMode.RGB)
+                    .indicatorMode(IndicatorMode.HEX)
+                    .onColorSelected(new OnColorSelectedListener() {
+                        @Override
+                        public void onColorSelected(@ColorInt int color) {
+                            String hexColor = Integer.toHexString(color).toUpperCase().substring(2);
+                            switch (view.getId()) {
+                                case R.id.top:
+                                    setColor(top, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeTop", hexColor);
+                                    break;
+                                case R.id.left:
+                                    setColor(left, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeLeft", hexColor);
+                                    break;
+                                case R.id.front:
+                                    setColor(front, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeFront", hexColor);
+                                    break;
+                                case R.id.right:
+                                    setColor(right, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeRight", hexColor);
+                                    break;
+                                case R.id.back:
+                                    setColor(back, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeBack", hexColor);
+                                    break;
+                                case R.id.down:
+                                    setColor(down, Color.parseColor("#" + hexColor));
+                                    editor.putString("cubeDown", hexColor);
+                                    break;
+                            }
+                            editor.apply();
+                        }
+                    })
+                    .create()
+                    .show(getFragmentManager(), "ChromaDialog");
 
         }
     };
@@ -129,7 +126,7 @@ public class SchemeSelectDialogMain extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_scheme_select_main, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
 
         setColor(top, Color.parseColor("#" + sp.getString("cubeTop", "FFFFFF")));
         setColor(left, Color.parseColor("#" + sp.getString("cubeLeft", "FF8B24")));

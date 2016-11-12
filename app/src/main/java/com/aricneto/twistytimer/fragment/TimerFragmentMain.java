@@ -65,7 +65,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.aricneto.twistytimer.utils.TTIntent.*;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_ON;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SESSION_TIMES_SHOWN;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_SELECTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_UNSELECTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
+import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
+import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
 public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFragmentListener {
     /**
@@ -101,13 +118,17 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
     private Unbinder mUnbinder;
-    @BindView(R.id.toolbar)       Toolbar         mToolbar;
-    @BindView(R.id.pager)         LockedViewPager viewPager;
-    @BindView(R.id.main_tabs)     TabLayout       tabLayout;
-    @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
-    ActionMode      actionMode;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.pager)
+    LockedViewPager viewPager;
+    @BindView(R.id.main_tabs)
+    TabLayout tabLayout;
+    @BindView(R.id.toolbarLayout)
+    LinearLayout toolbarLayout;
+    ActionMode actionMode;
 
-    private LinearLayout      tabStrip;
+    private LinearLayout tabStrip;
     private NavigationAdapter viewPagerAdapter;
 
     private MaterialDialog removeSubtypeDialog;
@@ -116,10 +137,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private MaterialDialog renameSubtypeDialog;
 
     // Stores the current puzzle being timed/shown
-    private String currentPuzzle        = PuzzleUtils.TYPE_333;
+    private String currentPuzzle = PuzzleUtils.TYPE_333;
     private String currentPuzzleSubtype = "Normal";
     // Stores the current state of the list switch
-    boolean history                     = false;
+    boolean history = false;
 
     int currentPage = TIMER_PAGE;
     private boolean pagerEnabled;
@@ -179,7 +200,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     viewPager.setPagingEnabled(false);
                     activateTabLayout(false);
                     originalContentHeight = viewPager.getHeight();
-                    ObjectAnimator hideToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, - toolbarLayout.getHeight());
+                    ObjectAnimator hideToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, -toolbarLayout.getHeight());
                     hideToolbar.setDuration(300);
                     hideToolbar.setInterpolator(new AccelerateInterpolator());
                     hideToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -187,7 +208,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
                             if (viewPager != null) {
                                 LinearLayout.LayoutParams params =
-                                    (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                 params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                 viewPager.setLayoutParams(params);
                                 viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -208,7 +229,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
                             if (viewPager != null) {
                                 LinearLayout.LayoutParams params =
-                                    (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                 params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                 viewPager.setLayoutParams(params);
                                 viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -224,7 +245,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                             if (toolbarLayout != null) {
                                 if (toolbarLayout.getTranslationY() == 0) {
                                     LinearLayout.LayoutParams params =
-                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
                                     params.height = originalContentHeight;
                                     viewPager.setLayoutParams(params);
                                     broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED);
@@ -356,6 +377,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        handleStatisticsLoader();
+
+    }
+
+    private void handleStatisticsLoader() {
         // The "StatisticsLoader" is managed from this fragment, as it has the necessary access to
         // the puzzle type, subtype and history values.
         //
@@ -363,6 +389,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // be reused. For now, those arguments are just passed via their respective fields to
         // "onCreateLoader".
 
+        if (DEBUG_ME)
+            Log.d(TAG, "Puzzle and subtype: " + currentPuzzle + " // " + currentPuzzleSubtype);
         if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATISTICS_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.STATISTICS_LOADER_ID, null,
                 new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
@@ -430,10 +458,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
      * Passes on the "Back" button press event to subordinate fragments and indicates if any
      * fragment consumed the event.
      *
-     * @return
-     *     {@code true} if the "Back" button press was consumed and no further action should be
-     *     taken; or {@code false} if the "Back" button press was ignored and the caller should
-     *     propagate it to the next interested party.
+     * @return {@code true} if the "Back" button press was consumed and no further action should be
+     * taken; or {@code false} if the "Back" button press was ignored and the caller should
+     * propagate it to the next interested party.
      */
     @Override
     public boolean onBackPressedInFragment() {
@@ -457,15 +484,15 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private void setupTypeDialogItem() {
         mToolbar.getMenu().add(0, 6, 0, R.string.type).setIcon(R.drawable.ic_tag_outline_white_24dp)
-            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    createDialogs();
-                    subtypeDialog.show();
-                    return true;
-                }
-            })
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        createDialogs();
+                        subtypeDialog.show();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
     }
 
     private void createDialogs() {
@@ -475,21 +502,21 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         // Create Subtype dialog
         createSubtypeDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.enter_type_name)
-            .inputRange(0, 16)
-            .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                    dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-                    history = false; // Resets the checked state of the switch
-                    currentPuzzleSubtype = input.toString();
-                    editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                    editor.apply();
-                    viewPager.setAdapter(viewPagerAdapter);
-                    Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
-                }
-            })
-            .build();
+                .title(R.string.enter_type_name)
+                .inputRange(0, 16)
+                .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence input) {
+                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                        history = false; // Resets the checked state of the switch
+                        currentPuzzleSubtype = input.toString();
+                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                        editor.apply();
+                        viewPager.setAdapter(viewPagerAdapter);
+                        Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
 
         final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
@@ -500,112 +527,115 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         }
         // Remove Subtype dialog
         removeSubtypeDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.remove_subtype_title)
-            .negativeText(R.string.action_cancel)
-            .autoDismiss(true)
-            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                    new MaterialDialog.Builder(getContext())
-                        .title(R.string.remove_subtype_confirmation)
-                        .content(getString(R.string.remove_subtype_confirmation_content) +
-                            " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
-                        .positiveText(R.string.action_remove)
-                        .negativeText(R.string.action_cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
-                                if (subtypeList.size() > 1) {
-                                    currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
-                                } else {
-                                    currentPuzzleSubtype = "Normal";
-                                }
-                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                editor.apply();
-                                viewPager.setAdapter(viewPagerAdapter);
-                                viewPager.setCurrentItem(currentPage);
-                            }
-                        })
-                        .show();
-                }
-            })
-            .build();
+                .title(R.string.remove_subtype_title)
+                .negativeText(R.string.action_cancel)
+                .autoDismiss(true)
+                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
+                        new MaterialDialog.Builder(getContext())
+                                .title(R.string.remove_subtype_confirmation)
+                                .content(getString(R.string.remove_subtype_confirmation_content) +
+                                        " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
+                                .positiveText(R.string.action_remove)
+                                .negativeText(R.string.action_cancel)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
+                                        if (subtypeList.size() > 1) {
+                                            currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
+                                        } else {
+                                            currentPuzzleSubtype = "Normal";
+                                        }
+                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                                        editor.apply();
+                                        viewPager.setAdapter(viewPagerAdapter);
+                                        viewPager.setCurrentItem(currentPage);
+                                    }
+                                })
+                                .show();
+                    }
+                })
+                .build();
 
         //Rename subtype
         renameSubtypeDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.rename_subtype_title)
-            .negativeText(R.string.action_cancel)
-            .autoDismiss(true)
-            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                    new MaterialDialog.Builder(getContext())
-                        .title(R.string.enter_new_name_dialog)
-                        .input("", "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
-                                currentPuzzleSubtype = input.toString();
-                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                editor.apply();
-                                viewPager.setAdapter(viewPagerAdapter);
-                                viewPager.setCurrentItem(currentPage);
-                            }
-                        })
-                        .inputRange(0, 16)
-                        .positiveText(R.string.action_done)
-                        .negativeText(R.string.action_cancel)
-                        .show();
-                }
-            })
-            .build();
+                .title(R.string.rename_subtype_title)
+                .negativeText(R.string.action_cancel)
+                .autoDismiss(true)
+                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
+                        new MaterialDialog.Builder(getContext())
+                                .title(R.string.enter_new_name_dialog)
+                                .input("", "", false, new MaterialDialog.InputCallback() {
+                                    @Override
+                                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                                        dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
+                                        currentPuzzleSubtype = input.toString();
+                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                                        editor.apply();
+                                        viewPager.setAdapter(viewPagerAdapter);
+                                        viewPager.setCurrentItem(currentPage);
+                                    }
+                                })
+                                .inputRange(0, 16)
+                                .positiveText(R.string.action_done)
+                                .negativeText(R.string.action_cancel)
+                                .show();
+                    }
+                })
+                .build();
 
 
         // Select subtype dialog
         subtypeDialog = new MaterialDialog.Builder(getContext())
-            .title(R.string.select_solve_type)
-            .positiveText(R.string.w_new_subtype)
-            .negativeText(R.string.action_rename)
-            .neutralText(R.string.action_remove)
-            .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-            .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-            .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-            .alwaysCallSingleChoiceCallback()
-            .itemsCallbackSingleChoice(subtypeList.indexOf(currentPuzzleSubtype), new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                    currentPuzzleSubtype = subtypeList.get(which);
-                    editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                    editor.apply();
-                    history = false; // Resets the checked state of the switch
-                    viewPager.setAdapter(viewPagerAdapter);
-                    viewPager.setCurrentItem(currentPage);
-                    subtypeDialog.dismiss();
-                    return true;
-                }
-            })
-            .callback(new MaterialDialog.ButtonCallback() {
-                @Override
-                public void onPositive(MaterialDialog dialog) {
-                    createSubtypeDialog.show();
-                }
+                .title(R.string.select_solve_type)
+                .positiveText(R.string.w_new_subtype)
+                .negativeText(R.string.action_rename)
+                .neutralText(R.string.action_remove)
+                .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+                .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
+                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
+                .alwaysCallSingleChoiceCallback()
+                .itemsCallbackSingleChoice(subtypeList.indexOf(currentPuzzleSubtype), new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        // A subtype was selected
+                        currentPuzzleSubtype = subtypeList.get(which);
+                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
+                        editor.apply();
+                        history = false; // Resets the checked state of the switch
+                        viewPager.setAdapter(viewPagerAdapter);
+                        viewPager.setCurrentItem(currentPage);
 
-                @Override
-                public void onNegative(MaterialDialog dialog) {
-                    super.onNegative(dialog);
-                    renameSubtypeDialog.show();
-                }
+                        handleStatisticsLoader();
+                        subtypeDialog.dismiss();
+                        return true;
+                    }
+                })
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        createSubtypeDialog.show();
+                    }
 
-                @Override
-                public void onNeutral(MaterialDialog dialog) {
-                    super.onNeutral(dialog);
-                    removeSubtypeDialog.show();
-                }
-            })
-            .build();
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                        renameSubtypeDialog.show();
+                    }
+
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        super.onNeutral(dialog);
+                        removeSubtypeDialog.show();
+                    }
+                })
+                .build();
     }
 
     private void setupHistorySwitchItem(LayoutInflater inflater) {
@@ -690,8 +720,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         setupTypeDialogItem();
     }
 
+    /**
+     * The app saves the last subtype used for each puzzle. This function is called to both update
+     * the last subtype when it's changed, and to set the subtipe.
+     */
     private void updateCurrentSubtype() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         final List<String> subtypeList
                 = TwistyTimer.getDBHandler().getAllSubtypesFromType(currentPuzzle);
@@ -708,7 +742,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // Setup spinner
         View spinnerContainer = LayoutInflater.from(getActivity()).inflate(R.layout.toolbar_spinner, mToolbar, false);
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         mToolbar.addView(spinnerContainer, layoutParams);
 
@@ -756,6 +790,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 updateCurrentSubtype();
                 viewPager.setAdapter(viewPagerAdapter);
                 viewPager.setCurrentItem(currentPage);
+                handleStatisticsLoader();
             }
 
             @Override
@@ -791,9 +826,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
          * Notifies each fragment (that is listening) that the "Back" button has been pressed.
          * Stops when the first fragment consumes the event.
          *
-         * @return
-         *     {@code true} if any fragment consumed the "Back" button press event; or {@code false}
-         *     if the event was not consumed by any fragment.
+         * @return {@code true} if any fragment consumed the "Back" button press event; or {@code false}
+         * if the event was not consumed by any fragment.
          */
         public boolean dispatchOnBackPressedInFragment() {
             if (DEBUG_ME) Log.d(TAG, "NavigationAdapter.dispatchOnBackPressedInFragment()");

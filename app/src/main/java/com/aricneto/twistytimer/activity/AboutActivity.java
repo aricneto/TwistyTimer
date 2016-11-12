@@ -22,14 +22,15 @@ public class AboutActivity extends AppCompatActivity {
     private final static String APP_TITLE = "Twisty Timer";
     private final static String APP_PNAME = "com.aricneto.twistytimer";
 
-    @BindView(R.id.toolbar)           Toolbar  toolbar;
-    @BindView(R.id.rateButton)        TextView rateButton;
-    @BindView(R.id.feedbackButton)    TextView feedbackButton;
-    @BindView(R.id.licenseButton)     TextView licenseButton;
-    @BindView(R.id.testersButton)     TextView testersButton;
-    @BindView(R.id.sourceButton)      TextView sourceButton;
-    @BindView(R.id.appVersion)        TextView appVersion;
-    @BindView(R.id.translatorsButton) TextView translatorsButton;
+    @BindView(R.id.toolbar)            Toolbar  toolbar;
+    @BindView(R.id.rateButton)         TextView rateButton;
+    @BindView(R.id.feedbackButton)     TextView feedbackButton;
+    @BindView(R.id.licenseButton)      TextView licenseButton;
+    @BindView(R.id.testersButton)      TextView testersButton;
+    @BindView(R.id.sourceButton)       TextView sourceButton;
+    @BindView(R.id.appVersion)         TextView appVersion;
+    @BindView(R.id.translatorsButton)  TextView translatorsButton;
+    @BindView(R.id.contributorsButton) TextView contributorsButton;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -66,6 +67,13 @@ public class AboutActivity extends AppCompatActivity {
                         .content(R.string.translators_content)
                         .positiveText(R.string.action_ok)
                         .show();
+                    break;
+                case R.id.contributorsButton:
+                    new MaterialDialog.Builder(AboutActivity.this)
+                            .title(R.string.contributors)
+                            .content(R.string.contributors_content)
+                            .positiveText(R.string.action_ok)
+                            .show();
                     break;
                 case R.id.sourceButton:
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/aricneto/TwistyTimer"));
@@ -104,5 +112,6 @@ public class AboutActivity extends AppCompatActivity {
         testersButton.setOnClickListener(clickListener);
         sourceButton.setOnClickListener(clickListener);
         translatorsButton.setOnClickListener(clickListener);
+        contributorsButton.setOnClickListener(clickListener);
     }
 }

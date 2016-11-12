@@ -235,6 +235,8 @@
     <string name="export_import_dialog_for_backup">For backup</string>
     <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
     <string name="translators">Translators</string>
-    <string name="translators_content" translatable="false">Huge thanks to these people for providing translations for this app:\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)</string>
+    <string name="translators_content" translatable="false">Huge thanks to these people for providing translations for this app:\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)\n•Ivan Nebogatikov (Russian)\n•Herel Adrastel (French)\n•Combinacijusx (Lithunian)</string>
+    <string name="contributors">Contributors</string>
+    <string name="contributors_content" translatable="false">The amazing people behind this app:\n\n•AriNeto\n•damo</string>
 
 </resources>
