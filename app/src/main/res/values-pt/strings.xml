@@ -210,5 +210,6 @@
     <string name="export_import_dialog_from_txt_file">De um arquivo .txt</string>
     <string name="permission_denied_explanation">Para a função de exportar/importar funcionar, você precisa garantir ao Twisty Timer o acesso ao seu armazenamento externo.</string>
     <string name="translators">Tradutores</string>
+    <string name="contributors">Contribuintes</string>
 
 </resources>

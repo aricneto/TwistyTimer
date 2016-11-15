@@ -1,28 +1,15 @@
 <resources>
-    <string name="app_name" translatable="false">Twisty Timer</string>
 
     <string name="cube_222">2x2x2 Kubas</string>
     <string name="cube_333">3x3x3 Kubas</string>
     <string name="cube_444">4x4x4 Kubas</string>
     <string name="cube_555">5x5x5 Kubas</string>
-    <string name="cube_clock" translatable="false">Rubik\'s Clock</string>
-    <string name="cube_mega" translatable="false">Megaminx</string>
-    <string name="cube_pyra" translatable="false">Pyraminx</string>
-    <string name="cube_skewb" translatable="false">Skewb</string>
-    <string name="cube_sq1" translatable="false">Square-1</string>
 
 
     <string name="drawer_open">Meniu atidarytas</string>
     <string name="drawer_close">Meniu uždarytas</string>
     <string name="action_settings">Nustatymai</string>
     <string name="drawer_about">Apie ir atsiliepimai</string>
-
-
-    <string-array name="array_penalties" translatable="false">
-        <item>@string/no_penalty</item>
-        <item>+2</item>
-        <item>DNF</item>
-    </string-array>
 
     <string name="list_empty_state_message">Dar nieko nėra!\nPerjunkite Jungiklį ekrano viršuje, kad pamatytumėte istoriją.</string>
 
@@ -35,7 +22,6 @@
     <string name="title_activity_settings">Nustatymai</string>
     <string name="list_options_item_share">Dalintis</string>
     <string name="task_remove">Pašalinti</string>
-
     <string name="action_cancel">Atšaukti</string>
     <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nVidurkis:\nGeriausias:\nPrasčiausias:\nSkaičius:</string>
     <string name="delete_dialog_confirmation_title">Panaikinti prendimą?</string>
@@ -46,7 +32,6 @@
     <string name="select_penalty">Pasirinkite nuobaudą</string>
     <string name="inspection">Apžiūra</string>
     <string name="add_time">Pridėti laiką</string>
-    <string name="add_time_hint" translatable="false">1:23.45</string>
     <string name="action_add">Pridėti</string>
     <string name="action_remove">Pašalinti</string>
     <string name="remove_subtype_title">Pasirinkite, kurią kategoriją pašalinti</string>
@@ -103,14 +88,12 @@
     <string name="timerPrefTitle">Laikmatis</string>
     <string name="inspectionTimeSummary">Numatytas laikas: 15 sekundžių</string>
     <string name="drawer_title_reference">Algoritmai</string>
-    <string name="drawer_title_oll" translatable="false">OLL</string>
     <string name="edit_algorithm">Redaguoti algoritmus</string>
     <string name="dialog_set_progress">Nustatyti progresą</string>
     <string name="action_update">Atnaujinti</string>
     <string name="dialog_revert_title_confirmation">Atstatyti algoritmus</string>
     <string name="dialog_revert_content_confirmation">Atsatyti šito atvejo algoritmus į numatytus?</string>
     <string name="action_reset">Atsatyti</string>
-    <string name="drawer_title_pll" translatable="false">PLL</string>
     <string name="scrambleEnabledSummary">Generuoti mišinį puzlei</string>
     <string name="scrambleEnabledTitle">Generuoti mišinį</string>
     <string name="timerAppearancePrefTitle">Laikmačio išvaizda</string>
@@ -167,7 +150,7 @@
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
     <string name="detail_text_more">Vidurkis:\nGeriausias:\nPrasčiausias:\nSkaičius:</string>
     <string name="source">Šaltinis</string>
-    <string name="startCueTitle">Pradėti cue<string>
+    <string name="startCueTitle">Pradėti cue</string>
     <string name="startCueSummary">Pakeisti laikmačio spalvą, kai galima pradėti</string>
     <string name="scramble_text_size">Mišinio teksto dydis</string>
     <string name="quick_action_button_large_title">Dideli greito veiksmo mygtukai</string>
@@ -218,12 +201,6 @@
     <string name="fab_add_time">Pridėti laiką</string>
     <string name="fab_share_error">Negalima dalintis. Patikrinkite ar turite pakankamai sprendimų šioje sesijoje.</string>
     <string name="fab_share_histogram_solvecount">%1$s laiko pasiskirstymas (%2$d sprendimuose)</string>
-    <string name="cube_333_informal" translatable="false">3x3</string>
-    <string name="cube_222_informal" translatable="false">2x2</string>
-    <string name="cube_444_informal" translatable="false">4x4</string>
-    <string name="cube_555_informal" translatable="false">5x5</string>
-    <string name="cube_666_informal" translatable="false">6x6</string>
-    <string name="cube_777_informal" translatable="false">7x7</string>
     <string name="showcase_fab_average">Dabar galite dalintis sesijos vidurkius!\nPalieskite mygtuką, kad pradėtumėte</string>
     <string name="fab_share_title">Dalintis sesija</string>
     <string name="export_import_dialog_from_backup">Iš atsarginės kopijos</string>
@@ -232,6 +209,5 @@
     <string name="export_import_dialog_for_backup">Atsarginė kopija</string>
     <string name="permission_denied_explanation">Kad eksportavimas/importavimas veiktų, jums reikia suteikti Twisty Timer leidimą pasiekti išorinę saugyklą (SD kortą).</string>
     <string name="translators">Vertėjai</string>
-    <string name="translators_content" translatable="false">Didelis ačiū žmonėms, kurie išvertė šia programą:\n\n•Combinacijusx (Lietuvių)\n•Sorashi (Čekų)\n•AriNeto (Portugalų)</string>
 
 </resources>
