@@ -110,7 +110,7 @@ Achats in-app: Cette permission est seulement utilisée pour faire un don dans l
     <string name="scramble_text_tap_hint">Appuyez ici pour mélanger</string>
     <string name="action_ok">OK</string>
     <string name="drawer_title_changeTheme">Thème de l\'application</string>
-    <string name="graph_stats_title">Statistiques</string>
+    <string name="graph_stats_title">Stats</string>
     <string name="graph_card_global">Meilleur</string>
     <string name="graph_card_session">Session</string>
     <string name="graph_card_refresh_text">Appuyez ici pour charger les statistiques</string>
@@ -207,7 +207,7 @@ Achats in-app: Cette permission est seulement utilisée pour faire un don dans l
     <string name="action_archive">Archiver</string>
     <string name="enable_advanced">Activer les réglages avancés</string>
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
-    <string name="detail_text_more">Moyenne:\Meilleur:\Pire:\Compte:</string>
+    <string name="detail_text_more">Moyenne:\nMeilleur:\nPire:\nCompte:</string>
     <string name="source">Source</string>
     <string name="startCueTitle">Démarrage</string>
     <string name="startCueSummary">Changer la couleur du texte quand le chronomètre est prêt</string>
