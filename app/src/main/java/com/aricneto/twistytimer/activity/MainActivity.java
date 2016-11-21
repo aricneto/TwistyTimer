@@ -649,13 +649,13 @@ public class MainActivity extends AppCompatActivity
     public void onFileSelection(@NonNull FileChooserDialog dialog, @NonNull File file) {
         // This "relay" scheme ensures that this activity is not embroiled in the gory details of
         // what the "destinationFrag" wanted with the file.
-        final Fragment destinationFrag = fragmentManager.findFragmentByTag(dialog.getTag());
+        final Fragment destinationFrag = fragmentManager.findFragmentByTag(FRAG_TAG_EXIM_DIALOG);
 
         if (destinationFrag instanceof FileChooserDialog.FileCallback) {
             ((FileChooserDialog.FileCallback) destinationFrag).onFileSelection(dialog, file);
         } else {
             // This is not expected unless there is a bug to be fixed.
-            Log.e(TAG, "onFileSelection(): Unknown or incompatible fragment: " + dialog.getTag());
+            Log.e(TAG, "onFileSelection(): Unknown or incompatible fragment: " + destinationFrag.getTag());
         }
     }
 

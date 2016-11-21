@@ -55,6 +55,11 @@ public class ExportImportDialog extends DialogFragment
      */
     public static final int EXIM_FORMAT_BACKUP = 2;
 
+    /**
+     * The tag for the {@code FileChooserDialog} called by this fragment
+     */
+    public static final String FRAG_TAG_EXIM_FILECHOOSER = "exim_file_chooser";
+
 
     /**
      * A call-back interface that supports interaction between the import/export dialogs, file chooser
@@ -159,7 +164,7 @@ public class ExportImportDialog extends DialogFragment
                     // be relayed back to this dialog fragment.
                     new FileChooserDialog.Builder(getExImActivity())
                             .chooseButton(R.string.action_choose)
-                            .tag(ExportImportDialog.this.getTag())
+                            .tag(FRAG_TAG_EXIM_FILECHOOSER)
                             .show();
                     break;
 
@@ -181,7 +186,7 @@ public class ExportImportDialog extends DialogFragment
                                                     @NonNull DialogAction which) {
                                     new FileChooserDialog.Builder(getExImActivity())
                                             .chooseButton(R.string.action_choose)
-                                            .tag(ExportImportDialog.this.getTag())
+                                            .tag(FRAG_TAG_EXIM_FILECHOOSER)
                                             .show();
                                 }
                             })

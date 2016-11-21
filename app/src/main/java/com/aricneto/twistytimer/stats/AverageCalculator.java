@@ -1,5 +1,7 @@
 package com.aricneto.twistytimer.stats;
 
+import android.util.Log;
+
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.Arrays;
@@ -234,40 +236,49 @@ public final class AverageCalculator {
      */
     public void addTime(long time) throws IllegalArgumentException {
         if (time <= 0L && time != DNF) {
-            throw new IllegalArgumentException("Time must be > 0 or be 'DNF': " + time);
-        }
+            // FIXME: throwing an IllegalArgumentException here is too harsh for the user. If the app
+            // incorrectly imports an illegal solve, the app will keep crashing and the only way for
+            // the user to fix this is to clear the app data. I'm commenting this off for the time
+            // being until the import algorithm gets sorted out.
+            // TODO: Should the app automatically remove illegal solves?
 
-        mNumSolves++;
+            Log.e("AverageCalculator", "Time must be > 0 or be 'DNF': " + time);
 
-        final long ejectedTime;
-
-        // If the array is full, "mNext" points to the oldest result that needs to be ejected first.
-        // If the array is not full, then "mNext" points to an empty entry, so no special handling
-        // is needed.
-        if (mNumSolves >= mN) {
-            if (mNext == mN) {
-                // Need to wrap around to the start (index zero).
-                mNext = 0;
-            }
-            ejectedTime = mTimes[mNext]; // May be DNF.
+            // throw new IllegalArgumentException("Time must be > 0 or be 'DNF': " + time);
         } else {
-            // "mNext" must be less than "mN" if "mNumSolves" is less than "mN".
-            ejectedTime = UNKNOWN; // Nothing ejected.
+
+            mNumSolves++;
+
+            final long ejectedTime;
+
+            // If the array is full, "mNext" points to the oldest result that needs to be ejected first.
+            // If the array is not full, then "mNext" points to an empty entry, so no special handling
+            // is needed.
+            if (mNumSolves >= mN) {
+                if (mNext == mN) {
+                    // Need to wrap around to the start (index zero).
+                    mNext = 0;
+                }
+                ejectedTime = mTimes[mNext]; // May be DNF.
+            } else {
+                // "mNext" must be less than "mN" if "mNumSolves" is less than "mN".
+                ejectedTime = UNKNOWN; // Nothing ejected.
+            }
+
+            mTimes[mNext] = time;
+            mNext++;
+
+            // Order is important here, as these methods change fields and some methods depend on the
+            // fields being updated by other methods before they are called. All depend on the new
+            // time being stored already (see above) and any ejected time being known (also above).
+            updateDNFCounts(time, ejectedTime);
+            updateCurrentBestAndWorstTimes(time, ejectedTime);
+            updateSums(time, ejectedTime);
+            updateCurrentAverage();
+
+            updateAllTimeBestAndWorstTimes();
+            updateAllTimeBestAverage();
         }
-
-        mTimes[mNext] = time;
-        mNext++;
-
-        // Order is important here, as these methods change fields and some methods depend on the
-        // fields being updated by other methods before they are called. All depend on the new
-        // time being stored already (see above) and any ejected time being known (also above).
-        updateDNFCounts(time, ejectedTime);
-        updateCurrentBestAndWorstTimes(time, ejectedTime);
-        updateSums(time, ejectedTime);
-        updateCurrentAverage();
-
-        updateAllTimeBestAndWorstTimes();
-        updateAllTimeBestAverage();
     }
 
     /**
