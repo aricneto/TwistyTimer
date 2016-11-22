@@ -15,6 +15,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -1078,24 +1079,29 @@ public class TimerFragment extends BaseFragment
     }
 
     public static void lockOrientation(Activity activity) {
-        Display display = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int rotation = display.getRotation();
-        int tempOrientation = activity.getResources().getConfiguration().orientation;
-        int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        switch (tempOrientation) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90)
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                else
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_270)
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                else
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        } else {
+            Display display         = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+            int     rotation        = display.getRotation();
+            int     tempOrientation = activity.getResources().getConfiguration().orientation;
+            int     orientation     = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+
+            switch (tempOrientation) {
+                case Configuration.ORIENTATION_LANDSCAPE:
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90)
+                        orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    else
+                        orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                    break;
+                case Configuration.ORIENTATION_PORTRAIT:
+                    if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_270)
+                        orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                    else
+                        orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+            }
+            activity.setRequestedOrientation(orientation);
         }
-        activity.setRequestedOrientation(orientation);
     }
 
     private static void unlockOrientation(Activity activity) {
