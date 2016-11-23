@@ -26,7 +26,7 @@
     <string name="bestSolveEnabledSummary">Оповещать, когда вы ставите личный рекорд</string>
     <string name="bestSolveEnabledTitle">Оповещение о лучшем времени</string>
     <string name="buttonsEnabledSummary">Показывать кнопки под таймером по окончании сборки</string>
-    <string name="buttonsEnabledTitle"></string>
+    <string name="buttonsEnabledTitle">Кнопки бысрых действий</string>
     <string name="choose_donation_amount">Выберете сумму пожертвования</string>
     <string name="clearEnabledTitle">Показывать кнопку \"Очистить\"</string>
     <string name="color_black">Черный</string>
@@ -42,7 +42,7 @@
     <string name="color_purple">Пурпурный</string>
     <string name="color_red">Красный</string>
     <string name="color_teal">Зелено-голубой</string>
-    <string name="contact">Контакт</string>
+    <string name="contact">Контакты</string>
     <string name="cube_222">Куб 2х2х2</string>
     <string name="cube_333">Куб 3х3х3</string>
     <string name="cube_333_informal" translatable="false"></string>
@@ -91,7 +91,7 @@
     <string name="fab_share_ao5">Среднее из 5</string>
     <string name="fab_share_distribution">Распределение</string>
     <string name="fab_share_error">Невозможно поделиться. Убедитесь что у вас достаточно сборок в этой сессии.</string>
-    <string name="fab_share_histogram_solvecount"></string>
+    <string name="fab_share_histogram_solvecount">%1$s распределение времени (%2$d сборок)</string>
     <string name="fab_share_title">Поделиться сессией...</string>
     <string name="file_selection_error_content">Убедитесь, что выбрали правильный %1$s файл</string>
     <string name="file_selection_error_title">Неправильный тип файла</string>
@@ -101,7 +101,7 @@
     <string name="graph_card_session">За сессию</string>
     <string name="graph_mean">Среднее</string>
     <string name="graph_stats_title">Статистика</string>
-    <string name="hideTimeSummary">Таймер покажет время когда вы закончите</string>
+    <string name="hideTimeSummary">Таймер покажет время, когда вы закончите</string>
     <string name="hideTimeText">...</string>
     <string name="hideTimeTitle">Прятать время во время сборки</string>
     <string name="hint">Подсказка</string>
@@ -137,7 +137,7 @@
     <string name="no_penalty">Нет штрафа</string>
     <string name="optimal_cross">Оптимальный крест включен</string>
     <string name="optimal_x_cross">Оптимальный улучшенный крест включен</string>
-    <string name="pagerEnabledSummary">Если этот параметр выключен, вам нужно будет нажимать на вкладки, чтобы переключаться между ними.</string>
+    <string name="pagerEnabledSummary">Если этот параметр выключен, вам нужно будет нажимать на вкладки, чтобы переключаться между ними</string>
     <string name="pagerEnabledTitle">Пролистывание вкладок</string>
     <string name="panel_swipe_down_to_hide">Проведите вниз, чтобы спрятать</string>
     <string name="permission_denied_explanation">Чтобы экспорт/импорт заработал, вам нужно принять разрешение от Twisty Timer для записи во внешнеее хранилище.</string>
@@ -169,7 +169,7 @@
     <string name="scramble_text_size">Размер текста скрамбла</string>
     <string name="scramble_text_size_summary">Управление размером текста скрамбла на таймере</string>
     <string name="scramble_text_tap_hint">Нажмите здесь, чтобы увидеть скрамбл</string>
-    <string name="select_penalty">Выбрать штраф штраф</string>
+    <string name="select_penalty">Выбрать штраф</string>
     <string name="select_solve_type">Выбрать категорию</string>
     <string name="selected_list">Выбрано</string>
     <string name="send_email_title">Отправить отзыв с...</string>
@@ -182,8 +182,8 @@
     <string name="showHintsXCrossSummary">Расширенные подсказки для креста могут долго загружаться.\nВключайте этот параметр, если готовы ждать или у вас высокопроизводительное устройство.</string>
     <string name="showHintsXCrossTitle">Раширенные подсказки для креста</string>
     <string name="showcase_fab_average">Теперь вы можете делиться средними значениями по сессии!\nНажмите на кнопку, чтобы начать</string>
-    <string name="source">Источник</string>
-    <string name="startCueSummary">Изменять цвет текста когда таймер готов начать</string>
+    <string name="source">Исходный код</string>
+    <string name="startCueSummary">Изменять цвет текста, когда таймер готов начать</string>
     <string name="startCueTitle">Подавать сигнал</string>
     <string name="task_remove">Удалить</string>
     <string name="testers">Тестировщики</string>
@@ -199,9 +199,16 @@
     <string name="type">Категория</string>
     <string name="w_new_subtype">Новый</string>
     <string name="warning">Предупреждение</string>
-    <string name="worstSolveEnabledSummary">Предупреждать когда у вас худший личный результат</string>
+    <string name="worstSolveEnabledSummary">Предупреждать, когда у вас худший личный результат</string>
     <string name="worstSolveEnabledTitle">Предупреждение о худшем результате</string>
     <string name="action_done">Готово</string>
     <string name="action_donate">Пожертвовать</string>
-    <string name="action_move">Двигать</string>
+    <string name="action_move">Переместить</string>
+    <string name="contributors">Помощники</string>
+    <string name="drawer_title_other">Другие</string>
+    <string name="graph_legend_all_times">Все</string>
+    <string name="graph_legend_avg_prefix">Ao</string>
+    <string name="graph_legend_best_times">Лучшее</string>
+    <string name="graph_card_session_best">Лучшее (сессия)</string>
+    <string name="graph_card_session_current">Текущее (сессия)</string>
 </resources>
