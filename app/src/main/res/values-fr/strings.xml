@@ -138,7 +138,7 @@
   <string name="action_archive">Archiver</string>
   <string name="enable_advanced">Activer les réglages avancés</string>
   <string name="graph_legend_best_times">Meilleur</string>
-  <string name="detail_text_more">Moyenne:\Meilleur:\Pire:\Compte:</string>
+  <string name="detail_text_more">Moyenne:\nMeilleur:\nPire:\nCompte:</string>
   <string name="startCueTitle">Démarrage</string>
   <string name="startCueSummary">Changer la couleur du texte quand le chronomètre est prêt</string>
   <string name="scramble_text_size">Taille de texte du mélange</string>
