@@ -3,6 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.jenzz.materialpreference.PreferenceCategory
+        android:title="@string/preference_title_application">
+
+        <!-- TODO: find a way to make this look nicer -->
+        <com.jenzz.materialpreference.Preference
+            android:key="@string/pk_locale"
+            android:title="@string/preference_application_language_title" />
+
+    </com.jenzz.materialpreference.PreferenceCategory>
+
+    <com.jenzz.materialpreference.PreferenceCategory
         android:title="@string/prefTitleInspection">
 
         <com.jenzz.materialpreference.SwitchPreference

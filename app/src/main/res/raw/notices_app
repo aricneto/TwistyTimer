@@ -2,81 +2,91 @@
 
 <notices>
     <notice>
+        <name>All relevant licenses can be found on the bottom of this list</name>
+    </notice>
+    <notice>
         <name>MPAndroidChart</name>
         <url>https://github.com/PhilJay/MPAndroidChart</url>
-        <copyright>Copyright 2016 Philipp Jahoda</copyright>
-        <license>Apache Software License 2.0</license>
+        <copyright>Copyright 2016 Philipp Jahoda - Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>Material Color Picker Dialog</name>
         <url>https://github.com/Pes8/android-material-color-picker-dialog</url>
-        <copyright>Copyright (c) 2015 Simone Pessotto (http://www.simonepessotto.it)
-</copyright>
-        <license>MIT License</license>
+        <copyright>Copyright (c) 2015 Simone Pessotto (http://www.simonepessotto.it) - MIT License</copyright>
     </notice>
     <notice>
         <name>AndroidSVG</name>
         <url>https://github.com/BigBadaboom/androidsvg</url>
-        <license>Apache Software License 2.0</license>
+        <copyright>Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>Material Preferences</name>
         <url>https://github.com/jenzz/Android-MaterialPreference</url>
-        <copyright>Copyright (c) 2015 Jens Driller</copyright>
-        <license>MIT License</license>
+        <copyright>Copyright (c) 2015 Jens Driller - MIT License</copyright>
     </notice>
     <notice>
         <name>Material Drawer</name>
         <url>https://github.com/mikepenz/MaterialDrawer</url>
-        <copyright>Copyright 2016 Mike Penz</copyright>
-        <license>Apache Software License 2.0</license>
+        <copyright>Copyright 2016 Mike Penz - Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>FAB</name>
         <url>https://github.com/gowong/material-sheet-fab</url>
-        <copyright>Copyright 2015 Gordon Wong</copyright>
-        <license>MIT License</license>
+        <copyright>Copyright 2015 Gordon Wong - MIT License</copyright>
     </notice>
     <notice>
         <name>Prisma Puzzle Timer</name>
         <url>https://bitbucket.org/walter/puzzle-timer/overview</url>
-        <copyright>Copyright (c) 2010 Walter Souza</copyright>
-        <license>MIT License</license>
+        <copyright>Copyright (c) 2010 Walter Souza - MIT License</copyright>
     </notice>
     <notice>
         <name>Observable ScrollView</name>
         <url>https://github.com/ksoichiro/Android-ObservableScrollView</url>
-        <copyright>Copyright 2014 Soichiro Kashima</copyright>
-        <license>Apache Software License 2.0</license>
+        <copyright>Copyright 2014 Soichiro Kashima - Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>Butterknife</name>
         <url>http://jakewharton.github.io/butterknife/</url>
-        <copyright>Copyright 2013 Jake Wharton</copyright>
-        <license>Apache Software License 2.0</license>
+        <copyright>Copyright 2013 Jake Wharton - Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>material-dialogs</name>
         <url>https://github.com/afollestad/material-dialogs</url>
-        <copyright>Copyright (c) 2015 Aidan Michael Follestad</copyright>
-        <license>MIT License</license>
+        <copyright>Copyright (c) 2015 Aidan Michael Follestad - MIT License</copyright>
     </notice>
     <notice>
         <name>LicensesDialog</name>
         <url>http://psdev.de/LicensesDialog</url>
-        <copyright>Copyright 2013 Philip Schiffer</copyright>
-        <license>Apache Software License 2.0</license>
+        <copyright>Copyright 2013 Philip Schiffer - Apache Software License 2.0</copyright>
     </notice>
     <notice>
         <name>TNoodle</name>
         <url>https://github.com/cubing/tnoodle</url>
-        <copyright>Copyright 2016 Jeremy Fleischman</copyright>
-        <license>GNU General Public License 3.0</license>
+        <copyright>Copyright 2016 Jeremy Fleischman - GNU General Public License 3.0</copyright>
     </notice>
     <notice>
         <name>PlusTimer</name>
         <url>https://github.com/plusCubed/plusTimer</url>
-        <copyright>Copyright (C) 2014  Daniel Ciao</copyright>
+        <copyright>Copyright (C) 2014  Daniel Ciao - GNU General Public License 3.0</copyright>
+    </notice>
+    <notice>
+        <name>Freepik</name>
+        <url>http://www.flaticon.com/authors/freepik</url>
+        <copyright>Country flag icons designed by Freepik from Flaticon</copyright>
+    </notice>
+    <notice>
+        <name>Apache Software License 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>MIT License</name>
+        <url>https://opensource.org/licenses/MIT</url>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>GNU General Public License 3.0</name>
+        <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
         <license>GNU General Public License 3.0</license>
     </notice>
 </notices>

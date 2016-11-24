@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +26,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.fragment.dialog.LocaleSelectDialog;
+import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +50,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
+        setTheme(ThemeUtils.getPreferredTheme());
+        LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle(R.string.title_activity_settings);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(R.drawable.ic_action_arrow_back_white_24);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -68,6 +74,18 @@ public class SettingsActivity extends AppCompatActivity {
                     .replace(R.id.main_activity_container, new SettingsFragment())
                     .commit();
         }
+
+    }
+
+    public void onRecreateRequired() {
+        if (DEBUG_ME) Log.d(TAG, "onRecreationRequired(): " + this);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (DEBUG_ME) Log.d(TAG, "  Activity.recreate() NOW!: " + this);
+                recreate();
+            }
+        });
     }
 
     /**
@@ -96,7 +114,8 @@ public class SettingsActivity extends AppCompatActivity {
                 switch (Prefs.keyToResourceID(preference.getKey(),
                         R.string.pk_inspection_time,
                         R.string.pk_show_scramble_x_cross_hints,
-                        R.string.pk_open_timer_appearance_settings)) {
+                        R.string.pk_open_timer_appearance_settings,
+                        R.string.pk_locale)) {
 
                     case R.string.pk_inspection_time:
                         createNumberDialog(R.string.inspection_time, R.string.pk_inspection_time);
@@ -122,6 +141,16 @@ public class SettingsActivity extends AppCompatActivity {
                                 .addToBackStack(null)
                                 .commit();
                         break;
+
+                    case R.string.pk_locale:
+                        if (getActivity() instanceof AppCompatActivity) {
+                            LocaleSelectDialog.newInstance()
+                                    .show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "locale_dialog");
+                        } else {
+                            Log.e(TAG, "Could not find correct activity to launch dialog!");
+                        }
+
+                        break;
                 }
                 return false;
             }
@@ -137,6 +166,8 @@ public class SettingsActivity extends AppCompatActivity {
             find(this, R.string.pk_open_timer_appearance_settings)
                     .setOnPreferenceClickListener(clickListener);
             find(this, R.string.pk_show_scramble_x_cross_hints)
+                    .setOnPreferenceClickListener(clickListener);
+            find(this, R.string.pk_locale)
                     .setOnPreferenceClickListener(clickListener);
         }
 

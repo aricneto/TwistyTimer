@@ -351,6 +351,17 @@
     <!--
     Other miscellaneous styles.
     -->
+
+    <style name="DialogItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
     <style name="ActionModeStyle" parent="Base.Widget.AppCompat.ActionMode">
         <item name="android:background">?colorPrimary</item>
         <item name="android:backgroundSplit">?colorPrimary</item>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.utils.LocaleUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -43,6 +44,8 @@ public class TwistyTimer extends Application {
         // two methods should really only be called from a background task, though, as opening the
         // database (particularly for the first time) can take some time.
         sDBHandler = new DatabaseHandler();
+
+        LocaleUtils.onCreate();
     }
 
     /**

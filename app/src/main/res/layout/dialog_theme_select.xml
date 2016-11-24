@@ -18,167 +18,77 @@
 
         <TextView
             android:id="@+id/indigo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_indigo" />
 
         <TextView
             android:id="@+id/deepPurple"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_deepPurple" />
 
         <TextView
             android:id="@+id/purple"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_purple" />
 
         <TextView
             android:id="@+id/teal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_teal" />
 
         <TextView
             android:id="@+id/green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_green" />
 
         <TextView
             android:id="@+id/light_green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_light_green" />
 
         <TextView
             android:id="@+id/blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_blue" />
 
         <TextView
             android:id="@+id/light_blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_light_blue" />
 
         <TextView
             android:id="@+id/cyan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_cyan" />
 
         <TextView
             android:id="@+id/pink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_pink" />
 
         <TextView
             android:id="@+id/red"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_red" />
 
         <TextView
             android:id="@+id/orange"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_orange" />
 
         <TextView
             android:id="@+id/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_black" />
 
         <TextView
             android:id="@+id/brown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_brown" />
 
         <TextView
             android:id="@+id/blueGray"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:padding="8dp"
+            style="@style/DialogItem"
             android:text="@string/color_blueGray" />
 
     </LinearLayout>

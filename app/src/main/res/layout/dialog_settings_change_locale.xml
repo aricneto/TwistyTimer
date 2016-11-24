@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="32dp"
+    android:paddingTop="32dp"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minWidth="170dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Language codes are alpha-2 ISO 639-1, followed by underline and alpha-2 ISO 3166 country code if necessary -->
+
+        <TextView
+            android:id="@+id/en"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_united_kingdom"
+            android:text="@string/language_english"/>
+
+        <TextView
+            android:id="@+id/en_US"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_united_states"
+            android:text="@string/language_english_usa"/>
+
+        <TextView
+            android:id="@+id/es"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_spain"
+            android:text="@string/language_spanish"/>
+
+        <TextView
+            android:id="@+id/de"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_germany"
+            android:text="@string/language_german"/>
+
+        <TextView
+            android:id="@+id/fr"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_france"
+            android:text="@string/language_french"/>
+
+        <TextView
+            android:id="@+id/ru"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_russia"
+            android:text="@string/language_russian"/>
+
+        <TextView
+            android:id="@+id/pt_BR"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_brazil"
+            android:text="@string/language_portuguese_br"/>
+
+        <TextView
+            android:id="@+id/cs"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_czech_republic"
+            android:text="@string/language_czech"/>
+
+        <TextView
+            android:id="@+id/lt"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_lithuania"
+            android:text="@string/language_lithuanian"/>
+
+        <TextView
+            android:id="@+id/pl"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_poland"
+            android:text="@string/language_polish"/>
+
+    </LinearLayout>
+
+</ScrollView>

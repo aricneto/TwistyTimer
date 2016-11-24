@@ -55,5 +55,6 @@ THESE KEYS MUST NOT BE LOCALIZED!
     Keys for preferences referenced only from code.
     -->
     <string translatable="false" name="pk_theme">theme</string>
+    <string translatable="false" name="pk_locale">locale</string>
 
 </resources>

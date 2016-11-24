@@ -42,6 +42,7 @@ import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
+import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState="
                 + savedInstanceState + "): " + this);
         setTheme(ThemeUtils.getPreferredTheme());
+        LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);

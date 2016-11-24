@@ -5,15 +5,23 @@
     <string name="cube_333">3x3x3 Cube</string>
     <string name="cube_444">4x4x4 Cube</string>
     <string name="cube_555">5x5x5 Cube</string>
+    <string name="cube_666">6x6x6 Cube</string>
+    <string name="cube_777">7x7x7 Cube</string>
     <string name="cube_clock" translatable="false">Rubik\'s Clock</string>
     <string name="cube_mega" translatable="false">Megaminx</string>
     <string name="cube_pyra" translatable="false">Pyraminx</string>
     <string name="cube_skewb" translatable="false">Skewb</string>
     <string name="cube_sq1" translatable="false">Square-1</string>
+    <string name="cube_333_informal" translatable="false">3x3</string>
+    <string name="cube_222_informal" translatable="false">2x2</string>
+    <string name="cube_444_informal" translatable="false">4x4</string>
+    <string name="cube_555_informal" translatable="false">5x5</string>
+    <string name="cube_666_informal" translatable="false">6x6</string>
+    <string name="cube_777_informal" translatable="false">7x7</string>
 
 
-    <string name="drawer_open">Menu opened</string>
-    <string name="drawer_close">Menu closed</string>
+    <string name="drawer_open" translatable="false">Menu opened</string>
+    <string name="drawer_close" translatable="false">Menu closed</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_about">About and feedback</string>
 
@@ -35,14 +43,11 @@
     <string name="title_activity_settings">Settings</string>
     <string name="list_options_item_share">Share</string>
     <string name="task_remove">Remove</string>
-
     <string name="action_cancel">Cancel</string>
     <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
     <string name="delete_dialog_confirmation_title">Remove solve?</string>
     <string name="delete_dialog_confirmation_button">Remove</string>
     <string name="delete_dialog_cancel_button">Cancel</string>
-    <string name="cube_666">6x6x6 Cube</string>
-    <string name="cube_777">7x7x7 Cube</string>
     <string name="select_penalty">Select penalty</string>
     <string name="inspection">Inspection</string>
     <string name="add_time">Add time</string>
@@ -71,14 +76,6 @@
     <string name="graph_card_session_current">Session\nCurrent</string>
     <string name="graph_card_session_best">Session\nBest</string>
     <string name="graph_mean">Mean</string>
-    <string name="color_indigo">Indigo</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_teal">Teal</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_red">Red</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_black">Black</string>
     <string name="w_new_subtype">New</string>
     <string name="action_rename">Rename</string>
     <string name="enter_new_name_dialog">Enter new name</string>
@@ -135,10 +132,23 @@
     <string name="donation_tier2">2 USD</string>
     <string name="donation_tier3">3 USD</string>
     <string name="donation_tier4">5 USD</string>
+
     <string name="color_green">Green</string>
     <string name="color_orange">Orange</string>
     <string name="color_deepPurple">Deep Purple</string>
     <string name="color_blueGray">Blue Gray</string>
+    <string name="color_light_green">Light Green</string>
+    <string name="color_light_blue">Light Blue</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_indigo">Indigo</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_red">Red</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_black">Black</string>
+
     <string name="sent_to_session">Moved to session</string>
     <string name="sent_to_history">Moved to history</string>
     <string name="move_solves_to_history">Move solves to history?</string>
@@ -221,12 +231,7 @@
     <string name="fab_add_time">Add time</string>
     <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
     <string name="fab_share_histogram_solvecount">%1$s time distribution (%2$d solves)</string>
-    <string name="cube_333_informal" translatable="false">3x3</string>
-    <string name="cube_222_informal" translatable="false">2x2</string>
-    <string name="cube_444_informal" translatable="false">4x4</string>
-    <string name="cube_555_informal" translatable="false">5x5</string>
-    <string name="cube_666_informal" translatable="false">6x6</string>
-    <string name="cube_777_informal" translatable="false">7x7</string>
+
     <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
     <string name="fab_share_title">Share session…</string>
     <string name="export_import_dialog_from_backup">From backup</string>
@@ -234,12 +239,28 @@
     <string name="export_import_dialog_for_other_timers">For other timers</string>
     <string name="export_import_dialog_for_backup">For backup</string>
     <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
+
     <string name="translators">Translators</string>
-    <string name="translators_content" translatable="false">Huge thanks to these people for providing translations for this app:\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)\n•Ivan Nebogatikov (Russian)\n•Herel Adrastel (French)\n•Combinacijusx (Lithuanian)</string>
+    <string name="translators_content">Huge thanks to these people for providing translations for this app:%1$s</string>
+    <string name="translators_names" translatable="false">\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)\n•Ivan Nebogatikov (Russian)\n•Herel Adrastel (French)\n•Combinacijusx (Lithuanian)</string>
+
     <string name="contributors">Contributors</string>
-    <string name="contributors_content" translatable="false">The amazing people behind this app:\n\n•AriNeto\n•damo</string>
-    <string name="color_light_green">Light Green</string>
-    <string name="color_light_blue">Light Blue</string>
-    <string name="color_cyan">Cyan</string>
+    <string name="contributors_content">The amazing people behind this app:%1$s</string>
+    <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo</string>
+
+
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_english_usa" translatable="false">English (United States)</string>
+    <string name="language_spanish" translatable="false">Español</string>
+    <string name="language_german" translatable="false">Deutsch</string>
+    <string name="language_french" translatable="false">Français</string>
+    <string name="language_russian" translatable="false">Русский</string>
+    <string name="language_portuguese_br" translatable="false">Português (Brasil)</string>
+    <string name="language_lithuanian" translatable="false">Lietuvių kalba</string>
+    <string name="language_polish" translatable="false">Język polski</string>
+    <string name="language_czech" translatable="false">Čeština</string>
+
+    <string name="preference_title_application">Application</string>
+    <string name="preference_application_language_title">Language</string>
 
 </resources>

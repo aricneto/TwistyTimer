@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.utils.LocaleUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,14 +66,14 @@ public class AboutActivity extends AppCompatActivity {
                 case R.id.translatorsButton:
                     new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.translators)
-                        .content(R.string.translators_content)
+                        .content(getString(R.string.translators_content, getString(R.string.translators_names)))
                         .positiveText(R.string.action_ok)
                         .show();
                     break;
                 case R.id.contributorsButton:
                     new MaterialDialog.Builder(AboutActivity.this)
                             .title(R.string.contributors)
-                            .content(R.string.contributors_content)
+                            .content(getString(R.string.contributors_content, getString(R.string.contributors_names)))
                             .positiveText(R.string.action_ok)
                             .show();
                     break;
@@ -85,6 +87,8 @@ public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(ThemeUtils.getPreferredTheme());
+        LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
