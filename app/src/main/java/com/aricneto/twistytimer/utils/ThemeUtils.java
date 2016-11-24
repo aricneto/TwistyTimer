@@ -47,14 +47,20 @@ public final class ThemeUtils {
                 return bgEnabled ? R.style.RedTheme        : R.style.RedTheme_NoBackground;
             case "brown":
                 return bgEnabled ? R.style.BrownTheme      : R.style.BrownTheme_NoBackground;
+            case "cyan":
+                return bgEnabled ? R.style.CyanTheme       : R.style.CyanTheme_NoBackground;
             case "blue":
                 return bgEnabled ? R.style.BlueTheme       : R.style.BlueTheme_NoBackground;
+            case "light_blue":
+                return bgEnabled ? R.style.LightBlueTheme  : R.style.LightBlueTheme_NoBackground;
             case "black":
                 return bgEnabled ? R.style.BlackTheme      : R.style.BlackTheme_NoBackground;
             case "orange":
                 return bgEnabled ? R.style.OrangeTheme     : R.style.OrangeTheme_NoBackground;
             case "green":
                 return bgEnabled ? R.style.GreenTheme      : R.style.GreenTheme_NoBackground;
+            case "light_green":
+                return bgEnabled ? R.style.LightGreenTheme : R.style.LightGreenTheme_NoBackground;
             case "deepPurple":
                 return bgEnabled ? R.style.DeepPurpleTheme : R.style.DeepPurpleTheme_NoBackground;
             case "blueGray":

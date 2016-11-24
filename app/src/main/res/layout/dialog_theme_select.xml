@@ -72,6 +72,17 @@
             android:text="@string/color_green" />
 
         <TextView
+            android:id="@+id/light_green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/color_light_green" />
+
+        <TextView
             android:id="@+id/blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,6 +92,28 @@
             android:gravity="center_vertical"
             android:padding="8dp"
             android:text="@string/color_blue" />
+
+        <TextView
+            android:id="@+id/light_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/color_light_blue" />
+
+        <TextView
+            android:id="@+id/cyan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/color_cyan" />
 
         <TextView
             android:id="@+id/pink"

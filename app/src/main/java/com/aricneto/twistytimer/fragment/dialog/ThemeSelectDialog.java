@@ -30,18 +30,21 @@ public class ThemeSelectDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.indigo)     TextView indigo;
-    @BindView(R.id.purple)     TextView purple;
-    @BindView(R.id.teal)       TextView teal;
-    @BindView(R.id.pink)       TextView pink;
-    @BindView(R.id.red)        TextView red;
-    @BindView(R.id.brown)      TextView brown;
-    @BindView(R.id.blue)       TextView blue;
-    @BindView(R.id.black)      TextView black;
-    @BindView(R.id.green)      TextView green;
-    @BindView(R.id.orange)     TextView orange;
-    @BindView(R.id.deepPurple) TextView deepPurple;
-    @BindView(R.id.blueGray)   TextView blueGray;
+    @BindView(R.id.indigo)       TextView indigo;
+    @BindView(R.id.purple)       TextView purple;
+    @BindView(R.id.teal)         TextView teal;
+    @BindView(R.id.pink)         TextView pink;
+    @BindView(R.id.red)          TextView red;
+    @BindView(R.id.brown)        TextView brown;
+    @BindView(R.id.blue)         TextView blue;
+    @BindView(R.id.cyan)         TextView cyan;
+    @BindView(R.id.light_blue)   TextView light_blue;
+    @BindView(R.id.black)        TextView black;
+    @BindView(R.id.green)        TextView green;
+    @BindView(R.id.light_green)  TextView light_green;
+    @BindView(R.id.orange)       TextView orange;
+    @BindView(R.id.deepPurple)   TextView deepPurple;
+    @BindView(R.id.blueGray)     TextView blueGray;
 
     public static ThemeSelectDialog newInstance() {
         return new ThemeSelectDialog();
@@ -54,19 +57,22 @@ public class ThemeSelectDialog extends DialogFragment {
             final String newTheme;
 
             switch (view.getId()) {
-                case R.id.indigo:     newTheme = "indigo"; break;
-                case R.id.purple:     newTheme = "purple"; break;
-                case R.id.teal:       newTheme = "teal"; break;
-                case R.id.pink:       newTheme = "pink"; break;
-                case R.id.red:        newTheme = "red"; break;
-                case R.id.brown:      newTheme = "brown"; break;
-                case R.id.blue:       newTheme = "blue"; break;
-                case R.id.black:      newTheme = "black"; break;
-                case R.id.orange:     newTheme = "orange"; break;
-                case R.id.green:      newTheme = "green"; break;
-                case R.id.deepPurple: newTheme = "deepPurple"; break;
-                case R.id.blueGray:   newTheme = "blueGray"; break;
-                default:              newTheme = oldTheme;
+                case R.id.indigo:      newTheme = "indigo"; break;
+                case R.id.purple:      newTheme = "purple"; break;
+                case R.id.teal:        newTheme = "teal"; break;
+                case R.id.pink:        newTheme = "pink"; break;
+                case R.id.red:         newTheme = "red"; break;
+                case R.id.brown:       newTheme = "brown"; break;
+                case R.id.blue:        newTheme = "blue"; break;
+                case R.id.cyan:        newTheme = "cyan"; break;
+                case R.id.light_blue:  newTheme = "light_blue"; break;
+                case R.id.black:       newTheme = "black"; break;
+                case R.id.orange:      newTheme = "orange"; break;
+                case R.id.green:       newTheme = "green"; break;
+                case R.id.light_green: newTheme = "light_green"; break;
+                case R.id.deepPurple:  newTheme = "deepPurple"; break;
+                case R.id.blueGray:    newTheme = "blueGray"; break;
+                default:               newTheme = oldTheme;
             }
 
             // If the theme has been changed, then the activity will need to be recreated. The
@@ -87,18 +93,21 @@ public class ThemeSelectDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_theme_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        setBlob(indigo,     R.color.md_indigo_500).setOnClickListener(clickListener);
-        setBlob(purple,     R.color.md_purple_500).setOnClickListener(clickListener);
-        setBlob(teal,       R.color.md_teal_500).setOnClickListener(clickListener);
-        setBlob(pink,       R.color.md_pink_500).setOnClickListener(clickListener);
-        setBlob(red,        R.color.md_red_500).setOnClickListener(clickListener);
-        setBlob(brown,      R.color.md_brown_500).setOnClickListener(clickListener);
-        setBlob(blue,       R.color.md_blue_500).setOnClickListener(clickListener);
-        setBlob(black,      R.color.md_black_1000).setOnClickListener(clickListener);
-        setBlob(orange,     R.color.md_deep_orange_500).setOnClickListener(clickListener);
-        setBlob(green,      R.color.md_green_500).setOnClickListener(clickListener);
-        setBlob(deepPurple, R.color.md_deep_purple_500).setOnClickListener(clickListener);
-        setBlob(blueGray,   R.color.md_blue_grey_500).setOnClickListener(clickListener);
+        setBlob(indigo,      R.color.md_indigo_500).setOnClickListener(clickListener);
+        setBlob(purple,      R.color.md_purple_500).setOnClickListener(clickListener);
+        setBlob(teal,        R.color.md_teal_500).setOnClickListener(clickListener);
+        setBlob(pink,        R.color.md_pink_500).setOnClickListener(clickListener);
+        setBlob(red,         R.color.md_red_500).setOnClickListener(clickListener);
+        setBlob(brown,       R.color.md_brown_500).setOnClickListener(clickListener);
+        setBlob(blue,        R.color.md_blue_500).setOnClickListener(clickListener);
+        setBlob(cyan,        R.color.md_cyan_500).setOnClickListener(clickListener);
+        setBlob(light_blue,  R.color.md_light_blue_500).setOnClickListener(clickListener);
+        setBlob(black,       R.color.md_black_1000).setOnClickListener(clickListener);
+        setBlob(orange,      R.color.md_deep_orange_500).setOnClickListener(clickListener);
+        setBlob(green,       R.color.md_green_500).setOnClickListener(clickListener);
+        setBlob(light_green, R.color.md_light_green_500).setOnClickListener(clickListener);
+        setBlob(deepPurple,  R.color.md_deep_purple_500).setOnClickListener(clickListener);
+        setBlob(blueGray,    R.color.md_blue_grey_500).setOnClickListener(clickListener);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

@@ -11,8 +11,8 @@ android {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 19
-        versionName "2.0.0b1"
+        versionCode 20
+        versionName "2.0.0b2"
     }
     buildTypes {
         release {
