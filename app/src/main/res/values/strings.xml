@@ -242,7 +242,7 @@
 
     <string name="translators">Translators</string>
     <string name="translators_content">Huge thanks to these people for providing translations for this app:%1$s</string>
-    <string name="translators_names" translatable="false">\n\n•Sorashi (Czech)\n•AriNeto (Portuguese)\n•Ivan Nebogatikov (Russian)\n•Herel Adrastel (French)\n•Combinacijusx (Lithuanian)</string>
+    <string name="translators_names" translatable="false">\n\n•Sorashi\n•AriNeto\n•Ivan Nebogatikov\n•Herel Adrastel\n•Combinacijusx\n•Eduardo Cartre\n•Julian Lohuis\n•Carlo Flores\n•Marvin Lehmann\n•mewho1337\n•YTCuber\n•generalpask\n•eliasds\n•kkarol91\n•ax333l\n•SimplyMozzo</string>
 
     <string name="contributors">Contributors</string>
     <string name="contributors_content">The amazing people behind this app:%1$s</string>
