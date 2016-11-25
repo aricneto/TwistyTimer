@@ -471,15 +471,18 @@ public class TimerFragment extends BaseFragment
             countdown = new CountDownTimer(inspectionTime * 1000, 500) {
                 @Override
                 public void onTick(long l) {
-                    chronometer.setText(String.valueOf((l / 1000) + 1));
+                    if (chronometer != null)
+                        chronometer.setText(String.valueOf((l / 1000) + 1));
                 }
 
                 @Override
                 public void onFinish() {
-                    chronometer.setText("+2");
-                    // "+2" penalty is applied to "chronometer" when timer is eventually stopped.
-                    currentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
-                    plusTwoCountdown.start();
+                    if (chronometer != null) {
+                        chronometer.setText("+2");
+                        // "+2" penalty is applied to "chronometer" when timer is eventually stopped.
+                        currentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
+                        plusTwoCountdown.start();
+                    }
                 }
             };
 
@@ -671,7 +674,7 @@ public class TimerFragment extends BaseFragment
         if (DEBUG_ME) Log.d(TAG, "onBackPressedInFragment()");
 
         if (isResumed()) {
-            if (isRunning) {
+            if (isRunning || countingDown) {
                 cancelChronometer();
                 return true;
             } else if (slidingLayout != null
