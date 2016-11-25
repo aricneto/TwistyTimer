@@ -905,7 +905,7 @@ public class MainActivity extends AppCompatActivity
             try {
 
                 BufferedReader br = new BufferedReader(new FileReader(mFile));
-                CSVReader csvReader = new CSVReader(br, ';');
+                CSVReader csvReader = new CSVReader(br, ';', '"', true);
                 String[] line;
 
                 if (mFileFormat == ExportImportDialog.EXIM_FORMAT_BACKUP) {
