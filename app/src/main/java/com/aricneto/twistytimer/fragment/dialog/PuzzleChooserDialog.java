@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
@@ -21,9 +24,11 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -49,15 +54,12 @@ public class PuzzleChooserDialog extends DialogFragment {
         /**
          * Notifies the listener that a new puzzle type and/or category have been selected.
          *
-         * @param tag
-         *     The tag identifying the callback. When this interface is implemented by an activity
-         *     as a means of communication between two fragments, the tag should be the fragment
-         *     tag that identifies the fragment to which the activity should relay the message. The
-         *     receiving fragment should also (probably) implement this interface.
-         * @param puzzleType
-         *     The name of the newly-selected puzzle type.
-         * @param puzzleCategory
-         *     The name of the newly-selected puzzle category.
+         * @param tag            The tag identifying the callback. When this interface is implemented by an activity
+         *                       as a means of communication between two fragments, the tag should be the fragment
+         *                       tag that identifies the fragment to which the activity should relay the message. The
+         *                       receiving fragment should also (probably) implement this interface.
+         * @param puzzleType     The name of the newly-selected puzzle type.
+         * @param puzzleCategory The name of the newly-selected puzzle category.
          */
         void onPuzzleSelected(
                 @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory);
@@ -65,9 +67,15 @@ public class PuzzleChooserDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.puzzleSpinner)   Spinner  puzzleSpinner;
-    @BindView(R.id.categorySpinner) Spinner  categorySpinner;
-    @BindView(R.id.selectButton)    TextView selectButton;
+    @BindView(R.id.puzzleSpinner)         Spinner  puzzleSpinner;
+    @BindView(R.id.categorySpinner)       Spinner  categorySpinner;
+    @BindView(R.id.selectButton)          TextView selectButton;
+
+    // Timer-specific options. Should only be visible if the user chooses to export to a specific
+    // external timer (like csTimer)
+    @BindViews({R.id.sessionNumberText01, R.id.sessionNumberText02,
+               R.id.sessionNumberText03}) View[]           csTimerOptions;
+    @BindView(R.id.sessionNumberSpinner)  Spinner csTimerSessionSelect;
 
     private static final String CURRENT_CATEGORY = "Normal";
 
@@ -84,6 +92,15 @@ public class PuzzleChooserDialog extends DialogFragment {
     private static final String ARG_CONSUMER_TAG = "consumerTag";
 
     /**
+     * The name of the external timer if the solves are being imported to a specific timer
+     * (like csTimer). Available timers: {@link PuzzleChooserDialog#TIMER_CSTIMER}
+     */
+    private static final String ARG_EXTERNAL_TIMER = "externalTimer";
+
+    // Indicates that solves are being exported to csTimer
+    public static final String TIMER_CSTIMER = "cstimer";
+
+    /**
      * The selected puzzle type.
      */
     private String mSelectedPuzzleType;
@@ -93,29 +110,32 @@ public class PuzzleChooserDialog extends DialogFragment {
      */
     private String mSelectedPuzzleCategory;
 
+    /**
+     * The session number that the solves are being exported to. Only used when exporting times to
+     * csTimer
+     */
+    private int mCsTimerSession = 1;
+
     private ArrayAdapter<String> categoryAdapter;
 
     /**
      * Creates a new instance of this fragment.
      *
-     * @param buttonTextResID
-     *     The string resource ID of the string to be displayed on the select button that closes
-     *     this fragment and reports the selection. If zero, the default "OK" will be shown.
-     * @param consumerTag
-     *     The fragment tag that identifies the fragment that instantiated this puzzle chooser.
-     *     This "consumer" fragment will be informed, via the parent activity, of the selected
-     *     puzzle type and category before this chooser is dismissed.
-     *
-     * @return
-     *     The new instance of this puzzle chooser.
+     * @param buttonTextResID The string resource ID of the string to be displayed on the select button that closes
+     *                        this fragment and reports the selection. If zero, the default "OK" will be shown.
+     * @param consumerTag     The fragment tag that identifies the fragment that instantiated this puzzle chooser.
+     *                        This "consumer" fragment will be informed, via the parent activity, of the selected
+     *                        puzzle type and category before this chooser is dismissed.
+     * @return The new instance of this puzzle chooser.
      */
     public static PuzzleChooserDialog newInstance(
-            @StringRes int buttonTextResID, String consumerTag) {
+            @StringRes int buttonTextResID, String consumerTag, String externalTimer) {
         final PuzzleChooserDialog fragment = new PuzzleChooserDialog();
-        final Bundle args = new Bundle();
+        final Bundle              args     = new Bundle();
 
         args.putInt(ARG_BUTTON_TEXT_RES_ID, buttonTextResID);
         args.putString(ARG_CONSUMER_TAG, consumerTag);
+        args.putString(ARG_EXTERNAL_TIMER, externalTimer);
         fragment.setArguments(args);
 
         return fragment;
@@ -124,11 +144,13 @@ public class PuzzleChooserDialog extends DialogFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View dialogView = inflater.inflate(R.layout.dialog_puzzle_chooser_dialog, container);
+        final View dialogView = inflater.inflate(R.layout.dialog_puzzle_chooser, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
         final @StringRes int buttonTextResID
                 = getArguments() != null ? getArguments().getInt(ARG_BUTTON_TEXT_RES_ID, 0) : 0;
+
+        String externalTimer = getArguments() != null ? getArguments().getString(ARG_EXTERNAL_TIMER, "") : "";
 
         if (buttonTextResID != 0) {
             // Override the default text.
@@ -180,19 +202,53 @@ public class PuzzleChooserDialog extends DialogFragment {
             }
         });
 
+        if (externalTimer.equals(TIMER_CSTIMER)) {
+            ButterKnife.apply(csTimerOptions, new ButterKnife.Action<View>() {
+                @Override
+                public void apply(@NonNull View view, int index) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            });
+            csTimerSessionSelect.setVisibility(View.VISIBLE);
+
+            // Create an array for the spinner with numbers from 1 to 16
+            ArrayList sessionsArray = new ArrayList();
+            for (int i = 1; i <= 15; i++) {
+                sessionsArray.add(i);
+            }
+
+            ArrayAdapter spinnerAdapter =
+                    new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,
+                                     sessionsArray);
+
+            csTimerSessionSelect.setAdapter(spinnerAdapter);
+
+            csTimerSessionSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    mCsTimerSession = i + 1;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialogView;
     }
 
     private void updateCategoriesForType(String puzzleType) {
-        final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(puzzleType);
+        final DatabaseHandler dbHandler   = TwistyTimer.getDBHandler();
+        final List<String>    subtypeList = dbHandler.getAllSubtypesFromType(puzzleType);
 
         if (subtypeList.size() == 0) {
             subtypeList.add(CURRENT_CATEGORY);
             dbHandler.addSolve(new Solve(1, puzzleType, CURRENT_CATEGORY,
-                    0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                                         0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
         }
         categoryAdapter = new ArrayAdapter<>(
                 getContext(), android.R.layout.simple_spinner_dropdown_item, subtypeList);

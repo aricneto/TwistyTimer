@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:minWidth="220dp"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_puzzle"/>
+
+        <Spinner
+            android:id="@+id/puzzleSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_category"/>
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- The session selection stuff should only be visible when the user is exporting to
+        csTimer -->
+
+        <TextView
+            android:id="@+id/sessionNumberText01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/puzzle_dialog_cstimer_session"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/sessionNumberText02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="The session that csTimer is going to import the solves to."
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Spinner
+            android:id="@+id/sessionNumberSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/sessionNumberText03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="WARNING: All solves in the SESSION you choose will be DELETED from csTimer and replaced with the Twisty Timer solves. Backup your csTimer data before importing solves"
+            android:textColor="@color/md_red_A700"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/selectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="8dp"
+            android:textAllCaps="true"
+            android:textColor="?colorAccent"
+            android:textStyle="bold"
+            tools:text="@string/action_ok"/>
+
+    </LinearLayout>
+
+</ScrollView>

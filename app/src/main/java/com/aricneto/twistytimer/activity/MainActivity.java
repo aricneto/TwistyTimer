@@ -599,38 +599,45 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        if (fileFormat == ExportImportDialog.EXIM_FORMAT_BACKUP) {
-            // Expect that all other parameters are null, otherwise something is very wrong.
-            if (puzzleType != null || puzzleCategory != null) {
-                throw new RuntimeException("Bug in the export code for the back-up format!");
-            }
+        File file;
 
-            final File file = ExportImportUtils.getBackupFileForExport();
+        switch (fileFormat) {
+            case ExportImportDialog.EXIM_FORMAT_BACKUP:
+                // Expect that all other parameters are null, otherwise something is very wrong.
+                if (puzzleType != null || puzzleCategory != null) {
+                    throw new RuntimeException("Bug in the export code for the back-up format!");
+                }
 
-            if (ExportImportUtils.ensureBackupExportDir()) {
-                new ExportSolves(this, file, fileFormat, null, null)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                // Unlikely, so just log it for now.
-                Log.e(TAG, "Could not create output directory for back-up file: " + file);
-            }
-        } else if (fileFormat == ExportImportDialog.EXIM_FORMAT_EXTERNAL) {
-            // Expect that all other parameters are non-null, otherwise something is very wrong.
-            if (puzzleType == null || puzzleCategory == null) {
-                throw new RuntimeException("Bug in the export code for the external format!");
-            }
+                file = ExportImportUtils.getBackupFileForExport();
 
-            final File file = ExportImportUtils.getExternalFileForExport(puzzleType, puzzleCategory);
+                if (ExportImportUtils.ensureBackupExportDir()) {
+                    new ExportSolves(this, file, fileFormat, null, null)
+                            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else {
+                    // Unlikely, so just log it for now.
+                    Log.e(TAG, "Could not create output directory for back-up file: " + file);
+                }
+                break;
+            case ExportImportDialog.EXIM_FORMAT_EXTERNAL_CSTIMER:
+            case ExportImportDialog.EXIM_FORMAT_EXTERNAL:
+                // Expect that all other parameters are non-null, otherwise something is very wrong.
+                if (puzzleType == null || puzzleCategory == null) {
+                    throw new RuntimeException("Bug in the export code for the external format!");
+                }
 
-            if (ExportImportUtils.ensureExternalExportDir()) {
-                new ExportSolves(this, file, fileFormat, puzzleType, puzzleCategory)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                // Unlikely, so just log it for now.
-                Log.e(TAG, "Could not create output directory for back-up file: " + file);
-            }
-        } else {
-            Log.e(TAG, "Unknown export file format: " + fileFormat);
+                file = ExportImportUtils.getExternalFileForExport(puzzleType, puzzleCategory);
+
+                if (ExportImportUtils.ensureExternalExportDir()) {
+                    new ExportSolves(this, file, fileFormat, puzzleType, puzzleCategory)
+                            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else {
+                    // Unlikely, so just log it for now.
+                    Log.e(TAG, "Could not create output directory for back-up file: " + file);
+                }
+                break;
+            default:
+                Log.e(TAG, "Unknown export file format: " + fileFormat);
+                break;
         }
     }
 
@@ -702,7 +709,8 @@ public class MainActivity extends AppCompatActivity
          * @param file
          *     The file to which to export the solve times.
          * @param fileFormat
-         *     The solve file format, must be {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL}, or
+         *     The solve file format, must be {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL},
+         *     {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL_CSTIMER}, or
          *     {@link ExportImportDialog#EXIM_FORMAT_BACKUP}.
          * @param puzzleType
          *     The type of the puzzle whose times will be exported. This is required when
@@ -752,65 +760,125 @@ public class MainActivity extends AppCompatActivity
             try {
                 final DatabaseHandler handler = TwistyTimer.getDBHandler();
                 final Writer out = new BufferedWriter(new FileWriter(mFile));
+                Cursor cursor;
 
-                if (mFileFormat == ExportImportDialog.EXIM_FORMAT_BACKUP) {
-                    String csvHeader
-                            = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
-                    Cursor cursor = handler.getAllSolves();
+                switch (mFileFormat) {
 
-                    try {
-                        publishProgress(0, cursor.getCount());
-                        out.write(csvHeader);
+                    case ExportImportDialog.EXIM_FORMAT_BACKUP:
+                        String csvHeader
+                                = "Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment\n";
+                        cursor = handler.getAllSolves();
 
-                        while (cursor.moveToNext()) {
-                            out.write('"' + cursor.getString(IDX_TYPE)
-                                    + "\";\"" + cursor.getString(IDX_SUBTYPE)
-                                    + "\";\"" + cursor.getInt(IDX_TIME)
-                                    + "\";\"" + cursor.getLong(IDX_DATE)
-                                    + "\";\"" + cursor.getString(IDX_SCRAMBLE)
-                                    + "\";\"" + cursor.getInt(IDX_PENALTY)
-                                    + "\";\"" + cursor.getString(IDX_COMMENT)
-                                    + "\"\n");
-                            exports++;
-                            publishProgress(exports);
-                        }
-                    } finally {
-                        cursor.close();
-                        out.close();
-                    }
-                    returnCode = true;
-                } else if (mFileFormat == ExportImportDialog.EXIM_FORMAT_EXTERNAL) {
-                    Cursor cursor = handler.getAllSolvesFrom(mPuzzleType, mPuzzleCategory);
+                        try {
+                            publishProgress(0, cursor.getCount());
+                            out.write(csvHeader);
 
-                    try {
-                        publishProgress(0, cursor.getCount());
-
-                        while (cursor.moveToNext()) {
-                            String csvValues
-                                    = '"' + PuzzleUtils.convertTimeToString(cursor.getInt(IDX_TIME))
-                                    + "\";\"" + cursor.getString(IDX_SCRAMBLE)
-                                    + "\";\"" + new DateTime(cursor.getLong(IDX_DATE)).toString()
-                                    + '"';
-
-                            // Add optional "DNF" in fourth field.
-                            if (cursor.getInt(IDX_PENALTY) == PuzzleUtils.PENALTY_DNF) {
-                                csvValues += ";\"DNF\"";
+                            while (cursor.moveToNext()) {
+                                out.write('"' + cursor.getString(IDX_TYPE)
+                                                  + "\";\"" + cursor.getString(IDX_SUBTYPE)
+                                                  + "\";\"" + cursor.getInt(IDX_TIME)
+                                                  + "\";\"" + cursor.getLong(IDX_DATE)
+                                                  + "\";\"" + cursor.getString(IDX_SCRAMBLE)
+                                                  + "\";\"" + cursor.getInt(IDX_PENALTY)
+                                                  + "\";\"" + cursor.getString(IDX_COMMENT)
+                                                  + "\"\n");
+                                exports++;
+                                publishProgress(exports);
                             }
-
-                            csvValues += '\n';
-
-                            out.write(csvValues);
-                            exports++;
-                            publishProgress(exports);
+                        } finally {
+                            cursor.close();
+                            out.close();
                         }
-                    } finally {
-                        cursor.close();
-                        out.close();
-                    }
-                    returnCode = true;
-                } else {
-                    Log.e(TAG, "Unknown export file format: " + mFileFormat);
-                    returnCode = false;
+                        returnCode = true;
+                        break;
+                    case ExportImportDialog.EXIM_FORMAT_EXTERNAL:
+                        cursor = handler.getAllSolvesFrom(mPuzzleType, mPuzzleCategory);
+
+                        try {
+                            publishProgress(0, cursor.getCount());
+
+                            while (cursor.moveToNext()) {
+                                String csvValues
+                                        = '"' + PuzzleUtils.convertTimeToString(cursor.getInt(IDX_TIME))
+                                        + "\";\"" + cursor.getString(IDX_SCRAMBLE)
+                                        + "\";\"" + new DateTime(cursor.getLong(IDX_DATE)).toString()
+                                        + '"';
+
+                                // Add optional "DNF" in fourth field.
+                                if (cursor.getInt(IDX_PENALTY) == PuzzleUtils.PENALTY_DNF) {
+                                    csvValues += ";\"DNF\"";
+                                }
+
+                                csvValues += '\n';
+
+                                out.write(csvValues);
+                                exports++;
+                                publishProgress(exports);
+                            }
+                        } finally {
+                            cursor.close();
+                            out.close();
+                        }
+                        returnCode = true;
+                        break;
+                    case ExportImportDialog.EXIM_FORMAT_EXTERNAL_CSTIMER:
+                        /**
+                         * csTimer handles import files in the following way (newlines have been
+                         * added to make it easier to read, but the final text should be in one
+                         * line):
+                         *
+                         * {                // start of file
+                         * "session1":      // session declaration. "session" followed by the session number
+                         * "[               // start of session
+                         * [[0,29973],\"SCRAMBLE\",\"COMMENT\"] // the solve itself. each solve is separated by a comma
+                         * ]"               // end of session
+                         * }                // end of file
+                         *
+                         * The backslashes in each solve are necessary.
+                         * The solve time is divided into two parts: the penalty and the solve
+                         * time in milliseconds. In the following example, a solve has a penalty
+                         * of 2000 milliseconds and a solve time of 29973 milliseconds:
+                         *
+                         * [2000,29973]
+                         *
+                         * A DNF is represented by a -1, like so:
+                         *
+                         * [-1,11439]
+                         *
+                         */
+                        cursor = handler.getAllSolvesFrom(mPuzzleType, mPuzzleCategory);
+
+                        try {
+                            publishProgress(0, cursor.getCount());
+
+                            while (cursor.moveToNext()) {
+                                String csvValues
+                                        = '"' + PuzzleUtils.convertTimeToString(cursor.getInt(IDX_TIME))
+                                        + "\";\"" + cursor.getString(IDX_SCRAMBLE)
+                                        + "\";\"" + new DateTime(cursor.getLong(IDX_DATE)).toString()
+                                        + '"';
+
+                                // Add optional "DNF" in fourth field.
+                                if (cursor.getInt(IDX_PENALTY) == PuzzleUtils.PENALTY_DNF) {
+                                    csvValues += ";\"DNF\"";
+                                }
+
+                                csvValues += '\n';
+
+                                out.write(csvValues);
+                                exports++;
+                                publishProgress(exports);
+                            }
+                        } finally {
+                            cursor.close();
+                            out.close();
+                        }
+                        returnCode = true;
+                        break;
+                    default:
+                        Log.e(TAG, "Unknown export file format: " + mFileFormat);
+                        returnCode = false;
+                        break;
                 }
             } catch (IOException e) {
                 returnCode = false;
