@@ -2,7 +2,7 @@
 <resources>
     <!--
     Default short date format (no year) used in the USA. This is used to format the day and month
-     labels for the chart X-axis.
+     labels for the chart X-axis and the solve list.
     -->
-    <string name="chartXAxisDateFormat">MM\'/\'dd</string>
+    <string name="shortDateFormat">MM\'/\'dd</string>
 </resources>

@@ -103,7 +103,7 @@ public class ChartStyle {
         mBestTimesLabel = context.getString(R.string.graph_legend_best_times);
         mAvgLabelPrefix = context.getString(R.string.graph_legend_avg_prefix);
         mLimitLineLabel = context.getString(R.string.graph_mean);
-        mDateFormatSpec = context.getString(R.string.chartXAxisDateFormat);
+        mDateFormatSpec = context.getString(R.string.shortDateFormat);
     }
 
     /**

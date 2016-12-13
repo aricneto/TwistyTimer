@@ -49,7 +49,7 @@
   <string name="action_ok">OK</string>
   <string name="drawer_title_changeTheme">Motywy</string>
   <string name="graph_stats_title">Statystyki</string>
-  <string name="graph_card_global">Najlepszy czas\n</string>
+  <string name="graph_card_global">Najlepszy czas</string>
   <string name="graph_card_session_current">Bieżąca sesja</string>
   <string name="graph_card_session_best">Najlepszy \nw sesji</string>
   <string name="graph_mean">Średnia</string>

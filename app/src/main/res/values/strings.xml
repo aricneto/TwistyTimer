@@ -72,9 +72,9 @@
     <string name="action_ok">OK</string>
     <string name="drawer_title_changeTheme">App theme</string>
     <string name="graph_stats_title">Stats</string>
-    <string name="graph_card_global">All Time\nBest</string>
-    <string name="graph_card_session_current">Session\nCurrent</string>
-    <string name="graph_card_session_best">Session\nBest</string>
+    <string name="graph_card_global">Best\n(all time)</string>
+    <string name="graph_card_session_current">Current</string>
+    <string name="graph_card_session_best">Best\n(session)</string>
     <string name="graph_mean">Mean</string>
     <string name="w_new_subtype">New</string>
     <string name="action_rename">Rename</string>
@@ -260,7 +260,6 @@
     <string name="language_polish" translatable="false">Język polski</string>
     <string name="language_czech" translatable="false">Čeština</string>
 
-    <string name="preference_title_application">Application</string>
     <string name="preference_application_language_title">Language</string>
 
 </resources>

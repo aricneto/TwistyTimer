@@ -48,10 +48,10 @@
   <string name="scramble_text_tap_hint">Pulse aquí para ver la mezcla</string>
   <string name="action_ok">Confirmar</string>
   <string name="drawer_title_changeTheme">Tema de la aplicación</string>
-  <string name="graph_stats_title">Estadisticas</string>
-  <string name="graph_card_global">Mejores\n</string>
-  <string name="graph_card_session_current">Sesión\nPresente</string>
-  <string name="graph_card_session_best">Sesión\nMejor</string>
+  <string name="graph_stats_title">Estadis.</string>
+  <string name="graph_card_global">Mejor\n(todo)</string>
+  <string name="graph_card_session_current">Presente</string>
+  <string name="graph_card_session_best">Mejor\n(sesión)</string>
   <string name="graph_mean">Media</string>
   <string name="color_indigo">Añil</string>
   <string name="color_purple">Púrpura</string>

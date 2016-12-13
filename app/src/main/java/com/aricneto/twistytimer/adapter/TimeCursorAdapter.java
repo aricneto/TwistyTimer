@@ -42,6 +42,8 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     int cardColor;
     int selectedCardColor;
 
+    String mDateFormatSpec;
+
     private boolean isInSelectionMode;
 
     private List<Long> selectedItems = new ArrayList<>();
@@ -55,6 +57,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         this.mFragmentManager = listFragment.getFragmentManager();
         cardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackground);
         selectedCardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackgroundSelected);
+        mDateFormatSpec = context.getString(R.string.shortDateFormat);
     }
 
     @Override
@@ -131,7 +134,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         final long pDate = cursor.getLong(4); // date
         final String pComment = cursor.getString(7); // comment
 
-        holder.dateText.setText(new DateTime(pDate).toString("dd'/'MM"));
+        holder.dateText.setText(new DateTime(pDate).toString(mDateFormatSpec));
 
         if (isSelected(mId))
             holder.card.setCardBackgroundColor(selectedCardColor);

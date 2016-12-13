@@ -48,7 +48,7 @@
     <string name="scramble_text_tap_hint">Toque aqui para ver o embaralhamento</string>
     <string name="task_remove">Remover</string>
     <string name="graph_stats_title">Estat.</string>
-    <string name="graph_card_global">Melhor</string>
+    <string name="graph_card_global">Melhor\n(tudo)</string>
     <string name="graph_card_session">Sessão</string>
     <string name="graph_mean">Média</string>
     <string name="color_black">Preto</string>
@@ -148,7 +148,7 @@
     <string name="graph_legend_best_times">Melhor</string>
     <string name="graph_legend_avg_prefix">Md</string>
     <string name="detail_text_avg">Md5:\nMd12:\nMd50:\nMd100:</string>
-    <string name="detail_text_plus">Md3:\nMd5:\nMd12:\nMd50:\nMd100:\nMd1000\nMédia:\nMelhor:\nPior:\nTotal:</string>
+    <string name="detail_text_plus">Md3:\nMd5:\nMd12:\nMd50:\nMd100:\nMd1000:\nMédia:\nMelhor:\nPior:\nTotal:</string>
     <string name="detail_text_more">Média:\nMelhor:\nPior:\nTotal:</string>
     <string name="source">Source</string>
     <string name="hideTimeText">…</string>
@@ -211,5 +211,7 @@
     <string name="permission_denied_explanation">Para a função de exportar/importar funcionar, você precisa garantir ao Twisty Timer o acesso ao seu armazenamento externo.</string>
     <string name="translators">Tradutores</string>
     <string name="contributors">Contribuintes</string>
+    <string name="graph_card_session_best">Melhor\n(sessão)</string>
+    <string name="graph_card_session_current">Atual</string>
 
 </resources>
