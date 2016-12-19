@@ -83,7 +83,7 @@ dependencies {
     // LicensesDialog
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     // Inapp Billing
-    compile 'com.anjlab.android.iab.v3:library:1.0.31'
+    compile 'com.anjlab.android.iab.v3:library:1.0.36'
     // Material color picker
     compile 'com.pavelsikun:vintage-chroma:1.5'
     // Sliding Up Panel

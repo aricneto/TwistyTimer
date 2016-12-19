@@ -270,12 +270,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
                 case ACTION_TIME_SELECTED:
                     selectCount += 1;
-                    actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
+                    actionMode.setTitle(getResources().getQuantityString(R.plurals.selected_list, selectCount, selectCount));
                     break;
 
                 case ACTION_TIME_UNSELECTED:
                     selectCount -= 1;
-                    actionMode.setTitle(selectCount + " " + getString(R.string.selected_list));
+                    actionMode.setTitle(getResources().getQuantityString(R.plurals.selected_list, selectCount, selectCount));
                     break;
             }
         }
