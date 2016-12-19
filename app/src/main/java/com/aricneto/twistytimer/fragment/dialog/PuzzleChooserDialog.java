@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSpinner;
@@ -62,7 +63,8 @@ public class PuzzleChooserDialog extends DialogFragment {
          * @param puzzleCategory The name of the newly-selected puzzle category.
          */
         void onPuzzleSelected(
-                @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory);
+                @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory,
+                int externalTimerArgument);
     }
 
     private Unbinder mUnbinder;
@@ -97,7 +99,6 @@ public class PuzzleChooserDialog extends DialogFragment {
      */
     private static final String ARG_EXTERNAL_TIMER = "externalTimer";
 
-    // Indicates that solves are being exported to csTimer
     public static final String TIMER_CSTIMER = "cstimer";
 
     /**
@@ -111,10 +112,13 @@ public class PuzzleChooserDialog extends DialogFragment {
     private String mSelectedPuzzleCategory;
 
     /**
-     * The session number that the solves are being exported to. Only used when exporting times to
-     * csTimer
+     * When exporting to a specific external timer, it may need an argument, like a session number or a boolean.
+     * This variable stores that argument.
+     * For csTimer, the argument is the number of the session it's being exported to.
+     *
+     * Note that the timer name is given by {@link ExportImportDialog}, not by this variable.
      */
-    private int mCsTimerSession = 1;
+    private int mExternalTimerArgument = 1;
 
     private ArrayAdapter<String> categoryAdapter;
 
@@ -150,7 +154,7 @@ public class PuzzleChooserDialog extends DialogFragment {
         final @StringRes int buttonTextResID
                 = getArguments() != null ? getArguments().getInt(ARG_BUTTON_TEXT_RES_ID, 0) : 0;
 
-        String externalTimer = getArguments() != null ? getArguments().getString(ARG_EXTERNAL_TIMER, "") : "";
+        String externalTimer = getArguments() != null ? getArguments().getString(ARG_EXTERNAL_TIMER, null) : null;
 
         if (buttonTextResID != 0) {
             // Override the default text.
@@ -197,43 +201,45 @@ public class PuzzleChooserDialog extends DialogFragment {
                 // Relay this information back to the fragment/activity that opened this chooser.
                 getRelayActivity().onPuzzleSelected(
                         getArguments().getString(ARG_CONSUMER_TAG, "not set!"),
-                        mSelectedPuzzleType, mSelectedPuzzleCategory);
+                        mSelectedPuzzleType, mSelectedPuzzleCategory, mExternalTimerArgument);
                 dismiss();
             }
         });
 
-        if (externalTimer.equals(TIMER_CSTIMER)) {
-            ButterKnife.apply(csTimerOptions, new ButterKnife.Action<View>() {
-                @Override
-                public void apply(@NonNull View view, int index) {
-                    view.setVisibility(View.VISIBLE);
-                }
-            });
-            csTimerSessionSelect.setVisibility(View.VISIBLE);
+        if (externalTimer != null) {
+            if (externalTimer.equals(TIMER_CSTIMER)) {
+                ButterKnife.apply(csTimerOptions, new ButterKnife.Action<View>() {
+                    @Override
+                    public void apply(@NonNull View view, int index) {
+                        view.setVisibility(View.VISIBLE);
+                    }
+                });
+                csTimerSessionSelect.setVisibility(View.VISIBLE);
 
-            // Create an array for the spinner with numbers from 1 to 16
-            ArrayList sessionsArray = new ArrayList();
-            for (int i = 1; i <= 15; i++) {
-                sessionsArray.add(i);
+                // Create an array for the spinner
+                ArrayList sessionsArray = new ArrayList();
+                for (int i = 1; i <= 15; i++) {
+                    sessionsArray.add(i);
+                }
+
+                ArrayAdapter spinnerAdapter =
+                        new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,
+                                         sessionsArray);
+
+                csTimerSessionSelect.setAdapter(spinnerAdapter);
+
+                csTimerSessionSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        mExternalTimerArgument = i + 1;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
-
-            ArrayAdapter spinnerAdapter =
-                    new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                                     sessionsArray);
-
-            csTimerSessionSelect.setAdapter(spinnerAdapter);
-
-            csTimerSessionSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    mCsTimerSession = i + 1;
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
         }
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

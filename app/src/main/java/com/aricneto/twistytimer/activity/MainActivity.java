@@ -594,7 +594,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onExportSolveTimes(int fileFormat, String puzzleType, String puzzleCategory) {
+    public void onExportSolveTimes(int fileFormat, String puzzleType, String puzzleCategory,
+                                   int externalTimerArgument) {
         if (!StoreUtils.isExternalStorageWritable()) {
             return;
         }
@@ -611,7 +612,7 @@ public class MainActivity extends AppCompatActivity
                 file = ExportImportUtils.getBackupFileForExport();
 
                 if (ExportImportUtils.ensureBackupExportDir()) {
-                    new ExportSolves(this, file, fileFormat, null, null)
+                    new ExportSolves(this, file, fileFormat, null, null, 0)
                             .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     // Unlikely, so just log it for now.
@@ -628,7 +629,8 @@ public class MainActivity extends AppCompatActivity
                 file = ExportImportUtils.getExternalFileForExport(puzzleType, puzzleCategory);
 
                 if (ExportImportUtils.ensureExternalExportDir()) {
-                    new ExportSolves(this, file, fileFormat, puzzleType, puzzleCategory)
+                    new ExportSolves(this, file, fileFormat, puzzleType, puzzleCategory,
+                                     externalTimerArgument)
                             .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     // Unlikely, so just log it for now.
@@ -677,14 +679,15 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onPuzzleSelected(
-            @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory) {
+            @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory,
+            int externalTimerArgument) {
         // This "relay" scheme ensures that this activity is not embroiled in the gory details of
         // what the "destinationFrag" wanted with the puzzle type/category.
         final Fragment destinationFrag = fragmentManager.findFragmentByTag(tag);
 
         if (destinationFrag instanceof PuzzleChooserDialog.PuzzleCallback) {
             ((PuzzleChooserDialog.PuzzleCallback) destinationFrag)
-                    .onPuzzleSelected(tag, puzzleType, puzzleCategory);
+                    .onPuzzleSelected(tag, puzzleType, puzzleCategory, externalTimerArgument);
         } else {
             // This is not expected unless there is a bug to be fixed.
             Log.e(TAG, "onFileSelection(): Unknown or incompatible fragment: " + tag);
@@ -698,6 +701,7 @@ public class MainActivity extends AppCompatActivity
         private final String   mPuzzleCategory;
         private final File     mFile;
         private final int      mFileFormat;
+        private final int      mExternalTimerArgument;
 
         private MaterialDialog mProgressDialog;
 
@@ -722,12 +726,14 @@ public class MainActivity extends AppCompatActivity
          *     it may be {@code null}, as it will not be used.
          */
         public ExportSolves(Context context, File file, int fileFormat,
-                            String puzzleType, String puzzleCategory) {
+                            String puzzleType, String puzzleCategory,
+                            int externalTimerArgument) {
             mContext = context;
             mPuzzleType = puzzleType;
             mPuzzleCategory = puzzleCategory;
             mFile = file;
             mFileFormat = fileFormat;
+            mExternalTimerArgument = externalTimerArgument;
         }
 
         @Override
@@ -845,30 +851,57 @@ public class MainActivity extends AppCompatActivity
                          *
                          * [-1,11439]
                          *
+                         * Comments are NOT imported since escaping special characters in the comments
+                         * would require the Apache Commons Lang library, or a very ugly regex,
+                         * and that would be overkill for a single feature. If, in the future, more
+                         * features require this library, then they could be supported.
                          */
                         cursor = handler.getAllSolvesFrom(mPuzzleType, mPuzzleCategory);
 
                         try {
-                            publishProgress(0, cursor.getCount());
+                            int totalSolves = cursor.getCount();
+                            publishProgress(0, totalSolves);
+
+                            // The header:  {"session1":"[
+                            String header = "{\"session" + mExternalTimerArgument + "\":\"[";
+                            // The footer:  ]"}
+                            String footer = "]\"}";
+
+                            out.write(header);
 
                             while (cursor.moveToNext()) {
-                                String csvValues
-                                        = '"' + PuzzleUtils.convertTimeToString(cursor.getInt(IDX_TIME))
-                                        + "\";\"" + cursor.getString(IDX_SCRAMBLE)
-                                        + "\";\"" + new DateTime(cursor.getLong(IDX_DATE)).toString()
-                                        + '"';
+                                int penalty;
+                                long time = cursor.getInt(IDX_TIME);
+                                String solve = "[[%d,%d],\\\"%s\\\",\\\"\\\"],";
 
-                                // Add optional "DNF" in fourth field.
-                                if (cursor.getInt(IDX_PENALTY) == PuzzleUtils.PENALTY_DNF) {
-                                    csvValues += ";\"DNF\"";
+                                switch (cursor.getInt(IDX_PENALTY)){
+                                    case PuzzleUtils.NO_PENALTY: penalty = 0; break;
+                                    case PuzzleUtils.PENALTY_DNF: penalty = -1; break;
+                                    case PuzzleUtils.PENALTY_PLUSTWO:
+                                        penalty = 2000;
+                                        // In Twisty Timer, times with +2 penalties are stored
+                                        // with 2000 milliseconds added to the time itself,
+                                        // so this extra time needs to be removed in order to be
+                                        // exported to csTimer, which does not store the penalty
+                                        // in the time.
+                                        time -= 2000;
+                                        break;
+                                    default: penalty = 0;
                                 }
 
-                                csvValues += '\n';
+                                solve = String.format(solve, penalty, time, cursor.getString(IDX_SCRAMBLE));
 
-                                out.write(csvValues);
                                 exports++;
+
+                                // Remove the comma from the last solve
+                                if (exports == totalSolves)
+                                    solve = solve.substring(0, solve.length()-1);
+
+                                out.write(solve);
                                 publishProgress(exports);
                             }
+                            out.write(footer);
+
                         } finally {
                             cursor.close();
                             out.close();

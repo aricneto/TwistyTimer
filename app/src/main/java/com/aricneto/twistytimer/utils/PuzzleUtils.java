@@ -121,7 +121,6 @@ public class PuzzleUtils {
         if (time == 0)
             return "--";
 
-        // Magic (not-so-magic actually) numbers below
         long hours = time / 3600000; // 3600 * 1000
         long remaining = time % 3600000; // 3600 * 1000
         long minutes = remaining / 60000; // 60 * 1000
@@ -141,7 +140,6 @@ public class PuzzleUtils {
         if (time == 0)
             return "--";
 
-        // Magic (not-so-magic actually) numbers below
         long hours = time / 3600000; // 3600 * 1000
         long remaining = time % 3600000; // 3600 * 1000
         long minutes = remaining / 60000; // 60 * 1000
@@ -161,7 +159,6 @@ public class PuzzleUtils {
         if (time == 0)
             return "--";
 
-        // Magic (not-so-magic actually) numbers below
         long hours = time / 3600000; // 3600 * 1000
         long remaining = time % 3600000; // 3600 * 1000
         long minutes = remaining / 60000; // 60 * 1000
