@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Twisty Timer</string>
-
     <string name="cube_222">2x2x2 Cube</string>
     <string name="cube_333">3x3x3 Cube</string>
     <string name="cube_444">4x4x4 Cube</string>
