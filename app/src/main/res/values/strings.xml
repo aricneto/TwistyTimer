@@ -27,8 +27,6 @@
 
     <string name="advanced_pref_summary">Changing these settings may cause some clipping issues</string>
 
-    <string name="app_name" translatable="false">Twisty Timer</string>
-
     <string-array name="array_penalties" translatable="false">
         <item>@string/no_penalty</item>
         <item>+2</item>
