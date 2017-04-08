@@ -19,8 +19,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
@@ -59,6 +61,7 @@ import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.TimerState;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
@@ -75,7 +78,23 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
-import static com.aricneto.twistytimer.utils.TTIntent.*;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_EXTERNAL_TIMER_SELECTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_INTERNAL_TIMER_SELECTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.BroadcastBuilder;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIMER_MODE_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
+import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
+import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
 public class TimerFragment extends BaseFragment
         implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
@@ -91,6 +110,7 @@ public class TimerFragment extends BaseFragment
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
+    private static final String EXTERNAL_TIMER = "external_timer";
 
     /**
      * The time delay in milliseconds before starting the chronometer if the hold-for-start
@@ -100,6 +120,9 @@ public class TimerFragment extends BaseFragment
 
     private String currentPuzzle;
     private String currentPuzzleSubtype;
+    private boolean currentExternalTimerEnabled;
+
+    private ExternalTimerReaderFragment externalTimerFragment;
 
     private String currentScramble = "";
     private Solve  currentSolve    = null;
@@ -212,6 +235,50 @@ public class TimerFragment extends BaseFragment
                 case ACTION_GENERATE_SCRAMBLE:
                     generateNewScramble();
                     break;
+            }
+        }
+    };
+
+    // Receives broadcasts related to changes to the timer mode.
+    private TTFragmentBroadcastReceiver mTimerModeChangedReceiver
+            = new TTFragmentBroadcastReceiver(this, CATEGORY_TIMER_MODE_CHANGES) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_EXTERNAL_TIMER_SELECTED:
+                    getArguments().putBoolean(EXTERNAL_TIMER, true);
+                    startExternalTimer();
+                    break;
+
+                case ACTION_INTERNAL_TIMER_SELECTED:
+                    getArguments().putBoolean(EXTERNAL_TIMER, false);
+                    stopExternalTimer();
+                    break;
+            }
+        }
+    };
+
+    Handler timerUpdateHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == ExternalTimerReaderFragment.TIMER_PACKET_WHAT) {
+                TimerState state = (TimerState) msg.obj;
+
+                if (chronometer.isReset() && state.isRunning()) {
+                    hideToolbar();
+                }
+
+                if (chronometer.isRunning() && state.isStopped()) {
+                    showToolbar();
+                    addNewSolve();
+                }
+                if (chronometer.isRunning() && state.isReset()) {
+                    showToolbar();
+                }
+                if(!chronometer.isReset() && state.isReset()) {
+                    hideButtons(true, true);
+                }
+                chronometer.updateText(state);
             }
         }
     };
@@ -333,11 +400,12 @@ public class TimerFragment extends BaseFragment
         undoButton.setVisibility(hideUndoButton ? View.GONE : View.VISIBLE);
     }
 
-    public static TimerFragment newInstance(String puzzle, String puzzleSubType) {
+    public static TimerFragment newInstance(String puzzle, String puzzleSubType, boolean externalTimer) {
         TimerFragment fragment = new TimerFragment();
         Bundle args = new Bundle();
         args.putString(PUZZLE, puzzle);
         args.putString(PUZZLE_SUBTYPE, puzzleSubType);
+        args.putBoolean(EXTERNAL_TIMER, externalTimer);
         fragment.setArguments(args);
         if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
@@ -350,6 +418,22 @@ public class TimerFragment extends BaseFragment
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
+            currentExternalTimerEnabled = getArguments().getBoolean(EXTERNAL_TIMER);
+        }
+
+        FragmentManager fm = getFragmentManager();
+        externalTimerFragment = (ExternalTimerReaderFragment) fm.findFragmentByTag(ExternalTimerReaderFragment.TAG);
+        if(externalTimerFragment == null) {
+            externalTimerFragment = new ExternalTimerReaderFragment(timerUpdateHandler);
+            fm.beginTransaction().add(externalTimerFragment, ExternalTimerReaderFragment.TAG).commit();
+        }
+        else {
+            externalTimerFragment.setHandler(timerUpdateHandler);
+            externalTimerFragment.unpause();
+        }
+
+        if (currentExternalTimerEnabled) {
+           startExternalTimer();
         }
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
@@ -357,6 +441,7 @@ public class TimerFragment extends BaseFragment
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
         registerReceiver(mUIInteractionReceiver);
+        registerReceiver(mTimerModeChangedReceiver);
     }
 
     @Override
@@ -530,6 +615,10 @@ public class TimerFragment extends BaseFragment
         startTimerLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if (currentExternalTimerEnabled) {
+                    return true;
+                }
 
                 if (!animationDone || isLocked && !isRunning) {
                     // Not ready to start the timer, yet. May be waiting on the animation of the
@@ -1045,6 +1134,16 @@ public class TimerFragment extends BaseFragment
         showToolbar();
     }
 
+    private void startExternalTimer() {
+        currentExternalTimerEnabled = true;
+        externalTimerFragment.start();
+    }
+
+    private void stopExternalTimer() {
+        currentExternalTimerEnabled = false;
+        externalTimerFragment.stop();
+    }
+
     /**
      * Cancels the chronometer and any inspection countdown. Nothing is saved and the timer is
      * reset to zero.
@@ -1070,6 +1169,8 @@ public class TimerFragment extends BaseFragment
     public void onDestroy() {
         if (DEBUG_ME) Log.d(TAG, "onDestroy()");
         super.onDestroy();
+        externalTimerFragment.pause();
+        timerUpdateHandler.removeCallbacksAndMessages(null);
     }
 
     @Override

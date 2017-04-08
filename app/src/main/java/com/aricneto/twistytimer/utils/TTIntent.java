@@ -74,6 +74,11 @@ public final class TTIntent {
     public static final String CATEGORY_ALG_DATA_CHANGES = CATEGORY_PREFIX + "ALG_DATA_CHANGES";
 
     /**
+     * The category for intents that communicate changes between timer modes.
+     */
+    public static final String CATEGORY_TIMER_MODE_CHANGES = CATEGORY_PREFIX + "TIMER_MODE_CHANGES";
+
+    /**
      * One new solve time has been added.
      */
     public static final String ACTION_TIME_ADDED = ACTION_PREFIX + "TIME_ADDED";
@@ -168,6 +173,16 @@ public final class TTIntent {
     public static final String ACTION_ALGS_MODIFIED = ACTION_PREFIX + "ALGS_MODIFIED";
 
     /**
+     * Timer mode has been set to internal timer.
+     */
+    public static final String ACTION_INTERNAL_TIMER_SELECTED = ACTION_PREFIX + "INTERNAL_TIMER_SELECTED";
+
+    /**
+     * Timer mode has been set to internal timer.
+     */
+    public static final String ACTION_EXTERNAL_TIMER_SELECTED = ACTION_PREFIX + "EXTERNAL_TIMER_SELECTED";
+
+    /**
      * The name of an intent extra that can hold the name of the puzzle type.
      */
     public static final String EXTRA_PUZZLE_TYPE = EXTRA_PREFIX + "PUZZLE_TYPE";
@@ -219,6 +234,11 @@ public final class TTIntent {
                 ACTION_TOOLBAR_RESTORED,
                 ACTION_GENERATE_SCRAMBLE,
                 ACTION_SCROLLED_PAGE,
+        });
+
+        put(CATEGORY_TIMER_MODE_CHANGES, new String[] {
+                ACTION_INTERNAL_TIMER_SELECTED,
+                ACTION_EXTERNAL_TIMER_SELECTED,
         });
     }};
 

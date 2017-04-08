@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -8,6 +9,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,8 +68,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_EXTERNAL_TIMER_SELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_INTERNAL_TIMER_SELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_ON;
@@ -77,6 +81,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_SELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_UNSELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIMER_MODE_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
@@ -138,6 +143,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private String currentPuzzleSubtype = "Normal";
     // Stores the current state of the list switch
     boolean history = false;
+    boolean externalTimer;
 
     int currentPage = TIMER_PAGE;
     private boolean pagerEnabled;
@@ -297,6 +303,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         super.onSaveInstanceState(outState);
         outState.putString("puzzle", currentPuzzle);
         outState.putString("subtype", currentPuzzleSubtype);
+        outState.putBoolean("externaltimer", externalTimer);
     }
 
     @Override
@@ -306,6 +313,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
+            externalTimer = savedInstanceState.getBoolean("externaltimer");
         }
     }
 
@@ -376,6 +384,17 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         handleStatisticsLoader();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_EXTERNAL_TIMER_SELECTED);
+        }
+        else {
+            SwitchCompat switchCompat = (SwitchCompat) mToolbar.getMenu().findItem(8).getActionView();
+            switchCompat.setChecked(false);
+        }
     }
 
     private void handleStatisticsLoader() {
@@ -670,9 +689,71 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 }
 
                 broadcast(CATEGORY_TIME_DATA_CHANGES,
-                          isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
+                        isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
             }
         });
+    }
+
+    private void setupTimerItems(LayoutInflater inflater) {
+        final SwitchCompat switchCompat = (SwitchCompat) inflater.inflate(R.layout.toolbar_pin_switch, null);
+        mToolbar.getMenu().add(0, 8, 0, "Timer").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        final Drawable thumb_positive = ThemeUtils.tintPositiveThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
+        final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
+        final Drawable track_positive = ThemeUtils.tintDrawable(getContext(), R.drawable.track_positive, R.attr.colorPrimaryDark);
+
+        if (externalTimer) {
+            switchCompat.setChecked(true);
+            switchCompat.setThumbDrawable(thumb_negative);
+            switchCompat.setTrackResource(R.drawable.track_negative);
+        } else {
+            switchCompat.setChecked(false);
+            switchCompat.setThumbDrawable(thumb_positive);
+            switchCompat.setTrackDrawable(track_positive);
+        }
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                externalTimer = isChecked;
+
+                if (isChecked) {
+                    switchCompat.setThumbDrawable(thumb_negative);
+                    switchCompat.setTrackResource(R.drawable.track_negative);
+                    if (ContextCompat.checkSelfPermission(getMainActivity(),
+                            Manifest.permission.RECORD_AUDIO)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        TimerFragmentMain.this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+
+
+                    }
+                    else {
+                        broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_EXTERNAL_TIMER_SELECTED);
+                    }
+                    switchCompat.setThumbDrawable(thumb_negative);
+                    switchCompat.setTrackResource(R.drawable.track_negative);
+                }
+                else {
+                    switchCompat.setThumbDrawable(thumb_positive);
+                    switchCompat.setTrackDrawable(track_positive);
+                    broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_INTERNAL_TIMER_SELECTED);
+                }
+
+            }
+        });
+
+        // Scramble icon
+        mToolbar.getMenu()
+                .add(0, 5, 0, R.string.scramble_action)
+                .setIcon(R.drawable.ic_dice_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
     }
 
     /**
@@ -695,19 +776,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         switch (pageNum) {
             case TIMER_PAGE:
-                //((MainActivity) getActivity()).hideFAB();
-                // Scramble icon
-                mToolbar.getMenu()
-                        .add(0, 5, 0, R.string.scramble_action)
-                        .setIcon(R.drawable.ic_dice_white_24dp)
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
-                                return true;
-                            }
-                        })
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                setupTimerItems(inflater);
                 break;
 
             case LIST_PAGE:
@@ -811,7 +880,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
             switch (position) {
                 case TIMER_PAGE:
-                    return TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype);
+                    return TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype, externalTimer);
                 case LIST_PAGE:
                     return TimerListFragment.newInstance(
                             currentPuzzle, currentPuzzleSubtype, history);
@@ -819,7 +888,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     return TimerGraphFragment.newInstance(
                             currentPuzzle, currentPuzzleSubtype, history);
             }
-            return TimerFragment.newInstance(PuzzleUtils.TYPE_333, "Normal");
+            return TimerFragment.newInstance(PuzzleUtils.TYPE_333, "Normal", externalTimer);
         }
 
         /**
