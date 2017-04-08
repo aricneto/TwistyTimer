@@ -9,7 +9,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +17,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -116,7 +114,8 @@ public class SettingsActivity extends AppCompatActivity {
                         R.string.pk_inspection_time,
                         R.string.pk_show_scramble_x_cross_hints,
                         R.string.pk_open_timer_appearance_settings,
-                        R.string.pk_locale)) {
+                        R.string.pk_locale,
+                        R.string.pk_stackmat_support)) {
 
                     case R.string.pk_inspection_time:
                         createNumberDialog(R.string.inspection_time, R.string.pk_inspection_time);
@@ -152,6 +151,16 @@ public class SettingsActivity extends AppCompatActivity {
                         }
 
                         break;
+
+                    case R.string.pk_stackmat_support:
+                        if (Prefs.getBoolean(R.string.pk_stackmat_support, false)) {
+                            new MaterialDialog.Builder(getActivity())
+                                    .title(R.string.warning)
+                                    .content(R.string.enableStackmatSupportSummary)
+                                    .positiveText(R.string.action_ok)
+                                    .show();
+                        }
+                        break;
                 }
                 return false;
             }
@@ -169,6 +178,8 @@ public class SettingsActivity extends AppCompatActivity {
             find(this, R.string.pk_show_scramble_x_cross_hints)
                     .setOnPreferenceClickListener(clickListener);
             find(this, R.string.pk_locale)
+                    .setOnPreferenceClickListener(clickListener);
+            find(this, R.string.pk_stackmat_support)
                     .setOnPreferenceClickListener(clickListener);
 
         }

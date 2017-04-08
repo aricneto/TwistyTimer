@@ -55,6 +55,7 @@ import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.stats.StatisticsLoader;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
@@ -695,53 +696,52 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     }
 
     private void setupTimerItems(LayoutInflater inflater) {
-        final SwitchCompat switchCompat = (SwitchCompat) inflater.inflate(R.layout.toolbar_pin_switch, null);
-        mToolbar.getMenu().add(0, 8, 0, "Timer").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        if (Prefs.getBoolean(R.string.pk_stackmat_support, false)) {
+            final SwitchCompat switchCompat = (SwitchCompat) inflater.inflate(R.layout.toolbar_pin_switch, null);
+            mToolbar.getMenu().add(0, 8, 0, "Timer").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        final Drawable thumb_positive = ThemeUtils.tintPositiveThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
-        final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
-        final Drawable track_positive = ThemeUtils.tintDrawable(getContext(), R.drawable.track_positive, R.attr.colorPrimaryDark);
+            final Drawable thumb_positive = ThemeUtils.tintPositiveThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
+            final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_external_timer, R.attr.colorPrimaryDark);
+            final Drawable track_positive = ThemeUtils.tintDrawable(getContext(), R.drawable.track_positive, R.attr.colorPrimaryDark);
 
-        if (externalTimer) {
-            switchCompat.setChecked(true);
-            switchCompat.setThumbDrawable(thumb_negative);
-            switchCompat.setTrackResource(R.drawable.track_negative);
-        } else {
-            switchCompat.setChecked(false);
-            switchCompat.setThumbDrawable(thumb_positive);
-            switchCompat.setTrackDrawable(track_positive);
-        }
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                externalTimer = isChecked;
-
-                if (isChecked) {
-                    switchCompat.setThumbDrawable(thumb_negative);
-                    switchCompat.setTrackResource(R.drawable.track_negative);
-                    if (ContextCompat.checkSelfPermission(getMainActivity(),
-                            Manifest.permission.RECORD_AUDIO)
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                        TimerFragmentMain.this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-
-
-                    }
-                    else {
-                        broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_EXTERNAL_TIMER_SELECTED);
-                    }
-                    switchCompat.setThumbDrawable(thumb_negative);
-                    switchCompat.setTrackResource(R.drawable.track_negative);
-                }
-                else {
-                    switchCompat.setThumbDrawable(thumb_positive);
-                    switchCompat.setTrackDrawable(track_positive);
-                    broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_INTERNAL_TIMER_SELECTED);
-                }
-
+            if (externalTimer) {
+                switchCompat.setChecked(true);
+                switchCompat.setThumbDrawable(thumb_negative);
+                switchCompat.setTrackResource(R.drawable.track_negative);
+            } else {
+                switchCompat.setChecked(false);
+                switchCompat.setThumbDrawable(thumb_positive);
+                switchCompat.setTrackDrawable(track_positive);
             }
-        });
+            switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    externalTimer = isChecked;
 
+                    if (isChecked) {
+                        switchCompat.setThumbDrawable(thumb_negative);
+                        switchCompat.setTrackResource(R.drawable.track_negative);
+                        if (ContextCompat.checkSelfPermission(getMainActivity(),
+                                Manifest.permission.RECORD_AUDIO)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            TimerFragmentMain.this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+
+
+                        } else {
+                            broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_EXTERNAL_TIMER_SELECTED);
+                        }
+                        switchCompat.setThumbDrawable(thumb_negative);
+                        switchCompat.setTrackResource(R.drawable.track_negative);
+                    } else {
+                        switchCompat.setThumbDrawable(thumb_positive);
+                        switchCompat.setTrackDrawable(track_positive);
+                        broadcast(CATEGORY_TIMER_MODE_CHANGES, ACTION_INTERNAL_TIMER_SELECTED);
+                    }
+
+                }
+            });
+        }
         // Scramble icon
         mToolbar.getMenu()
                 .add(0, 5, 0, R.string.scramble_action)
