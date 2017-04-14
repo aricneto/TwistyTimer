@@ -123,7 +123,7 @@ public class ExternalTimerReaderFragment extends Fragment {
                     catch (Exception e) {}
                 }
 
-                findPackets(audioBuffer, threshold);
+                findPackets(audioBuffer);
 
                 //Shift audio buffer
                 for (int i = bufferLength; i < audioBuffer.length; i++) {
@@ -131,9 +131,11 @@ public class ExternalTimerReaderFragment extends Fragment {
                 }
             }
             recorder.stop();
+            recorder.release();
+            recorder = null;
         }
 
-        private boolean findPackets(short[] audioBuffer, short threshold) {
+        private boolean findPackets(short[] audioBuffer) {
             boolean foundpacket = false;
             int zerocount = 0;
 
