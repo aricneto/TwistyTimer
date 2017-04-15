@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -246,6 +247,8 @@ public class TimerFragment extends BaseFragment
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_EXTERNAL_TIMER_SELECTED:
+                    chronometer.reset();
+                    hideButtons(true, true);
                     getArguments().putBoolean(EXTERNAL_TIMER, true);
                     startExternalTimer();
                     break;
@@ -253,11 +256,14 @@ public class TimerFragment extends BaseFragment
                 case ACTION_INTERNAL_TIMER_SELECTED:
                     getArguments().putBoolean(EXTERNAL_TIMER, false);
                     stopExternalTimer();
+                    chronometer.reset();
+                    hideButtons(true, true);
                     break;
             }
         }
     };
 
+    MaterialDialog timerErrorDialog;
     Handler timerUpdateHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -279,6 +285,57 @@ public class TimerFragment extends BaseFragment
                     hideButtons(true, true);
                 }
                 chronometer.updateText(state);
+            }
+            else if (msg.what == ExternalTimerReaderFragment.TIMER_ERROR_WHAT) {
+                if (msg.arg1 == ExternalTimerReaderFragment.TIMER_UNINITIALIZED) {
+                    timerErrorDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.external_timer_uninitialized_title)
+                            .content(R.string.external_timer_uninitialized_content)
+                            .positiveText(R.string.action_ok)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    SwitchCompat switchCompat = (SwitchCompat) ((TimerFragmentMain) getParentFragment()).mToolbar.getMenu().findItem(8).getActionView();
+                                    switchCompat.setChecked(false);
+                                }
+                            })
+                            .build();
+                    timerErrorDialog.show();
+                }
+                else if(msg.arg1 == ExternalTimerReaderFragment.TIMER_NOT_CONNECTED) {
+                    timerErrorDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.external_timer_not_connected_title)
+                            .content(R.string.external_timer_not_connected_content)
+                            .positiveText(R.string.action_ok)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    SwitchCompat switchCompat = (SwitchCompat) ((TimerFragmentMain) getParentFragment()).mToolbar.getMenu().findItem(8).getActionView();
+                                    switchCompat.setChecked(false);
+                                }
+                            })
+                            .build();
+                    timerErrorDialog.show();
+                }
+                else if(msg.arg1 == ExternalTimerReaderFragment.TIMER_CONNECTION_LOST) {
+                    timerErrorDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.external_timer_connection_lost_title)
+                            .content(R.string.external_timer_connection_lost_content)
+                            .positiveText(R.string.action_ok)
+                            .negativeText(R.string.external_timer_disable)
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    SwitchCompat switchCompat = (SwitchCompat) ((TimerFragmentMain) getParentFragment()).mToolbar.getMenu().findItem(8).getActionView();
+                                    switchCompat.setChecked(false);
+                                }
+                            })
+                            .build();
+                    timerErrorDialog.show();
+                }
+                else if(msg.arg1 == ExternalTimerReaderFragment.TIMER_RECONNECTED) {
+                    timerErrorDialog.dismiss();
+                }
             }
         }
     };
@@ -1170,7 +1227,6 @@ public class TimerFragment extends BaseFragment
         if (DEBUG_ME) Log.d(TAG, "onDestroy()");
         super.onDestroy();
         externalTimerFragment.pause();
-        timerUpdateHandler.removeCallbacksAndMessages(null);
     }
 
     @Override

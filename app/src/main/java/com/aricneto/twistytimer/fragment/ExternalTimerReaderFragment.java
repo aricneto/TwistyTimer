@@ -7,6 +7,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.aricneto.twistytimer.utils.TimerState;
 
@@ -22,8 +23,18 @@ import java.util.ArrayList;
  */
 public class ExternalTimerReaderFragment extends Fragment {
 
-    public static final String TAG = "ExternalTimerReadFragment";
+    /**
+     * Flag to enable debug logging for this class.
+     */
+    private static final boolean DEBUG_ME = false;
+
+    public static final String TAG = "ExternalTimerFragment";
     public static final int TIMER_PACKET_WHAT = 1;
+    public static final int TIMER_ERROR_WHAT = 2;
+    public static final int TIMER_UNINITIALIZED = 1;
+    public static final int TIMER_NOT_CONNECTED = 2;
+    public static final int TIMER_CONNECTION_LOST = 3;;
+    public static final int TIMER_RECONNECTED = 4;
 
     AudioRecorderThread thread;
     Handler handler;
@@ -42,12 +53,14 @@ public class ExternalTimerReaderFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (DEBUG_ME) Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
 
     @Override
     public void onDestroy() {
+        if (DEBUG_ME) Log.d(TAG, "onDestroy()");
         super.onDestroy();
         running = false;
     }
@@ -63,10 +76,14 @@ public class ExternalTimerReaderFragment extends Fragment {
 
     public void stop() {
         running = false;
+        //Prevent sending already queued messages
+        handler.removeCallbacksAndMessages(null);
     }
 
     public void pause() {
         paused = true;
+        //Prevent sending already queued messages
+        handler.removeCallbacksAndMessages(null);
     }
 
     public void unpause() {
@@ -85,8 +102,13 @@ public class ExternalTimerReaderFragment extends Fragment {
         }
 
         public void run() {
+            boolean sentError = false;
+            int invalidReads = 0;
+            boolean hadFoundPacket = false;
+
             running = true;
             paused = false;
+
 
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
             //Using 16bit instead of 8 bit because 8 bit is unsigned and would require us doing a 2s complement
@@ -103,6 +125,12 @@ public class ExternalTimerReaderFragment extends Fragment {
                     AudioFormat.ENCODING_PCM_16BIT,
                     bufferSize);
 
+            if (recorder.getState() == AudioRecord.STATE_UNINITIALIZED) {
+                handler.obtainMessage(TIMER_ERROR_WHAT, TIMER_UNINITIALIZED, 0).sendToTarget();
+                recorder.release();
+                return;
+            }
+
             recorder.startRecording();
 
             int result;
@@ -110,8 +138,6 @@ public class ExternalTimerReaderFragment extends Fragment {
                 result = recorder.read(audioBuffer, 0, bufferLength);
             }
             while (result <= 0);
-
-            short threshold = 29000;
 
             while (running) {
                 result = recorder.read(audioBuffer, bufferLength, bufferLength);
@@ -123,7 +149,27 @@ public class ExternalTimerReaderFragment extends Fragment {
                     catch (Exception e) {}
                 }
 
-                findPackets(audioBuffer);
+                if (!findPackets(audioBuffer)) {
+                    if (!sentError) {
+                        invalidReads++;
+                    }
+                }
+                else {
+                    invalidReads = 0;
+                    hadFoundPacket = true;
+                    if(sentError) {
+                        handler.obtainMessage(TIMER_ERROR_WHAT, TIMER_RECONNECTED, 0).sendToTarget();
+                        sentError = false;
+                    }
+                }
+
+                //No valid packet for 2 seconds
+                if (invalidReads == 16 && !sentError) {
+                    handler.obtainMessage(TIMER_ERROR_WHAT,
+                            hadFoundPacket ? TIMER_CONNECTION_LOST : TIMER_NOT_CONNECTED, 0)
+                            .sendToTarget();
+                    sentError = true;
+                }
 
                 //Shift audio buffer
                 for (int i = bufferLength; i < audioBuffer.length; i++) {
@@ -132,7 +178,6 @@ public class ExternalTimerReaderFragment extends Fragment {
             }
             recorder.stop();
             recorder.release();
-            recorder = null;
         }
 
         private boolean findPackets(short[] audioBuffer) {
@@ -154,7 +199,7 @@ public class ExternalTimerReaderFragment extends Fragment {
                             if (isValidPacket(bytes)) {
                                 foundpacket = true;
                                 TimerState state = new TimerState(bytes);
-                                if (!paused) {
+                                if (running && !paused) {
                                     handler.obtainMessage(TIMER_PACKET_WHAT, state).sendToTarget();
                                 }
                             }
