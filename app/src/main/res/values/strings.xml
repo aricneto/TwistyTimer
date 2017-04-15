@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Twisty Timer</string>
-
     <string name="cube_222">2x2x2 Cube</string>
     <string name="cube_333">3x3x3 Cube</string>
     <string name="cube_444">4x4x4 Cube</string>
@@ -211,6 +209,8 @@
     <string name="timer_text_size_summary">Controls the size of the timer text</string>
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
     <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
+    <string name="enableStackmatSupportTitle">Enable Stackmat Timer support</string>
+    <string name="enableStackmatSupportSummary">This is an experimental feature. It might not work on all devices.</string>
     <string name="drawer_title_export_import">Export/Import</string>
     <string name="dialog_export_import_export">Export…</string>
     <string name="dialog_export_import_import">Import…</string>
@@ -238,7 +238,6 @@
     <string name="fab_add_time">Add time</string>
     <string name="fab_share_error">Could not share. Make sure you\'ve done enough solves in this session.</string>
     <string name="fab_share_histogram_solvecount">%1$s time distribution (%2$d solves)</string>
-
     <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
     <string name="fab_share_title">Share session…</string>
     <string name="export_import_dialog_from_backup">From backup</string>
@@ -246,6 +245,13 @@
     <string name="export_import_dialog_for_other_timers">For other timers</string>
     <string name="export_import_dialog_for_backup">For backup</string>
     <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
+    <string name="external_timer_uninitialized_title">Can\'t access headphone jack</string>
+    <string name="external_timer_uninitialized_content">Maybe another application is currently recording audio. Try closing all open applications and try again.</string>
+    <string name="external_timer_not_connected_title">Couldn\'t read timer value</string>
+    <string name="external_timer_not_connected_content">Make sure the timer is off when connecting it, but on when enabling this feature. Some phones won\'t detect it otherwise.</string>
+    <string name="external_timer_connection_lost_title">Lost connection to timer</string>
+    <string name="external_timer_connection_lost_content">Please reconnect the timer</string>
+    <string name="external_timer_disable">Disable external Timer</string>
 
     <string name="translators">Translators</string>
     <string name="translators_content">Huge thanks to these people for providing translations for this app:%1$s</string>

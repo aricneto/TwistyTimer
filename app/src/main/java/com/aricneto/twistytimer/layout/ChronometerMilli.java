@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.TimerState;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -95,6 +96,7 @@ public class ChronometerMilli extends TextView {
     private boolean mIsVisible;
     private boolean mIsStarted;
     private boolean mIsRunning;
+    private boolean mIsReset;
 
     /**
      * Indicates if this chronometer is holding in readiness to be started once the minimum hold
@@ -297,6 +299,7 @@ public class ChronometerMilli extends TextView {
         mStartedAt = SystemClock.elapsedRealtime() - getElapsedTimeExcludingPenalties();
         mStoppedAt = 0L;
         mIsStarted = true;
+        mIsReset = false;
 
         // If we were holding for a start, stop doing that now and discard any saved text.
         endHoldForStart();
@@ -345,6 +348,7 @@ public class ChronometerMilli extends TextView {
 
         mStartedAt = 0L;
         mStoppedAt = 0L;
+        mIsReset = true;
         mPenalty = PuzzleUtils.NO_PENALTY;
 
         // If we were holding for a start, stop doing that now and discard any saved text.
@@ -382,6 +386,26 @@ public class ChronometerMilli extends TextView {
         }
 
         // Show the new time with the included penalty and the "+" penalty indicator, if needed.
+        updateText();
+    }
+
+    public synchronized void updateText(TimerState state) {
+        String timeText;
+
+        mIsRunning = state.isRunning();
+
+        if (state.isReset() && !mIsReset) {
+            mStartedAt = 0L;
+            mStoppedAt = 0L;
+            mIsReset = true;
+            mPenalty = PuzzleUtils.NO_PENALTY;
+        }
+        else if (state.isRunning()) {
+            mIsReset = false;
+        }
+        setHighlighted(state.isReady());
+        mStoppedAt = state.getMS();
+
         updateText();
     }
 
@@ -465,6 +489,14 @@ public class ChronometerMilli extends TextView {
         super.onWindowVisibilityChanged(visibility);
         mIsVisible = visibility == VISIBLE;
         updateRunning();
+    }
+
+    public boolean isRunning() {
+        return mIsRunning;
+    }
+
+    public boolean isReset() {
+        return mIsReset;
     }
 
     /**

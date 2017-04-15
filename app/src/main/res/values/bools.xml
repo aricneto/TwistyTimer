@@ -16,4 +16,5 @@
     <bool name="default_hideTime">false</bool>
     <bool name="default_showHints">true</bool>
     <bool name="default_showHintsXCross">false</bool>
+    <bool name="default_stackmatSupport">false</bool>
 </resources>

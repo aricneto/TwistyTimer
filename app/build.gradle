@@ -19,6 +19,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
+            resValue "string", "app_name", "Twisty Timer"
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "Twisty Timer (Debug)"
         }
     }
     productFlavors {
