@@ -22,6 +22,18 @@
             android:summary="@string/inspectionTimeSummary"
             android:title="@string/inspectionTimeTitle"/>
 
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_warningEnabled"
+            android:dependency="@string/pk_inspection_enabled"
+            android:key="@string/pk_warning_enabled"
+            android:title="@string/warningEnabledTitle"/>
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_verbalWarningEnbled"
+            android:dependency="@string/pk_warning_enabled"
+            android:key="@string/pk_verbal_warning_enabled"
+            android:title="@string/verbalWarningEnabledTitle"/>
+
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory

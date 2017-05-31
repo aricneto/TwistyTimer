@@ -211,6 +211,8 @@
     <string name="timer_text_size_summary">Controls the size of the timer text</string>
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
     <string name="showHintsXCrossSummary">Extended cross hints may take a long time to load.\nOnly enable this setting if you\'re okay with the wait time or if you have a high-end device.</string>
+    <string name="warningEnabledTitle">Warning (vibrate)</string>
+    <string name="verbalWarningEnabledTitle">Verbal warning</string>
     <string name="drawer_title_export_import">Export/Import</string>
     <string name="dialog_export_import_export">Export…</string>
     <string name="dialog_export_import_import">Import…</string>
