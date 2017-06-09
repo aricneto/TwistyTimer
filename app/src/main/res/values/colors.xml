@@ -21,6 +21,7 @@
     <color name="black_text">#DE000000</color>
     <color name="white_text">#FFFFFFFF</color>
     <color name="white_secondary_icon">#B3FFFFFF</color>
+    <color name="yellow_text">#FBC02D</color>
 
     <!-- FAB/ACTIONS -->
     <color name="accentDarkColor">#D50000</color>

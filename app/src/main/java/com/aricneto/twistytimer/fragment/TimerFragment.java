@@ -140,9 +140,12 @@ public class TimerFragment extends BaseFragment
     private Animator mCurrentAnimator;
 
     private Unbinder mUnbinder;
-    @BindView(R.id.sessionDetailTimesAvg)  TextView detailTimesAvg;
-    @BindView(R.id.sessionDetailTimesMore) TextView detailTimesMore;
-    @BindView(R.id.detailLayout)           View     detailLayout;
+    @BindView(R.id.sessionDetailTimesAo5)       TextView detailTimesAo5;
+    @BindView(R.id.sessionDetailTimesAo12)      TextView detailTimesAo12;
+    @BindView(R.id.sessionDetailTimesAo50)      TextView detailTimesAo50;
+    @BindView(R.id.sessionDetailTimesAo100)     TextView detailTimesAo100;
+    @BindView(R.id.sessionDetailTimesMore)      TextView detailTimesMore;
+    @BindView(R.id.detailLayout)    View     detailLayout;
 
     @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
     @BindView(R.id.scrambleText)    TextView            scrambleText;
@@ -799,7 +802,7 @@ public class TimerFragment extends BaseFragment
         if (solve.getPenalty() == PENALTY_DNF || newTime <= 0
                 || mRecentStatistics == null
                 || mRecentStatistics.getAllTimeNumSolves()
-                   - mRecentStatistics.getAllTimeNumDNFSolves() < 4) {
+                - mRecentStatistics.getAllTimeNumDNFSolves() < 4) {
             // Not a valid time, or there are no previous statistics, or not enough previous times
             // to make reporting meaningful (or non-annoying), so cannot check for a new PB.
             return;
@@ -880,20 +883,49 @@ public class TimerFragment extends BaseFragment
         String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
         String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
 
-        String sessionCurrentAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getCurrentAverage()));
-        String sessionCurrentAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getCurrentAverage()));
-        String sessionCurrentAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getCurrentAverage()));
-        String sessionCurrentAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getCurrentAverage()));
+        long allTimeBestAvg5 = stats.getAverageOf(5, false).getBestAverage();
+        long allTimeBestAvg12 = stats.getAverageOf(12, false).getBestAverage();
+        long allTimeBestAvg50 = stats.getAverageOf(50, false).getBestAverage();
+        long allTimeBestAvg100 = stats.getAverageOf(100, false).getBestAverage();
 
-        detailTimesAvg.setText(
-                sessionCurrentAvg5 + "\n" +
-                        sessionCurrentAvg12 + "\n" +
-                        sessionCurrentAvg50 + "\n" +
-                        sessionCurrentAvg100);
+        long sessionCurrentAvg5 = stats.getAverageOf(5, true).getCurrentAverage();
+        long sessionCurrentAvg12 = stats.getAverageOf(12, true).getCurrentAverage();
+        long sessionCurrentAvg50 = stats.getAverageOf(50, true).getCurrentAverage();
+        long sessionCurrentAvg100 = stats.getAverageOf(100, true).getCurrentAverage();
+
+        detailTimesAo5.setText(convertTimeToString(tr(sessionCurrentAvg5)));
+        detailTimesAo12.setText(convertTimeToString(tr(sessionCurrentAvg12)));
+        detailTimesAo50.setText(convertTimeToString(tr(sessionCurrentAvg50)));
+        detailTimesAo100.setText(convertTimeToString(tr(sessionCurrentAvg100)));
+
+
+        if(sessionCurrentAvg5 > 0 && sessionCurrentAvg5 <= allTimeBestAvg5) {
+            detailTimesAo5.setTextColor(ContextCompat.getColor(this.getContext(), R.color.yellow_text));
+        }
+        else {
+            detailTimesAo5.setTextColor(ContextCompat.getColor(this.getContext(), R.color.white_secondary_icon));
+        }
+
+        if(sessionCurrentAvg12 > 0 && sessionCurrentAvg12 <= allTimeBestAvg12) {
+            detailTimesAo12.setTextColor(ContextCompat.getColor(this.getContext(), R.color.yellow_text));
+        }
+        else {
+            detailTimesAo12.setTextColor(ContextCompat.getColor(this.getContext(), R.color.white_secondary_icon));
+        }
+
+        if(sessionCurrentAvg50 > 0 && sessionCurrentAvg50 <= allTimeBestAvg50) {
+            detailTimesAo50.setTextColor(ContextCompat.getColor(this.getContext(), R.color.yellow_text));
+        }
+        else {
+            detailTimesAo50.setTextColor(ContextCompat.getColor(this.getContext(), R.color.white_secondary_icon));
+        }
+
+        if(sessionCurrentAvg100 > 0 && sessionCurrentAvg100 <= allTimeBestAvg100) {
+            detailTimesAo100.setTextColor(ContextCompat.getColor(this.getContext(), R.color.yellow_text));
+        }
+        else {
+            detailTimesAo100.setTextColor(ContextCompat.getColor(this.getContext(), R.color.white_text));
+        }
 
         detailTimesMore.setText(
                 sessionMeanTime + "\n" +

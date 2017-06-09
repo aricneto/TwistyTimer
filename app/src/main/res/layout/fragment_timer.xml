@@ -211,25 +211,120 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="16dp">
 
-            <TextView
-                android:id="@+id/sessionDetailTextAvg"
+            <LinearLayout
+                android:id="@+id/detailLayoutAvg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"
-                android:text="@string/detail_text_avg"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:gravity="end"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp">
+                <TextView
+                    android:id="@+id/sessionDetailTextAo5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="@string/detail_text_ao5"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/sessionDetailTimesAvg"
+                <TextView
+                    android:id="@+id/sessionDetailTextAo12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="@string/detail_text_ao12"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/sessionDetailTextAo50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="@string/detail_text_ao50"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/sessionDetailTextAo100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="@string/detail_text_ao100"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detailLayoutAvgTimes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="left"
-                android:text="--\n--\n--\n--"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:gravity="end"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp">
+
+                <!--<TextView-->
+                <!--android:id="@+id/sessionDetailTimesAvg"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:gravity="left"-->
+                <!--android:text="&#45;&#45;\n&#45;&#45;\n&#45;&#45;\n&#45;&#45;"-->
+                <!--android:textColor="?colorTimerDetailText"-->
+                <!--android:textSize="13sp" />-->
+
+                <TextView
+                    android:id="@+id/sessionDetailTimesAo5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="left"
+                    android:text="--"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/sessionDetailTimesAo12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="left"
+                    android:text="--"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/sessionDetailTimesAo50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="left"
+                    android:text="--"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/sessionDetailTimesAo100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="left"
+                    android:text="--"
+                    android:textColor="?colorTimerDetailText"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/sessionDetailTextMore"
