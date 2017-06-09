@@ -43,6 +43,16 @@
             tools:visibility="visible" />
 
         <TextView
+            android:id="@+id/export_external_cstimer"
+            style="@style/DialogExportImportActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="40dp"
+            android:text="@string/export_import_dialog_external_cstimer"
+            tools:visibility="visible" />
+
+        <TextView
             android:id="@+id/export_external"
             style="@style/DialogExportImportActions"
             android:layout_width="match_parent"
@@ -51,7 +61,6 @@
             android:layout_marginLeft="40dp"
             android:text="@string/export_import_dialog_for_other_timers"
             tools:visibility="visible" />
-
 
         <TextView
             android:id="@+id/import_button"

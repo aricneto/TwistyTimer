@@ -185,6 +185,10 @@
     <string name="graph_legend_best_times">Best</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
+    <string name="detail_text_ao5">Ao5:</string>
+    <string name="detail_text_ao12">Ao12:</string>
+    <string name="detail_text_ao50">Ao50</string>
+    <string name="detail_text_ao100">Ao100</string>
     <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
     <string name="source">Source</string>
     <string name="startCueTitle">Start cue</string>
@@ -268,5 +272,7 @@
     <string name="language_czech" translatable="false">Čeština</string>
 
     <string name="preference_application_language_title">Language</string>
+    <string name="export_import_dialog_external_cstimer">For csTimer</string>
+    <string name="puzzle_dialog_cstimer_session">Session number (csTimer)</string>
 
 </resources>
