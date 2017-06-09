@@ -1,27 +1,10 @@
 package com.aricneto.twistytimer.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.support.annotation.StringDef;
-
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Locale;
-
-import static android.R.attr.country;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
-import static com.aricneto.twistytimer.utils.LocaleUtils.CZECH;
-import static com.aricneto.twistytimer.utils.LocaleUtils.LITHUANIAN;
-import static com.aricneto.twistytimer.utils.LocaleUtils.POLISH;
-import static com.aricneto.twistytimer.utils.LocaleUtils.PORTUGUESE_BRAZIL;
-import static com.aricneto.twistytimer.utils.LocaleUtils.RUSSIAN;
 
 /**
  * Utility class to facilitate locale customization by the user

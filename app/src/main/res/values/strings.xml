@@ -67,14 +67,14 @@
     <string name="drawer_title_timer">Timer</string>
     <string name="drawer_title_other">Other</string>
     <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best by %1$s</string>
-    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far, beating you record by %1$s</string>
+    <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far, beating your record by %1$s</string>
     <string name="scramble_text_tap_hint">Tap here to see scramble</string>
     <string name="action_ok">OK</string>
     <string name="drawer_title_changeTheme">App theme</string>
     <string name="graph_stats_title">Stats</string>
-    <string name="graph_card_global">All Time\nBest</string>
-    <string name="graph_card_session_current">Session\nCurrent</string>
-    <string name="graph_card_session_best">Session\nBest</string>
+    <string name="graph_card_global">Best\n(all time)</string>
+    <string name="graph_card_session_current">Current</string>
+    <string name="graph_card_session_best">Best\n(session)</string>
     <string name="graph_mean">Mean</string>
     <string name="w_new_subtype">New</string>
     <string name="action_rename">Rename</string>
@@ -161,7 +161,14 @@
     <string name="testers_content">Huge thanks to these people for providing valuable feedback during the alpha state of the app:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
     <string name="list_options_item_history">Archive</string>
     <string name="list_options_item_from_history">Unarchive</string>
-    <string name="selected_list">Selected</string>
+
+    <plurals name="selected_list">
+        <item quantity="zero">No solves selected</item>
+        <item quantity="one">%d solve selected</item>
+        <item quantity="few">%d solves selected</item>
+        <item quantity="other">%d solves selected</item>
+    </plurals>
+
     <string name="remove_session_title">Remove all solves from this session?</string>
     <string name="remove_session_confirmation_content">You will not be able to undo this action.</string>
     <string name="listPrefTitle">Solve list</string>
@@ -184,7 +191,7 @@
     <string name="startCueSummary">Change text color when the timer is ready to start</string>
     <string name="scramble_text_size">Scramble text size</string>
     <string name="quick_action_button_large_title">Large quick action buttons</string>
-    <string name="scramble_text_size_summary">Controls the size of the scramble sequence text show in the timer</string>
+    <string name="scramble_text_size_summary">Controls the size of the scramble sequence text shown in the timer</string>
     <string name="hideTimeTitle">Hide time when solving</string>
     <string name="hideTimeSummary">The timer will display your time when you finish</string>
     <string name="hideTimeText" translatable="false">…</string>
@@ -260,7 +267,6 @@
     <string name="language_polish" translatable="false">Język polski</string>
     <string name="language_czech" translatable="false">Čeština</string>
 
-    <string name="preference_title_application">Application</string>
     <string name="preference_application_language_title">Language</string>
     <string name="export_import_dialog_external_cstimer">For csTimer</string>
     <string name="puzzle_dialog_cstimer_session">Session number (csTimer)</string>

@@ -47,8 +47,8 @@
   <string name="personal_worst_message">Félicitations !\nC\'est la pire résolution que vous avez réalisée, battant le record de %1$s</string>
   <string name="scramble_text_tap_hint">Appuyez ici pour mélanger</string>
   <string name="drawer_title_changeTheme">Thème de l\'application</string>
-  <string name="graph_stats_title">Statistiques</string>
-  <string name="graph_card_global">Meilleur</string>
+  <string name="graph_stats_title">Statis.</string>
+  <string name="graph_card_global">Meilleur\n(tous)</string>
   <string name="graph_mean">Moyenne</string>
   <string name="color_purple">Violet</string>
   <string name="color_teal">Cyan foncé</string>
@@ -194,4 +194,6 @@
   <string name="export_import_dialog_for_backup">Pour une sauvegarde</string>
   <string name="permission_denied_explanation">Afin de pouvoir importer/exporter, you devez autoriser Twisty Timer à accéder à votre espace de stockage externe</string>
   <string name="translators">Traducteurs</string>
+  <string name="graph_card_session_best">Meilleur\n(session)</string>
+  <string name="graph_card_session_current">Actuel</string>
 </resources>

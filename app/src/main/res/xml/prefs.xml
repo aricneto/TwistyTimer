@@ -2,15 +2,11 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.jenzz.materialpreference.PreferenceCategory
-        android:title="@string/preference_title_application">
-
-        <!-- TODO: find a way to make this look nicer -->
-        <com.jenzz.materialpreference.Preference
-            android:key="@string/pk_locale"
-            android:title="@string/preference_application_language_title" />
-
-    </com.jenzz.materialpreference.PreferenceCategory>
+    <!-- TODO: find a way to make this look nicer -->
+    <com.jenzz.materialpreference.Preference
+        android:key="@string/pk_locale"
+        android:title="@string/preference_application_language_title"
+        android:widgetLayout="@layout/item_locale_preference"/>
 
     <com.jenzz.materialpreference.PreferenceCategory
         android:title="@string/prefTitleInspection">
@@ -18,13 +14,13 @@
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_inspectionEnabled"
             android:key="@string/pk_inspection_enabled"
-            android:title="@string/inspectionEnabledTitle" />
+            android:title="@string/inspectionEnabledTitle"/>
 
         <com.jenzz.materialpreference.Preference
             android:defaultValue="@integer/default_inspectionTime"
             android:key="@string/pk_inspection_time"
             android:summary="@string/inspectionTimeSummary"
-            android:title="@string/inspectionTimeTitle" />
+            android:title="@string/inspectionTimeTitle"/>
 
     </com.jenzz.materialpreference.PreferenceCategory>
 
@@ -34,45 +30,45 @@
         <!-- Pseudo-preference that will trigger the opening of the timer appearance settings. -->
         <com.jenzz.materialpreference.Preference
             android:key="@string/pk_open_timer_appearance_settings"
-            android:title="@string/timerAppearancePrefTitle"
-            android:persistent="false" />
+            android:persistent="false"
+            android:title="@string/timerAppearancePrefTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_holdEnabled"
             android:key="@string/pk_hold_to_start_enabled"
             android:summary="@string/holdEnabledSummary"
-            android:title="@string/holdEnabledTitle" />
+            android:title="@string/holdEnabledTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_startCue"
             android:key="@string/pk_start_cue_enabled"
             android:summary="@string/startCueSummary"
-            android:title="@string/startCueTitle" />
+            android:title="@string/startCueTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_pagerEnabled"
             android:key="@string/pk_tab_swiping_enabled"
             android:summary="@string/pagerEnabledSummary"
-            android:title="@string/pagerEnabledTitle" />
+            android:title="@string/pagerEnabledTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_scrambleEnabled"
             android:key="@string/pk_scramble_enabled"
             android:summary="@string/scrambleEnabledSummary"
-            android:title="@string/scrambleEnabledTitle" />
+            android:title="@string/scrambleEnabledTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_showHints"
-            android:key="@string/pk_show_scramble_hints"
             android:dependency="@string/pk_scramble_enabled"
+            android:key="@string/pk_show_scramble_hints"
             android:summary="@string/showHintsSummary"
-            android:title="@string/showHintsTitle" />
+            android:title="@string/showHintsTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_showHintsXCross"
-            android:key="@string/pk_show_scramble_x_cross_hints"
             android:dependency="@string/pk_show_scramble_hints"
-            android:title="@string/showHintsXCrossTitle" />
+            android:key="@string/pk_show_scramble_x_cross_hints"
+            android:title="@string/showHintsXCrossTitle"/>
 
     </com.jenzz.materialpreference.PreferenceCategory>
 
@@ -83,7 +79,7 @@
             android:defaultValue="@bool/default_clearEnabled"
             android:key="@string/pk_show_clear_button"
             android:summary="@string/clearEnabledSummary"
-            android:title="@string/clearEnabledTitle" />
+            android:title="@string/clearEnabledTitle"/>
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

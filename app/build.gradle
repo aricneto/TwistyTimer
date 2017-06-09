@@ -11,8 +11,8 @@ android {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 20
-        versionName "2.0.0b2"
+        versionCode 21
+        versionName "2.0.0"
     }
     buildTypes {
         release {
@@ -83,7 +83,7 @@ dependencies {
     // LicensesDialog
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     // Inapp Billing
-    compile 'com.anjlab.android.iab.v3:library:1.0.31'
+    compile 'com.anjlab.android.iab.v3:library:1.0.36'
     // Material color picker
     compile 'com.pavelsikun:vintage-chroma:1.5'
     // Sliding Up Panel
