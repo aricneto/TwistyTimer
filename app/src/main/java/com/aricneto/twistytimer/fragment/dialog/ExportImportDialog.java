@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -49,6 +50,11 @@ public class ExportImportDialog extends DialogFragment
      * category that can be interchanged with external applications.
      */
     public static final int EXIM_FORMAT_EXTERNAL = 1;
+
+    /**
+     * The file format for a text file that can be imported into csTimer
+     */
+    public static final int EXIM_FORMAT_EXTERNAL_CSTIMER = 3;
 
     /**
      * The file format for full text import/export of all solve times used to back-up the database.
@@ -101,18 +107,23 @@ public class ExportImportDialog extends DialogFragment
          *     The category (subtype) of the puzzle whose times will be exported. This is required
          *     when {@code fileFormat} is {@code EXIM_FORMAT_EXTERNAL}. It may be {@code null} if
          *     the format is {@code EXIM_FORMAT_BACKUP}, as it will not be used.
+         * @param externalTimerArgument
+         *     When exporting to a supported timer, the argument required by said timer, like a
+         *     session number. It may be 0 if the format is anything other than the supported timers
+         *     ({@code EXIM_FORMAT_EXTERNAL_CSTIMER}).
          */
-        void onExportSolveTimes(int fileFormat, String puzzleType, String puzzleCategory);
+        void onExportSolveTimes(int fileFormat, String puzzleType, String puzzleCategory, int externalTimerArgument);
     }
 
     private Unbinder mUnbinder;
-    //@BindView(R.id.help_button)     View helpButton;
-    @BindView(R.id.export_backup)   View exportBackup;
-    @BindView(R.id.export_external) View exportExternal;
-    @BindView(R.id.import_backup)   View importBackup;
-    @BindView(R.id.import_external) View importExternal;
-    @BindView(R.id.import_button)   View importButton;
-    @BindView(R.id.export_button)   View exportButton;
+    //@BindView(R.id.help_button)           View helpButton;
+    @BindView(R.id.export_backup)           View exportBackup;
+    @BindView(R.id.export_external)         View exportExternal;
+    @BindView(R.id.export_external_cstimer) View exportExternalCstimer;
+    @BindView(R.id.import_backup)           View importBackup;
+    @BindView(R.id.import_external)         View importExternal;
+    @BindView(R.id.import_button)           View importButton;
+    @BindView(R.id.export_button)           View exportButton;
 
     /**
      * The file chosen as the source for importing solve times.
@@ -138,8 +149,21 @@ public class ExportImportDialog extends DialogFragment
                     // All puzzle types and categories are exported to a single back-up file.
                     // There is no need to identify the export file or the puzzle type/category.
                     // Just invoke the activity and dismiss this dialog.
-                    getExImActivity().onExportSolveTimes(EXIM_FORMAT_BACKUP, null, null);
+                    getExImActivity().onExportSolveTimes(EXIM_FORMAT_BACKUP, null, null, 0);
                     dismiss();
+                    break;
+
+                case R.id.export_external_cstimer:
+                    mFileFormat = EXIM_FORMAT_EXTERNAL_CSTIMER;
+                    // Select the single puzzle type and category that will be exported. When the
+                    // call-back from this puzzle chooser is received ("onPuzzleTypeSelected"),
+                    // this dialog will exit and hand control back to the activity to perform the
+                    // export. The call-back uses "getTag()" to tell the chooser to tell the
+                    // activity that the chosen puzzle type/category should be relayed back to this
+                    // dialog fragment.
+                    PuzzleChooserDialog.newInstance(
+                            R.string.action_export, ExportImportDialog.this.getTag(), PuzzleChooserDialog.TIMER_CSTIMER)
+                            .show(getActivity().getSupportFragmentManager(), null);
                     break;
 
                 case R.id.export_external:
@@ -151,7 +175,7 @@ public class ExportImportDialog extends DialogFragment
                     // activity that the chosen puzzle type/category should be relayed back to this
                     // dialog fragment.
                     PuzzleChooserDialog.newInstance(
-                            R.string.action_export, ExportImportDialog.this.getTag())
+                            R.string.action_export, ExportImportDialog.this.getTag(), null)
                             .show(getActivity().getSupportFragmentManager(), null);
                     break;
 
@@ -194,7 +218,7 @@ public class ExportImportDialog extends DialogFragment
                     break;
 
                 case R.id.export_button:
-                    AnimUtils.toggleContentVisibility(exportBackup, exportExternal);
+                    AnimUtils.toggleContentVisibility(exportBackup, exportExternal, exportExternalCstimer);
                     break;
 
                 case R.id.import_button:
@@ -214,6 +238,7 @@ public class ExportImportDialog extends DialogFragment
 
         exportBackup.setOnClickListener(clickListener);
         exportExternal.setOnClickListener(clickListener);
+        exportExternalCstimer.setOnClickListener(clickListener);
         importBackup.setOnClickListener(clickListener);
         importExternal.setOnClickListener(clickListener);
         //helpButton.setOnClickListener(clickListener);
@@ -245,12 +270,13 @@ public class ExportImportDialog extends DialogFragment
 
     @Override
     public void onPuzzleSelected(
-            @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory) {
+            @NonNull String tag, @NonNull String puzzleType, @NonNull String puzzleCategory,
+            int externalTimerArgument) {
         // Importing or exporting to an "external" format file. The file will already have been
         // chosen if this is an import operation. Now that the puzzle type and category are known,
         // hand control back to the activity.
         if (mImportFile == null) {
-            getExImActivity().onExportSolveTimes(mFileFormat, puzzleType, puzzleCategory);
+            getExImActivity().onExportSolveTimes(mFileFormat, puzzleType, puzzleCategory, externalTimerArgument);
         } else {
             getExImActivity().onImportSolveTimes(
                     mImportFile, mFileFormat, puzzleType, puzzleCategory);
@@ -276,7 +302,7 @@ public class ExportImportDialog extends DialogFragment
                 // Need to get the puzzle type and category before importing the data. There will
                 // be a call-back to "onPuzzleSelected" before returning to the activity.
                 PuzzleChooserDialog.newInstance(
-                        R.string.action_import, ExportImportDialog.this.getTag())
+                        R.string.action_import, ExportImportDialog.this.getTag(), "")
                         .show(getActivity().getSupportFragmentManager(), null);
             } else {
                 // Importing from a back-up file. There is no need to know the puzzle type and

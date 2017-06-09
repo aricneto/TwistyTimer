@@ -268,5 +268,7 @@
     <string name="language_czech" translatable="false">Čeština</string>
 
     <string name="preference_application_language_title">Language</string>
+    <string name="export_import_dialog_external_cstimer">For csTimer</string>
+    <string name="puzzle_dialog_cstimer_session">Session number (csTimer)</string>
 
 </resources>
