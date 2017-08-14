@@ -52,6 +52,12 @@
             android:title="@string/pagerEnabledTitle"/>
 
         <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="@bool/default_backCancelEnabled"
+            android:key="@string/pk_back_button_cancel_solve_enabled"
+            android:summary="@string/backCancelEnabledSummary"
+            android:title="@string/backCancelEnabledTitle"/>
+
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/default_scrambleEnabled"
             android:key="@string/pk_scramble_enabled"
             android:summary="@string/scrambleEnabledSummary"

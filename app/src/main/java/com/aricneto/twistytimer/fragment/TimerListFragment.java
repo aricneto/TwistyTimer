@@ -52,8 +52,6 @@ import org.joda.time.DateTime;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 
 import static com.aricneto.twistytimer.utils.TTIntent.*;
 
@@ -349,18 +347,6 @@ public class TimerListFragment extends BaseFragment
                     // Show FAB and intro (if intro was not already dismissed by the user in a
                     // previous session) if the fragment has become visible.
                     fabButton.show();
-                    new MaterialIntroView.Builder(getActivity())
-                            .enableDotAnimation(false)
-                            .setFocusGravity(FocusGravity.CENTER)
-                            .setDelayMillis(600)
-                            .enableFadeAnimation(true)
-                            .enableIcon(false)
-                            .performClick(true)
-                            .dismissOnTouch(true)
-                            .setInfoText(getString(R.string.showcase_fab_average))
-                            .setTarget(fabButton)
-                            .setUsageId(SHOWCASE_FAB_ID)
-                            .show();
                 }
             } else if (materialSheetFab != null) {
                 // Hide sheet and FAB if the fragment is no longer visible.

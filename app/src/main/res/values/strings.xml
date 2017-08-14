@@ -268,5 +268,7 @@
     <string name="language_czech" translatable="false">Čeština</string>
 
     <string name="preference_application_language_title">Language</string>
+    <string name="backCancelEnabledSummary">Pressing the back button during a solve will cancel it</string>
+    <string name="backCancelEnabledTitle">Back cancels solve</string>
 
 </resources>

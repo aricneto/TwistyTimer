@@ -26,6 +26,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_start_cue_enabled">startCue</string>
 
     <string translatable="false" name="pk_tab_swiping_enabled">pagerEnabled</string>
+    <string translatable="false" name="pk_back_button_cancel_solve_enabled">backCancelEnabled</string>
     <string translatable="false" name="pk_show_clear_button">clearEnabled</string>
 
     <string translatable="false" name="pk_scramble_enabled">scrambleEnabled</string>

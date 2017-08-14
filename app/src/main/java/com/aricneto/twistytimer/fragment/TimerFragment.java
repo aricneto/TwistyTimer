@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -75,7 +76,20 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
-import static com.aricneto.twistytimer.utils.TTIntent.*;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.BroadcastBuilder;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
+import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
+import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
+import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
 public class TimerFragment extends BaseFragment
         implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
@@ -178,6 +192,7 @@ public class TimerFragment extends BaseFragment
     private boolean bestSolveEnabled;
     private boolean scrambleEnabled;
     private boolean holdEnabled;
+    private boolean backCancelEnabled;
     private boolean startCueEnabled;
     private boolean showHints;
     private boolean showHintsXCross;
@@ -431,9 +446,13 @@ public class TimerFragment extends BaseFragment
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
 
-        buttonsEnabled = Prefs.getBoolean(R.string.pk_show_quick_actions, true);
-        holdEnabled = Prefs.getBoolean(R.string.pk_hold_to_start_enabled, false);
-        startCueEnabled = Prefs.getBoolean(R.string.pk_start_cue_enabled, false);
+        Resources res = getResources();
+
+        backCancelEnabled = Prefs.getBoolean(R.string.pk_back_button_cancel_solve_enabled, res.getBoolean(R.bool.default_backCancelEnabled));
+
+        buttonsEnabled = Prefs.getBoolean(R.string.pk_show_quick_actions, res.getBoolean(R.bool.default_buttonEnabled));
+        holdEnabled = Prefs.getBoolean(R.string.pk_hold_to_start_enabled, res.getBoolean(R.bool.default_holdEnabled));
+        startCueEnabled = Prefs.getBoolean(R.string.pk_start_cue_enabled, res.getBoolean(R.bool.default_startCue));
 
         sessionStatsEnabled = Prefs.getBoolean(R.string.pk_show_session_stats, true);
         bestSolveEnabled = Prefs.getBoolean(R.string.pk_show_best_time, true);
@@ -1050,11 +1069,14 @@ public class TimerFragment extends BaseFragment
      * reset to zero.
      */
     public void cancelChronometer() {
-        stopInspectionCountdown();
-        stopChronometer();
+        if (backCancelEnabled) {
+            stopInspectionCountdown();
+            stopChronometer();
 
-        chronometer.reset(); // Show "0.00".
-        isCanceled = true;
+            chronometer.reset(); // Show "0.00".
+            isCanceled = true;
+            currentPenalty = NO_PENALTY;
+        }
     }
 
     @Override
