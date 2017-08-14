@@ -167,7 +167,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
             }
         });
 
-        holder.timeText.setText(PuzzleUtils.convertTimeToString(pTime));
+        holder.timeText.setText(PuzzleUtils.convertTimeToString(pTime, PuzzleUtils.FORMAT_DEFAULT));
         holder.penaltyText.setTextColor(ContextCompat.getColor(mContext, R.color.red_material));
 
         switch (pPenalty) {

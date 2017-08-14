@@ -75,7 +75,7 @@ public class TimeDialog extends DialogFragment {
                                 case R.id.share:
                                     Intent shareIntent = new Intent();
                                     shareIntent.setAction(Intent.ACTION_SEND);
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT, PuzzleUtils.convertTimeToString(solve.getTime()) + "s.\n" + solve.getComment() + "\n" + solve.getScramble());
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT, PuzzleUtils.convertTimeToString(solve.getTime(), PuzzleUtils.FORMAT_DEFAULT) + "s.\n" + solve.getComment() + "\n" + solve.getScramble());
                                     shareIntent.setType("text/plain");
                                     getContext().startActivity(shareIntent);
                                     break;
@@ -194,7 +194,7 @@ public class TimeDialog extends DialogFragment {
         if (matchedSolve != null) {
             solve = matchedSolve;
 
-            timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToStringWithSmallDecimal(solve.getTime())));
+            timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToString(solve.getTime(), PuzzleUtils.FORMAT_SMALL_MILLI)));
             dateText.setText(new DateTime(solve.getDate()).toString("d MMM y'\n'H':'mm"));
 
             scrambleText.setText(solve.getScramble());

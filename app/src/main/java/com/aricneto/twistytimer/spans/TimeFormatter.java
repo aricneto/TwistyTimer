@@ -14,6 +14,6 @@ public class TimeFormatter implements YAxisValueFormatter{
 
     @Override
     public String getFormattedValue(float value, YAxis yAxis) {
-        return PuzzleUtils.convertTimeToStringWithoutMilli((long) (value * 1_000L));
+        return PuzzleUtils.convertTimeToString((long) (value * 1_000L), PuzzleUtils.FORMAT_NO_MILLI);
     }
 }

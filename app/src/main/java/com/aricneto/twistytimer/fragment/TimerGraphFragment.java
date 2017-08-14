@@ -24,6 +24,7 @@ import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
 import com.aricneto.twistytimer.stats.ChartStyle;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -313,54 +314,54 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // values needed by "convertTimeToString".
 
         String allTimeBestAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, false).getBestAverage()));
+                tr(stats.getAverageOf(3, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, false).getBestAverage()));
+                tr(stats.getAverageOf(5, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, false).getBestAverage()));
+                tr(stats.getAverageOf(12, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, false).getBestAverage()));
+                tr(stats.getAverageOf(50, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, false).getBestAverage()));
+                tr(stats.getAverageOf(100, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, false).getBestAverage()));
+                tr(stats.getAverageOf(1_000, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
 
-        String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()));
-        String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()));
-        String allTimeWorstTime = convertTimeToString(tr(stats.getAllTimeWorstTime()));
+        String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String allTimeWorstTime = convertTimeToString(tr(stats.getAllTimeWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
         // Format count using appropriate grouping separators, e.g., "1,234", not "1234".
         String allTimeCount = String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves());
 
         String sessionBestAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, true).getBestAverage()));
+                tr(stats.getAverageOf(3, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getBestAverage()));
+                tr(stats.getAverageOf(5, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getBestAverage()));
+                tr(stats.getAverageOf(12, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getBestAverage()));
+                tr(stats.getAverageOf(50, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getBestAverage()));
+                tr(stats.getAverageOf(100, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, true).getBestAverage()));
+                tr(stats.getAverageOf(1_000, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
 
-        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
-        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
-        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
+        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
 
         String sessionCurrentAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, true).getCurrentAverage()));
+                tr(stats.getAverageOf(3, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getCurrentAverage()));
+                tr(stats.getAverageOf(5, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getCurrentAverage()));
+                tr(stats.getAverageOf(12, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getCurrentAverage()));
+                tr(stats.getAverageOf(50, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getCurrentAverage()));
+                tr(stats.getAverageOf(100, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, true).getCurrentAverage()));
+                tr(stats.getAverageOf(1_000, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
 
         personalBestTimes.setText(
                 allTimeBestAvg3 + "\n" +

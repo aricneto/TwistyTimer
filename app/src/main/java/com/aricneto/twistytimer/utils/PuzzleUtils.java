@@ -41,6 +41,21 @@ public class PuzzleUtils {
 
     public static final int TIME_DNF = - 1;
 
+
+    // -- Format constants for timeToString --
+    public static final int FORMAT_DEFAULT = 0;
+    public static final int FORMAT_SMALL_MILLI = 1;
+    public static final int FORMAT_NO_MILLI = 2;
+
+    private static final String[] FORMAT_STRING_DEFAULT = {"s'.'SS", "m':'ss'.'SS", "k':'mm':'ss"};
+    private static final String[] FORMAT_STRING_SMALL_MILLI = {"s'<small>.'SS'</small>'", "m':'ss'<small>.'SS'</small>'", "k':'mm'<small>:'ss'</small>'"};
+    private static final String[] FORMAT_STRING_NO_MILLI = {"s", "m':'ss", "k':'mm':'ss"};
+
+    private static final int SIZE_SECONDS = 0;
+    private static final int SIZE_MINUTES = 1;
+    private static final int SIZE_HOURS = 2;
+    // --                                    --
+
     public PuzzleUtils() {
     }
 
@@ -114,44 +129,37 @@ public class PuzzleUtils {
         }
     }
 
-    public static String convertTimeToString(long time) {
-
+    public static String convertTimeToString(long time, int format) {
         if (time == TIME_DNF)
             return "DNF";
         if (time == 0)
             return "--";
 
-        // Magic (not-so-magic actually) numbers below
-        long hours = time / 3600000; // 3600 * 1000
-        long remaining = time % 3600000; // 3600 * 1000
-        long minutes = remaining / 60000; // 60 * 1000
-
-        if (hours > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("k':'mm':'ss");
-        else if (minutes > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'.'SS");
+        // The "size" of the time. Whether it should display hours or minutes based on
+        // how big time is
+        int timeSize;
+        if (time >= 3600 * 1000)
+            timeSize = SIZE_HOURS;
+        else if (time >= 60 * 1000)
+            timeSize = SIZE_MINUTES;
         else
-            return new DateTime(time, DateTimeZone.UTC).toString("s'.'SS");
-    }
+            timeSize = SIZE_SECONDS;
 
-    public static String convertTimeToStringWithSmallDecimal(long time) {
+        String formatString = FORMAT_STRING_DEFAULT[0];
 
-        if (time == TIME_DNF)
-            return "DNF";
-        if (time == 0)
-            return "--";
+        switch (format) {
+            case FORMAT_DEFAULT:
+                formatString = FORMAT_STRING_DEFAULT[timeSize];
+                break;
+            case FORMAT_SMALL_MILLI:
+                formatString = FORMAT_STRING_SMALL_MILLI[timeSize];
+                break;
+            case FORMAT_NO_MILLI:
+                formatString = FORMAT_STRING_NO_MILLI[timeSize];
+                break;
+        }
 
-        // Magic (not-so-magic actually) numbers below
-        long hours = time / 3600000; // 3600 * 1000
-        long remaining = time % 3600000; // 3600 * 1000
-        long minutes = remaining / 60000; // 60 * 1000
-
-        if (hours > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("k':'mm'<small>:'ss'</small>'");
-        else if (minutes > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("m':'ss'<small>.'SS'</small>'");
-        else
-            return new DateTime(time, DateTimeZone.UTC).toString("s'<small>.'SS'</small>'");
+        return new DateTime(time, DateTimeZone.UTC).toString(formatString);
     }
 
     public static String convertTimeToStringWithoutMilli(long time) {
@@ -221,7 +229,7 @@ public class PuzzleUtils {
     }
 
     /**
-     * This function applies a penalty to a solve
+     * Applies a penalty to a solve
      *
      * @param solve   A {@link Solve}
      * @param penalty The penalty (refer to static constants on top)
@@ -276,12 +284,12 @@ public class PuzzleUtils {
             return null;
         }
 
-        final StringBuilder s = new StringBuilder(convertTimeToString(tr(average)));
+        final StringBuilder s = new StringBuilder(convertTimeToString(tr(average), PuzzleUtils.FORMAT_DEFAULT));
 
         s.append(" = ");
 
         for (int i = 0; i < n; i++) {
-            final String time = convertTimeToString(tr(times[i]));
+            final String time = convertTimeToString(tr(times[i]), PuzzleUtils.FORMAT_DEFAULT);
 
             // The best and worst indices may be -1, but that is OK: they just will not be marked.
             if (i == aoN.getBestTimeIndex() || i == aoN.getWorstTimeIndex()) {
@@ -354,7 +362,7 @@ public class PuzzleUtils {
             for (Long time : timeFreqs.keySet()) {
                 histogram
                         .append('\n')
-                        .append(convertTimeToStringWithoutMilli(tr(time)))
+                        .append(convertTimeToString(tr(time), FORMAT_NO_MILLI))
                         .append(": ")
                         .append(convertToBars(timeFreqs.get(time))); // frequency value.
             }

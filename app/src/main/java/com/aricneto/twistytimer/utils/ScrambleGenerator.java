@@ -12,9 +12,8 @@ import net.gnehzr.tnoodle.scrambles.InvalidScrambleException;
 import net.gnehzr.tnoodle.scrambles.Puzzle;
 
 import puzzle.ClockPuzzle;
+import puzzle.FourByFourCubePuzzle;
 import puzzle.MegaminxPuzzle;
-import puzzle.NoInspectionFiveByFiveCubePuzzle;
-import puzzle.NoInspectionFourByFourCubePuzzle;
 import puzzle.PyraminxPuzzle;
 import puzzle.SkewbPuzzle;
 import puzzle.SquareOneUnfilteredPuzzle;
@@ -38,10 +37,10 @@ public class ScrambleGenerator {
                 puzzle = new ThreeByThreeCubePuzzle();
                 break;
             case PuzzleUtils.TYPE_444:
-                puzzle = new NoInspectionFourByFourCubePuzzle();
+                puzzle = new FourByFourCubePuzzle();
                 break;
             case PuzzleUtils.TYPE_555:
-                puzzle = new NoInspectionFiveByFiveCubePuzzle();
+                puzzle = new NbyNCubePuzzle(5);
                 break;
             case PuzzleUtils.TYPE_666:
                 puzzle = new NbyNCubePuzzle(6);
@@ -90,6 +89,8 @@ public class ScrambleGenerator {
         String right;
         String back;
         String down;
+        // Due to a bug in the TNoodle library, the default Skewb scheme has the faces in a different order,
+        // so we must account for this by creating a special case with some default colors flipped
         if (! puzzleType.equals(PuzzleUtils.TYPE_SKEWB)) {
             top = sp.getString("cubeTop", "FFFFFF");
             left = sp.getString("cubeLeft", "FF8B24");
@@ -97,7 +98,7 @@ public class ScrambleGenerator {
             right = sp.getString("cubeRight", "EC0000");
             back = sp.getString("cubeBack", "304FFE");
             down = sp.getString("cubeDown", "FDD835");
-        } else { //skewb has a different scheme
+        } else {
             top = sp.getString("cubeTop", "FFFFFF");
             left = sp.getString("cubeFront", "02D040");
             front = sp.getString("cubeRight", "EC0000");

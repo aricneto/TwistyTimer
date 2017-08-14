@@ -813,7 +813,7 @@ public class TimerFragment extends BaseFragment
             if (newTime < previousBestTime ) {
                 rippleBackground.startRippleAnimation();
                 congratsText.setText(getString(R.string.personal_best_message,
-                        PuzzleUtils.convertTimeToString(previousBestTime - newTime)));
+                        PuzzleUtils.convertTimeToString(previousBestTime - newTime, PuzzleUtils.FORMAT_DEFAULT)));
                 congratsText.setVisibility(View.VISIBLE);
 
                 new Handler().postDelayed(new Runnable() {
@@ -833,7 +833,7 @@ public class TimerFragment extends BaseFragment
             // make sure it is at least greater than zero before testing against the new time.
             if (previousWorstTime > 0 && newTime > previousWorstTime) {
                 congratsText.setText(getString(R.string.personal_worst_message,
-                        PuzzleUtils.convertTimeToString(newTime - previousWorstTime)));
+                        PuzzleUtils.convertTimeToString(newTime - previousWorstTime, PuzzleUtils.FORMAT_DEFAULT)));
 
                 if (backgroundEnabled)
                     congratsText.setCompoundDrawablesWithIntrinsicBounds(
@@ -876,18 +876,18 @@ public class TimerFragment extends BaseFragment
 
         String sessionCount
                 = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
-        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()));
-        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()));
-        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()));
+        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
 
         String sessionCurrentAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getCurrentAverage()));
+                tr(stats.getAverageOf(5, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getCurrentAverage()));
+                tr(stats.getAverageOf(12, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getCurrentAverage()));
+                tr(stats.getAverageOf(50, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCurrentAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getCurrentAverage()));
+                tr(stats.getAverageOf(100, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
 
         detailTimesAvg.setText(
                 sessionCurrentAvg5 + "\n" +

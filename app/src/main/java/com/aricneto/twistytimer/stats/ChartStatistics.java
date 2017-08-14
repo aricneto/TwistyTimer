@@ -628,7 +628,7 @@ public class ChartStatistics {
         public String getFormattedValue(float value, Entry entry, int dataSetIndex,
                                         ViewPortHandler viewPortHandler) {
             // "value" is in fractional seconds. Convert to whole milliseconds and format it.
-            return PuzzleUtils.convertTimeToString(Math.round(value * 1_000));
+            return PuzzleUtils.convertTimeToString(Math.round(value * 1_000), PuzzleUtils.FORMAT_DEFAULT);
         }
     }
 }
