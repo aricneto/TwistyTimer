@@ -9,7 +9,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +17,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -27,10 +25,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.fragment.dialog.CrossHintFaceSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.LocaleSelectDialog;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
-import com.aricneto.twistytimer.utils.ThemeUtils;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +50,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
-        setTheme(ThemeUtils.getPreferredTheme());
+
+        setTheme(R.style.PreferenceFixTheme_Light_NoActionBar);
+
         LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -70,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Add the main "parent" settings fragment. It is not added to be back stack, so that
             // when "Back" is pressed, the "SettingsActivity" will exit, which is appropriate.
-            getFragmentManager()
+            getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_activity_container, new SettingsFragment())
                     .commit();
@@ -107,16 +108,17 @@ public class SettingsActivity extends AppCompatActivity {
     // TODO: Should this be using "android.support.v7.preference.PreferenceFragmentCompat" or
     // "android.support.v14.preference.PreferenceFragment" instead? Those implementations have
     // more support for new API features and Material Design themes.
-    public static class SettingsFragment extends PreferenceFragment {
-        private final android.preference.Preference.OnPreferenceClickListener clickListener
-                = new android.preference.Preference.OnPreferenceClickListener() {
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        private final android.support.v7.preference.Preference.OnPreferenceClickListener clickListener
+                = new android.support.v7.preference.Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(android.preference.Preference preference) {
+            public boolean onPreferenceClick(android.support.v7.preference.Preference preference) {
                 switch (Prefs.keyToResourceID(preference.getKey(),
                         R.string.pk_inspection_time,
                         R.string.pk_show_scramble_x_cross_hints,
                         R.string.pk_open_timer_appearance_settings,
-                        R.string.pk_locale)) {
+                        R.string.pk_locale,
+                        R.string.pk_options_show_scramble_hints)) {
 
                     case R.string.pk_inspection_time:
                         createNumberDialog(R.string.inspection_time, R.string.pk_inspection_time);
@@ -132,15 +134,20 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                         break;
 
+                    case R.string.pk_options_show_scramble_hints:
+                        CrossHintFaceSelectDialog.newInstance()
+                                .show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "cross_hint_face_dialog");
+                        break;
+
                     case R.string.pk_open_timer_appearance_settings:
                         // Open the new "child" settings fragment and add it to be back stack, so
                         // that if "Back" is pressed, this "parent" fragment will be restored.
-                        getFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.main_activity_container,
-                                        new TimerAppearanceSettingsFragment())
-                                .addToBackStack(null)
-                                .commit();
+                        //getFragmentManager()
+                        //        .beginTransaction()
+                        //        .replace(R.id.main_activity_container,
+                        //              new TimerAppearanceSettingsFragment())
+                        //    .addToBackStack(null)
+                        //  .commit();
                         break;
 
                     case R.string.pk_locale:
@@ -153,24 +160,25 @@ public class SettingsActivity extends AppCompatActivity {
 
                         break;
                 }
+
                 return false;
             }
         };
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.prefs);
+        public void onCreatePreferencesFix(Bundle bundle, String rootKey) {
+            setPreferencesFromResource(R.xml.prefs, rootKey);
 
-            find(this, R.string.pk_inspection_time)
+            findPreference(getString(R.string.pk_inspection_time))
                     .setOnPreferenceClickListener(clickListener);
-            find(this, R.string.pk_open_timer_appearance_settings)
+            findPreference(getString(R.string.pk_open_timer_appearance_settings))
                     .setOnPreferenceClickListener(clickListener);
-            find(this, R.string.pk_show_scramble_x_cross_hints)
+            findPreference(getString(R.string.pk_show_scramble_x_cross_hints))
                     .setOnPreferenceClickListener(clickListener);
-            find(this, R.string.pk_locale)
+            findPreference(getString(R.string.pk_locale))
                     .setOnPreferenceClickListener(clickListener);
-
+            findPreference(getString(R.string.pk_options_show_scramble_hints))
+                    .setOnPreferenceClickListener(clickListener);
         }
 
         private void createNumberDialog(@StringRes int title, final int prefKeyResID) {

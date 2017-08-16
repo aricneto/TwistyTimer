@@ -18,4 +18,11 @@
     <bool name="default_showHintsXCross">false</bool>
     <bool name="default_backCancelEnabled">true</bool>
 
+    <bool name="default_crossHintTopEnabled">false</bool>
+    <bool name="default_crossHintLeftEnabled">false</bool>
+    <bool name="default_crossHintFrontEnabled">false</bool>
+    <bool name="default_crossHintRightEnabled">false</bool>
+    <bool name="default_crossHintBackEnabled">false</bool>
+    <bool name="default_crossHintDownEnabled">true</bool>
+
 </resources>

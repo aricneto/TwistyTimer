@@ -25,6 +25,7 @@
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
         <item name="textColorContrastBackground">@android:color/white</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
         <item name="mainColorBackground">@color/md_indigo_700</item>

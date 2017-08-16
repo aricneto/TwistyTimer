@@ -31,6 +31,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
 
     <string translatable="false" name="pk_scramble_enabled">scrambleEnabled</string>
     <string translatable="false" name="pk_show_scramble_hints">showHints</string>
+    <string translatable="false" name="pk_options_show_scramble_hints">optionsShowHints</string>
     <string translatable="false" name="pk_show_scramble_x_cross_hints">showHintsXCross</string>
     <string translatable="false" name="pk_show_scramble_image">scrambleImageEnabled</string>
     <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
@@ -51,6 +52,21 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_timer_text_size">timerTextSize</string>
     <string translatable="false" name="pk_timer_text_offset">timerTextOffset</string>
     <string translatable="false" name="pk_advanced_timer_settings_enabled">enableAdvanced</string>
+
+
+    <string translatable="false" name="pk_cross_hint_top_enabled">crossHintTopEnabled</string>
+    <string translatable="false" name="pk_cross_hint_left_enabled">crossHintLeftEnabled</string>
+    <string translatable="false" name="pk_cross_hint_front_enabled">crossHintFrontEnabled</string>
+    <string translatable="false" name="pk_cross_hint_right_enabled">crossHintRightEnabled</string>
+    <string translatable="false" name="pk_cross_hint_back_enabled">crossHintBackEnabled</string>
+    <string translatable="false" name="pk_cross_hint_down_enabled">crossHintDownEnabled</string>
+
+    <string translatable="false" name="pk_cube_top_color">cubeTop</string>
+    <string translatable="false" name="pk_cube_left_color">cubeLeft</string>
+    <string translatable="false" name="pk_cube_front_color">cubeFront</string>
+    <string translatable="false" name="pk_cube_right_color">cubeRight</string>
+    <string translatable="false" name="pk_cube_back_color">cubeBack</string>
+    <string translatable="false" name="pk_cube_down_color">cubeDown</string>
 
     <!--
     Keys for preferences referenced only from code.

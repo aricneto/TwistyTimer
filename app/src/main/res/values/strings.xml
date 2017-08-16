@@ -270,5 +270,7 @@
     <string name="preference_application_language_title">Language</string>
     <string name="backCancelEnabledSummary">Pressing the back button during a solve will cancel it</string>
     <string name="backCancelEnabledTitle">Back cancels solve</string>
+    <string name="option_show_scramble_hints">Faces shown on hint</string>
+    <string name="option_show_scramble_hints_summary">Select the faces you want to view hints for</string>
 
 </resources>

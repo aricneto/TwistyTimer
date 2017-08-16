@@ -1,6 +1,9 @@
 package com.aricneto.twistytimer.solver;
 
+import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.solver.RubiksCubeSolver.State;
+import com.aricneto.twistytimer.utils.DefaultPrefs;
+import com.aricneto.twistytimer.utils.Prefs;
 
 import java.util.ArrayList;
 
@@ -56,40 +59,53 @@ public class RubiksCubeOptimalXCross implements Tip {
 
         StringBuilder tip = new StringBuilder();
 
+
         // x-cross on U
-        State stateU = x.multiply(x).multiply(state).multiply(x).multiply(x);
-        tip.append(description).append(" U:\n");
-        tip.append(getOptimalSolutions(stateU, "x2 "));
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintTopEnabled))) {
+            State stateU = x.multiply(x).multiply(state).multiply(x).multiply(x);
+            tip.append(description).append(" U:\n");
+            tip.append(getOptimalSolutions(stateU, "x2 "));
+            tip.append("\n");
+        }
 
         // x-cross on D
-        tip.append(description).append(" D:\n");
-        tip.append(getOptimalSolutions(state, "")); // state == "stateD"
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintDownEnabled))) {
+            tip.append(description).append(" D:\n");
+            tip.append(getOptimalSolutions(state, "")); // state == "stateD"
+            tip.append("\n");
+        }
 
         // x-cross on L
-        State stateL = z.multiply(state).multiply(z).multiply(z).multiply(z);
-        tip.append(description).append(" L:\n");
-        tip.append(getOptimalSolutions(stateL, "z' "));
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintLeftEnabled))) {
+            State stateL = z.multiply(state).multiply(z).multiply(z).multiply(z);
+            tip.append(description).append(" L:\n");
+            tip.append(getOptimalSolutions(stateL, "z' "));
+            tip.append("\n");
+        }
 
         // x-cross on R
-        State stateR = z.multiply(z).multiply(z).multiply(state).multiply(z);
-        tip.append(description).append(" R:\n");
-        tip.append(getOptimalSolutions(stateR, "z "));
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintRightEnabled))) {
+            State stateR = z.multiply(z).multiply(z).multiply(state).multiply(z);
+            tip.append(description).append(" R:\n");
+            tip.append(getOptimalSolutions(stateR, "z "));
+            tip.append("\n");
+        }
 
         // x-cross on F
-        State stateF = x.multiply(state).multiply(x).multiply(x).multiply(x);
-        tip.append(description).append(" F:\n");
-        tip.append(getOptimalSolutions(stateF, "x' "));
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintFrontEnabled))) {
+            State stateF = x.multiply(state).multiply(x).multiply(x).multiply(x);
+            tip.append(description).append(" F:\n");
+            tip.append(getOptimalSolutions(stateF, "x' "));
+            tip.append("\n");
+        }
 
         // x-cross on B
-        State stateB = x.multiply(x).multiply(x).multiply(state).multiply(x);
-        tip.append(description).append(" B:\n");
-        tip.append(getOptimalSolutions(stateB, "x "));
-        tip.append("\n");
+        if (Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintBackEnabled))) {
+            State stateB = x.multiply(x).multiply(x).multiply(state).multiply(x);
+            tip.append(description).append(" B:\n");
+            tip.append(getOptimalSolutions(stateB, "x "));
+            tip.append("\n");
+        }
 
         return tip.toString().trim();
     }
