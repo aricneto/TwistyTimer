@@ -1,6 +1,5 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
+import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 
 import butterknife.BindView;
@@ -42,8 +42,6 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
         return new CrossHintFaceSelectDialog();
     }
 
-    private Resources mRes;
-
     // Number of faces that have hint enabled.
     // The code checks if it is >= 1 so the user can't have 0 faces enabled
     // (which would result in a counter-intuitive empty hint)
@@ -57,22 +55,22 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
 
             switch (view.getId()) {
                 case R.id.top:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, mRes.getBoolean(R.bool.default_crossHintTopEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintTopEnabled));
                     break;
                 case R.id.left:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, mRes.getBoolean(R.bool.default_crossHintLeftEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintLeftEnabled));
                     break;
                 case R.id.front:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, mRes.getBoolean(R.bool.default_crossHintFrontEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintFrontEnabled));
                     break;
                 case R.id.right:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, mRes.getBoolean(R.bool.default_crossHintRightEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintRightEnabled));
                     break;
                 case R.id.back:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, mRes.getBoolean(R.bool.default_crossHintBackEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintBackEnabled));
                     break;
                 case R.id.down:
-                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, mRes.getBoolean(R.bool.default_crossHintDownEnabled));
+                    isHintOn = Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintDownEnabled));
                     break;
             }
 
@@ -115,8 +113,6 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_cross_hint_face_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        mRes = getResources();
-
         // Color cube
         setColor(top, Color.parseColor("#" + Prefs.getString(R.string.pk_cube_top_color, "FFFFFF")));
         setColor(left, Color.parseColor("#" + Prefs.getString(R.string.pk_cube_left_color, "FF8B24")));
@@ -134,12 +130,12 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
         down.setOnClickListener(clickListener);
 
         // Set face transparency based on current preference
-        initSelected(top, Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, mRes.getBoolean(R.bool.default_crossHintTopEnabled)));
-        initSelected(left, Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, mRes.getBoolean(R.bool.default_crossHintLeftEnabled)));
-        initSelected(front, Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, mRes.getBoolean(R.bool.default_crossHintFrontEnabled)));
-        initSelected(right, Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, mRes.getBoolean(R.bool.default_crossHintRightEnabled)));
-        initSelected(back, Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, mRes.getBoolean(R.bool.default_crossHintBackEnabled)));
-        initSelected(down, Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, mRes.getBoolean(R.bool.default_crossHintDownEnabled)));
+        initSelected(top, Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintTopEnabled)));
+        initSelected(left, Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintLeftEnabled)));
+        initSelected(front, Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintFrontEnabled)));
+        initSelected(right, Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintRightEnabled)));
+        initSelected(back, Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintBackEnabled)));
+        initSelected(down, Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintDownEnabled)));
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -80,8 +80,8 @@
     <string name="worstSolveEnabledTitle">Alerta de pior tempo</string>
     <string name="inspectionEnabledTitle">Inspeção</string>
     <string name="inspectionTimeTitle">Tempo de inspeção (segundos)</string>
-    <string name="prefTitleInspection">Inspeção</string>
-    <string name="timerPrefTitle">Cronômetro</string>
+    <string name="pref_category_title_inspection">Inspeção</string>
+    <string name="pref_category_title_timer">Cronômetro</string>
     <string name="inspectionTimeSummary">Tempo padrão: 15 segundos</string>
     <string name="action_reset">Resetar</string>
     <string name="action_update">Atualizar</string>
@@ -133,7 +133,7 @@
     <string name="selected_list">Selecionados</string>
     <string name="remove_session_title">Remover todas as soluções desta sessão?</string>
     <string name="advanced_pref_summary">Mudar estas configurações pode causar alguns problemas de clipping</string>
-    <string name="advanced_pref_title">Avançado</string>
+    <string name="pref_category_title_advanced">Avançado</string>
     <string name="clearEnabledSummary">O botão \"Limpar\" aparece na lista de soluções, e deixa você remover todas as soluções da sessão atual</string>
     <string name="clearEnabledTitle">Mostrar o botão \"Limpar\"</string>
     <string name="listPrefTitle">Lista de soluções</string>

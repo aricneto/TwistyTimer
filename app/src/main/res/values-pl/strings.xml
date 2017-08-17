@@ -79,10 +79,10 @@
   <string name="scrambleImageEnabledTitle">Obrazek wymieszanej kostki</string>
   <string name="sessionStatsEnabledSummary">Pokaż statystyki bieżącej sesji na timerze</string>
   <string name="sessionStatsEnabledTitle">Statystyki sesji</string>
-  <string name="prefTitleInspection">Inspekcja</string>
+  <string name="pref_category_title_inspection">Inspekcja</string>
   <string name="inspectionEnabledTitle">Inspekcja</string>
   <string name="inspectionTimeTitle">Czas inspekcji (sekundy)</string>
-  <string name="timerPrefTitle">Timer</string>
+  <string name="pref_category_title_timer">Timer</string>
   <string name="inspectionTimeSummary">Domyślnie</string>
   <string name="drawer_title_reference">Odniesienia</string>
   <string name="edit_algorithm">Edytuj algorytm</string>
@@ -136,7 +136,7 @@
   <string name="listPrefTitle">Lista ułożeń</string>
   <string name="clearEnabledTitle">Pokaż przycisk \"Wyczyść\"</string>
   <string name="clearEnabledSummary">Przycisk \"Wyczyść\" jest wyświetlany na liście czasów i pozwala usunąć wszystkie czasy z bieżącej sesji</string>
-  <string name="advanced_pref_title">Zaawansowane</string>
+  <string name="pref_category_title_advanced">Zaawansowane</string>
   <string name="advanced_pref_summary">Zmienianie tych ustawień może spowodować problemy</string>
   <string name="timer_text_size">Rozmiar tekstu timera</string>
   <string name="timer_text_offset">Przesunięcie tekstu timera</string>

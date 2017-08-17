@@ -20,7 +20,7 @@
     <string name="add_time">Добавить время</string>
     <string name="added_comment">Комментарий добавлен</string>
     <string name="advanced_pref_summary">Изменение этих параметров может вызвать некоторые проблемы отсечения текста</string>
-    <string name="advanced_pref_title">Продвинутый</string>
+    <string name="pref_category_title_advanced">Продвинутый</string>
     <string name="backgroundEnabledSummary">Подсвечивать фон таймена основным цветом</string>
     <string name="backgroundEnabledTitle">Подкрашенный фон</string>
     <string name="bestSolveEnabledSummary">Оповещать, когда вы ставите личный рекорд</string>
@@ -143,7 +143,7 @@
     <string name="permission_denied_explanation">Чтобы экспорт/импорт заработал, вам нужно принять разрешение от Twisty Timer для записи во внешнеее хранилище.</string>
     <string name="personal_best_message">Поздравляем!\nВы побили свой предудущий личный рекорд на: %1$s</string>
     <string name="personal_worst_message">Поздравляем!\nЭто худшая сборка за все время, хуже предудущей на: %1$s</string>
-    <string name="prefTitleInspection">Инспекция</string>
+    <string name="pref_category_title_inspection">Инспекция</string>
     <string name="quick_action_button_large_summary">Увеличить кнопки быстрых действий (кнопки, которые появляются после сборки)</string>
     <string name="quick_action_button_large_title">Широкие кнопки быстрых действий</string>
     <string name="rate_app">Оценить это приложение в Google Play</string>
@@ -188,7 +188,7 @@
     <string name="task_remove">Удалить</string>
     <string name="testers">Тестировщики</string>
     <string name="timerAppearancePrefTitle">Внешний вид таймера</string>
-    <string name="timerPrefTitle">Таймер</string>
+    <string name="pref_category_title_timer">Таймер</string>
     <string name="timer_text_offset">Смещение текста таймера</string>
     <string name="timer_text_offset_summary">Контролировать позицию текста таймера</string>
     <string name="timer_text_size">Размер текста таймера</string>

@@ -75,10 +75,10 @@
   <string name="scrambleImageEnabledTitle">Image du mélange</string>
   <string name="sessionStatsEnabledSummary">Afficher les statistiques de session actuelles du chronomètre</string>
   <string name="sessionStatsEnabledTitle">Statistiques de session</string>
-  <string name="prefTitleInspection">Inspection</string>
+  <string name="pref_category_title_inspection">Inspection</string>
   <string name="inspectionEnabledTitle">Inspection</string>
   <string name="inspectionTimeTitle">Temps de l\'inspection (secondes)</string>
-  <string name="timerPrefTitle">Chronomètre</string>
+  <string name="pref_category_title_timer">Chronomètre</string>
   <string name="inspectionTimeSummary">Temps par défaut: 15 secondes</string>
   <string name="drawer_title_reference">Référence</string>
   <string name="edit_algorithm">Modifier les algorithmes</string>
@@ -130,7 +130,7 @@
   <string name="listPrefTitle">Liste des résolutions</string>
   <string name="clearEnabledTitle">Afficher le bouton \"Supprimer\"</string>
   <string name="clearEnabledSummary">Le bouton \"Supprimer\" est affiché dans la liste des temps, et vous permet de supprimer toutes les résolutions de la session actuelle</string>
-  <string name="advanced_pref_title">Avancé</string>
+  <string name="pref_category_title_advanced">Avancé</string>
   <string name="advanced_pref_summary">Modifier ces réglages pourrait provoquer des problèmes d\'affichage</string>
   <string name="timer_text_size">Taille du chronomètre</string>
   <string name="timer_text_offset">Décalage du chronomètre</string>

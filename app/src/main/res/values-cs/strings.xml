@@ -40,7 +40,7 @@
     <string name="add_time">Přidat čas</string>
     <string name="added_comment">Komentář přidán</string>
     <string name="advanced_pref_summary">Změna tohoto nastavení by mohla způsobit chyby v oříznutí</string>
-    <string name="advanced_pref_title">Pokročilé</string>
+    <string name="pref_category_title_advanced">Pokročilé</string>
     <string name="backgroundEnabledSummary">Vyplnit pozadí časovače primární barvou</string>
     <string name="backgroundEnabledTitle">Barevné pozadí</string>
     <string name="bestSolveEnabledSummary">Upozornit když překonáte svůj nejlepší čas</string>
@@ -166,7 +166,7 @@
     <string name="permission_denied_explanation">Aby fungoval export/import, musíte poskytnout Twisty Timeru povolení k přístupu do vašeho externího úložiště.</string>
     <string name="personal_best_message">Blahopřejeme!\nPrávě jste překonali své nejlepší skóre o %1$s</string>
     <string name="personal_worst_message">Blahopřejeme!\nTo je ten nejhorší čas, kterého jste kdy dosáhli překonavše svůj rekord o %1$s</string>
-    <string name="prefTitleInspection">Inspekce</string>
+    <string name="pref_category_title_inspection">Inspekce</string>
     <string name="quick_action_button_large_summary">Zobrazit větší tlačítka rychlé akce (ta tlačítka, která se ukazují po stopnutí časovače)</string>
     <string name="quick_action_button_large_title">Velká tlačítka rychlé akce</string>
     <string name="rate_dialog_title">Ahoj!</string>
@@ -212,7 +212,7 @@
     <string name="testers">Testeři</string>
     <string name="testers_content">Mnohokrát děkuji těmto lidem za poskytnutí cenné zpětné vazby, když byla aplikace ve stavu alpha:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
     <string name="timerAppearancePrefTitle">Vzhled časovače</string>
-    <string name="timerPrefTitle">Časovač</string>
+    <string name="pref_category_title_timer">Časovač</string>
     <string name="timer_text_offset">Odsazení textu časovače</string>
     <string name="timer_text_size">Velikost textu časovače</string>
     <string name="timer_text_offset_summary">Upravuje umístění textu časovače</string>

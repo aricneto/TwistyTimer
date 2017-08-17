@@ -2,62 +2,12 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_backgroundEnabled"
-        android:key="@string/pk_timer_bg_enabled"
-        android:summary="@string/backgroundEnabledSummary"
-        android:title="@string/backgroundEnabledTitle" />
 
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_millisecondsEnabled"
-        android:key="@string/pk_show_hi_res_timer"
-        android:summary="@string/millisecondsEnabledSummary"
-        android:title="@string/millisecondsEnabledTitle" />
 
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_hideTime"
-        android:key="@string/pk_hide_time_while_running"
-        android:summary="@string/hideTimeSummary"
-        android:title="@string/hideTimeTitle" />
 
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_buttonEnabled"
-        android:key="@string/pk_show_scramble_image"
-        android:summary="@string/scrambleImageEnabledSummary"
-        android:title="@string/scrambleImageEnabledTitle" />
-
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_buttonEnabled"
-        android:key="@string/pk_show_session_stats"
-        android:summary="@string/sessionStatsEnabledSummary"
-        android:title="@string/sessionStatsEnabledTitle" />
-
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_buttonEnabled"
-        android:key="@string/pk_show_quick_actions"
-        android:summary="@string/buttonsEnabledSummary"
-        android:title="@string/buttonsEnabledTitle" />
-
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_bestSolve"
-        android:key="@string/pk_show_best_time"
-        android:summary="@string/bestSolveEnabledSummary"
-        android:title="@string/bestSolveEnabledTitle" />
-
-    <com.jenzz.materialpreference.SwitchPreference
-        android:defaultValue="@bool/default_worstSolve"
-        android:key="@string/pk_show_worst_time"
-        android:summary="@string/worstSolveEnabledSummary"
-        android:title="@string/worstSolveEnabledTitle" />
-
-    <com.jenzz.materialpreference.Preference
-        android:defaultValue="@integer/defaultScrambleTextSize"
-        android:key="@string/pk_scramble_text_size"
-        android:summary="@string/scramble_text_size_summary"
-        android:title="@string/scramble_text_size" />
 
     <com.jenzz.materialpreference.PreferenceCategory
-        android:title="@string/advanced_pref_title">
+        android:title="@string/pref_category_title_advanced">
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="@bool/defaultAdvancedEnabled"

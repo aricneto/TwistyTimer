@@ -82,10 +82,10 @@
     <string name="scrambleImageEnabledTitle">Sumaišyto kubo paveikslėlis</string>
     <string name="sessionStatsEnabledSummary">Rodyti dabartinės sesijos sevestinė ant laikmačio</string>
     <string name="sessionStatsEnabledTitle">Sesijos suvestinė</string>
-    <string name="prefTitleInspection">Apžiūra</string>
+    <string name="pref_category_title_inspection">Apžiūra</string>
     <string name="inspectionEnabledTitle">Apžiūra</string>
     <string name="inspectionTimeTitle">Apžiūros laikas (sekundėm)</string>
-    <string name="timerPrefTitle">Laikmatis</string>
+    <string name="pref_category_title_timer">Laikmatis</string>
     <string name="inspectionTimeSummary">Numatytas laikas: 15 sekundžių</string>
     <string name="drawer_title_reference">Algoritmai</string>
     <string name="edit_algorithm">Redaguoti algoritmus</string>
@@ -140,7 +140,7 @@
     <string name="listPrefTitle">Sprendinių sąrašas</string>
     <string name="clearEnabledTitle">Rodyti \"Išvalyti\" mygtuką</string>
     <string name="clearEnabledSummary">\"Išvalyti\" mygtukas yra rodomas laikų sąraše ir leis jums pašalinti sprendimus iš dabartinės sesijos</string>
-    <string name="advanced_pref_title">Sudėtingi</string>
+    <string name="pref_category_title_advanced">Sudėtingi</string>
     <string name="advanced_pref_summary">Pakeitus šios nustatymus gali būti bėdų su teksto tilpimu</string>
     <string name="timer_text_size">Laikmačio teksto dydis</string>
     <string name="timer_text_offset">Laikmačio teksto ofsetas</string>

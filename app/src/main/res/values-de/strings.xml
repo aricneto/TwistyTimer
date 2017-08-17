@@ -79,10 +79,10 @@
   <string name="scrambleImageEnabledTitle">Verdrehungsbild</string>
   <string name="sessionStatsEnabledSummary">Zeige aktuelle Sitzungsstatistiken</string>
   <string name="sessionStatsEnabledTitle">Sitzung-Statistik</string>
-  <string name="prefTitleInspection">Inspektion</string>
+  <string name="pref_category_title_inspection">Inspektion</string>
   <string name="inspectionEnabledTitle">Inspektion</string>
   <string name="inspectionTimeTitle">Inspektionszeit (Sekunden)</string>
-  <string name="timerPrefTitle">Stoppuhr</string>
+  <string name="pref_category_title_timer">Stoppuhr</string>
   <string name="inspectionTimeSummary">Standard-Zeit: 15 Sekunden</string>
   <string name="drawer_title_reference">Referenz</string>
   <string name="edit_algorithm">Algorithmen bearbeiten</string>
@@ -135,7 +135,7 @@
   <string name="listPrefTitle">Lösungsliste</string>
   <string name="clearEnabledTitle">Bereinigen-Schaltfläche anzeigen</string>
   <string name="clearEnabledSummary">Die Schaltfläche \"Bereinigen\" erscheint in der Liste und kann alle Solves aus der aktuellen Sitzung entfernen</string>
-  <string name="advanced_pref_title">Fortgeschritten</string>
+  <string name="pref_category_title_advanced">Fortgeschritten</string>
   <string name="advanced_pref_summary">Das Ändern dieser Einstellungen kann einige Clipping-Probleme verursachen</string>
   <string name="timer_text_size">Timer-Textgröße</string>
   <string name="timer_text_offset">Timer-Textabstand</string>

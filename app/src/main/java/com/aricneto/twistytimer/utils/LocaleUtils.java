@@ -13,7 +13,7 @@ import java.util.Locale;
 public class LocaleUtils {
 
     // The codes used are alpha-2 ISO 639-1, followed by underline
-    // and alpha-2 ISO 3166 country code if necessary.
+    // and alpha-2 ISO 3166 country/subdivision code if necessary.
 
     // English is separated into "normal" and "USA" since America has its own date format
     public static final String ENGLISH           = "en_UK";
