@@ -31,40 +31,39 @@ public final class ThemeUtils {
      * @return The user's chosen preferred theme.
      */
     public static int getPreferredTheme() {
-        final boolean bgEnabled = Prefs.getBoolean(R.string.pk_timer_bg_enabled, true);
 
         switch (Prefs.getString(R.string.pk_theme, "indigo")) {
             default:
             case "indigo":
-                return bgEnabled ? R.style.DefaultTheme    : R.style.DefaultTheme_NoBackground;
+                return R.style.DefaultTheme;
             case "purple":
-                return bgEnabled ? R.style.PurpleTheme     : R.style.PurpleTheme_NoBackground;
+                return R.style.PurpleTheme;
             case "teal":
-                return bgEnabled ? R.style.TealTheme       : R.style.TealTheme_NoBackground;
+                return R.style.TealTheme;
             case "pink":
-                return bgEnabled ? R.style.PinkTheme       : R.style.PinkTheme_NoBackground;
+                return R.style.PinkTheme;
             case "red":
-                return bgEnabled ? R.style.RedTheme        : R.style.RedTheme_NoBackground;
+                return R.style.RedTheme;
             case "brown":
-                return bgEnabled ? R.style.BrownTheme      : R.style.BrownTheme_NoBackground;
+                return R.style.BrownTheme;
             case "cyan":
-                return bgEnabled ? R.style.CyanTheme       : R.style.CyanTheme_NoBackground;
+                return R.style.CyanTheme;
             case "blue":
-                return bgEnabled ? R.style.BlueTheme       : R.style.BlueTheme_NoBackground;
+                return R.style.BlueTheme;
             case "light_blue":
-                return bgEnabled ? R.style.LightBlueTheme  : R.style.LightBlueTheme_NoBackground;
+                return R.style.LightBlueTheme;
             case "black":
-                return bgEnabled ? R.style.BlackTheme      : R.style.BlackTheme_NoBackground;
+                return R.style.BlackTheme;
             case "orange":
-                return bgEnabled ? R.style.OrangeTheme     : R.style.OrangeTheme_NoBackground;
+                return R.style.OrangeTheme;
             case "green":
-                return bgEnabled ? R.style.GreenTheme      : R.style.GreenTheme_NoBackground;
+                return R.style.GreenTheme;
             case "light_green":
-                return bgEnabled ? R.style.LightGreenTheme : R.style.LightGreenTheme_NoBackground;
+                return R.style.LightGreenTheme;
             case "deepPurple":
-                return bgEnabled ? R.style.DeepPurpleTheme : R.style.DeepPurpleTheme_NoBackground;
+                return R.style.DeepPurpleTheme;
             case "blueGray":
-                return bgEnabled ? R.style.BlueGrayTheme   : R.style.BlueGrayTheme_NoBackground;
+                return R.style.BlueGrayTheme;
         }
     }
 

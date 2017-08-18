@@ -71,11 +71,17 @@
     -->
     <style name="DefaultTheme" parent="BaseDefaultTheme"/>
 
-    <style name="DefaultTheme.NoBackground">
+    <style name="OverlayTheme"/>
+
+    <!--
+     A overlay that disables the timer colored background
+     -->
+    <style name="OverlayTheme.NoBackground">
         <item name="colorTimerDetailText">@color/black_secondary_icon</item>
         <item name="mainColorBackground">@color/materialGray</item>
         <item name="colorTimerText">@color/black_secondary_icon</item>
     </style>
+
 
     <style name="DefaultTheme.Overflow">
         <item name="android:src">@drawable/ic_action_more_vert_white_24</item>
@@ -236,28 +242,6 @@
         <item name="colorItemListBackgroundSelected">@color/md_blue_grey_200</item>
     </style>
 
-    <!--
-    Default Preferences have wonky layouts. These styles fix them.
-    Edited from PreferencesFix lib, without AppCompat parenting so
-    we can apply it on top of the default themes
-    -->
-    <style name="PreferenceFixThemeNoParent">
-
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-
-        <item name="preferenceDialog_messageAppearance">@style/PreferenceFixTheme.TextAppearanceDialogMessage</item>
-
-        <!-- Overriding the category views as they don't look good -->
-        <item name="android:listSeparatorTextViewStyle">@style/PreferenceFixTheme.ListSeparatorTextView</item>
-
-        <item name="android:textAppearanceLarge">@style/PreferenceFixTheme.TextAppearanceLarge</item>
-        <item name="android:textAppearanceSmall">@style/PreferenceFixTheme.TextAppearanceSmall</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-    </style>
-
 
     <!--
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.
@@ -290,94 +274,6 @@
     <style name="DeepPurpleTheme" parent="BaseDeepPurpleTheme"/>
 
     <style name="BlueGrayTheme" parent="BaseBlueGrayTheme"/>
-
-    <!--
-    These "<Color>Theme.NoBackground" styles extend the "<Color>Theme" styles, which could be
-    defined differently in "values-v21/styles.xml".
-    -->
-    <style name="PinkTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="PurpleTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="LightBlueTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="LightGreenTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="CyanTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="TealTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="RedTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BrownTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlueTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlackTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="GreenTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="OrangeTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="DeepPurpleTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
-
-    <style name="BlueGrayTheme.NoBackground">
-        <item name="colorTimerDetailText">@color/black_secondary_icon</item>
-        <item name="mainColorBackground">@color/materialGray</item>
-        <item name="colorTimerText">@color/black_secondary_icon</item>
-    </style>
 
     <!--
     Other miscellaneous styles.

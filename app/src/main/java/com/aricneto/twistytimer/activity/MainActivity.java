@@ -41,8 +41,10 @@ import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
+import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -70,10 +72,17 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_COMMENT;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_DATE;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_PENALTY;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_SCRAMBLE;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_SUBTYPE;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TIME;
+import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TYPE;
+import static com.aricneto.twistytimer.database.DatabaseHandler.ProgressListener;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
-import static com.aricneto.twistytimer.database.DatabaseHandler.*;
 
 public class MainActivity extends AppCompatActivity
         implements BillingProcessor.IBillingHandler, FileChooserDialog.FileCallback,
@@ -153,7 +162,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState="
                 + savedInstanceState + "): " + this);
+
         setTheme(ThemeUtils.getPreferredTheme());
+
+        // If user has background disabled, apply the NoBackground overlay
+        if (!Prefs.getBoolean(R.string.pk_timer_bg_enabled,
+                             DefaultPrefs.getBoolean(R.bool.default_backgroundEnabled))) {
+            getTheme().applyStyle(R.style.OverlayTheme_NoBackground, true);
+        }
+
         LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
 
