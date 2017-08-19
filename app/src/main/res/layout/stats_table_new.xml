@@ -23,90 +23,156 @@
             android:alpha="0.7"
             android:gravity="center"
             android:padding="4dp"
-            android:visibility="gone"
             android:text="Average"
             android:textAlignment="center"
             android:textColor="@color/black_text"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <include layout="@layout/view_divider" />
 
-        <android.support.v7.widget.GridLayout
-            android:id="@+id/stats_gridlayout"
+        <LinearLayout
+            android:id="@+id/stats_averageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black_divider"
-            app:alignmentMode="alignMargins"
-            app:columnCount="4"
-            app:rowCount="7">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/stats_label"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginRight="1dp"
-                android:background="?graph_stats_card_background"
-                android:padding="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="0"
-                app:srcCompat="@drawable/ic_pound_black_24dp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/stats_global"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/stats_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginRight="1dp"
+                    android:background="?graph_stats_card_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_pound_black_24dp" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:background="?graph_stats_card_background_alt"
+                    android:text="3" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:text="5" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:background="?graph_stats_card_background_alt"
+                    android:text="12" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:text="50" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:background="?graph_stats_card_background_alt"
+                    android:text="100" />
+
+                <TextView
+                    style="@style/StatTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:text="1000" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginRight="1dp"
-                android:background="?graph_stats_card_background"
-                android:padding="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_column="1"
-                app:layout_columnWeight="5"
-                app:layout_row="0"
-                app:srcCompat="@drawable/ic_globe_black_24dp" />
+                android:layout_weight="6"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/stats_session"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginRight="1dp"
-                android:background="?graph_stats_card_background"
-                android:padding="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_column="2"
-                app:layout_columnWeight="5"
-                app:layout_row="0"
-                app:srcCompat="@drawable/ic_radio_button_checked_black_24dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/stats_current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:layout_marginRight="1dp"
-                android:background="?graph_stats_card_background"
-                android:padding="6dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_column="3"
-                app:layout_columnWeight="5"
-                app:layout_row="0"
-                app:srcCompat="@drawable/ic_radio_button_unchecked_black_24dp" />
+                    <ImageView
+                        android:id="@+id/stats_global"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="?graph_stats_card_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="6dp"
+                        app:srcCompat="@drawable/ic_globe_black_24dp" />
 
-        </android.support.v7.widget.GridLayout>
+                    <ImageView
+                        android:id="@+id/stats_session"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="?graph_stats_card_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="6dp"
+                        app:srcCompat="@drawable/ic_radio_button_checked_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/stats_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="?graph_stats_card_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="6dp"
+                        app:srcCompat="@drawable/ic_radio_button_unchecked_black_24dp" />
+
+                </LinearLayout>
+
+                <GridView
+                    android:id="@+id/stats_gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dp"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:visibility="gone"
-            android:background="@color/md_grey_200" />
+            android:background="@color/md_grey_200"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/total_solves_title"
@@ -115,12 +181,12 @@
             android:layout_gravity="center"
             android:alpha="0.7"
             android:gravity="center"
-            android:visibility="gone"
             android:padding="4dp"
             android:text="Total solves"
             android:textAlignment="center"
             android:textColor="@color/black_text"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

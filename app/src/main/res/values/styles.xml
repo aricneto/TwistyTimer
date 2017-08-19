@@ -287,8 +287,10 @@
     <style name="StatTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:gravity">right</item>
         <item name="android:background">?graph_stats_card_background</item>
         <item name="android:textColor">?graph_stats_card_text_color</item>
     </style>

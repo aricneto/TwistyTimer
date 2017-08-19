@@ -10,17 +10,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
+import com.aricneto.twistytimer.adapter.StatGridAdapter;
+import com.aricneto.twistytimer.items.Stat;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
@@ -28,13 +28,12 @@ import com.aricneto.twistytimer.stats.ChartStyle;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -77,16 +76,18 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     private Unbinder mUnbinder;
 
     @BindView(R.id.linechart)           LineChart lineChartView;
-    @BindView(R.id.stats_gridlayout)    GridLayout statsGridLayout;
+    @BindView(R.id.stats_gridView)
+        GridView statsGridView;
 
 
-    @OnClick( {R.id.stats_label, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
+    @OnClick( {R.id.stats_label})//, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
     public void onClickStats(View view) {
         String label = "";
         switch (view.getId()) {
             case R.id.stats_label:
                 label = getString(R.string.graph_stats_average_label);
                 break;
+                /*
             case R.id.stats_global:
                 label = getString(R.string.graph_stats_average_global);
                 break;
@@ -96,6 +97,8 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
             case R.id.stats_current:
                 label = getString(R.string.graph_stats_average_current);
                 break;
+                */
+
         }
         Toast.makeText(mContext, label, Toast.LENGTH_LONG).show();
     }
@@ -201,6 +204,8 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                 }
             });
         }
+
+
 
         // If the statistics are already loaded, the update notification will have been missed,
         // so fire that notification now. If the statistics are non-null, they will be displayed.
@@ -347,10 +352,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
         // values needed by "convertTimeToString".
 
-        String label[] = {"3", "5", "12", "50", "100", "1.000"};
-        String allTimeBestAvg[] = getAverages(stats, false, true);
-        String sessionBestAvg[] = getAverages(stats, true, true);
-        String currentAvg[] = getAverages(stats, true, false);
+        ArrayList<Stat> averagelist = buildAverageList(stats);
+
+        statsGridView.setAdapter(new StatGridAdapter(mContext, averagelist));
 
         String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils.FORMAT_DEFAULT);
@@ -363,72 +367,33 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
 
-        for (int i = 0; i < 6; i++) {
-            addStatToGrid(COLUMN_LABEL, i+1, label[i]);
-            addStatToGrid(COLUMN_GLOBAL, i + 1, allTimeBestAvg[i]);
-            addStatToGrid(COLUMN_SESSION, i + 1, sessionBestAvg[i]);
-            addStatToGrid(COLUMN_CURRENT, i + 1, currentAvg[i]);
-        }
-
         // Display the statistics and hide the progress bar.
         setStatsTableVisibility(View.VISIBLE);
     }
 
-    /**
-     * Returns a string array containing a list of averages for the statistics card.
-     * Numbers are hardcoded because this function isn't expected to be used anywhere else
-     * @param stats
-     *      the {@link Statistics} instance
-     * @param isForCurrentSessionOnly
-     *      refer to {@link Statistics} for info
-     * @param getBestAverage
-     *      refer to {@link Statistics} for info
-     * @return
-     *      A string array containing the averages in order
-     */
-    private String[] getAverages(Statistics stats, boolean isForCurrentSessionOnly, boolean getBestAverage) {
+    // TODO: COMMENT
+    private ArrayList<Stat> buildAverageList(Statistics stats) {
         int averageNumbers[] = {3, 5, 12, 50, 100, 1000};
-        String averages[] = new String[6];
-        for (int i = 0; i < 6; i++) {
-            if (getBestAverage) {
-                averages[i] = convertTimeToString(
-                        tr(stats.getAverageOf(averageNumbers[i], isForCurrentSessionOnly)
-                                .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-            } else {
-                averages[i] = convertTimeToString(
-                        tr(stats.getAverageOf(averageNumbers[i], isForCurrentSessionOnly)
-                                .getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-            }
+        int capacity = 3 * 6; // 3 columns, 6 averages
+        ArrayList<Stat> statsList = new ArrayList<>(3 * 6);
+        for (int row = 0; row < 6; row++) {
+            // best all time
+            statsList.add(new Stat(convertTimeToString(
+                    tr(stats.getAverageOf(averageNumbers[row], false)
+                            .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                    Stat.SCOPE_GLOBAL_BEST, row));
+            // session best
+            statsList.add(new Stat(convertTimeToString(
+                    tr(stats.getAverageOf(averageNumbers[row], true)
+                            .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                    Stat.SCOPE_GLOBAL_BEST, row));
+            // current
+            statsList.add(new Stat(convertTimeToString(
+                    tr(stats.getAverageOf(averageNumbers[row], true)
+                            .getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                    Stat.SCOPE_CURRENT, row));
         }
-        return averages;
-    }
-
-    private void addStatToGrid(int column, int row, String stat) {
-        GridLayout.LayoutParams gridParams =
-                new GridLayout.LayoutParams(
-                        GridLayout.spec(row),
-                        GridLayout.spec(column, GridLayout.FILL, (column > 0) ? 5f : 1f));
-        gridParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
-        gridParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
-        gridParams.rightMargin = (int) Utils.convertDpToPixel(1f);
-
-        TextView textView = new TextView(mContext, null, R.style.StatTextStyle);
-
-        // set margin to display dividers before last column
-        if (column < 3)
-            textView.setLayoutParams(gridParams);
-
-        // alternate colors between rows to make viewing easier
-        if (row % 2 == 0)
-            textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
-        else
-            textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background_alt));
-
-        textView.setGravity(Gravity.RIGHT);
-        textView.setPadding(0, (int) Utils.convertDpToPixel(3f), (int) Utils.convertDpToPixel(8f), (int) Utils.convertDpToPixel(3f));
-        textView.setText(stat);
-
-        statsGridLayout.addView(textView, gridParams);
+        return statsList;
     }
 
 }

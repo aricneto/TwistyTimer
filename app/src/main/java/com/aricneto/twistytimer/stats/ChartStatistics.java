@@ -201,7 +201,7 @@ public class ChartStatistics {
         if (!statistics.isForCurrentSessionOnly()) {
             // Enforcing this requirement means that there will be no excess clutter caused by
             // conditions in this class that need to decide between the two sets of times and
-            // there will be no ambiguity when calling "Statistics.getAverageOf(int, boolean)".
+            // there will be no ambiguity when calling "Statistics.getAverageScope(int, boolean)".
             // Also, "Statistics.getNsOfAverages" (see below) has a clear meaning, as there will
             // be no case where one "N" can refer to averages for both the session and for all time.
             throw new IllegalArgumentException("Statistics must be for current session only.");
