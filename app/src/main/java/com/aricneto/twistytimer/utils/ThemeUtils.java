@@ -90,6 +90,7 @@ public final class ThemeUtils {
     }
 
     // The following two functions are used to tint the history switch
+    // TODO: simplify these functions
 
     public static Drawable tintPositiveThumb(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.thumb_circle);

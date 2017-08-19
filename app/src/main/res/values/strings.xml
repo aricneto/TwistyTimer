@@ -367,4 +367,8 @@
     <string name="worstSolveEnabledSummary">Alert when you get a personal worst</string>
 
     <string name="worstSolveEnabledTitle">Worst time alert</string>
+    <string name="graph_stats_average_label">Average of</string>
+    <string name="graph_stats_average_global">Best (all time)</string>
+    <string name="graph_stats_average_session">Best (session)</string>
+    <string name="graph_stats_average_current">Current</string>
 </resources>

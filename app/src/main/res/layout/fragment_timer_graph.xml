@@ -8,11 +8,10 @@
     tools:context="com.aricneto.twistytimer.fragment.TimerGraphFragment">
 
     <include
-        layout="@layout/stats_table"
+        layout="@layout/stats_table_new"
         android:id="@id/statsTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:layout_alignParentBottom="true" />
 
     <com.github.mikephil.charting.charts.LineChart
@@ -20,9 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/statsTable"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginBottom="8dp" />
 
 </RelativeLayout>
 

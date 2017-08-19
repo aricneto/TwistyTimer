@@ -16,4 +16,8 @@
     <attr format="color" name="colorChartExtra2"/>
     <attr format="color" name="colorChartExtra3"/>
 
+    <attr format="color" name="graph_stats_card_background"/>
+    <attr format="color" name="graph_stats_card_background_alt"/>
+    <attr format="color" name="graph_stats_card_text_color"/>
+
 </resources>

@@ -1,20 +1,23 @@
 package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
@@ -25,18 +28,19 @@ import com.aricneto.twistytimer.stats.ChartStyle;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
@@ -61,22 +65,50 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
     private static final String HISTORY        = "history";
 
+    private static final int COLUMN_LABEL   = 0;
+    private static final int COLUMN_GLOBAL  = 1;
+    private static final int COLUMN_SESSION = 2;
+    private static final int COLUMN_CURRENT = 3;
+
     private String  currentPuzzle;
     private String  currentPuzzleSubtype;
     private boolean history;
 
     private Unbinder mUnbinder;
-    @BindView(R.id.linechart)           LineChart lineChartView;
-    @BindView(R.id.personalBestTimes)   TextView  personalBestTimes;
-    @BindView(R.id.sessionBestTimes)    TextView  sessionBestTimes;
-    @BindView(R.id.sessionCurrentTimes) TextView  sessionCurrentTimes;
-    @BindView(R.id.progressSpinner)     MaterialProgressBar progressBar;
 
-    // Things that must be hidden/shown when refreshing the card.
+    @BindView(R.id.linechart)           LineChart lineChartView;
+    @BindView(R.id.stats_gridlayout)    GridLayout statsGridLayout;
+
+
+    @OnClick( {R.id.stats_label, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
+    public void onClickStats(View view) {
+        String label = "";
+        switch (view.getId()) {
+            case R.id.stats_label:
+                label = getString(R.string.graph_stats_average_label);
+                break;
+            case R.id.stats_global:
+                label = getString(R.string.graph_stats_average_global);
+                break;
+            case R.id.stats_session:
+                label = getString(R.string.graph_stats_average_session);
+                break;
+            case R.id.stats_current:
+                label = getString(R.string.graph_stats_average_current);
+                break;
+        }
+        Toast.makeText(mContext, label, Toast.LENGTH_LONG).show();
+    }
+
+    //@BindView(R.id.progressSpinner)     MaterialProgressBar progressBar;
+
+    private Context mContext;
+
+    /*/ Things that must be hidden/shown when refreshing the card.
     @BindViews({
             R.id.personalBestTitle, R.id.sessionBestTitle, R.id.sessionCurrentTitle,
             R.id.horizontalDivider02, R.id.verticalDivider02, R.id.verticalDivider03,
-    }) View[] statisticsTableViews;
+    }) View[] statisticsTableViews;*/
 
     public TimerGraphFragment() {
         // Required empty public constructor
@@ -98,6 +130,8 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     public void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
+
+        mContext = getContext();
 
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
@@ -142,6 +176,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         axisLeft.setGridColor(axisColor);
         axisLeft.setValueFormatter(new TimeFormatter());
         axisLeft.setDrawLimitLinesBehindData(true);
+
 
         // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
         // statistics table will likely almost fill the screen. The automatic layout causes the
@@ -247,20 +282,19 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
             // Called before "onCreateView" or after "onDestroyView", so do nothing.
             return;
         }
-
+        /*
         ButterKnife.apply(statisticsTableViews, new ButterKnife.Action<View>() {
             @Override
             public void apply(@NonNull View view, int index) {
                 view.setVisibility(visibility);
             }
-        });
+        });*/
 
-        personalBestTimes.setVisibility(visibility);
-        sessionBestTimes.setVisibility(visibility);
-        sessionCurrentTimes.setVisibility(visibility);
+        // TODO: reimplement this
+
 
         // NOTE: Use "INVISIBLE", not "GONE", or there will be problems with vertical centering.
-        progressBar.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+        //progressBar.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
     }
 
     /**
@@ -313,18 +347,10 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
         // values needed by "convertTimeToString".
 
-        String allTimeBestAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, false).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
+        String label[] = {"3", "5", "12", "50", "100", "1.000"};
+        String allTimeBestAvg[] = getAverages(stats, false, true);
+        String sessionBestAvg[] = getAverages(stats, true, true);
+        String currentAvg[] = getAverages(stats, true, false);
 
         String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
         String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils.FORMAT_DEFAULT);
@@ -332,73 +358,77 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // Format count using appropriate grouping separators, e.g., "1,234", not "1234".
         String allTimeCount = String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves());
 
-        String sessionBestAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, true).getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
-
         String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
 
-        String sessionCurrentAvg3 = convertTimeToString(
-                tr(stats.getAverageOf(3, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg1000 = convertTimeToString(
-                tr(stats.getAverageOf(1_000, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-
-        personalBestTimes.setText(
-                allTimeBestAvg3 + "\n" +
-                        allTimeBestAvg5 + "\n" +
-                        allTimeBestAvg12 + "\n" +
-                        allTimeBestAvg50 + "\n" +
-                        allTimeBestAvg100 + "\n" +
-                        allTimeBestAvg1000 + "\n" +
-                        allTimeMeanTime + "\n" +
-                        allTimeBestTime + "\n" +
-                        allTimeWorstTime + "\n" +
-                        allTimeCount);
-        sessionBestTimes.setText(
-                sessionBestAvg3 + "\n" +
-                        sessionBestAvg5 + "\n" +
-                        sessionBestAvg12 + "\n" +
-                        sessionBestAvg50 + "\n" +
-                        sessionBestAvg100 + "\n" +
-                        sessionBestAvg1000 + "\n" +
-                        sessionMeanTime + "\n" +
-                        sessionBestTime + "\n" +
-                        sessionWorstTime + "\n" +
-                        sessionCount);
-        sessionCurrentTimes.setText(
-                sessionCurrentAvg3 + "\n" +
-                        sessionCurrentAvg5 + "\n" +
-                        sessionCurrentAvg12 + "\n" +
-                        sessionCurrentAvg50 + "\n" +
-                        sessionCurrentAvg100 + "\n" +
-                        sessionCurrentAvg1000 + "\n" +
-                        // Last few are the same for "Session Best" and "Session Current".
-                        sessionMeanTime + "\n" +
-                        sessionBestTime + "\n" +
-                        sessionWorstTime + "\n" +
-                        sessionCount);
+        for (int i = 0; i < 6; i++) {
+            addStatToGrid(COLUMN_LABEL, i+1, label[i]);
+            addStatToGrid(COLUMN_GLOBAL, i + 1, allTimeBestAvg[i]);
+            addStatToGrid(COLUMN_SESSION, i + 1, sessionBestAvg[i]);
+            addStatToGrid(COLUMN_CURRENT, i + 1, currentAvg[i]);
+        }
 
         // Display the statistics and hide the progress bar.
         setStatsTableVisibility(View.VISIBLE);
     }
+
+    /**
+     * Returns a string array containing a list of averages for the statistics card.
+     * Numbers are hardcoded because this function isn't expected to be used anywhere else
+     * @param stats
+     *      the {@link Statistics} instance
+     * @param isForCurrentSessionOnly
+     *      refer to {@link Statistics} for info
+     * @param getBestAverage
+     *      refer to {@link Statistics} for info
+     * @return
+     *      A string array containing the averages in order
+     */
+    private String[] getAverages(Statistics stats, boolean isForCurrentSessionOnly, boolean getBestAverage) {
+        int averageNumbers[] = {3, 5, 12, 50, 100, 1000};
+        String averages[] = new String[6];
+        for (int i = 0; i < 6; i++) {
+            if (getBestAverage) {
+                averages[i] = convertTimeToString(
+                        tr(stats.getAverageOf(averageNumbers[i], isForCurrentSessionOnly)
+                                .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT);
+            } else {
+                averages[i] = convertTimeToString(
+                        tr(stats.getAverageOf(averageNumbers[i], isForCurrentSessionOnly)
+                                .getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
+            }
+        }
+        return averages;
+    }
+
+    private void addStatToGrid(int column, int row, String stat) {
+        GridLayout.LayoutParams gridParams =
+                new GridLayout.LayoutParams(
+                        GridLayout.spec(row),
+                        GridLayout.spec(column, GridLayout.FILL, (column > 0) ? 5f : 1f));
+        gridParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
+        gridParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
+        gridParams.rightMargin = (int) Utils.convertDpToPixel(1f);
+
+        TextView textView = new TextView(mContext, null, R.style.StatTextStyle);
+
+        // set margin to display dividers before last column
+        if (column < 3)
+            textView.setLayoutParams(gridParams);
+
+        // alternate colors between rows to make viewing easier
+        if (row % 2 == 0)
+            textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
+        else
+            textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background_alt));
+
+        textView.setGravity(Gravity.RIGHT);
+        textView.setPadding(0, (int) Utils.convertDpToPixel(3f), (int) Utils.convertDpToPixel(8f), (int) Utils.convertDpToPixel(3f));
+        textView.setText(stat);
+
+        statsGridLayout.addView(textView, gridParams);
+    }
+
 }

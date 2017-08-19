@@ -55,6 +55,11 @@
         <item name="colorChartExtra1">@color/md_red_500</item>
         <item name="colorChartExtra2">@color/md_light_green_500</item>
         <item name="colorChartExtra3">@color/md_cyan_500</item>
+
+
+        <item name="graph_stats_card_background">@color/md_white_1000</item>
+        <item name="graph_stats_card_background_alt">@color/md_grey_100</item>
+        <item name="graph_stats_card_text_color">#b2000000</item>
     </style>
 
     <style name="SettingsTheme" parent="PreferenceFixTheme.Light.NoActionBar">
@@ -278,6 +283,15 @@
     <!--
     Other miscellaneous styles.
     -->
+
+    <style name="StatTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:background">?graph_stats_card_background</item>
+        <item name="android:textColor">?graph_stats_card_text_color</item>
+    </style>
 
     <style name="DialogItem">
         <item name="android:layout_width">match_parent</item>

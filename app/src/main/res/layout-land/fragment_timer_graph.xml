@@ -24,10 +24,10 @@
             android:layout_marginTop="0dp" />
 
         <include
-            layout="@layout/stats_table"
+            layout="@layout/stats_table_new"
+            android:id="@id/statsTable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
