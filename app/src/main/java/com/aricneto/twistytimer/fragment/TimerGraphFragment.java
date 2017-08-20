@@ -388,9 +388,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                 .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 1));
 
         statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeTotalTime()), PuzzleUtils
-                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
+                .FORMAT_NO_MILLI), Stat.SCOPE_GLOBAL, 3));
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionTotalTime()), PuzzleUtils
-                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
+                .FORMAT_NO_MILLI), Stat.SCOPE_SESSION, 3));
 
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
                 Stat.SCOPE_GLOBAL, 4));

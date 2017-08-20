@@ -9,8 +9,9 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.stats.AverageCalculator;
 import com.aricneto.twistytimer.stats.Statistics;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.Map;
 
@@ -46,30 +47,6 @@ public class PuzzleUtils {
     public static final int FORMAT_DEFAULT = 0;
     public static final int FORMAT_SMALL_MILLI = 1;
     public static final int FORMAT_NO_MILLI = 2;
-
-    private static final String[] FORMAT_STRING_DEFAULT ={
-            "s'.'SS",
-            "m':'ss'.'SS",
-            "k':'mm':'ss",
-            "D'd, 'k':'mm':'ss"
-    };
-    private static final String[] FORMAT_STRING_SMALL_MILLI = {
-            "s'<small>.'SS'</small>'",
-            "m':'ss'<small>.'SS'</small>'",
-            "k':'mm'<small>:'ss'</small>'",
-            "D'd, 'k':'mm':'ss"
-    };
-    private static final String[] FORMAT_STRING_NO_MILLI = {
-            "s",
-            "m':'ss",
-            "k':'mm':'ss",
-            "D'd, 'k':'mm':'ss"
-    };
-
-    private static final int SIZE_SECONDS = 0;
-    private static final int SIZE_MINUTES = 1;
-    private static final int SIZE_HOURS = 2;
-    private static final int SIZE_DAYS = 3;
     // --                                    --
 
     public PuzzleUtils() {
@@ -145,61 +122,56 @@ public class PuzzleUtils {
         }
     }
 
-    // FIXME: This function should not use DateTime to parse times.
+    /**
+     * Converts a duration value in milliseconds to a String
+     * @param time
+     *      the time in milliseconds
+     * @param format
+     *      the format. see FORMAT constants in {@link PuzzleUtils}
+     * @return
+     *      a String containing the converted time
+     */
     public static String convertTimeToString(long time, int format) {
         if (time == TIME_DNF)
             return "DNF";
         if (time == 0)
             return "--";
 
-        // The "size" of the time. Whether it should display hours or minutes based on
-        // how big time is
-        int timeSize;
+        Period period = new Period(time);
+        PeriodFormatterBuilder periodFormatterBuilder = new PeriodFormatterBuilder();
 
-        if (time >= 3600 * 1000 * 24)
-            timeSize = SIZE_DAYS;
-        else if (time >= 3600 * 1000)
-            timeSize = SIZE_HOURS;
-        else if (time >= 60 * 1000)
-            timeSize = SIZE_MINUTES;
-        else
-            timeSize = SIZE_SECONDS;
+        StringBuilder formattedString = new StringBuilder();
 
-        String formatString = FORMAT_STRING_DEFAULT[0];
+
+        //PeriodFormatter ignores appends (and suffixes) if time is not enough to convert
+        PeriodFormatter periodFormatter = periodFormatterBuilder
+                .appendDays().appendSuffix("d, ")
+                .appendHours().appendSuffix("h ")
+                .appendMinutes().appendSuffix(":")
+                .printZeroAlways()
+                .appendSeconds()
+                .toFormatter();
+
+        formattedString.append(period.toString(periodFormatter));
+
+        // restrict millis to 2 digits
+        long millis = time % 1000;
+        if (millis >= 10)
+            millis /= 10;
 
         switch (format) {
             case FORMAT_DEFAULT:
-                formatString = FORMAT_STRING_DEFAULT[timeSize];
+                formattedString.append(".");
+                formattedString.append(millis > 10 ? millis : "0" + millis);
                 break;
             case FORMAT_SMALL_MILLI:
-                formatString = FORMAT_STRING_SMALL_MILLI[timeSize];
-                break;
-            case FORMAT_NO_MILLI:
-                formatString = FORMAT_STRING_NO_MILLI[timeSize];
+                formattedString.append("<small>.");
+                formattedString.append(millis > 10 ? millis : "0" + millis);
+                formattedString.append("</small>");
                 break;
         }
 
-        return new DateTime(time, DateTimeZone.UTC).toString(formatString);
-    }
-
-    public static String convertTimeToStringWithoutMilli(long time) {
-
-        if (time == - 1)
-            return "DNF";
-        if (time == 0)
-            return "--";
-
-        // Magic (not-so-magic actually) numbers below
-        long hours = time / 3600000; // 3600 * 1000
-        long remaining = time % 3600000; // 3600 * 1000
-        long minutes = remaining / 60000; // 60 * 1000
-
-        if (hours > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("kk':'mm':'ss");
-        else if (minutes > 0)
-            return new DateTime(time, DateTimeZone.UTC).toString("mm':'ss");
-        else
-            return new DateTime(time, DateTimeZone.UTC).toString("s");
+        return formattedString.toString();
     }
 
     /**
