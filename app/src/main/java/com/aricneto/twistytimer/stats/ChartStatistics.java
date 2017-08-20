@@ -4,7 +4,6 @@ import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -163,12 +162,12 @@ public class ChartStatistics {
     /**
      * The label to apply to the "limit line".
      */
-    private final String mLimitLineLabel;
+    //private final String mLimitLineLabel;
 
     /**
      * The color to apply to the "limit line".
      */
-    private final int mLimitLineColor;
+    //private final int mLimitLineColor;
 
     /**
      * Creates a new collector for chart statistics that will chart all collected values and all
@@ -201,7 +200,7 @@ public class ChartStatistics {
         if (!statistics.isForCurrentSessionOnly()) {
             // Enforcing this requirement means that there will be no excess clutter caused by
             // conditions in this class that need to decide between the two sets of times and
-            // there will be no ambiguity when calling "Statistics.getAverageScope(int, boolean)".
+            // there will be no ambiguity when calling "Statistics.getRow(int, boolean)".
             // Also, "Statistics.getNsOfAverages" (see below) has a clear meaning, as there will
             // be no case where one "N" can refer to averages for both the session and for all time.
             throw new IllegalArgumentException("Statistics must be for current session only.");
@@ -212,11 +211,12 @@ public class ChartStatistics {
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
 
-        // Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
+        /*/ Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
         // the label and color of the line now (while a "Context" is available) and create the line
         // later in "applyTo".
         mLimitLineLabel = chartStyle.getLimitLineLabel();
         mLimitLineColor = chartStyle.getLimitLineColor();
+        */
 
         // Set the formatter for the date label on the chart X-axis. Localise the format, mostly to
         // support the "MM/DD" order used in the USA. It will fall back to the most common "DD/MM"
@@ -281,7 +281,7 @@ public class ChartStatistics {
         bestDataSet.setCircleRadius(BEST_TIME_CIRCLE_RADIUS_DP);
         bestDataSet.setCircleColor(bestColor);
 
-        bestDataSet.setDrawValues(true);
+        bestDataSet.setDrawValues(false);
         bestDataSet.setValueTextColor(bestColor);
         bestDataSet.setValueTextSize(BEST_TIME_VALUES_TEXT_SIZE_DP);
         bestDataSet.setValueFormatter(new TimeChartValueFormatter());
@@ -414,6 +414,7 @@ public class ChartStatistics {
         // crashes occur during rendering of the legend.
         configureLegend(chart.getLegend());
 
+        /*
         chart.getAxisLeft().removeAllLimitLines();
 
         if (getMeanTime() != AverageCalculator.UNKNOWN) { // At least one non-DNF solve time?
@@ -428,7 +429,7 @@ public class ChartStatistics {
             ll.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
 
             chart.getAxisLeft().addLimitLine(ll);
-        }
+        }*/
 
         // The maximum number of values that can be visible above which the time values are not
         // drawn on the chart beside their data points. However, values are only drawn for the few

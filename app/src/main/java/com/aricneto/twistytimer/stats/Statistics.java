@@ -363,6 +363,19 @@ public class Statistics {
     }
 
     /**
+     * Gets the total time (sum of all times) of all non-DNF solves that were added to these
+     * statistics for the current session.
+     *
+     * @return
+     *     The total time of all non-DNF solves that were added for the current session. The result
+     *     will be {@link AverageCalculator#UNKNOWN} if no times have been added, or if all added
+     *     times were DNFs.
+     */
+    public long getSessionTotalTime() {
+        return mOneSessionAC != null? mOneSessionAC.getTotalTime() : UNKNOWN;
+    }
+
+    /**
      * Gets the solve time frequencies for the current sessions. The times are truncated to whole
      * seconds, but still expressed as milliseconds. The keys are the times (and
      * {@link AverageCalculator#DNF} can be a key), and the values are the number of solves times
@@ -436,6 +449,19 @@ public class Statistics {
      */
     public long getAllTimeMeanTime() {
         return mOneAllTimeAC != null ? mOneAllTimeAC.getMeanTime() : UNKNOWN;
+    }
+
+    /**
+     * Gets the total time (sum of all times) of all non-DNF solves that were added to these
+     * statistics for all past and current sessions.
+     *
+     * @return
+     *     The total time of all non-DNF solves that were added for all past and current sessions
+     *     The result will be {@link AverageCalculator#UNKNOWN} if no times have been added, or
+     *     if all added times were DNFs.
+     */
+    public long getAllTimeTotalTime() {
+        return mOneAllTimeAC != null? mOneAllTimeAC.getTotalTime() : UNKNOWN;
     }
 
     /**

@@ -1,25 +1,38 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorPrimaryDark"
-    android:orientation="vertical"
-    tools:context="com.aricneto.twistytimer.fragment.TimerGraphFragment">
+    android:gravity="bottom"
+    app:umanoDragView="@id/statsTable"
+    app:umanoScrollableView="@id/statsTable"
+    app:umanoClipPanel="false"
+    app:umanoParallaxOffset="30dp"
+    app:umanoAnchorPoint="0.25"
+    app:umanoFadeColor="@android:color/transparent"
+    app:umanoPanelHeight="130dp"
+    app:umanoShadowHeight="4dp">
 
-    <include
-        layout="@layout/stats_table_new"
-        android:id="@id/statsTable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/statsTable"
-        android:layout_marginBottom="8dp" />
+        android:background="?colorPrimaryDark"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp" />
 
+    </LinearLayout>
+
+
+    <include
+        android:id="@id/statsTable"
+        layout="@layout/stats_table_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

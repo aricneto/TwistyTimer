@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +28,7 @@ import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -75,19 +75,24 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.linechart)           LineChart lineChartView;
-    @BindView(R.id.stats_gridView)
-        GridView statsGridView;
+    @BindView(R.id.linechart)
+        LineChart lineChartView;
+    @BindView(R.id.statsTable)
+        View statsTable;
+    @BindView(R.id.stats_average_gridView)
+        GridView averageStatsGridView;
+    @BindView(R.id.stats_other_gridView)
+        GridView otherStatsGridView;
 
 
-    @OnClick( {R.id.stats_label})//, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
+
+    @OnClick( {R.id.stats_label, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
     public void onClickStats(View view) {
         String label = "";
         switch (view.getId()) {
             case R.id.stats_label:
                 label = getString(R.string.graph_stats_average_label);
                 break;
-                /*
             case R.id.stats_global:
                 label = getString(R.string.graph_stats_average_global);
                 break;
@@ -97,7 +102,6 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
             case R.id.stats_current:
                 label = getString(R.string.graph_stats_average_current);
                 break;
-                */
 
         }
         Toast.makeText(mContext, label, Toast.LENGTH_LONG).show();
@@ -156,27 +160,30 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         lineChartView.setPinchZoom(true);
         lineChartView.setBackgroundColor(Color.TRANSPARENT);
         lineChartView.setDrawGridBackground(false);
-        lineChartView.getAxisRight().setEnabled(false);
+        lineChartView.getAxisLeft().setEnabled(false);
         lineChartView.getLegend().setTextColor(chartTextColor);
+        lineChartView.setViewPortOffsets(8f, 8f, 8f, 70f);
         lineChartView.setDescription("");
 
-        final YAxis axisLeft = lineChartView.getAxisLeft();
+        final YAxis axisLeft = lineChartView.getAxisRight();
         final XAxis xAxis = lineChartView.getXAxis();
-        final int axisColor = ContextCompat.getColor(getActivity(), R.color.white_secondary_icon);
+        final int axisColor = ContextCompat.getColor(getActivity(), R.color.md_amber_400);
+        final int gridColor = ContextCompat.getColor(getActivity(), R.color.gridColor);
 
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineColor(axisColor);
-        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(chartTextColor);
         xAxis.setAvoidFirstLastClipping(true);
 
         axisLeft.setDrawGridLines(true);
-        axisLeft.setDrawAxisLine(true);
-        axisLeft.setTextColor(chartTextColor);
-        axisLeft.enableGridDashedLine(10f, 8f, 0f);
+        axisLeft.setTextColor(axisColor);
+        axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         axisLeft.setAxisLineColor(axisColor);
-        axisLeft.setGridColor(axisColor);
+        axisLeft.setDrawAxisLine(false);
+        axisLeft.setGridColor(gridColor);
+        axisLeft.enableGridDashedLine(10, 8f, 0);
         axisLeft.setValueFormatter(new TimeFormatter());
         axisLeft.setDrawLimitLinesBehindData(true);
 
@@ -187,23 +194,22 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        if (getActivity().getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
-            root.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (container != null && lineChartView != null) {
-                        final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+        /*
+        root.post(new Runnable() {
+            @Override
+            public void run() {
+                if (container != null && lineChartView != null) {
+                    final LineChart.LayoutParams params = lineChartView.getLayoutParams();
 
-                        if (params != null) {
-                            params.height = container.getHeight();
-                            lineChartView.setLayoutParams(params);
-                            lineChartView.requestLayout();
-                        }
+                    if (params != null) {
+                        params.height = container.getHeight() - statsTable.getHeight();
+                        lineChartView.setLayoutParams(params);
+                        lineChartView.requestLayout();
+                        statsTable.requestLayout();
                     }
                 }
-            });
-        }
+            }
+        });*/
 
 
 
@@ -322,7 +328,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         chartStats.applyTo(lineChartView);
 
         // Animate and refresh the chart.
-        lineChartView.animateY(1_000);
+        lineChartView.animateY(700, Easing.EasingOption.EaseInOutSine);
     }
 
     /**
@@ -352,41 +358,72 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // "tr()" converts from "AverageCalculator.UNKNOWN" and "AverageCalculator.DNF" to the
         // values needed by "convertTimeToString".
 
-        ArrayList<Stat> averagelist = buildAverageList(stats);
+        ArrayList<Stat> averageList = buildAverageList(stats);
+        ArrayList<Stat> otherList = buildOtherStatList(stats);
+        averageStatsGridView.setAdapter(new StatGridAdapter(mContext, averageList));
+        otherStatsGridView.setAdapter(new StatGridAdapter(mContext, otherList));
 
-        statsGridView.setAdapter(new StatGridAdapter(mContext, averagelist));
-
-        String allTimeMeanTime = convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeBestTime = convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String allTimeWorstTime = convertTimeToString(tr(stats.getAllTimeWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
-        // Format count using appropriate grouping separators, e.g., "1,234", not "1234".
-        String allTimeCount = String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves());
-
-        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
 
         // Display the statistics and hide the progress bar.
         setStatsTableVisibility(View.VISIBLE);
     }
 
-    // TODO: COMMENT
+    private ArrayList<Stat> buildOtherStatList(Statistics stats) {
+        // There are 2 columns (best, session), and 5 rows (best, worst, deviation, total time
+        // and count).
+        ArrayList<Stat> statsList = new ArrayList<>(5 * 2);
+
+
+        // DO NOT CHANGE THE ORDER!
+        // The adapter adds views in the list order, left -> right, top -> bottom, so if the order
+        // is changed, times will be placed in the wrong spots on the grid!
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 0));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 0));
+
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeWorstTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 1));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 1));
+
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeTotalTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionTotalTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
+
+        statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
+                Stat.SCOPE_GLOBAL, 4));
+        statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves()),
+                Stat.SCOPE_SESSION, 4));
+
+        return statsList;
+    }
+    /**
+     * Builds a list of averages for use int {@link StatGridAdapter}
+     * The order of the times is alterned (best, session, current, best, session...), so
+     * it can work in an Adapter without much tinkering
+     * @param stats
+     *      The {@link Statistics} instance
+     * @return
+     *      An {@link ArrayList<Stat>} containing the averages for the adapter
+     */
     private ArrayList<Stat> buildAverageList(Statistics stats) {
         int averageNumbers[] = {3, 5, 12, 50, 100, 1000};
-        int capacity = 3 * 6; // 3 columns, 6 averages
+        // There are 3 columns (best, session, current), and 6 rows (the averages)
+        // So the capacity of the list needs to be 3*6
         ArrayList<Stat> statsList = new ArrayList<>(3 * 6);
         for (int row = 0; row < 6; row++) {
             // best all time
             statsList.add(new Stat(convertTimeToString(
                     tr(stats.getAverageOf(averageNumbers[row], false)
                             .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                    Stat.SCOPE_GLOBAL_BEST, row));
+                    Stat.SCOPE_GLOBAL, row));
             // session best
             statsList.add(new Stat(convertTimeToString(
                     tr(stats.getAverageOf(averageNumbers[row], true)
                             .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                    Stat.SCOPE_GLOBAL_BEST, row));
+                    Stat.SCOPE_GLOBAL, row));
             // current
             statsList.add(new Stat(convertTimeToString(
                     tr(stats.getAverageOf(averageNumbers[row], true)

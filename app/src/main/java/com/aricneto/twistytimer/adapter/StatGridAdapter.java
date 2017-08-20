@@ -15,7 +15,9 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.ArrayList;
 
 /**
- * TODO: COMMENT FUNCTION Created by Ari Neto on 19-Aug-17.
+ * Created by Ari Neto on 19-Aug-17.
+ *
+ * An adapter that's used to fill the Statistics card in {@link com.aricneto.twistytimer.fragment.TimerGraphFragment}
  */
 
 public class StatGridAdapter extends BaseAdapter {
@@ -40,7 +42,7 @@ public class StatGridAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return mStats.get(i).getAverageScope();
+        return mStats.get(i).getRow();
     }
 
     @Override

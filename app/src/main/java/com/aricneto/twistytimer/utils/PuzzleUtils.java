@@ -47,13 +47,29 @@ public class PuzzleUtils {
     public static final int FORMAT_SMALL_MILLI = 1;
     public static final int FORMAT_NO_MILLI = 2;
 
-    private static final String[] FORMAT_STRING_DEFAULT = {"s'.'SS", "m':'ss'.'SS", "k':'mm':'ss"};
-    private static final String[] FORMAT_STRING_SMALL_MILLI = {"s'<small>.'SS'</small>'", "m':'ss'<small>.'SS'</small>'", "k':'mm'<small>:'ss'</small>'"};
-    private static final String[] FORMAT_STRING_NO_MILLI = {"s", "m':'ss", "k':'mm':'ss"};
+    private static final String[] FORMAT_STRING_DEFAULT ={
+            "s'.'SS",
+            "m':'ss'.'SS",
+            "k':'mm':'ss",
+            "D'd, 'k':'mm':'ss"
+    };
+    private static final String[] FORMAT_STRING_SMALL_MILLI = {
+            "s'<small>.'SS'</small>'",
+            "m':'ss'<small>.'SS'</small>'",
+            "k':'mm'<small>:'ss'</small>'",
+            "D'd, 'k':'mm':'ss"
+    };
+    private static final String[] FORMAT_STRING_NO_MILLI = {
+            "s",
+            "m':'ss",
+            "k':'mm':'ss",
+            "D'd, 'k':'mm':'ss"
+    };
 
     private static final int SIZE_SECONDS = 0;
     private static final int SIZE_MINUTES = 1;
     private static final int SIZE_HOURS = 2;
+    private static final int SIZE_DAYS = 3;
     // --                                    --
 
     public PuzzleUtils() {
@@ -129,6 +145,7 @@ public class PuzzleUtils {
         }
     }
 
+    // FIXME: This function should not use DateTime to parse times.
     public static String convertTimeToString(long time, int format) {
         if (time == TIME_DNF)
             return "DNF";
@@ -138,7 +155,10 @@ public class PuzzleUtils {
         // The "size" of the time. Whether it should display hours or minutes based on
         // how big time is
         int timeSize;
-        if (time >= 3600 * 1000)
+
+        if (time >= 3600 * 1000 * 24)
+            timeSize = SIZE_DAYS;
+        else if (time >= 3600 * 1000)
             timeSize = SIZE_HOURS;
         else if (time >= 60 * 1000)
             timeSize = SIZE_MINUTES;

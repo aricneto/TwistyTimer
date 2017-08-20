@@ -10,6 +10,9 @@
     <!-- MAIN APP COLORS -->
     <color name="primaryColor">#3F51B5</color>
 
+
+    <color name="gridColor">#89fdd835</color>
+
     <!-- CUBE COLORS -->
     <color name="cube_grey">#9E9E9E</color>
     <color name="cube_yellow">#FDD835</color>

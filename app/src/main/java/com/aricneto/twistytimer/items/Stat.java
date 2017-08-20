@@ -6,21 +6,22 @@ package com.aricneto.twistytimer.items;
 
 public class Stat {
 
-    public static final int SCOPE_GLOBAL_BEST  = 0;
-    public static final int SCOPE_SESSION_BEST = 1;
+    public static final int SCOPE_GLOBAL = 0;
+    public static final int SCOPE_SESSION = 1;
     public static final int SCOPE_CURRENT      = 2;
 
     // The time string ("12.43")
     private String time;
     // The scope (Best all time, session, current)
     private int scope;
-    // The average scope (3, 12, 50...)
-    private int averageScope;
+    // The row it's supposed to be displayed in
+    // For Average scopes, row 0 = Ao3, row 1 = Ao12, row 2 = Ao50...
+    private int row;
 
-    public Stat(String time, int scope, int averageScope) {
+    public Stat(String time, int scope, int row) {
         this.time = time;
         this.scope = scope;
-        this.averageScope = averageScope;
+        this.row = row;
     }
 
     public String getTime() {
@@ -39,12 +40,12 @@ public class Stat {
         this.scope = scope;
     }
 
-    public int getAverageScope() {
-        return averageScope;
+    public int getRow() {
+        return row;
     }
 
-    public void setAverageScope(int averageScope) {
-        this.averageScope = averageScope;
+    public void setRow(int row) {
+        this.row = row;
     }
 
 }
