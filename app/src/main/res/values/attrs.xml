@@ -16,8 +16,15 @@
     <attr format="color" name="colorChartExtra2"/>
     <attr format="color" name="colorChartExtra3"/>
 
+
+    <!-- TODO: add this attr for all themes -->
+    <!-- An accent color that provides a clear contrast against a white background -->
+    <attr format="color" name="colorAccentWhiteContrast"/>
+
     <attr format="color" name="graph_stats_card_background"/>
     <attr format="color" name="graph_stats_card_background_alt"/>
+    <attr format="color" name="graph_stats_card_background_faded"/>
+    <attr format="color" name="graph_stats_card_text_color_faded"/>
     <attr format="color" name="graph_stats_card_text_color"/>
 
 </resources>

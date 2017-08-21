@@ -1,207 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    app:cardElevation="8dp">
-
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/stats_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="32dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/detailText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/horizontalDivider01"
-            android:padding="12dp"
-            android:gravity="right"
-            android:text="@string/detail_text_plus"
-            android:textColor="@color/black_text" />
-
-        <TextView
-            android:id="@+id/statisticsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_alignRight="@id/detailText"
-            android:layout_alignLeft="@id/detailText"
-            android:layout_gravity="center"
-            android:padding="8dp"
+            android:id="@+id/stats_tab_favorite"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?graph_stats_card_background"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
-            android:text="@string/graph_stats_title"
-            android:textColor="@color/black_text" />
-        <!--
-        Horizontal divider across only statistics title column. ID is pre-defined in
-        "ids.xml" to allow easy forward references for "RelativeLayout".
-        -->
+            android:text="Favorites"
+            android:textColor="?graph_stats_card_text_color" />
+
+        <TextView
+            android:id="@+id/stats_tab_average"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="?graph_stats_card_background_faded"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="Average"
+            android:textColor="?graph_stats_card_text_color_faded" />
+
+        <TextView
+            android:id="@+id/stats_tab_other"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="?graph_stats_card_background_faded"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="Other"
+            android:textColor="?graph_stats_card_text_color_faded" />
+
+    </LinearLayout>
+
+    <ViewFlipper
+        android:id="@+id/stats_table_viewflipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?graph_stats_card_background">
+
         <include
-            android:id="@id/horizontalDivider01"
-            layout="@layout/view_divider"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignRight="@id/verticalDivider01"
-            android:layout_below="@id/statisticsTitle" />
+            android:id="@+id/stats_table_favorite"
+            layout="@layout/item_stats_table_grid" />
 
-        <!-- Vertical divider between statistics title column and all-time best column. -->
         <include
-            android:id="@id/verticalDivider01"
-            layout="@layout/view_divider"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_alignBottom="@id/detailText"
-            android:layout_alignTop="@id/statisticsTitle"
-            android:layout_toRightOf="@id/detailText" />
+            android:id="@+id/stats_table_average"
+            layout="@layout/item_stats_table_grid" />
 
-        <!--
-        Three columns to right of statistics title column:
+        <include
+            android:id="@+id/stats_table_other"
+            layout="@layout/item_stats_table_grid" />
 
-            1. "All-Time Best" ("personal best"): best values across all sessions, including
-               the current session.
-            2. "Session Best": best values only from current session. For example, for the Ao5
-               value, the best Ao5 is taken from the best run of 5 solves across the session.
-            3. "Session Current": values up to last solve of current session. For example, for
-               the Ao5 value, the Ao5 is taken from the last 5 solves of the current session.
 
-        Equal-width columns are assured by the "PercentRelativeLayout" Android support class. The
-        three columns titles get 32% each and the two vertical dividers get (notionally) 2% each,
-        though the dividers are actually fixed at "1dp" in width.
-        -->
-        <android.support.percent.PercentRelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/verticalDivider01">
+    </ViewFlipper>
 
-            <!-- NOTE: android:visibility="gone" causes a problem with vertical centering. -->
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                    android:id="@+id/progressSpinner"
-                    app:mpb_progressStyle="circular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:indeterminate="true"
-                    android:visibility="invisible"
-                    tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/personalBestTitle"
-                app:layout_widthPercent="32%"
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/graph_card_global"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <!-- Horizontal divider under titles and across all three data columns. -->
-            <include
-                android:id="@id/horizontalDivider02"
-                layout="@layout/view_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/personalBestTitle"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/personalBestTimes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/horizontalDivider02"
-                android:layout_alignRight="@id/personalBestTitle"
-                android:padding="12dp"
-                android:gravity="right"
-                android:text="--\n--\n--\n--\n--\n--\n--\n--\n--\n--"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <!-- Vertical divider between all-time best and session best columns. -->
-            <include
-                android:id="@id/verticalDivider02"
-                layout="@layout/view_divider"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:layout_alignTop="@id/personalBestTitle"
-                android:layout_alignBottom="@id/personalBestTimes"
-                android:layout_toRightOf="@id/personalBestTitle"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/sessionBestTitle"
-                app:layout_widthPercent="32%"
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:layout_toRightOf="@id/verticalDivider02"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/graph_card_session_best"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/sessionBestTimes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/personalBestTimes"
-                android:layout_alignRight="@id/sessionBestTitle"
-                android:padding="12dp"
-                android:gravity="right"
-                android:text="--\n--\n--\n--\n--\n--\n--\n--\n--\n--"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <!-- Vertical divider between session best and session current columns. -->
-            <include
-                android:id="@id/verticalDivider03"
-                layout="@layout/view_divider"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:layout_alignTop="@id/sessionBestTitle"
-                android:layout_alignBottom="@id/sessionBestTimes"
-                android:layout_toRightOf="@id/sessionBestTitle"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/sessionCurrentTitle"
-                app:layout_widthPercent="32%"
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:layout_toRightOf="@id/verticalDivider03"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/graph_card_session_current"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/sessionCurrentTimes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/personalBestTimes"
-                android:layout_alignRight="@id/sessionCurrentTitle"
-                android:padding="12dp"
-                android:gravity="right"
-                android:text="--\n--\n--\n--\n--\n--\n--\n--\n--\n--"
-                android:textColor="@color/black_text"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-        </android.support.percent.PercentRelativeLayout>
-
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+</LinearLayout>

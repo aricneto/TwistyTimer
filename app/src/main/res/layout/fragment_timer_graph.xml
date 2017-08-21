@@ -29,8 +29,8 @@
 
 
     <include
-        android:id="@id/statsTable"
-        layout="@layout/stats_table_new"
+        android:id="@+id/stats_container_pager"
+        layout="@layout/stats_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

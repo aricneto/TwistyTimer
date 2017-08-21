@@ -11,10 +11,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
@@ -27,18 +30,19 @@ import com.aricneto.twistytimer.stats.ChartStyle;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
@@ -64,10 +68,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
     private static final String HISTORY        = "history";
 
-    private static final int COLUMN_LABEL   = 0;
-    private static final int COLUMN_GLOBAL  = 1;
-    private static final int COLUMN_SESSION = 2;
-    private static final int COLUMN_CURRENT = 3;
+    private static final int TAB_FAVORITE   = 0;
+    private static final int TAB_AVERAGE  = 1;
+    private static final int TAB_OTHER = 2;
 
     private String  currentPuzzle;
     private String  currentPuzzleSubtype;
@@ -77,15 +80,33 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
     @BindView(R.id.linechart)
         LineChart lineChartView;
-    @BindView(R.id.statsTable)
-        View statsTable;
-    @BindView(R.id.stats_average_gridView)
-        GridView averageStatsGridView;
-    @BindView(R.id.stats_other_gridView)
-        GridView otherStatsGridView;
 
 
+    @BindView(R.id.stats_tab_favorite)
+        TextView statsTabFavorite;
+    @BindView(R.id.stats_tab_average)
+        TextView statsTabAverage;
+    @BindView(R.id.stats_tab_other)
+        TextView statsTabOther;
 
+
+    @BindView(R.id.stats_table_favorite)
+        View statsFavoriteLayout;
+    @BindView(R.id.stats_table_average)
+        View statsAverageLayout;
+    @BindView(R.id.stats_table_other)
+        View statsOtherlayout;
+
+    GridView statsFavoriteGridView;
+    GridView statsAverageGridView;
+    GridView statsOtherGridView;
+
+
+    @BindView(R.id.stats_table_viewflipper)
+        ViewFlipper statsTableViewFlipper;
+
+
+    /*
     @OnClick( {R.id.stats_label, R.id.stats_global, R.id.stats_session, R.id.stats_current} )
     public void onClickStats(View view) {
         String label = "";
@@ -105,7 +126,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
         }
         Toast.makeText(mContext, label, Toast.LENGTH_LONG).show();
-    }
+    }*/
 
     //@BindView(R.id.progressSpinner)     MaterialProgressBar progressBar;
 
@@ -186,6 +207,43 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         axisLeft.enableGridDashedLine(10, 8f, 0);
         axisLeft.setValueFormatter(new TimeFormatter());
         axisLeft.setDrawLimitLinesBehindData(true);
+
+
+        // Find the gridView inside each included layout
+        statsFavoriteGridView = statsFavoriteLayout.findViewById(R.id.stats_gridView);
+        statsAverageGridView = statsAverageLayout.findViewById(R.id.stats_gridView);
+        statsOtherGridView = statsOtherlayout.findViewById(R.id.stats_gridView);
+
+        // In order for the user to be able to drag the stats panel up, we have to disable
+        // interaction with GridView, so it can be handled by the panel
+        statsFavoriteGridView.setOnTouchListener(doNothingTouchListener);
+        statsAverageGridView.setOnTouchListener(doNothingTouchListener);
+        statsOtherGridView.setOnTouchListener(doNothingTouchListener);
+
+        // The "Favorites" and "Other" grids should only have two columns. (Best and Session)
+        // Since the base layout is 3-columns wide, we have to hide the last column title and set
+        // num of columns to 2 for these two views
+        statsFavoriteLayout.findViewById(R.id.stats_current).setVisibility(View.GONE);
+        statsOtherlayout.findViewById(R.id.stats_current).setVisibility(View.GONE);
+        statsFavoriteGridView.setNumColumns(2);
+        statsOtherGridView.setNumColumns(2);
+
+        // Also, change stats_label_column weight for these columns so it can take advantage of the
+        // extra space and display more text
+        LinearLayout.LayoutParams layoutParams
+                = (LinearLayout.LayoutParams) statsFavoriteLayout
+                .findViewById(R.id.stats_label_column).getLayoutParams();
+        layoutParams.weight = 2f;
+        statsFavoriteLayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
+        statsOtherlayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
+
+
+
+        statsTableViewFlipper.setInAnimation(mContext, R.anim.stats_grid_in);
+        statsTableViewFlipper.setOutAnimation(mContext, R.anim.stats_grid_out);
+        statsTabFavorite.setOnClickListener(statTabClickListener);
+        statsTabAverage.setOnClickListener(statTabClickListener);
+        statsTabOther.setOnClickListener(statTabClickListener);
 
 
         // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
@@ -278,6 +336,60 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         StatisticsCache.getInstance().unregisterObserver(this);
     }
 
+
+    private void highlightStatTab(TextView tab) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
+        params.setMargins(0, 0, 0, 0);
+        tab.setLayoutParams(params);
+        tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_text_color));
+        tab.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
+    }
+
+    private void fadeStatTab(TextView tab) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
+        params.setMargins(0, (int) Utils.convertDpToPixel(4), 0, 0);
+        tab.setLayoutParams(params);
+        tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr
+                .graph_stats_card_text_color_faded));
+        tab.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr
+                .graph_stats_card_background_faded));
+    }
+
+    private View.OnClickListener statTabClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View tab) {
+            switch (tab.getId()) {
+                case R.id.stats_tab_favorite:
+                    statsTableViewFlipper.setDisplayedChild(TAB_FAVORITE);
+                    highlightStatTab(statsTabFavorite);
+                    fadeStatTab(statsTabOther);
+                    fadeStatTab(statsTabAverage);
+                    break;
+                case R.id.stats_tab_average:
+                    statsTableViewFlipper.setDisplayedChild(TAB_AVERAGE);
+                    highlightStatTab(statsTabAverage);
+                    fadeStatTab(statsTabOther);
+                    fadeStatTab(statsTabFavorite);
+                    break;
+                case R.id.stats_tab_other:
+                    statsTableViewFlipper.setDisplayedChild(TAB_OTHER);
+                    highlightStatTab(statsTabOther);
+                    fadeStatTab(statsTabFavorite);
+                    fadeStatTab(statsTabAverage);
+                    break;
+            }
+        }
+    };
+
+
+    private View.OnTouchListener doNothingTouchListener = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            return true;
+        }
+    };
+
     /**
      * Sets the visibility of the statistics table values columns. When loading starts, the columns
      * should be hidden and a progress bar shown. When loading finishes, the columns should be
@@ -360,8 +472,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
         ArrayList<Stat> averageList = buildAverageList(stats);
         ArrayList<Stat> otherList = buildOtherStatList(stats);
-        averageStatsGridView.setAdapter(new StatGridAdapter(mContext, averageList));
-        otherStatsGridView.setAdapter(new StatGridAdapter(mContext, otherList));
+        statsAverageGridView.setAdapter(new StatGridAdapter(mContext, averageList));
+        statsOtherGridView.setAdapter(new StatGridAdapter(mContext, otherList));
+        statsFavoriteGridView.setAdapter(new StatGridAdapter(mContext, otherList));
 
 
         // Display the statistics and hide the progress bar.

@@ -385,6 +385,7 @@ public class ChronometerMilli extends TextView {
         updateText();
     }
 
+    // FIXME: this should use convertTimeToString
     /**
      * <p>
      * Updates the text that displays the current elapsed time. The formatting of the time depends
