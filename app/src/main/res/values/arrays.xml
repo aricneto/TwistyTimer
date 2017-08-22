@@ -20,4 +20,33 @@
         <item>@string/cube_skewb</item>
         <item>@string/cube_sq1</item>
     </string-array>
+
+    <string-array name="stats_column_average">
+        <item>3</item>
+        <item>5</item>
+        <item>12</item>
+        <item>50</item>
+        <item>100</item>
+        <item>1000</item>
+    </string-array>
+
+    <string-array name="stats_column_improvement">
+        <item>12</item>
+        <item>50</item>
+        <item>100</item>
+        <item>@string/graph_stats_label_best</item>
+        <item>@string/graph_stats_label_solve_count</item>
+        <item>@string/graph_stats_label_deviation</item>
+    </string-array>
+
+    <string-array name="stats_column_other">
+        <item>@string/graph_stats_label_best</item>
+        <item>@string/graph_stats_label_worst</item>
+        <item>@string/graph_stats_label_deviation</item>
+        <item>@string/graph_stats_label_mean</item>
+        <item>@string/graph_stats_label_total_time</item>
+        <item>@string/graph_stats_label_solve_count</item>
+    </string-array>
+
+
 </resources>

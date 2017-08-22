@@ -8,7 +8,6 @@
     app:umanoScrollableView="@id/statsTable"
     app:umanoClipPanel="false"
     app:umanoParallaxOffset="30dp"
-    app:umanoAnchorPoint="0.25"
     app:umanoFadeColor="@android:color/transparent"
     app:umanoPanelHeight="130dp"
     app:umanoShadowHeight="4dp">

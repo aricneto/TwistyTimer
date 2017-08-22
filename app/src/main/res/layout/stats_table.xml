@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:maxLines="1"
             android:id="@+id/stats_tab_favorite"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -19,10 +20,11 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="Favorites"
+            android:text="Improvement"
             android:textColor="?graph_stats_card_text_color" />
 
         <TextView
+            android:maxLines="1"
             android:id="@+id/stats_tab_average"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -36,6 +38,7 @@
             android:textColor="?graph_stats_card_text_color_faded" />
 
         <TextView
+            android:maxLines="1"
             android:id="@+id/stats_tab_other"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -57,7 +60,7 @@
         android:background="?graph_stats_card_background">
 
         <include
-            android:id="@+id/stats_table_favorite"
+            android:id="@+id/stats_table_improvement"
             layout="@layout/item_stats_table_grid" />
 
         <include

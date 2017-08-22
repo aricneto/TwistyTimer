@@ -365,10 +365,18 @@
     <string name="warning">Warning</string>
 
     <string name="worstSolveEnabledSummary">Alert when you get a personal worst</string>
-
     <string name="worstSolveEnabledTitle">Worst time alert</string>
-    <string name="graph_stats_average_label">Average of</string>
-    <string name="graph_stats_average_global">Best (all time)</string>
-    <string name="graph_stats_average_session">Best (session)</string>
-    <string name="graph_stats_average_current">Current</string>
+
+
+    <string name="graph_stats_title_averageof">Average of</string>
+    <string name="graph_stats_title_best_all_time">All time best</string>
+    <string name="graph_stats_title_session_best">Session best</string>
+    <string name="graph_stats_title_current">Current</string>
+
+    <string name="graph_stats_label_deviation">Deviation</string>
+    <string name="graph_stats_label_mean">Mean</string>
+    <string name="graph_stats_label_best">Best</string>
+    <string name="graph_stats_label_worst">Worst</string>
+    <string name="graph_stats_label_total_time">Total time</string>
+    <string name="graph_stats_label_solve_count">Count</string>
 </resources>

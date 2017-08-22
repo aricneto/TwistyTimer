@@ -4,12 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.TooltipCompat;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -90,14 +95,14 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         TextView statsTabOther;
 
 
-    @BindView(R.id.stats_table_favorite)
-        View statsFavoriteLayout;
+    @BindView(R.id.stats_table_improvement)
+        View statsImprovementLayout;
     @BindView(R.id.stats_table_average)
         View statsAverageLayout;
     @BindView(R.id.stats_table_other)
         View statsOtherlayout;
 
-    GridView statsFavoriteGridView;
+    GridView statsImprovementGridView;
     GridView statsAverageGridView;
     GridView statsOtherGridView;
 
@@ -168,6 +173,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -210,31 +216,44 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
 
         // Find the gridView inside each included layout
-        statsFavoriteGridView = statsFavoriteLayout.findViewById(R.id.stats_gridView);
+        statsImprovementGridView = statsImprovementLayout.findViewById(R.id.stats_gridView);
         statsAverageGridView = statsAverageLayout.findViewById(R.id.stats_gridView);
         statsOtherGridView = statsOtherlayout.findViewById(R.id.stats_gridView);
 
         // In order for the user to be able to drag the stats panel up, we have to disable
         // interaction with GridView, so it can be handled by the panel
-        statsFavoriteGridView.setOnTouchListener(doNothingTouchListener);
+        statsImprovementGridView.setOnTouchListener(doNothingTouchListener);
         statsAverageGridView.setOnTouchListener(doNothingTouchListener);
         statsOtherGridView.setOnTouchListener(doNothingTouchListener);
 
-        // The "Favorites" and "Other" grids should only have two columns. (Best and Session)
+        // The "Improvement" and "Other" grids should only have two columns. (Best and Session)
         // Since the base layout is 3-columns wide, we have to hide the last column title and set
         // num of columns to 2 for these two views
-        statsFavoriteLayout.findViewById(R.id.stats_current).setVisibility(View.GONE);
+        statsImprovementLayout.findViewById(R.id.stats_current).setVisibility(View.GONE);
         statsOtherlayout.findViewById(R.id.stats_current).setVisibility(View.GONE);
-        statsFavoriteGridView.setNumColumns(2);
+        statsImprovementGridView.setNumColumns(2);
         statsOtherGridView.setNumColumns(2);
+
+        // Set stats name tooltips (label shown on long press)
+        setTooltipText(R.id.stats_global, R.string.graph_stats_title_best_all_time);
+        setTooltipText(R.id.stats_session, R.string.graph_stats_title_session_best);
+        setTooltipText(R.id.stats_current, R.string.graph_stats_title_current);
+
+        // Finally, name the label rows.
+        fillLabelColumn((LinearLayout) statsAverageLayout.findViewById(R.id.stats_label_column),
+                R.array.stats_column_average);
+        fillLabelColumn((LinearLayout) statsImprovementLayout.findViewById(R.id.stats_label_column),
+                R.array.stats_column_improvement);
+        fillLabelColumn((LinearLayout) statsOtherlayout.findViewById(R.id.stats_label_column),
+                R.array.stats_column_other);
 
         // Also, change stats_label_column weight for these columns so it can take advantage of the
         // extra space and display more text
         LinearLayout.LayoutParams layoutParams
-                = (LinearLayout.LayoutParams) statsFavoriteLayout
+                = (LinearLayout.LayoutParams) statsImprovementLayout
                 .findViewById(R.id.stats_label_column).getLayoutParams();
         layoutParams.weight = 2f;
-        statsFavoriteLayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
+        statsImprovementLayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
         statsOtherlayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
 
 
@@ -336,6 +355,47 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         StatisticsCache.getInstance().unregisterObserver(this);
     }
 
+    /**
+     * Since all stats views have the same base layout, they share the same views
+     * with the same ids. This function uses the TooltipCompat function added in support library
+     * v26 to set a tooltip for an icon in each of the stats tabs.
+     *
+     * @param viewId
+     *      The ID of the view that should receive the tooltip
+     * @param tooltipTextRes
+     *      The string resource to be displayed
+     */
+    private void setTooltipText(@IdRes int viewId, @StringRes int tooltipTextRes) {
+        TooltipCompat.setTooltipText(statsImprovementLayout.findViewById(viewId),
+                getString(tooltipTextRes));
+        TooltipCompat.setTooltipText(statsAverageLayout.findViewById(viewId),
+                getString(tooltipTextRes));
+        TooltipCompat.setTooltipText(statsOtherlayout.findViewById(viewId),
+                getString(tooltipTextRes));
+    }
+
+    private void fillLabelColumn(LinearLayout column, @ArrayRes int stringArrayRes) {
+        ContextThemeWrapper viewWrapper = new ContextThemeWrapper(mContext, R.style
+                .StatTextStyle);
+        TextView label;
+
+        // Used to alternate background colors in foreach
+        boolean altBackground = true;
+        int altBackgroundColorRes = ThemeUtils.fetchAttrColor(mContext, R.attr
+                .graph_stats_card_background_alt);
+
+        for (String stringRes : getResources().getStringArray(stringArrayRes)) {
+            label = new TextView(viewWrapper, null, 0);
+
+            if (altBackground)
+                label.setBackgroundColor(altBackgroundColorRes);
+            altBackground = !altBackground;
+
+            label.setText(stringRes);
+
+            column.addView(label);
+        }
+    }
 
     private void highlightStatTab(TextView tab) {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
@@ -360,22 +420,28 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         public void onClick(View tab) {
             switch (tab.getId()) {
                 case R.id.stats_tab_favorite:
-                    statsTableViewFlipper.setDisplayedChild(TAB_FAVORITE);
-                    highlightStatTab(statsTabFavorite);
-                    fadeStatTab(statsTabOther);
-                    fadeStatTab(statsTabAverage);
+                    if (!(statsTableViewFlipper.getDisplayedChild() == TAB_FAVORITE)) {
+                        statsTableViewFlipper.setDisplayedChild(TAB_FAVORITE);
+                        highlightStatTab(statsTabFavorite);
+                        fadeStatTab(statsTabOther);
+                        fadeStatTab(statsTabAverage);
+                    }
                     break;
                 case R.id.stats_tab_average:
-                    statsTableViewFlipper.setDisplayedChild(TAB_AVERAGE);
-                    highlightStatTab(statsTabAverage);
-                    fadeStatTab(statsTabOther);
-                    fadeStatTab(statsTabFavorite);
+                    if (!(statsTableViewFlipper.getDisplayedChild() == TAB_AVERAGE)) {
+                        statsTableViewFlipper.setDisplayedChild(TAB_AVERAGE);
+                        highlightStatTab(statsTabAverage);
+                        fadeStatTab(statsTabOther);
+                        fadeStatTab(statsTabFavorite);
+                    }
                     break;
                 case R.id.stats_tab_other:
-                    statsTableViewFlipper.setDisplayedChild(TAB_OTHER);
-                    highlightStatTab(statsTabOther);
-                    fadeStatTab(statsTabFavorite);
-                    fadeStatTab(statsTabAverage);
+                    if (!(statsTableViewFlipper.getDisplayedChild() == TAB_OTHER)) {
+                        statsTableViewFlipper.setDisplayedChild(TAB_OTHER);
+                        highlightStatTab(statsTabOther);
+                        fadeStatTab(statsTabFavorite);
+                        fadeStatTab(statsTabAverage);
+                    }
                     break;
             }
         }
@@ -472,17 +538,78 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
         ArrayList<Stat> averageList = buildAverageList(stats);
         ArrayList<Stat> otherList = buildOtherStatList(stats);
+        ArrayList<Stat> improvementList = buildImprovementStatList(stats);
         statsAverageGridView.setAdapter(new StatGridAdapter(mContext, averageList));
         statsOtherGridView.setAdapter(new StatGridAdapter(mContext, otherList));
-        statsFavoriteGridView.setAdapter(new StatGridAdapter(mContext, otherList));
+        statsImprovementGridView.setAdapter(new StatGridAdapter(mContext, improvementList));
 
 
         // Display the statistics and hide the progress bar.
         setStatsTableVisibility(View.VISIBLE);
     }
 
+    private ArrayList<Stat> buildImprovementStatList(Statistics stats) {
+        // There are 2 columns (best, session), and 6 rows
+        ArrayList<Stat> statsList = new ArrayList<>(5 * 2);
+
+
+        // DO NOT CHANGE THE ORDER!
+        // The adapter adds views in the list order, left -> right, top -> bottom, so if the order
+        // is changed, times will be placed in the wrong spots on the grid!
+
+        // Ao12
+        // all time best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(12, false)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 0));
+        // session best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(12, true)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 0));
+
+        // Ao50
+        // all time best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(50, false)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 1));
+        // session best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(50, true)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 1));
+
+        // Ao100
+        // all time best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(100, false)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 2));
+        // session best
+        statsList.add(new Stat(convertTimeToString(
+                tr(stats.getAverageOf(100, true)
+                        .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
+                Stat.SCOPE_GLOBAL, 2));
+
+        // Best time
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
+
+        // Num solves
+        statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
+                Stat.SCOPE_GLOBAL, 4));
+        statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves()),
+                Stat.SCOPE_SESSION, 4));
+
+        return statsList;
+    }
+
     private ArrayList<Stat> buildOtherStatList(Statistics stats) {
-        // There are 2 columns (best, session), and 5 rows (best, worst, deviation, total time
+        // There are 2 columns (best, session), and 6 rows (best, worst, deviation, total time, mean
         // and count).
         ArrayList<Stat> statsList = new ArrayList<>(5 * 2);
 
@@ -500,15 +627,20 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils
                 .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 1));
 
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
+
         statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeTotalTime()), PuzzleUtils
-                .FORMAT_NO_MILLI), Stat.SCOPE_GLOBAL, 3));
+                .FORMAT_NO_MILLI), Stat.SCOPE_GLOBAL, 4));
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionTotalTime()), PuzzleUtils
-                .FORMAT_NO_MILLI), Stat.SCOPE_SESSION, 3));
+                .FORMAT_NO_MILLI), Stat.SCOPE_SESSION, 4));
 
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
-                Stat.SCOPE_GLOBAL, 4));
+                Stat.SCOPE_GLOBAL, 5));
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves()),
-                Stat.SCOPE_SESSION, 4));
+                Stat.SCOPE_SESSION, 5));
 
         return statsList;
     }
