@@ -105,6 +105,7 @@ public class TimerFragment extends BaseFragment
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
+    private static final String SCRAMBLE = "scramble";
 
     /**
      * The time delay in milliseconds before starting the chronometer if the hold-for-start
@@ -118,7 +119,7 @@ public class TimerFragment extends BaseFragment
     private String currentScramble = "";
     private Solve  currentSolve    = null;
 
-    private String realScramble;
+    private String realScramble = null;
 
     CountDownTimer countdown;
     boolean countingDown = false;
@@ -367,6 +368,12 @@ public class TimerFragment extends BaseFragment
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
         }
 
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString(PUZZLE) == getArguments().get(PUZZLE)) {
+                realScramble = savedInstanceState.getString(SCRAMBLE);
+            }
+        }
+
         scrambleGeneratorAsync = new GenerateScrambleSequence();
 
         generator = new ScrambleGenerator(currentPuzzle);
@@ -471,7 +478,12 @@ public class TimerFragment extends BaseFragment
         }
 
         if (scrambleEnabled) {
-            scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if (realScramble == null) {
+                scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+            else {
+                setScramble(realScramble);
+            }
         } else {
             scrambleText.setVisibility(View.GONE);
             scrambleImg.setVisibility(View.GONE);
@@ -1080,6 +1092,13 @@ public class TimerFragment extends BaseFragment
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SCRAMBLE, realScramble);
+        outState.putString(PUZZLE, currentPuzzle);
+    }
+
+    @Override
     public void onDetach() {
         if (DEBUG_ME) Log.d(TAG, "onDetach()");
         super.onDetach();
@@ -1196,51 +1215,55 @@ public class TimerFragment extends BaseFragment
         }
 
         @Override
-        protected void onPostExecute(final String scramble) {
-            scrambleText.setVisibility(View.INVISIBLE);
-            scrambleText.setText(scramble);
-            scrambleText.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (scrambleText != null) {
-                        Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
-                        Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
-                        Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
-
-                        if ((Rect.intersects(scrambleRect, chronometerRect)) ||
-                                (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
-                            scrambleText.setClickable(true);
-                            scrambleText.setText(R.string.scramble_text_tap_hint);
-                            scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
-                            scrambleText.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    panelText.setText(scramble);
-                                    panelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize());
-                                    panelText.setGravity(Gravity.CENTER);
-                                    panelSpinner.setVisibility(View.GONE);
-                                    panelSpinnerText.setVisibility(View.GONE);
-                                    slidingLayout.setPanelState(PanelState.EXPANDED);
-                                }
-                            });
-                        } else {
-                            scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                            scrambleText.setClickable(false);
-                        }
-                        if (! isRunning)
-                            scrambleText.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            realScramble = scramble;
-            if (scrambleImgEnabled)
-                generateScrambleImage();
-            else
-                progressSpinner.setVisibility(View.GONE);
-            isLocked = false;
-
-            canShowHint = true;
+        protected void onPostExecute(String scramble) {
+            setScramble(scramble);
         }
+    }
+
+    private void setScramble(final String scramble) {
+        scrambleText.setVisibility(View.INVISIBLE);
+        scrambleText.setText(scramble);
+        scrambleText.post(new Runnable() {
+            @Override
+            public void run() {
+                if (scrambleText != null) {
+                    Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
+                    Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
+                    Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
+
+                    if ((Rect.intersects(scrambleRect, chronometerRect)) ||
+                            (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
+                        scrambleText.setClickable(true);
+                        scrambleText.setText(R.string.scramble_text_tap_hint);
+                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
+                        scrambleText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                panelText.setText(scramble);
+                                panelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize());
+                                panelText.setGravity(Gravity.CENTER);
+                                panelSpinner.setVisibility(View.GONE);
+                                panelSpinnerText.setVisibility(View.GONE);
+                                slidingLayout.setPanelState(PanelState.EXPANDED);
+                            }
+                        });
+                    } else {
+                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        scrambleText.setClickable(false);
+                    }
+                    if (! isRunning)
+                        scrambleText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        realScramble = scramble;
+        if (scrambleImgEnabled)
+            generateScrambleImage();
+        else
+            progressSpinner.setVisibility(View.GONE);
+        isLocked = false;
+
+        canShowHint = true;
     }
 
     private class GenerateScrambleImage extends AsyncTask<Void, Void, Drawable> {
