@@ -89,9 +89,9 @@
             android:gravity="center"
             android:textColor="?colorTimerText"
             android:textColorHighlight="?colorAccent"
+            android:textIsSelectable="false"
             android:textSize="60sp"
-            android:textStyle="bold"
-            android:textIsSelectable="false" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/inspectionText"
@@ -201,7 +201,7 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <LinearLayout
+        <android.support.v7.widget.GridLayout
             android:id="@+id/detailLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,49 +209,106 @@
             android:layout_alignParentRight="true"
             android:layout_alignWithParentIfMissing="true"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginRight="16dp"
+            app:columnCount="2">
 
             <TextView
-                android:id="@+id/sessionDetailTextAvg"
+                android:id="@+id/sessionDetailTextAo5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_ao5_full"
+                android:textColor="?colorTimerDetailText"
+                android:textSize="13sp"
+                app:layout_column="0"
+                app:layout_row="0" />
+
+            <TextView
+                android:id="@+id/sessionDetailTextAo12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_ao12_full"
+                android:textColor="?colorTimerDetailText"
+                android:textSize="13sp"
+                app:layout_column="0"
+                app:layout_row="1" />
+
+            <TextView
+                android:id="@+id/sessionDetailTextAo50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_ao50_full"
+                android:textColor="?colorTimerDetailText"
+                android:textSize="13sp"
+                app:layout_column="0"
+                app:layout_row="2" />
+
+            <TextView
+                android:id="@+id/sessionDetailTextAo100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_ao100_full"
+                android:textColor="?colorTimerDetailText"
+                android:textSize="13sp"
+                app:layout_column="0"
+                app:layout_row="3" />
+
+            <TextView
+                android:id="@+id/sessionDetailTextDeviation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:gravity="right"
-                android:text="@string/detail_text_avg"
+                android:text="@string/graph_stats_label_deviation"
                 android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:layout_column="1"
+                app:layout_row="0" />
 
             <TextView
-                android:id="@+id/sessionDetailTimesAvg"
+                android:id="@+id/sessionDetailTextBest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:gravity="left"
-                android:text="--\n--\n--\n--"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/sessionDetailTextMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:gravity="right"
-                android:text="@string/detail_text_more"
+                android:text="@string/graph_stats_label_best"
                 android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:layout_column="1"
+                app:layout_row="1" />
 
             <TextView
-                android:id="@+id/sessionDetailTimesMore"
+                android:id="@+id/sessionDetailTextWorst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:gravity="left"
-                android:text="--\n--\n--\n--"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_worst"
                 android:textColor="?colorTimerDetailText"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:layout_column="1"
+                app:layout_row="2" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/sessionDetailTextCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:gravity="right"
+                android:text="@string/graph_stats_label_solve_count"
+                android:textColor="?colorTimerDetailText"
+                android:textSize="13sp"
+                app:layout_column="1"
+                app:layout_row="3" />
+
+        </android.support.v7.widget.GridLayout>
 
         <ImageView
             android:id="@+id/scrambleImg"

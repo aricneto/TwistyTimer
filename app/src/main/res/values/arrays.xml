@@ -48,4 +48,15 @@
         <item>@string/graph_stats_label_solve_count</item>
     </string-array>
 
+    <string-array name="timer_detail_stats">
+        <item>@string/graph_stats_label_ao5_full</item>
+        <item>@string/graph_stats_label_ao12_full</item>
+        <item>@string/graph_stats_label_ao50_full</item>
+        <item>@string/graph_stats_label_ao100_full</item>
+        <item>@string/graph_stats_label_deviation</item>
+        <item>@string/graph_stats_label_best</item>
+        <item>@string/graph_stats_label_worst</item>
+        <item>@string/graph_stats_label_solve_count</item>
+    </string-array>
+
 </resources>

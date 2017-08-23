@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
+import android.text.SpannableString;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -55,11 +56,13 @@ import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
+import com.aricneto.twistytimer.spans.RoundRectSpan;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
@@ -67,11 +70,13 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import java.util.Locale;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.FORMAT_DEFAULT;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
@@ -155,8 +160,19 @@ public class TimerFragment extends BaseFragment
     private Animator mCurrentAnimator;
 
     private Unbinder mUnbinder;
-    @BindView(R.id.sessionDetailTimesAvg)  TextView detailTimesAvg;
-    @BindView(R.id.sessionDetailTimesMore) TextView detailTimesMore;
+
+    // Holds the localized strings related to each detail statistic, in order:
+    // Ao5, Ao12, Ao50, Ao100, Deviation, Best, Worst, Count
+    private String detailTextNamesArray[] = new String[8];
+
+    @BindViews({R.id.sessionDetailTextAo5, R.id.sessionDetailTextAo12, R.id.sessionDetailTextAo50, R
+            .id.sessionDetailTextAo100}) TextView detailTextAvgs[];
+
+    @BindView(R.id.sessionDetailTextDeviation) TextView detailTextDeviation;
+    @BindView(R.id.sessionDetailTextBest) TextView detailTextBest;
+    @BindView(R.id.sessionDetailTextWorst) TextView detailTextWorst;
+    @BindView(R.id.sessionDetailTextCount) TextView detailTextCount;
+
     @BindView(R.id.detailLayout)           View     detailLayout;
 
     @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
@@ -373,6 +389,8 @@ public class TimerFragment extends BaseFragment
                 realScramble = savedInstanceState.getString(SCRAMBLE);
             }
         }
+
+        detailTextNamesArray = getResources().getStringArray(R.array.timer_detail_stats);
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
 
@@ -905,32 +923,51 @@ public class TimerFragment extends BaseFragment
             return;
         }
 
-        String sessionCount
-                = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
-        String sessionMeanTime = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionDeviation = convertTimeToString(tr(stats.getSessionStdDeviation()), PuzzleUtils
+                .FORMAT_DEFAULT);
+        String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
         String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
         String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
 
-        String sessionCurrentAvg5 = convertTimeToString(
-                tr(stats.getAverageOf(5, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg12 = convertTimeToString(
-                tr(stats.getAverageOf(12, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg50 = convertTimeToString(
-                tr(stats.getAverageOf(50, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionCurrentAvg100 = convertTimeToString(
-                tr(stats.getAverageOf(100, true).getCurrentAverage()), PuzzleUtils.FORMAT_DEFAULT);
+        long allTimeBestAvg[] = new long[4];
+        long sessionCurrentAvg[] = new long[4];
 
-        detailTimesAvg.setText(
-                sessionCurrentAvg5 + "\n" +
-                        sessionCurrentAvg12 + "\n" +
-                        sessionCurrentAvg50 + "\n" +
-                        sessionCurrentAvg100);
+        allTimeBestAvg[0] = tr(stats.getAverageOf(5, true).getBestAverage());
+        allTimeBestAvg[1] = tr(stats.getAverageOf(12, true).getBestAverage());
+        allTimeBestAvg[2] = tr(stats.getAverageOf(50, true).getBestAverage());
+        allTimeBestAvg[3] = tr(stats.getAverageOf(100, true).getBestAverage());
 
-        detailTimesMore.setText(
-                sessionMeanTime + "\n" +
-                        sessionBestTime + "\n" +
-                        sessionWorstTime + "\n" +
-                        sessionCount);
+        sessionCurrentAvg[0] = tr(stats.getAverageOf(5, true).getCurrentAverage());
+        sessionCurrentAvg[1] = tr(stats.getAverageOf(12, true).getCurrentAverage());
+        sessionCurrentAvg[2] = tr(stats.getAverageOf(50, true).getCurrentAverage());
+        sessionCurrentAvg[3] = tr(stats.getAverageOf(100, true).getCurrentAverage());
+
+        // detailTextNamesArray should be in the same order as shown in the timer
+        // (keep R.arrays.timer_detail_stats in sync with the order!)
+        detailTextDeviation.setText(detailTextNamesArray[4] + ": " + sessionDeviation);
+        detailTextBest.setText(detailTextNamesArray[5] + ": " + sessionBestTime);
+        detailTextWorst.setText(detailTextNamesArray[6] + ": " + sessionWorstTime);
+        detailTextCount.setText(detailTextNamesArray[7] + ": " + sessionCount);
+
+        SpannableString avgText;
+
+        for (int i = 0; i < 4; i++) {
+            if (sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
+                // Create string. Spaces on start and end are there to give padding for the
+                // Rectangle (otherwise it would have no padding on left and right)
+                avgText = new SpannableString(" " + detailTextNamesArray[i] + ": " +
+                        convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT) + " ");
+                // Set string style
+                avgText.setSpan(new RoundRectSpan(
+                        ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent))
+                        , 0, avgText.length(), 0);
+                // Set text
+                detailTextAvgs[i].setText(avgText);
+            } else {
+                detailTextAvgs[i].setText(detailTextNamesArray[i] + ": " +
+                        convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
+            }
+        }
     }
 
     private void generateScrambleImage() {
