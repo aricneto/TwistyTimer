@@ -379,4 +379,9 @@
     <string name="graph_stats_label_worst">Worst</string>
     <string name="graph_stats_label_total_time">Total time</string>
     <string name="graph_stats_label_solve_count">Count</string>
+
+    <!-- Full names for Average of... -->
+    <string name="graph_stats_label_ao12_full">Ao12</string>
+    <string name="graph_stats_label_ao50_full">Ao50</string>
+    <string name="graph_stats_label_ao100_full">Ao100</string>
 </resources>

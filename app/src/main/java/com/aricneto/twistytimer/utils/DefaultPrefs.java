@@ -5,7 +5,7 @@ import android.support.annotation.BoolRes;
 import com.aricneto.twistytimer.TwistyTimer;
 
 /**
- * TODO: HEADER
+ * Utility class to facilitate accessing the default arguments for preferences
  */
 
 public final class DefaultPrefs {

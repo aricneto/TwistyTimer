@@ -8,16 +8,20 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.FORMAT_NO_MILLI;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.FORMAT_SMALL_MILLI;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 
 /**
  * A chronometer for twisty puzzles of all types. This supports timing in milliseconds, display of
@@ -25,34 +29,9 @@ import org.joda.time.DateTimeZone;
  * addition of standard "+2" and "DNF" penalties, and "hold-for-start" behaviour that can restore a
  * previous time if the hold is cancelled.
  */
-public class ChronometerMilli extends TextView {
+public class ChronometerMilli extends AppCompatTextView {
     @SuppressWarnings("unused")
     private static final String TAG = "Chronometer";
-
-    /**
-     * Low resolution time format for times of one hour or greater.
-     */
-    private static final String TIME_FMT_HOURS_LR = "k':'mm'<small>:'ss'</small>'";
-
-    /**
-     * Low resolution time format for times from one minute (inclusive) to one hour (exclusive).
-     */
-    private static final String TIME_FMT_MINS_LR = "m'<small>:'ss'</small>'";
-
-    /**
-     * Low resolution time format for times less than one minute.
-     */
-    private static final String TIME_FMT_SECS_LR = "s";
-
-    /**
-     * High resolution time format for times from one minute (inclusive) to one hour (exclusive).
-     */
-    private static final String TIME_FMT_MINS_HR = "m':'ss'<small>.'SS'</small>'";
-
-    /**
-     * High resolution time format for times less than one minute.
-     */
-    private static final String TIME_FMT_SECS_HR = "s'<small>.'SS'</small>'";
 
     /**
      * The penalty time in milliseconds for a standard "+2" penalty.
@@ -68,7 +47,8 @@ public class ChronometerMilli extends TextView {
      * The number of milliseconds between updates to the displayed of a high-resolution elapsed
      * time.
      */
-    private static final long TICK_TIME_HR = 10L; // 0.01 seconds (100 fps). Probably overkill.
+    private static final long TICK_TIME_HR = 30L; // 0.03 seconds (33 fps). 3 times less updates
+    // than 0.01 seconds, but no noticeable visual difference.
 
     private static final int TICK_WHAT = 2;
 
@@ -186,10 +166,10 @@ public class ChronometerMilli extends TextView {
      */
     public long getElapsedTime() {
         switch (mPenalty) {
-            case PuzzleUtils.PENALTY_DNF:
+            case PENALTY_DNF:
                 return 0L;
 
-            case PuzzleUtils.PENALTY_PLUSTWO:
+            case PENALTY_PLUSTWO:
                 return getElapsedTimeExcludingPenalties() + TWO_SECOND_PENALTY_MS;
 
             default:
@@ -345,7 +325,7 @@ public class ChronometerMilli extends TextView {
 
         mStartedAt = 0L;
         mStoppedAt = 0L;
-        mPenalty = PuzzleUtils.NO_PENALTY;
+        mPenalty = NO_PENALTY;
 
         // If we were holding for a start, stop doing that now and discard any saved text.
         endHoldForStart();
@@ -371,9 +351,9 @@ public class ChronometerMilli extends TextView {
      */
     public void setPenalty(int penalty) {
         switch (penalty) {
-            case PuzzleUtils.NO_PENALTY:
-            case PuzzleUtils.PENALTY_PLUSTWO:
-            case PuzzleUtils.PENALTY_DNF:
+            case NO_PENALTY:
+            case PENALTY_PLUSTWO:
+            case PENALTY_DNF:
                 mPenalty = penalty;
                 break;
 
@@ -385,7 +365,6 @@ public class ChronometerMilli extends TextView {
         updateText();
     }
 
-    // FIXME: this should use convertTimeToString
     /**
      * <p>
      * Updates the text that displays the current elapsed time. The formatting of the time depends
@@ -421,30 +400,22 @@ public class ChronometerMilli extends TextView {
         if (mIsStarted && hideTimeEnabled) {
             timeText = hideTimeText;
             isHiRes = false;
-        } else if (!mIsHoldingForStart && mPenalty == PuzzleUtils.PENALTY_DNF) {
+        } else if (!mIsHoldingForStart && mPenalty == PENALTY_DNF) {
             timeText = "DNF";
             isHiRes = false;
         } else {
             final long elapsedMS = mIsHoldingForStart ? 0L : getElapsedTime();
             final long hours = elapsedMS / (3_600_000L);
-            final long minutes = (elapsedMS % (3_600_000L)) / (60_000L);
-            final String timeFormat;
 
             isHiRes = (!mIsStarted || mShowHiRes) && hours == 0;
 
-            if (hours > 0) {
-                timeFormat = TIME_FMT_HOURS_LR; // Always low resolution when > 1 hour.
-            } else if (minutes > 0) {
-                timeFormat = isHiRes ? TIME_FMT_MINS_HR : TIME_FMT_MINS_LR;
-            } else {
-                timeFormat = isHiRes ? TIME_FMT_SECS_HR : TIME_FMT_SECS_LR;
-            }
-
-            timeText = new DateTime(elapsedMS, DateTimeZone.UTC).toString(timeFormat);
-
+            if (elapsedMS > 0)
+                timeText = convertTimeToString(elapsedMS, isHiRes ? FORMAT_SMALL_MILLI : FORMAT_NO_MILLI);
+            else
+                timeText = "0<small>.00</small>";
             // If a "+2" penalty has been applied and the chronometer is not started or holding,
             // append a small "+" to the time text to declare that a penalty has been added.
-            if (!mIsStarted && !mIsHoldingForStart && mPenalty == PuzzleUtils.PENALTY_PLUSTWO) {
+            if (!mIsStarted && !mIsHoldingForStart && mPenalty == PENALTY_PLUSTWO) {
                 timeText += " <small>+</small>";
             }
         }

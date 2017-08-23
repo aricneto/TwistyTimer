@@ -103,6 +103,24 @@ public final class AverageCalculator {
      */
     private int mNumAllTimeDNFs;
 
+
+    /**
+     * The Welford algorithm for variance is one of the most well-known and used online methods of
+     * calculating the variance of a given sample data. The algorithm itself has several
+     * variables, which are listed here. I won't pretend to fully understand it myself, but there
+     * are a lot of references online for it.
+     */
+    private double mMean = 0;
+    private double mVarianceDelta = 0;
+    private double mVarianceDelta2 = 0;
+    private double mVarianceM2 = 0;
+
+    /**
+     * The current variance of all solves ever recorded. A value of {@link #UNKNOWN} indicates
+     * the sample size is not enough for it to be calculated yet.
+     */
+    private long mVariance;
+
     /**
      * The sum of all non-DNF results currently recorded in {@code #mTimes}. The number of such
      * results is given by {@code Math.min(mN, mNumSolves) - mNumCurrentDNFs}. A value of
@@ -199,6 +217,12 @@ public final class AverageCalculator {
         mNumCurrentDNFs = 0;
         mNumAllTimeDNFs = 0;
 
+        // Variance variables
+        mMean = 0;
+        mVarianceDelta = 0;
+        mVarianceDelta2 = 0;
+        mVarianceM2 = 0;
+
         mCurrentSum = UNKNOWN;
         mAllTimeSum = UNKNOWN;
         mCurrentBestTime = UNKNOWN;
@@ -207,6 +231,7 @@ public final class AverageCalculator {
         mAllTimeBestTime = UNKNOWN;
         mAllTimeWorstTime = UNKNOWN;
         mAllTimeBestAverage = UNKNOWN;
+        mVariance = UNKNOWN;
     }
 
     /**
@@ -274,6 +299,7 @@ public final class AverageCalculator {
             updateDNFCounts(time, ejectedTime);
             updateCurrentBestAndWorstTimes(time, ejectedTime);
             updateSums(time, ejectedTime);
+            updateVariance(time);
             updateCurrentAverage();
 
             updateAllTimeBestAndWorstTimes();
@@ -405,7 +431,7 @@ public final class AverageCalculator {
     private void updateSums(long addedTime, long ejectedTime) {
         if (addedTime != DNF) {
             mCurrentSum = addedTime + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
-            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);
+            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);;
         }
         if (ejectedTime != DNF && ejectedTime != UNKNOWN) {
             mCurrentSum -= ejectedTime;
@@ -415,6 +441,24 @@ public final class AverageCalculator {
         // Flag the new state properly. ("mAllTimeSum" cannot return to zero.)
         if (mCurrentSum == 0L) {
             mCurrentSum = UNKNOWN;
+        }
+    }
+
+    /**
+     * The Welford algorithm for variance is one of the most well-known and used online methods of
+     * calculating the variance of a given sample data. I won't pretend to fully understand it
+     * myself, but there are a lot of references online for it.
+     */
+    private void updateVariance(long addedTime) {
+        long totalValidSolves = (mNumSolves - mNumAllTimeDNFs);
+        if (addedTime != DNF) {
+            mVarianceDelta = ((double) addedTime) - mMean;
+            mMean += mVarianceDelta / totalValidSolves;
+            mVarianceDelta2 = ((double) addedTime) - mMean;
+            mVarianceM2 += mVarianceDelta * mVarianceDelta2;
+        }
+        if (totalValidSolves > 2) {
+            mVariance = (long) (mVarianceM2 / (totalValidSolves - 1));
         }
     }
 
@@ -608,6 +652,18 @@ public final class AverageCalculator {
     }
 
     /**
+     * Gets the current Sample Standard Deviation of all non-DNF solves that were added to this
+     * calculator
+     *
+     * @return
+     *      The Sample Standard Deviation of all non-DNF solves that were added to this calculator
+     *      Will be {@link #UNKNOWN} if no times have been added, or if all added solve times
+     *      were {@link #DNF}s.
+     */
+    public long getStandardDeviation() { return mVariance != UNKNOWN ? (long) Math.sqrt
+            (mVariance) : UNKNOWN; }
+
+    /**
      * Gets the simple arithmetic mean time of all non-DNF solves that were added to this
      * calculator. The returned millisecond value is truncated to a whole milliseconds value, not
      * rounded.
@@ -618,7 +674,7 @@ public final class AverageCalculator {
      *     {@link #DNF}s.
      */
     public long getMeanTime() {
-        return mAllTimeSum != UNKNOWN ? mAllTimeSum / (mNumSolves - mNumAllTimeDNFs) : UNKNOWN;
+        return (long) mMean != 0 ? (long) mMean : UNKNOWN;
     }
 
     /**

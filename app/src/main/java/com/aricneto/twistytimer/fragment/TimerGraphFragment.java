@@ -205,6 +205,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         xAxis.setAvoidFirstLastClipping(true);
 
         axisLeft.setDrawGridLines(true);
+        axisLeft.setSpaceTop(30f);
         axisLeft.setTextColor(axisColor);
         axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         axisLeft.setAxisLineColor(axisColor);
@@ -557,53 +558,58 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // The adapter adds views in the list order, left -> right, top -> bottom, so if the order
         // is changed, times will be placed in the wrong spots on the grid!
 
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeStdDeviation()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 0));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionStdDeviation()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 0));
+
         // Ao12
         // all time best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(12, false)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 0));
+                Stat.SCOPE_GLOBAL, 1));
         // session best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(12, true)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 0));
+                Stat.SCOPE_GLOBAL, 1));
 
         // Ao50
         // all time best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(50, false)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 1));
+                Stat.SCOPE_GLOBAL, 2));
         // session best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(50, true)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 1));
+                Stat.SCOPE_GLOBAL, 2));
 
         // Ao100
         // all time best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(100, false)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 2));
+                Stat.SCOPE_GLOBAL, 3));
         // session best
         statsList.add(new Stat(convertTimeToString(
                 tr(stats.getAverageOf(100, true)
                         .getBestAverage()), PuzzleUtils.FORMAT_DEFAULT),
-                Stat.SCOPE_GLOBAL, 2));
+                Stat.SCOPE_GLOBAL, 3));
 
         // Best time
         statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeBestTime()), PuzzleUtils
-                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 4));
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils
-                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 4));
 
         // Num solves
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
-                Stat.SCOPE_GLOBAL, 4));
+                Stat.SCOPE_GLOBAL, 5));
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves()),
-                Stat.SCOPE_SESSION, 4));
+                Stat.SCOPE_SESSION, 5));
 
         return statsList;
     }
@@ -627,15 +633,20 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils
                 .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 1));
 
+        statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeStdDeviation()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 2));
+        statsList.add(new Stat(convertTimeToString(tr(stats.getSessionStdDeviation()), PuzzleUtils
+                .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 2));
+
         statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeMeanTime()), PuzzleUtils
                 .FORMAT_DEFAULT), Stat.SCOPE_GLOBAL, 3));
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils
                 .FORMAT_DEFAULT), Stat.SCOPE_SESSION, 3));
 
         statsList.add(new Stat(convertTimeToString(tr(stats.getAllTimeTotalTime()), PuzzleUtils
-                .FORMAT_NO_MILLI), Stat.SCOPE_GLOBAL, 4));
+                .FORMAT_LARGE), Stat.SCOPE_GLOBAL, 4));
         statsList.add(new Stat(convertTimeToString(tr(stats.getSessionTotalTime()), PuzzleUtils
-                .FORMAT_NO_MILLI), Stat.SCOPE_SESSION, 4));
+                .FORMAT_LARGE), Stat.SCOPE_SESSION, 4));
 
         statsList.add(new Stat(String.format(Locale.getDefault(), "%,d", stats.getAllTimeNumSolves()),
                 Stat.SCOPE_GLOBAL, 5));

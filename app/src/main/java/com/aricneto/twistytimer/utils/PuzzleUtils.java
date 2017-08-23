@@ -47,6 +47,7 @@ public class PuzzleUtils {
     public static final int FORMAT_DEFAULT = 0;
     public static final int FORMAT_SMALL_MILLI = 1;
     public static final int FORMAT_NO_MILLI = 2;
+    public static final int FORMAT_LARGE = 3;
     // --                                    --
 
     public PuzzleUtils() {
@@ -143,31 +144,47 @@ public class PuzzleUtils {
         StringBuilder formattedString = new StringBuilder();
 
 
-        //PeriodFormatter ignores appends (and suffixes) if time is not enough to convert
-        PeriodFormatter periodFormatter = periodFormatterBuilder
-                .appendDays().appendSuffix("d, ")
-                .appendHours().appendSuffix("h ")
-                .appendMinutes().appendSuffix(":")
-                .printZeroAlways()
-                .appendSeconds()
-                .toFormatter();
+        // PeriodFormatter ignores appends (and suffixes) if time is not enough to convert.
+        // If the time ir smaller than 10_000 milliseconds (10 seconds), do not pad it with
+        // a zero
+        PeriodFormatter periodFormatter;
+
+        if (format == FORMAT_LARGE) {
+            periodFormatter = periodFormatterBuilder
+                    .appendHours().appendSuffix("h ")
+                    .printZeroAlways()
+                    .appendMinutes().appendSuffix("m")
+                    .toFormatter();
+        } else {
+            periodFormatter = periodFormatterBuilder
+                    .appendHours().appendSuffix("h ")
+                    .appendMinutes().appendSuffix(":")
+                    .printZeroAlways()
+                    .minimumPrintedDigits(time < (10_000) ? 1 : 2)
+                    .appendSeconds()
+                    .toFormatter();
+        }
 
         formattedString.append(period.toString(periodFormatter));
 
-        // restrict millis to 2 digits
+        // Restrict millis to 2 digits
         long millis = time % 1000;
         if (millis >= 10)
             millis /= 10;
 
+        // Append millis
         switch (format) {
             case FORMAT_DEFAULT:
                 formattedString.append(".");
-                formattedString.append(millis > 10 ? millis : "0" + millis);
+                formattedString.append(millis >= 10 ? millis : "0" + millis);
                 break;
             case FORMAT_SMALL_MILLI:
                 formattedString.append("<small>.");
-                formattedString.append(millis > 10 ? millis : "0" + millis);
+                formattedString.append(millis >= 10 ? millis : "0" + millis);
                 formattedString.append("</small>");
+                break;
+            case FORMAT_NO_MILLI:
+            default:
                 break;
         }
 

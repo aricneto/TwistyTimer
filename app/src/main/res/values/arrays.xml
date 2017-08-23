@@ -31,12 +31,12 @@
     </string-array>
 
     <string-array name="stats_column_improvement">
-        <item>12</item>
-        <item>50</item>
-        <item>100</item>
+        <item>@string/graph_stats_label_deviation</item>
+        <item>@string/graph_stats_label_ao12_full</item>
+        <item>@string/graph_stats_label_ao50_full</item>
+        <item>@string/graph_stats_label_ao100_full</item>
         <item>@string/graph_stats_label_best</item>
         <item>@string/graph_stats_label_solve_count</item>
-        <item>@string/graph_stats_label_deviation</item>
     </string-array>
 
     <string-array name="stats_column_other">
@@ -47,6 +47,5 @@
         <item>@string/graph_stats_label_total_time</item>
         <item>@string/graph_stats_label_solve_count</item>
     </string-array>
-
 
 </resources>
