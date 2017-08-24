@@ -31,7 +31,8 @@
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryDark">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_amber_500</item>
-        <item name="colorAccentWhiteContrast">@color/md_red_A400</item>
+        <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
+        <item name="colorTextContrastAccent">@color/white_text</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="md_positive_color">@color/md_amber_A400</item>
 
@@ -180,6 +181,7 @@
         <item name="colorPrimary">@color/md_brown_500</item>
         <item name="colorPrimaryDark">@color/md_brown_700</item>
         <item name="colorAccent">@color/md_deep_orange_400</item>
+        <item name="colorAccentWhiteContrast">@color/md_deep_orange_A200</item>
         <item name="md_positive_color">@color/md_deep_orange_400</item>
         <item name="colorItemListBackgroundSelected">@color/md_brown_200</item>
     </style>
@@ -189,6 +191,7 @@
         <item name="colorPrimary">@color/md_blue_500</item>
         <item name="colorPrimaryDark">@color/md_blue_700</item>
         <item name="colorAccent">@color/md_deep_orange_A400</item>
+        <item name="colorAccentWhiteContrast">@color/md_deep_orange_A400</item>
         <item name="md_positive_color">@color/md_deep_orange_A400</item>
         <item name="colorItemListBackgroundSelected">@color/md_blue_200</item>
 
@@ -226,6 +229,7 @@
         <item name="colorPrimary">@color/md_deep_orange_500</item>
         <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
         <item name="colorAccent">@color/md_green_A400</item>
+        <item name="colorAccentWhiteContrast">@color/md_green_800</item>
         <item name="md_positive_color">@color/md_green_700</item>
         <item name="colorItemListBackgroundSelected">@color/md_deep_orange_200</item>
 
@@ -286,6 +290,12 @@
     <!--
     Other miscellaneous styles.
     -->
+
+    <style name="TimerDetailTextStyle">
+        <item name="android:textColor">?colorTimerDetailText</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingTop">2dp</item>
+    </style>
 
     <style name="StatTextStyle">
         <item name="android:layout_width">wrap_content</item>

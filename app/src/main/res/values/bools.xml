@@ -24,5 +24,6 @@
     <bool name="default_crossHintRightEnabled">false</bool>
     <bool name="default_crossHintBackEnabled">false</bool>
     <bool name="default_crossHintDownEnabled">true</bool>
+    <bool name="default_showAverageRecordEnabled">true</bool>
 
 </resources>

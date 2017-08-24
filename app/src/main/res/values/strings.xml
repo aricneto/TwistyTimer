@@ -37,19 +37,18 @@
     </string-array>
 
     <string name="backCancelEnabledSummary">Pressing the back button during a solve will cancel it</string>
-
     <string name="backCancelEnabledTitle">Back cancels solve</string>
 
     <string name="backgroundEnabledSummary">Tint the timer background with the theme color</string>
-
     <string name="backgroundEnabledTitle">Colored background</string>
 
     <string name="bestSolveEnabledSummary">Alert when you get a personal best</string>
-
     <string name="bestSolveEnabledTitle">Best time alert</string>
 
-    <string name="buttonsEnabledSummary">Show the buttons that appear under the timer after a solve</string>
+    <string name="averageRecordsEnabledSummary">Alert and highlight stats when you get a new best average</string>
+    <string name="averageRecordsEnabledTitle">Best average alert</string>
 
+    <string name="buttonsEnabledSummary">Show the buttons that appear under the timer after a solve</string>
     <string name="buttonsEnabledTitle">Quick action buttons</string>
 
     <string name="choose_donation_amount">Choose an amount to donate</string>
@@ -78,7 +77,7 @@
 
     <string name="contributors">Contributors</string>
     <string name="contributors_content">Huge thanks to these people for contributing to the development of the app:%1$s</string>
-    <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo\n•Combinacijusx</string>
+    <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo\n•Combinacijusx\n•druidalek</string>
 
     <string name="cube_222">2x2x2 Cube</string>
     <string name="cube_222_informal" translatable="false">2x2</string>
@@ -385,4 +384,5 @@
     <string name="graph_stats_label_ao12_full">Ao12</string>
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>
+    <string name="timer_detail_average_record_message">New average best!</string>
 </resources>

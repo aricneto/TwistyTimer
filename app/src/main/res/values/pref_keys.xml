@@ -48,6 +48,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
 
     <string translatable="false" name="pk_show_session_stats">sessionStatsEnabled</string>
     <string translatable="false" name="pk_show_best_time">bestSolveEnabled</string>
+    <string translatable="false" name="pk_show_average_record_enabled">averageRecordsEnabled</string>
     <string translatable="false" name="pk_show_worst_time">worstSolveEnabled</string>
 
     <string translatable="false" name="pk_large_quick_actions_enabled">quickActionLarge</string>

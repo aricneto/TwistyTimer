@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -59,6 +60,7 @@ import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.spans.RoundRectSpan;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
@@ -111,6 +113,7 @@ public class TimerFragment extends BaseFragment
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
     private static final String SCRAMBLE = "scramble";
+    private static final String HAS_STOPPED_TIMER_ONCE = "has_stopped_timer_once";
 
     /**
      * The time delay in milliseconds before starting the chronometer if the hold-for-start
@@ -173,6 +176,8 @@ public class TimerFragment extends BaseFragment
     @BindView(R.id.sessionDetailTextWorst) TextView detailTextWorst;
     @BindView(R.id.sessionDetailTextCount) TextView detailTextCount;
 
+    @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
+
     @BindView(R.id.detailLayout)           View     detailLayout;
 
     @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
@@ -213,6 +218,11 @@ public class TimerFragment extends BaseFragment
     private boolean startCueEnabled;
     private boolean showHints;
     private boolean showHintsXCross;
+    private boolean averageRecordsEnabled;
+
+    // True if the user has started (and stopped) the timer at least once. Used to trigger
+    // Average highlights, so the user doesn't get a notification when they start the app
+    private boolean hasStoppedTimerOnce;
 
     /**
      * The most recently notified solve time statistics. When {@link #addNewSolve()} is called to
@@ -388,6 +398,7 @@ public class TimerFragment extends BaseFragment
             if (savedInstanceState.getString(PUZZLE) == getArguments().get(PUZZLE)) {
                 realScramble = savedInstanceState.getString(SCRAMBLE);
             }
+            hasStoppedTimerOnce = savedInstanceState.getBoolean(HAS_STOPPED_TIMER_ONCE, false);
         }
 
         detailTextNamesArray = getResources().getStringArray(R.array.timer_detail_stats);
@@ -399,6 +410,7 @@ public class TimerFragment extends BaseFragment
         registerReceiver(mUIInteractionReceiver);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -472,6 +484,9 @@ public class TimerFragment extends BaseFragment
         }
 
         Resources res = getResources();
+
+        averageRecordsEnabled = Prefs.getBoolean(R.string.pk_show_average_record_enabled,
+                DefaultPrefs.getBoolean(R.bool.default_showAverageRecordEnabled));
 
         backCancelEnabled = Prefs.getBoolean(R.string.pk_back_button_cancel_solve_enabled, res.getBoolean(R.bool.default_backCancelEnabled));
 
@@ -951,19 +966,44 @@ public class TimerFragment extends BaseFragment
 
         SpannableString avgText;
 
+        Context context = getContext();
+
+        // To prevent the record message being animated for every record (in case the user sets
+        // two or more average records at the same time).
+        boolean hasShownRecordMessage = false;
+
+        // Iterate through averages and set respective TextViews
         for (int i = 0; i < 4; i++) {
-            if (sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
+            if (sessionStatsEnabled && averageRecordsEnabled && hasStoppedTimerOnce &&
+                    sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
                 // Create string. Spaces on start and end are there to give padding for the
                 // Rectangle (otherwise it would have no padding on left and right)
                 avgText = new SpannableString(" " + detailTextNamesArray[i] + ": " +
                         convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT) + " ");
                 // Set string style
                 avgText.setSpan(new RoundRectSpan(
-                        ThemeUtils.fetchAttrColor(getContext(), R.attr.colorAccent))
+                                ThemeUtils.fetchAttrColor(context, R.attr.colorAccentWhiteContrast))
                         , 0, avgText.length(), 0);
                 // Set text
+                detailTextAvgs[i].setTextColor(ThemeUtils.fetchAttrColor(context, R.attr
+                        .colorTextContrastAccent));
+                detailTextAvgs[i].setTypeface(Typeface.DEFAULT_BOLD);
                 detailTextAvgs[i].setText(avgText);
+
+                // Show record message, if it was not shown before
+                if (!hasShownRecordMessage) {
+                    detailAverageRecordMesssage.setVisibility(View.VISIBLE);
+                    detailAverageRecordMesssage
+                            .animate()
+                            .alpha(1)
+                            .setDuration(300);
+                    hasShownRecordMessage = true;
+                }
             } else {
+                // Reset the color and typeface
+                detailTextAvgs[i].setTypeface(Typeface.DEFAULT);
+                detailTextAvgs[i].setTextColor(ThemeUtils.fetchAttrColor(context, R.attr
+                        .colorTimerDetailText));
                 detailTextAvgs[i].setText(detailTextNamesArray[i] + ": " +
                         convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
@@ -1082,6 +1122,18 @@ public class TimerFragment extends BaseFragment
                         }
                     });
         }
+        if (averageRecordsEnabled) {
+            detailAverageRecordMesssage
+                    .animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            detailAverageRecordMesssage.setVisibility(View.GONE);
+                        }
+                    });
+        }
     }
 
     /**
@@ -1110,6 +1162,7 @@ public class TimerFragment extends BaseFragment
         chronometer.stop();
         chronometer.setHighlighted(false);
         isRunning = false;
+        hasStoppedTimerOnce = true;
         showToolbar();
     }
 
@@ -1133,6 +1186,7 @@ public class TimerFragment extends BaseFragment
         super.onSaveInstanceState(outState);
         outState.putString(SCRAMBLE, realScramble);
         outState.putString(PUZZLE, currentPuzzle);
+        outState.putBoolean(HAS_STOPPED_TIMER_ONCE, hasStoppedTimerOnce);
     }
 
     @Override

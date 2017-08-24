@@ -108,6 +108,12 @@
                     android:title="@string/bestSolveEnabledTitle" />
 
                 <SwitchPreferenceCompat
+                    android:defaultValue="@bool/default_showAverageRecordEnabled"
+                    android:key="@string/pk_show_average_record_enabled"
+                    android:summary="@string/averageRecordsEnabledSummary"
+                    android:title="@string/averageRecordsEnabledTitle" />
+
+                <SwitchPreferenceCompat
                     android:defaultValue="@bool/default_worstSolve"
                     android:key="@string/pk_show_worst_time"
                     android:summary="@string/worstSolveEnabledSummary"

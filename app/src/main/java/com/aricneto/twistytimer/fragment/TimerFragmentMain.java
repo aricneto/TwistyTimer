@@ -297,6 +297,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         super.onSaveInstanceState(outState);
         outState.putString("puzzle", currentPuzzle);
         outState.putString("subtype", currentPuzzleSubtype);
+        outState.putBoolean("history", history);
     }
 
     @Override
@@ -306,6 +307,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
+            history = savedInstanceState.getBoolean("history");
         }
     }
 

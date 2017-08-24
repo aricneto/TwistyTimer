@@ -18,8 +18,11 @@
 
 
     <!-- TODO: add this attr for all themes -->
-    <!-- An accent color that provides a clear contrast against a white background -->
+    <!-- An accent color that provides a clear contrast against a white background.
+    Ideally, should just be a darker version of the current accent, if possible-->
     <attr format="color" name="colorAccentWhiteContrast"/>
+    <!-- A color for text that provides clear contrast against the accent color-->
+    <attr format="color" name="colorTextContrastAccent"/>
 
     <attr format="color" name="graph_stats_card_background"/>
     <attr format="color" name="graph_stats_card_background_alt"/>

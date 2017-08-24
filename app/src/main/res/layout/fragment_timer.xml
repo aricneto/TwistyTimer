@@ -214,101 +214,101 @@
 
             <TextView
                 android:id="@+id/sessionDetailTextAo5"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:gravity="right"
+                android:layout_marginRight="12dp"
                 android:text="@string/graph_stats_label_ao5_full"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="0"
+                app:layout_gravity="right"
                 app:layout_row="0" />
 
             <TextView
                 android:id="@+id/sessionDetailTextAo12"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:gravity="right"
+                android:layout_marginRight="12dp"
                 android:text="@string/graph_stats_label_ao12_full"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="0"
+                app:layout_gravity="right"
                 app:layout_row="1" />
 
             <TextView
                 android:id="@+id/sessionDetailTextAo50"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:gravity="right"
+                android:layout_marginRight="12dp"
                 android:text="@string/graph_stats_label_ao50_full"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="0"
+                app:layout_gravity="right"
                 app:layout_row="2" />
 
             <TextView
                 android:id="@+id/sessionDetailTextAo100"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:gravity="right"
+                android:layout_marginRight="12dp"
                 android:text="@string/graph_stats_label_ao100_full"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="0"
+                app:layout_gravity="right"
                 app:layout_row="3" />
 
             <TextView
                 android:id="@+id/sessionDetailTextDeviation"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"
                 android:text="@string/graph_stats_label_deviation"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="1"
+                app:layout_gravity="right"
                 app:layout_row="0" />
 
             <TextView
                 android:id="@+id/sessionDetailTextBest"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"
                 android:text="@string/graph_stats_label_best"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="1"
+                app:layout_gravity="right"
                 app:layout_row="1" />
 
             <TextView
                 android:id="@+id/sessionDetailTextWorst"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"
                 android:text="@string/graph_stats_label_worst"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="1"
+                app:layout_gravity="right"
                 app:layout_row="2" />
 
             <TextView
                 android:id="@+id/sessionDetailTextCount"
+                style="@style/TimerDetailTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:gravity="right"
                 android:text="@string/graph_stats_label_solve_count"
-                android:textColor="?colorTimerDetailText"
-                android:textSize="13sp"
                 app:layout_column="1"
+                app:layout_gravity="right"
                 app:layout_row="3" />
 
         </android.support.v7.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/detail_average_record_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/detailLayout"
+            android:layout_alignRight="@id/detailLayout"
+            android:layout_marginBottom="8dp"
+            android:text="@string/timer_detail_average_record_message"
+            android:textColor="?colorTimerDetailText"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/scrambleImg"

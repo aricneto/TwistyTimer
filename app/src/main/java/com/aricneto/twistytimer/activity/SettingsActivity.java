@@ -210,26 +210,21 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferencesFix(Bundle bundle, String rootKey) {
             setPreferencesFromResource(R.xml.prefs, rootKey);
 
-            findPreference(getString(R.string.pk_inspection_time))
-                    .setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_open_timer_appearance_settings))
-                    .setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_show_scramble_x_cross_hints))
-                    .setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_locale))
-                    .setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_options_show_scramble_hints))
-                    .setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_timer_text_size)).
-                    setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_timer_text_offset)).
-                    setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_scramble_text_size)).
-                    setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_scramble_image_size)).
-                    setOnPreferenceClickListener(clickListener);
-            findPreference(getString(R.string.pk_advanced_timer_settings_enabled))
-                    .setOnPreferenceClickListener(clickListener);
+            int listenerPrefIds[] = {R.string.pk_inspection_time,
+                    R.string.pk_open_timer_appearance_settings,
+                    R.string.pk_show_scramble_x_cross_hints,
+                    R.string.pk_locale,
+                    R.string.pk_options_show_scramble_hints,
+                    R.string.pk_timer_text_size,
+                    R.string.pk_timer_text_offset,
+                    R.string.pk_scramble_text_size,
+                    R.string.pk_scramble_image_size,
+                    R.string.pk_advanced_timer_settings_enabled};
+
+            for (int prefId : listenerPrefIds) {
+                findPreference(getString(prefId))
+                        .setOnPreferenceClickListener(clickListener);
+            }
 
             mainScreen = getPreferenceScreen();
         }
