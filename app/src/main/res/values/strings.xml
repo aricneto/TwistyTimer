@@ -77,7 +77,7 @@
 
     <string name="contributors">Contributors</string>
     <string name="contributors_content">Huge thanks to these people for contributing to the development of the app:%1$s</string>
-    <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo\n•Combinacijusx\n•druidalek</string>
+    <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo\n•Combinacijusx\n•druidalek\n•freundTech</string>
 
     <string name="cube_222">2x2x2 Cube</string>
     <string name="cube_222_informal" translatable="false">2x2</string>
