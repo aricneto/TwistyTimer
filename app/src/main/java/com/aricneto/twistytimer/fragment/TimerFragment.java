@@ -21,7 +21,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -132,6 +134,9 @@ public class TimerFragment extends BaseFragment
     CountDownTimer countdown;
     boolean countingDown = false;
 
+    Warning firstWarning;
+    Warning secondWarning;
+
     // True If the show toolbar animation is done
     boolean animationDone = true;
 
@@ -219,6 +224,9 @@ public class TimerFragment extends BaseFragment
     private boolean showHints;
     private boolean showHintsXCross;
     private boolean averageRecordsEnabled;
+    private boolean warningEnabled;
+    private boolean verbalWarningEnabled;
+
 
     // True if the user has started (and stopped) the timer at least once. Used to trigger
     // Average highlights, so the user doesn't get a notification when they start the app
@@ -503,6 +511,8 @@ public class TimerFragment extends BaseFragment
         scrambleImgEnabled = Prefs.getBoolean(R.string.pk_show_scramble_image, true);
         showHints = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
         showHintsXCross = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
+        warningEnabled = Prefs.getBoolean(R.string.pk_warning_enabled, false);
+        verbalWarningEnabled = Prefs.getBoolean(R.string.pk_verbal_warning_enabled, false);
 
         if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
             hintCard.setVisibility(View.VISIBLE);
@@ -532,6 +542,10 @@ public class TimerFragment extends BaseFragment
 
         // Inspection timer
         if (inspectionEnabled) {
+            if (warningEnabled) {
+                firstWarning = new Warning(8, verbalWarningEnabled);
+                secondWarning = new Warning(12, verbalWarningEnabled);
+            }
             countdown = new CountDownTimer(inspectionTime * 1000, 500) {
                 @Override
                 public void onTick(long l) {
@@ -760,8 +774,17 @@ public class TimerFragment extends BaseFragment
         if (countdown != null) {
             countdown.cancel();
         }
+
         if (plusTwoCountdown != null) {
             plusTwoCountdown.cancel();
+        }
+
+        if (firstWarning != null) {
+            firstWarning.cancel();
+        }
+
+        if (secondWarning != null) {
+            secondWarning.cancel();
         }
 
         inspectionText.setVisibility(View.GONE);
@@ -782,6 +805,12 @@ public class TimerFragment extends BaseFragment
         chronometer.setText(String.valueOf(inspectionTime));
         inspectionText.setVisibility(View.VISIBLE);
         countdown.start();
+        if (firstWarning != null) {
+            firstWarning.start();
+        }
+        if (secondWarning != null) {
+            secondWarning.start();
+        }
         countingDown = true;
     }
 
@@ -1251,6 +1280,39 @@ public class TimerFragment extends BaseFragment
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
             scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private class Warning extends CountDownTimer {
+        private final TextToSpeech tts = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.US);
+                }
+            }
+        });
+        private String text;
+        private Vibrator vibrator;
+        private boolean verbalWarningEnabled;
+
+        Warning(long secondsInFuture, boolean verbalWarningEnabled) {
+            super(secondsInFuture * 1000, 100);
+            text = String.valueOf(secondsInFuture) + " seconds";
+            vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            this.verbalWarningEnabled = verbalWarningEnabled;
+        }
+
+        @Override
+        public void onTick(long l) {
+        }
+
+        @Override
+        public void onFinish() {
+            vibrator.vibrate(200);
+            if (verbalWarningEnabled) {
+                tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+            }
         }
     }
 
