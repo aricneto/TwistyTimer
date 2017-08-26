@@ -59,4 +59,16 @@
         <item>@string/graph_stats_label_solve_count</item>
     </string-array>
 
+    <string-array name="pref_array_inspection_alert">
+        <item>@string/pref_inspection_alert_vibration</item>
+        <item>@string/pref_inspection_alert_sound</item>
+        <item>@string/pref_inspection_alert_both</item>
+    </string-array>
+
+    <string-array name="pk_pref_array_inspection_alert">
+        <item>@string/pk_inspection_alert_vibration</item>
+        <item>@string/pk_inspection_alert_sound</item>
+        <item>@string/pk_inspection_alert_both</item>
+    </string-array>
+
 </resources>

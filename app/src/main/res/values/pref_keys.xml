@@ -33,13 +33,18 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_show_scramble_hints">showHints</string>
     <string translatable="false" name="pk_options_show_scramble_hints">optionsShowHints</string>
     <string translatable="false" name="pk_show_scramble_x_cross_hints">showHintsXCross</string>
-    <string translatable="false" name="pk_warning_enabled">warningEnabled</string>
-    <string translatable="false" name="pk_verbal_warning_enabled">verbalWarningEnabled</string>
+
+    <string translatable="false" name="pk_inspection_alert_enabled">inspectionAlertEnabled</string>
+    <string translatable="false" name="pk_inspection_alert_type">inspectionAlertType</string>
+    <string translatable="false" name="pk_inspection_alert_vibration">vibration</string>
+    <string translatable="false" name="pk_inspection_alert_sound">sound</string>
+    <string translatable="false" name="pk_inspection_alert_both">both</string>
+
     <string translatable="false" name="pk_show_scramble_image">scrambleImageEnabled</string>
     <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
     <string translatable="false" name="pk_scramble_image_size">scrambleImageSize</string>
 
-    <string translatable="false" name="pk_open_timer_appearance_settings">timerAppearance</string>
+    <string translatable="false" name="pref_screen_title_timer_appearance_settings">timerAppearance</string>
     <string translatable="false" name="pk_open_timer_behavior_settings">timerBehavior</string>
     <string translatable="false" name="pk_open_inspection_behavior_settings">inspectionBehavior</string>
     <string translatable="false" name="pk_open_other_settings">otherSettings</string>

@@ -31,9 +31,33 @@
 
                 <Preference
                     android:defaultValue="@integer/default_inspectionTime"
+                    android:dependency="@string/pk_inspection_enabled"
                     android:key="@string/pk_inspection_time"
+
                     android:summary="@string/inspectionTimeSummary"
                     android:title="@string/inspectionTimeTitle" />
+
+            </PreferenceCategory>
+
+            <Preference android:layout="@layout/divider_preference_category" />
+
+            <PreferenceCategory android:title="@string/pref_category_title_alerts">
+
+                <SwitchPreferenceCompat
+                    android:defaultValue="@bool/default_inspectionAlertEnabled"
+                    android:dependency="@string/pk_inspection_enabled"
+                    android:key="@string/pk_inspection_alert_enabled"
+                    android:summary="@string/pref_inspection_alert_summary"
+                    android:title="@string/pref_inspection_alert_title" />
+
+                <ListPreference
+                    android:defaultValue="@string/pk_inspection_alert_vibration"
+                    android:dependency="@string/pk_inspection_alert_enabled"
+                    android:entries="@array/pref_array_inspection_alert"
+                    android:entryValues="@array/pk_pref_array_inspection_alert"
+                    android:key="@string/pk_inspection_alert_type"
+                    android:summary="@string/pref_inspection_alert_type_summary"
+                    android:title="@string/pref_inspection_alert_type_title" />
 
             </PreferenceCategory>
 
@@ -125,7 +149,7 @@
 
         <PreferenceScreen
             android:icon="@drawable/ic_format_shapes_black_24dp"
-            android:key="@string/pk_open_timer_appearance_settings"
+            android:key="@string/pref_screen_title_timer_appearance_settings"
             android:title="Timer appearance">
 
             <PreferenceCategory android:title="@string/pref_category_title_features">
@@ -182,8 +206,7 @@
 
             <Preference android:layout="@layout/divider_preference_category" />
 
-            <PreferenceCategory
-                android:title="@string/pref_category_title_advanced">
+            <PreferenceCategory android:title="@string/pref_category_title_advanced">
 
                 <SwitchPreferenceCompat
                     android:defaultValue="@bool/defaultAdvancedEnabled"
@@ -194,29 +217,29 @@
                     android:defaultValue="@integer/defaultTimeTextSize"
                     android:dependency="@string/pk_advanced_timer_settings_enabled"
                     android:key="@string/pk_timer_text_size"
-                    android:title="@string/timer_text_size"
-                    android:summary="@string/timer_text_size_summary"/>
+                    android:summary="@string/timer_text_size_summary"
+                    android:title="@string/timer_text_size" />
 
                 <Preference
                     android:defaultValue="@integer/defaultTimeTextOffset"
                     android:dependency="@string/pk_advanced_timer_settings_enabled"
                     android:key="@string/pk_timer_text_offset"
-                    android:title="@string/timer_text_offset"
-                    android:summary="@string/timer_text_offset_summary"/>
+                    android:summary="@string/timer_text_offset_summary"
+                    android:title="@string/timer_text_offset" />
 
                 <Preference
                     android:defaultValue="@integer/defaultScrambleImageSize"
                     android:dependency="@string/pk_advanced_timer_settings_enabled"
                     android:key="@string/pk_scramble_image_size"
-                    android:title="@string/scrambleImageSize_text"
-                    android:summary="@string/scrambleImageSize_summary"/>
+                    android:summary="@string/scrambleImageSize_summary"
+                    android:title="@string/scrambleImageSize_text" />
 
                 <SwitchPreferenceCompat
                     android:defaultValue="@bool/default_large_quickaction"
                     android:dependency="@string/pk_advanced_timer_settings_enabled"
                     android:key="@string/pk_large_quick_actions_enabled"
-                    android:title="@string/quick_action_button_large_title"
-                    android:summary="@string/quick_action_button_large_summary"/>
+                    android:summary="@string/quick_action_button_large_summary"
+                    android:title="@string/quick_action_button_large_title" />
 
             </PreferenceCategory>
 

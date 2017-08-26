@@ -16,14 +16,13 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -62,6 +61,7 @@ import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
 import com.aricneto.twistytimer.spans.RoundRectSpan;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
+import com.aricneto.twistytimer.utils.CountdownWarning;
 import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
@@ -134,8 +134,8 @@ public class TimerFragment extends BaseFragment
     CountDownTimer countdown;
     boolean countingDown = false;
 
-    Warning firstWarning;
-    Warning secondWarning;
+    CountdownWarning firstWarning;
+    CountdownWarning secondWarning;
 
     // True If the show toolbar animation is done
     boolean animationDone = true;
@@ -224,8 +224,10 @@ public class TimerFragment extends BaseFragment
     private boolean showHints;
     private boolean showHintsXCross;
     private boolean averageRecordsEnabled;
-    private boolean warningEnabled;
-    private boolean verbalWarningEnabled;
+
+    private boolean inspectionAlertEnabled;
+    private boolean inspectionVibrationAlertEnabled;
+    private boolean inspectionSoundAlertEnabled;
 
 
     // True if the user has started (and stopped) the timer at least once. Used to trigger
@@ -511,8 +513,24 @@ public class TimerFragment extends BaseFragment
         scrambleImgEnabled = Prefs.getBoolean(R.string.pk_show_scramble_image, true);
         showHints = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
         showHintsXCross = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
-        warningEnabled = Prefs.getBoolean(R.string.pk_warning_enabled, false);
-        verbalWarningEnabled = Prefs.getBoolean(R.string.pk_verbal_warning_enabled, false);
+
+        inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
+        final String vibrationAlert = getString(R.string.pk_inspection_alert_vibration);
+        final String soundAlert = getString(R.string.pk_inspection_alert_sound);
+        if (inspectionAlertEnabled) {
+            String inspectionAlertType = Prefs.getString(R.string.pk_inspection_alert_type,
+                    getString(R.string.pk_inspection_alert_vibration));
+            if (inspectionAlertType.equals(vibrationAlert)) {
+                inspectionVibrationAlertEnabled = true;
+                inspectionSoundAlertEnabled = false;
+            } else if (inspectionAlertType.equals(soundAlert)) {
+                inspectionVibrationAlertEnabled = false;
+                inspectionSoundAlertEnabled = true;
+            } else {
+                inspectionVibrationAlertEnabled = true;
+                inspectionSoundAlertEnabled = true;
+            }
+        }
 
         if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
             hintCard.setVisibility(View.VISIBLE);
@@ -542,9 +560,27 @@ public class TimerFragment extends BaseFragment
 
         // Inspection timer
         if (inspectionEnabled) {
-            if (warningEnabled) {
-                firstWarning = new Warning(8, verbalWarningEnabled);
-                secondWarning = new Warning(12, verbalWarningEnabled);
+            if (inspectionAlertEnabled) {
+                // If inspection time is 15 (the official WCA default), first warning should be
+                // at 8 seconds in. Else, warn when half the time is up (8 is about 50% of 15)
+                firstWarning = new CountdownWarning
+                        .Builder(inspectionTime == 15 ? 8 : (int) (inspectionTime * 0.5f))
+                        .withVibrate(inspectionVibrationAlertEnabled)
+                        .withTone(inspectionSoundAlertEnabled)
+                        .toneCode(ToneGenerator.TONE_CDMA_NETWORK_BUSY_ONE_SHOT)
+                        .toneDuration(300)
+                        .vibrateDuration(200)
+                        .build();
+                // If inspection time is default, warn at 12 seconds per competition rules, else,
+                // warn at when 80% of the time is up (12 is 80% of 15)
+                secondWarning = new CountdownWarning
+                        .Builder(inspectionTime == 15 ? 12 : (int) (inspectionTime * 0.8f))
+                        .withVibrate(inspectionVibrationAlertEnabled)
+                        .withTone(inspectionSoundAlertEnabled)
+                        .toneCode(ToneGenerator.TONE_CDMA_NETWORK_BUSY)
+                        .toneDuration(350)
+                        .vibrateDuration(350)
+                        .build();
             }
             countdown = new CountDownTimer(inspectionTime * 1000, 500) {
                 @Override
@@ -634,7 +670,8 @@ public class TimerFragment extends BaseFragment
                                 chronometer.setHighlighted(true);
                             }
                             // "chronometer.holdForStart" is not called here; it displays "0.00",
-                            // which would interfere with the continuing countdown of the inspection
+                            // which would interfere with the continuing countdown of the
+                            // inspection
                             // period and, anyway, be overwritten by the next countdown "tick".
                             return true;
 
@@ -766,8 +803,8 @@ public class TimerFragment extends BaseFragment
     }
 
     /**
-     * Stops the inspection period countdown (if it is active). This cancels the inspection
-     * countdown timer and associated "+2" countdown timer and hides the inspection text.
+     * Stops the inspection period countdown, and its warnings (if it is active). This cancels the
+     * inspection countdown timer and associated "+2" countdown timer and hides the inspection text.
      */
     private void stopInspectionCountdown() {
         // These timers may be null if inspection was not enabled when "onCreate" was called.
@@ -1283,38 +1320,6 @@ public class TimerFragment extends BaseFragment
         }
     }
 
-    private class Warning extends CountDownTimer {
-        private final TextToSpeech tts = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.US);
-                }
-            }
-        });
-        private String text;
-        private Vibrator vibrator;
-        private boolean verbalWarningEnabled;
-
-        Warning(long secondsInFuture, boolean verbalWarningEnabled) {
-            super(secondsInFuture * 1000, 100);
-            text = String.valueOf(secondsInFuture) + " seconds";
-            vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
-            this.verbalWarningEnabled = verbalWarningEnabled;
-        }
-
-        @Override
-        public void onTick(long l) {
-        }
-
-        @Override
-        public void onFinish() {
-            vibrator.vibrate(200);
-            if (verbalWarningEnabled) {
-                tts.speak(text, TextToSpeech.QUEUE_ADD, null);
-            }
-        }
-    }
 
     private class GetOptimalCross extends AsyncTask<Void, Void, String> {
         @Override

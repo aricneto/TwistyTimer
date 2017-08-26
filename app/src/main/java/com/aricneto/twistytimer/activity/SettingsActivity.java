@@ -4,12 +4,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
@@ -109,19 +109,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    /**
-     * Finds the preference whose key matches the string value of the given preference key
-     * string resource ID.
-     *
-     * @param fragment     The preference fragment in which to search for the preference with the given key.
-     * @param prefKeyResID The string resource ID of the preference key.
-     * @return The preference that matches that key; or {@code null} if no such preference is found.
-     */
-    private static Preference find(PreferenceFragment fragment, int prefKeyResID) {
-        return fragment.getPreferenceScreen().findPreference(fragment.getString(prefKeyResID));
-    }
-
-
     public static class SettingsFragment extends PreferenceFragmentCompat implements OnBackPressedInFragmentListener {
 
         // Variables used to handle back button behavior
@@ -130,6 +117,8 @@ public class SettingsActivity extends AppCompatActivity {
         // Stores the main PreferenceScreen
         private PreferenceScreen mainScreen;
 
+        private int inspectionDuration;
+
         private final android.support.v7.preference.Preference.OnPreferenceClickListener clickListener
                 = new android.support.v7.preference.Preference.OnPreferenceClickListener() {
             @Override
@@ -137,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
                 switch (Prefs.keyToResourceID(preference.getKey(),
                         R.string.pk_inspection_time,
                         R.string.pk_show_scramble_x_cross_hints,
-                        R.string.pk_open_timer_appearance_settings,
+                        R.string.pref_screen_title_timer_appearance_settings,
                         R.string.pk_locale,
                         R.string.pk_options_show_scramble_hints,
                         R.string.pk_timer_text_size,
@@ -206,12 +195,19 @@ public class SettingsActivity extends AppCompatActivity {
             }
         };
 
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+            super.onCreate(savedInstanceState);
+        }
+
         @Override
         public void onCreatePreferencesFix(Bundle bundle, String rootKey) {
             setPreferencesFromResource(R.xml.prefs, rootKey);
 
             int listenerPrefIds[] = {R.string.pk_inspection_time,
-                    R.string.pk_open_timer_appearance_settings,
+                    R.string.pref_screen_title_timer_appearance_settings,
                     R.string.pk_show_scramble_x_cross_hints,
                     R.string.pk_locale,
                     R.string.pk_options_show_scramble_hints,
@@ -227,6 +223,19 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             mainScreen = getPreferenceScreen();
+
+            // Set the Inspection Alert preference summary to display the correct information
+            // about time elapsed depending on user's current inspection duration
+            updateInspectionAlertText();
+        }
+
+
+        private void updateInspectionAlertText() {
+            inspectionDuration = Prefs.getInt(R.string.pk_inspection_time, 15);
+            findPreference(getString(R.string.pk_inspection_alert_enabled))
+                    .setSummary(getString(R.string.pref_inspection_alert_summary,
+                            inspectionDuration == 15 ? 8 : (int) (inspectionDuration * 0.5f),
+                            inspectionDuration == 15 ? 12 : (int) (inspectionDuration * 0.8f)));
         }
 
         @Override
@@ -264,6 +273,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         final int time = Integer.parseInt(input.toString());
 
                                         Prefs.edit().putInt(prefKeyResID, time).apply();
+
+
                                     } catch (NumberFormatException e) {
                                         Toast.makeText(getActivity(),
                                                 R.string.invalid_time, Toast.LENGTH_SHORT).show();
@@ -279,6 +290,12 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onClick(
                                 @NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             Prefs.edit().putInt(prefKeyResID, 15).apply();
+                        }
+                    })
+                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            updateInspectionAlertText();
                         }
                     })
                     .show();
