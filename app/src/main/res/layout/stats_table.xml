@@ -1,63 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/stats_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/stats_table_viewflipper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:maxLines="1"
-            android:id="@+id/stats_tab_favorite"
+            android:id="@+id/stats_tab_improvement"
+            style="@style/StatTabTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?graph_stats_card_background"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="Improvement"
+            android:text="@string/graph_stats_tab_title_improvement"
             android:textColor="?graph_stats_card_text_color" />
 
         <TextView
-            android:maxLines="1"
             android:id="@+id/stats_tab_average"
+            style="@style/StatTabTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:background="?graph_stats_card_background_faded"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="Average"
+            android:text="@string/graph_stats_tab_title_average"
             android:textColor="?graph_stats_card_text_color_faded" />
 
         <TextView
-            android:maxLines="1"
             android:id="@+id/stats_tab_other"
+            style="@style/StatTabTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:background="?graph_stats_card_background_faded"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="Other"
+            android:text="@string/graph_stats_tab_title_other"
             android:textColor="?graph_stats_card_text_color_faded" />
 
     </LinearLayout>
 
     <ViewFlipper
         android:id="@+id/stats_table_viewflipper"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?graph_stats_card_background">
+        android:background="?graph_stats_card_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_tab_layout">
 
         <include
             android:id="@+id/stats_table_improvement"
@@ -74,4 +74,4 @@
 
     </ViewFlipper>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

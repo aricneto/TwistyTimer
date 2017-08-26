@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
@@ -14,13 +15,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.TooltipCompat;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -87,7 +86,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         LineChart lineChartView;
 
 
-    @BindView(R.id.stats_tab_favorite)
+    @BindView(R.id.stats_tab_improvement)
         TextView statsTabFavorite;
     @BindView(R.id.stats_tab_average)
         TextView statsTabAverage;
@@ -105,10 +104,17 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     GridView statsImprovementGridView;
     GridView statsAverageGridView;
     GridView statsOtherGridView;
+    GridView statsImprovementLabelGridView;
+    GridView statsAverageLabelGridView;
+    GridView statsOtherLabelGridView;
 
 
     @BindView(R.id.stats_table_viewflipper)
         ViewFlipper statsTableViewFlipper;
+
+    @BindView(R.id.stats_container_pager)
+        View statsContainerPager;
+
 
 
     /*
@@ -221,11 +227,21 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsAverageGridView = statsAverageLayout.findViewById(R.id.stats_gridView);
         statsOtherGridView = statsOtherlayout.findViewById(R.id.stats_gridView);
 
+        // And the label gridview...
+        // We need a separate gridview for the label because gridView doesn't support staggered
+        // layouts, and we need the label gridview to be slightly smaller for aesthetic reasons
+        statsImprovementLabelGridView = statsImprovementLayout.findViewById(R.id.stats_label_gridView);
+        statsAverageLabelGridView = statsAverageLayout.findViewById(R.id.stats_label_gridView);
+        statsOtherLabelGridView = statsOtherlayout.findViewById(R.id.stats_label_gridView);
+
         // In order for the user to be able to drag the stats panel up, we have to disable
         // interaction with GridView, so it can be handled by the panel
         statsImprovementGridView.setOnTouchListener(doNothingTouchListener);
         statsAverageGridView.setOnTouchListener(doNothingTouchListener);
         statsOtherGridView.setOnTouchListener(doNothingTouchListener);
+        statsImprovementLabelGridView.setOnTouchListener(doNothingTouchListener);
+        statsAverageLabelGridView.setOnTouchListener(doNothingTouchListener);
+        statsOtherLabelGridView.setOnTouchListener(doNothingTouchListener);
 
         // The "Improvement" and "Other" grids should only have two columns. (Best and Session)
         // Since the base layout is 3-columns wide, we have to hide the last column title and set
@@ -240,23 +256,10 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         setTooltipText(R.id.stats_session, R.string.graph_stats_title_session_best);
         setTooltipText(R.id.stats_current, R.string.graph_stats_title_current);
 
-        // Finally, name the label rows.
-        fillLabelColumn((LinearLayout) statsAverageLayout.findViewById(R.id.stats_label_column),
-                R.array.stats_column_average);
-        fillLabelColumn((LinearLayout) statsImprovementLayout.findViewById(R.id.stats_label_column),
-                R.array.stats_column_improvement);
-        fillLabelColumn((LinearLayout) statsOtherlayout.findViewById(R.id.stats_label_column),
-                R.array.stats_column_other);
-
-        // Also, change stats_label_column weight for these columns so it can take advantage of the
-        // extra space and display more text
-        LinearLayout.LayoutParams layoutParams
-                = (LinearLayout.LayoutParams) statsImprovementLayout
-                .findViewById(R.id.stats_label_column).getLayoutParams();
-        layoutParams.weight = 2f;
-        statsImprovementLayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
-        statsOtherlayout.findViewById(R.id.stats_label_column).setLayoutParams(layoutParams);
-
+        // Finally, name the label column.
+        statsImprovementLabelGridView.setAdapter(new StatGridAdapter(mContext, buildLabelList(R.array.stats_column_improvement)));
+        statsAverageLabelGridView.setAdapter(new StatGridAdapter(mContext, buildLabelList(R.array.stats_column_average)));
+        statsOtherLabelGridView.setAdapter(new StatGridAdapter(mContext, buildLabelList(R.array.stats_column_other)));
 
 
         statsTableViewFlipper.setInAnimation(mContext, R.anim.stats_grid_in);
@@ -272,22 +275,23 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        /*
-        root.post(new Runnable() {
-            @Override
-            public void run() {
-                if (container != null && lineChartView != null) {
-                    final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            root.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (container != null && lineChartView != null) {
+                        final LineChart.LayoutParams params = lineChartView.getLayoutParams();
 
-                    if (params != null) {
-                        params.height = container.getHeight() - statsTable.getHeight();
-                        lineChartView.setLayoutParams(params);
-                        lineChartView.requestLayout();
-                        statsTable.requestLayout();
+                        if (params != null) {
+                            params.height = container.getHeight();
+                            lineChartView.setLayoutParams(params);
+                            lineChartView.requestLayout();
+                            statsContainerPager.requestLayout();
+                        }
                     }
                 }
-            }
-        });*/
+            });
+        }
 
 
 
@@ -375,27 +379,16 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                 getString(tooltipTextRes));
     }
 
-    private void fillLabelColumn(LinearLayout column, @ArrayRes int stringArrayRes) {
-        ContextThemeWrapper viewWrapper = new ContextThemeWrapper(mContext, R.style
-                .StatTextStyle);
-        TextView label;
-
+    private ArrayList<Stat> buildLabelList(@ArrayRes int stringArrayRes) {
+        ArrayList<Stat> statList = new ArrayList<>();
         // Used to alternate background colors in foreach
-        boolean altBackground = true;
-        int altBackgroundColorRes = ThemeUtils.fetchAttrColor(mContext, R.attr
-                .graph_stats_card_background_alt);
+        int row = 0;
 
-        for (String stringRes : getResources().getStringArray(stringArrayRes)) {
-            label = new TextView(viewWrapper, null, 0);
-
-            if (altBackground)
-                label.setBackgroundColor(altBackgroundColorRes);
-            altBackground = !altBackground;
-
-            label.setText(stringRes);
-
-            column.addView(label);
+        for (String label : getResources().getStringArray(stringArrayRes)) {
+            statList.add(new Stat(label, row));
+            row++;
         }
+        return statList;
     }
 
     private void highlightStatTab(TextView tab) {
@@ -420,7 +413,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         @Override
         public void onClick(View tab) {
             switch (tab.getId()) {
-                case R.id.stats_tab_favorite:
+                case R.id.stats_tab_improvement:
                     if (!(statsTableViewFlipper.getDisplayedChild() == TAB_FAVORITE)) {
                         statsTableViewFlipper.setDisplayedChild(TAB_FAVORITE);
                         highlightStatTab(statsTabFavorite);
@@ -657,7 +650,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     }
     /**
      * Builds a list of averages for use int {@link StatGridAdapter}
-     * The order of the times is alterned (best, session, current, best, session...), so
+     * The order of the times is alternated (best, session, current, best, session...), so
      * it can work in an Adapter without much tinkering
      * @param stats
      *      The {@link Statistics} instance

@@ -27,6 +27,11 @@ public class Stat {
         this.row = row;
     }
 
+    public Stat(String time, int row) {
+        this.time = time;
+        this.row = row;
+    }
+
     public String getTime() {
         return time;
     }

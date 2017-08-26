@@ -309,6 +309,17 @@
         <item name="android:textColor">?graph_stats_card_text_color</item>
     </style>
 
+    <style name="StatTabTextStyle">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">?graph_stats_card_background</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?graph_stats_card_text_color</item>
+    </style>
+
     <style name="DialogItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
