@@ -259,6 +259,14 @@ public class TimerFragment extends BaseFragment
                 case ACTION_TOOLBAR_RESTORED:
                     showItems();
                     animationDone = true;
+                    // Wait for animations to run before broadcasting solve to avoid UI stuttering
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            broadcastNewSolve();
+                        }
+                    }, 320);
                     break;
 
                 case ACTION_GENERATE_SCRAMBLE:
@@ -896,7 +904,9 @@ public class TimerFragment extends BaseFragment
 
         currentSolve.setId(TwistyTimer.getDBHandler().addSolve(currentSolve));
         currentPenalty = NO_PENALTY;
+    }
 
+    private void broadcastNewSolve() {
         // The receiver might be able to use the new solve and avoid accessing the database, so
         // parcel it up in the intent.
         new BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
@@ -991,7 +1001,7 @@ public class TimerFragment extends BaseFragment
     public void onStatisticsUpdated(Statistics stats) {
         if (DEBUG_ME) Log.d(TAG, "onStatisticsUpdated(" + stats + ")");
 
-        if (getView() == null) {
+        if (getView() == null || !sessionStatsEnabled) {
             // Must have arrived after "onDestroyView" was called, so do nothing.
             return;
         }
@@ -1074,6 +1084,11 @@ public class TimerFragment extends BaseFragment
                         convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
         }
+        detailLayout.setVisibility(View.VISIBLE);
+        detailLayout.animate()
+                    .alpha(1)
+                    .setDuration(300);
+
     }
 
     private void generateScrambleImage() {
@@ -1100,12 +1115,6 @@ public class TimerFragment extends BaseFragment
                         .alpha(1)
                         .setDuration(300);
             }
-        }
-        if (sessionStatsEnabled) {
-            detailLayout.setVisibility(View.VISIBLE);
-            detailLayout.animate()
-                    .alpha(1)
-                    .setDuration(300);
         }
         if (buttonsEnabled && ! isCanceled) {
             quickActionButtons.setEnabled(true);

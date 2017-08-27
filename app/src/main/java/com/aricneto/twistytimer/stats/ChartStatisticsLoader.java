@@ -13,7 +13,12 @@ import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.Wrapper;
 
-import static com.aricneto.twistytimer.utils.TTIntent.*;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SESSION_TIMES_SHOWN;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MOVED_TO_HISTORY;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED_MANUALLY;
 
 /**
  * <p>
@@ -121,8 +126,11 @@ public class ChartStatisticsLoader extends AsyncTaskLoader<Wrapper<ChartStatisti
             // might never happen). The test of "takeContentChanged()" in "onStartLoading" picks
             // up on any such deferred reloading task.
 
+            final Intent finalIntent = intent;
+
             switch (intent.getAction()) {
                 case ACTION_TIME_ADDED:
+                case ACTION_TIME_ADDED_MANUALLY:
                     if (!mLoader.deliverQuickResult(intent)) {
                         // Could not deliver a quick update, so trigger a full re-load instead.
                         if (DEBUG_ME) Log.d(TAG, "  Quick update not possible. Will reload!");

@@ -79,6 +79,11 @@ public final class TTIntent {
     public static final String ACTION_TIME_ADDED = ACTION_PREFIX + "TIME_ADDED";
 
     /**
+     * One new solve time has been added manually via the TimerList FAB.
+     */
+    public static final String ACTION_TIME_ADDED_MANUALLY = ACTION_PREFIX + "TIME_ADDED_MANUALLY";
+
+    /**
      * One or more solve times have been modified in unspecified ways. Modifications include adding
      * times (bulk import), deleting selected times, or changing the penalties, comments, history
      * status or other properties of one or more times. A full refresh of any displayed time data

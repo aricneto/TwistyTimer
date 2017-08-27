@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -144,7 +145,7 @@ public class TimerListFragment extends BaseFragment
                                     // The receiver might be able to use the new solve and avoid
                                     // accessing the database.
                                     new TTIntent.BroadcastBuilder(
-                                            CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
+                                            CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED_MANUALLY)
                                             .solve(solve)
                                             .broadcast();
                                 }
@@ -164,12 +165,30 @@ public class TimerListFragment extends BaseFragment
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_TIME_ADDED_MANUALLY:
+                    if (!history)
+                        reloadList();
                 case ACTION_TIME_ADDED:
                     // When "history" is enabled, the list of times does not include times from
                     // the current session. Times are only added to the current session, so
                     // there is no need to refresh the "history" list on adding a session time.
-                    if (! history)
-                        reloadList();
+                    if (! history) {
+                        /*
+                            If a time has been added by the timer, wait a few seconds to let the
+                            (expensive) timer animations run before doing anything with the new data.
+                            Since the user will, in most cases (unless they quickly change tabs
+                            immediatelly after stopping the timer), will be at the Timer screen, this
+                            delay will not be noticeable, and will improve the feeling of responsiveness
+                            at the Timer page.
+                         */
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                reloadList();
+                            }
+                        }, 600);
+                    }
                     break;
 
                 case ACTION_TIMES_MODIFIED:
