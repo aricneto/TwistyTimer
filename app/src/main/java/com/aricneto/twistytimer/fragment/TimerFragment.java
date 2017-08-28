@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -161,6 +162,7 @@ public class TimerFragment extends BaseFragment
     private ScrambleGenerator generator;
 
     private GenerateScrambleSequence scrambleGeneratorAsync;
+    private GetOptimalCross optimalCrossAsync;
 
     private int currentPenalty = NO_PENALTY;
 
@@ -221,8 +223,8 @@ public class TimerFragment extends BaseFragment
     private boolean holdEnabled;
     private boolean backCancelEnabled;
     private boolean startCueEnabled;
-    private boolean showHints;
-    private boolean showHintsXCross;
+    private boolean showHintsEnabled;
+    private boolean showHintsXCrossEnabled;
     private boolean averageRecordsEnabled;
 
     private boolean inspectionAlertEnabled;
@@ -363,14 +365,14 @@ public class TimerFragment extends BaseFragment
                     dialog.show();
                     break;
                 case R.id.hintCard:
-                    if (canShowHint) {
+                    if (canShowHint && showHintsEnabled) {
                         panelText.setVisibility(View.GONE);
                         panelText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                         panelText.setGravity(Gravity.LEFT);
                         panelSpinner.setVisibility(View.VISIBLE);
                         panelSpinnerText.setVisibility(View.VISIBLE);
                         slidingLayout.setPanelState(PanelState.EXPANDED);
-                        new GetOptimalCross().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        getNewOptimalCross();
                     }
                     break;
                 case R.id.button_undo:
@@ -422,6 +424,7 @@ public class TimerFragment extends BaseFragment
         detailTextNamesArray = getResources().getStringArray(R.array.timer_detail_stats);
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
+        optimalCrossAsync = new GetOptimalCross();
 
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
@@ -519,8 +522,8 @@ public class TimerFragment extends BaseFragment
 
         scrambleEnabled = Prefs.getBoolean(R.string.pk_scramble_enabled, true);
         scrambleImgEnabled = Prefs.getBoolean(R.string.pk_show_scramble_image, true);
-        showHints = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
-        showHintsXCross = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
+        showHintsEnabled = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
+        showHintsXCrossEnabled = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
 
         inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
         final String vibrationAlert = getString(R.string.pk_inspection_alert_vibration);
@@ -540,7 +543,7 @@ public class TimerFragment extends BaseFragment
             }
         }
 
-        if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+        if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
             hintCard.setVisibility(View.VISIBLE);
             optimalCross = new RubiksCubeOptimalCross(getString(R.string.optimal_cross));
             optimalXCross = new RubiksCubeOptimalXCross(getString(R.string.optimal_x_cross));
@@ -1108,7 +1111,7 @@ public class TimerFragment extends BaseFragment
                 scrambleImg.setEnabled(true);
                 showImage();
             }
-            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
                 hintCard.setEnabled(true);
                 hintCard.setVisibility(View.VISIBLE);
                 hintCard.animate()
@@ -1160,7 +1163,7 @@ public class TimerFragment extends BaseFragment
                 scrambleImg.setEnabled(false);
                 hideImage();
             }
-            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
                 hintCard.setEnabled(false);
                 hintCard.animate()
                         .alpha(0)
@@ -1318,6 +1321,14 @@ public class TimerFragment extends BaseFragment
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
+    private void getNewOptimalCross() {
+        if (showHintsEnabled) {
+            optimalCrossAsync.cancel(true);
+            optimalCrossAsync = new GetOptimalCross();
+            optimalCrossAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
     /**
      * Generates a new scramble and handles everything.
      */
@@ -1332,11 +1343,17 @@ public class TimerFragment extends BaseFragment
 
     private class GetOptimalCross extends AsyncTask<Void, Void, String> {
         @Override
+        protected void onPreExecute() {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+            Log.d("OptimalCross onPre:",System.currentTimeMillis()+"");
+            super.onPreExecute();
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             String text = "";
             text += optimalCross.getTip(realScramble);
-            if (showHintsXCross) {
+            if (showHintsXCrossEnabled) {
                 text += "\n\n";
                 text += optimalXCross.getTip(realScramble);
             }
@@ -1347,8 +1364,11 @@ public class TimerFragment extends BaseFragment
         protected void onPostExecute(String text) {
             super.onPostExecute(text);
             if (panelSpinnerText != null && panelText != null && ! isRunning) {
+                // Set the hint text
                 panelText.setText(text);
                 panelText.setVisibility(View.VISIBLE);
+
+                // Hide the "loading" spinner and text
                 panelSpinner.setVisibility(View.GONE);
                 panelSpinnerText.setVisibility(View.GONE);
             }
@@ -1359,7 +1379,8 @@ public class TimerFragment extends BaseFragment
 
         @Override
         protected void onPreExecute() {
-            if (showHints && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled)
+            Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled)
                 slidingLayout.setPanelState(PanelState.HIDDEN);
             canShowHint = false;
             scrambleText.setText(R.string.generating_scramble);

@@ -244,6 +244,12 @@ public class RubiksCubeCrossSolver {
             int depth,
             int[] path,
             ArrayList<String[]> solutions) {
+
+        // limit number of solutions
+        if (solutions.size() >= 3) {
+            return;
+        }
+
         if (depth == 0) {
             if (edgesPermutation == goalEdgesPermutation &&
                     edgesOrientation == goalEdgesOrientation) {

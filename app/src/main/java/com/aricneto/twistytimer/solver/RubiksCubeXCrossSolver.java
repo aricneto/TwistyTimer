@@ -353,6 +353,11 @@ public class RubiksCubeXCrossSolver {
             int depth,
             int[] path,
             ArrayList<String[]> solutions) {
+
+        if (solutions.size() >= 2) {
+            return;
+        }
+
         if (depth == 0) {
             if (cornersPermutation == goalCornersPermutation &&
                     cornersOrientation == goalCornersOrientation &&
