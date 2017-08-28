@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
@@ -38,6 +39,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
@@ -80,6 +82,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.FORMAT_DEFAULT;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
@@ -1227,6 +1230,14 @@ public class TimerFragment extends BaseFragment
         // the spinner to visible.
         isRunning = true;
 
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Window window = activity.getWindow();
+            if (window != null) {
+                window.addFlags(FLAG_KEEP_SCREEN_ON);
+            }
+        }
+
         if (scrambleEnabled) {
             currentScramble = realScramble;
             generateNewScramble();
@@ -1242,6 +1253,13 @@ public class TimerFragment extends BaseFragment
         isRunning = false;
         hasStoppedTimerOnce = true;
         showToolbar();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Window window = activity.getWindow();
+            if (window != null) {
+                window.clearFlags(FLAG_KEEP_SCREEN_ON);
+            }
+        }
     }
 
     /**
