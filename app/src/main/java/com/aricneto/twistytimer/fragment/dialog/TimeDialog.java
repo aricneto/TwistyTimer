@@ -136,10 +136,12 @@ public class TimeDialog extends DialogFragment {
                             .input("", solve.getComment(), new MaterialDialog.InputCallback() {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
-                                    solve.setComment(input.toString());
-                                    dbHandler.updateSolve(solve);
-                                    Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
-                                    updateList();
+                                    if (input.toString().trim().length() != 0) {
+                                        solve.setComment(input.toString());
+                                        dbHandler.updateSolve(solve);
+                                        Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
+                                        updateList();
+                                    }
                                 }
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
