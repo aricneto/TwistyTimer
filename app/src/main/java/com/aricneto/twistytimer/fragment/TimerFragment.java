@@ -342,12 +342,14 @@ public class TimerFragment extends BaseFragment
                                 @Override
                                 public void onInput(@NonNull MaterialDialog dialog,
                                                     CharSequence input) {
-                                    currentSolve.setComment(input.toString());
-                                    dbHandler.updateSolve(currentSolve);
-                                    // NOTE: At present, the Statistics and ChartStatistics do not
-                                    // need to know about changes to a comment, so a notification
-                                    // of this change does not need to be broadcast.
-                                    Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
+                                    if (input.toString().trim().length() != 0) {
+                                        currentSolve.setComment(input.toString());
+                                        dbHandler.updateSolve(currentSolve);
+                                        // NOTE: At present, the Statistics and ChartStatistics do not
+                                        // need to know about changes to a comment, so a notification
+                                        // of this change does not need to be broadcast.
+                                        Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
+                                    }   
                                     hideButtons(false, true);
                                 }
                             })
