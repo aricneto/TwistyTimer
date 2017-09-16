@@ -308,7 +308,14 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleSubtype = savedInstanceState.getString("subtype");
             history = savedInstanceState.getBoolean("history");
+        } else {
+            SharedPreferences sharedPreferences = getDefaultSharedPreferences();
+            currentPuzzle = sharedPreferences.getString(getString(R.string.pk_lastPuzzle), PuzzleUtils.TYPE_333);
         }
+    }
+
+    private SharedPreferences getDefaultSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     @Override
@@ -789,6 +796,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
                 currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
+                saveCurrentPuzzle(currentPuzzle);
                 updateCurrentSubtype();
                 viewPager.setAdapter(viewPagerAdapter);
                 viewPager.setCurrentItem(currentPage);
@@ -799,6 +807,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void saveCurrentPuzzle(String currentPuzzle) {
+        SharedPreferences sharedPreferences = getDefaultSharedPreferences();
+        sharedPreferences.edit().putString(getString(R.string.pk_lastPuzzle), currentPuzzle).apply();
     }
 
     protected class NavigationAdapter extends CacheFragmentStatePagerAdapter {
