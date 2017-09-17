@@ -310,7 +310,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             history = savedInstanceState.getBoolean("history");
         } else {
             SharedPreferences sharedPreferences = getDefaultSharedPreferences();
-            currentPuzzle = sharedPreferences.getString(getString(R.string.pk_lastPuzzle), PuzzleUtils.TYPE_333);
+            currentPuzzle = sharedPreferences.getString(getString(R.string.pk_last_puzzle), PuzzleUtils.TYPE_333);
         }
     }
 
@@ -811,7 +811,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private void saveCurrentPuzzle(String currentPuzzle) {
         SharedPreferences sharedPreferences = getDefaultSharedPreferences();
-        sharedPreferences.edit().putString(getString(R.string.pk_lastPuzzle), currentPuzzle).apply();
+        sharedPreferences.edit().putString(getString(R.string.pk_last_puzzle), currentPuzzle).apply();
     }
 
     protected class NavigationAdapter extends CacheFragmentStatePagerAdapter {

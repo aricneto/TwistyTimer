@@ -15,7 +15,7 @@ and each resource name begins with "pk_" to indicate the string resource is a "p
 THESE KEYS MUST NOT BE LOCALIZED!
 -->
 <resources>
-    <string translatable="false" name="pk_lastPuzzle">lastPuzzle</string>
+    <string translatable="false" name="pk_last_puzzle">lastPuzzle</string>
 
     <!--
     Keys for preferences referenced from the "Settings" activity and its preferences XML files.
