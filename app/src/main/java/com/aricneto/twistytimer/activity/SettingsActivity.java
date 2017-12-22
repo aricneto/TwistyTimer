@@ -232,6 +232,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         private void updateInspectionAlertText() {
             inspectionDuration = Prefs.getInt(R.string.pk_inspection_time, 15);
+            findPreference(getString(R.string.pk_inspection_time))
+                    .setSummary(getResources().getQuantityString(R.plurals.inspectionTimeSummary, inspectionDuration, inspectionDuration));
             findPreference(getString(R.string.pk_inspection_alert_enabled))
                     .setSummary(getString(R.string.pref_inspection_alert_summary,
                             inspectionDuration == 15 ? 8 : (int) (inspectionDuration * 0.5f),

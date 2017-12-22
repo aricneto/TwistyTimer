@@ -193,9 +193,12 @@
 
     <string name="inspectionEnabledTitle">Inspection</string>
 
-    <string name="inspectionTimeSummary">Default duration: 15 seconds</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
 
-    <string name="inspectionTimeTitle">Inspection duration (seconds)</string>
+    <string name="inspectionTimeTitle">Inspection duration</string>
 
     <string name="inspection_time">Inspection time</string>
 

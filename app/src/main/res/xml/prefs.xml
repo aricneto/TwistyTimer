@@ -34,7 +34,7 @@
                     android:dependency="@string/pk_inspection_enabled"
                     android:key="@string/pk_inspection_time"
 
-                    android:summary="@string/inspectionTimeSummary"
+                    android:summary="@plurals/inspectionTimeSummary"
                     android:title="@string/inspectionTimeTitle" />
 
             </PreferenceCategory>
