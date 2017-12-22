@@ -629,6 +629,7 @@ public class TimerFragment extends BaseFragment
                     chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
                     stopChronometer();
                     addNewSolve();
+                    considerNewScramble();
                     inspectionText.setVisibility(View.GONE);
                 }
             };
@@ -778,6 +779,13 @@ public class TimerFragment extends BaseFragment
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         return root;
+    }
+
+    private void considerNewScramble() {
+        if (scrambleEnabled) {
+            currentScramble = realScramble;
+            generateNewScramble();
+        }
     }
 
     @Override
@@ -1222,15 +1230,11 @@ public class TimerFragment extends BaseFragment
         chronometer.start();
         chronometer.setHighlighted(false); // Clear any start cue or hold-for-start highlight.
 
-        // isRunning should be set before generateNewScramble so the loading spinner doesn't appear
-        // during a solve, since generateNewScramble checks if isRunning is false before setting
-        // the spinner to visible.
+        // Generating a new scramble will show a loading spinner _unless_ the chronometer is
+        // running. Therefore isRunning needs to be set before generating a new scramble.
         isRunning = true;
 
-        if (scrambleEnabled) {
-            currentScramble = realScramble;
-            generateNewScramble();
-        }
+        considerNewScramble();
     }
 
     /**
