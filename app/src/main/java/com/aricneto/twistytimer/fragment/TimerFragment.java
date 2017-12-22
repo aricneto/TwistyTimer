@@ -93,11 +93,13 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_USE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.BroadcastBuilder;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
+import static com.aricneto.twistytimer.utils.TTIntent.getSolve;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
@@ -249,6 +251,14 @@ public class TimerFragment extends BaseFragment
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_USE_SCRAMBLE:
+                    // Ensure that any scramble that is being generated is canceled.
+                    // Otherwise, it will replace the scramble we set here when it completes!
+                    scrambleGeneratorAsync.cancel(true);
+
+                    Solve solve = getSolve(intent);
+                    setScramble(solve.getScramble());
+                    break;
                 case ACTION_SCROLLED_PAGE:
                     if (holdEnabled) {
                         holdHandler.removeCallbacks(holdRunnable);

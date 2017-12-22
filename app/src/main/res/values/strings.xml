@@ -401,5 +401,6 @@
 
     <string name="pref_inspection_alert_title">Alert time left</string>
     <string name="pref_inspection_alert_summary">Timer will alert you once %1$d and %2$d seconds of inspection have passed</string>
+    <string name="list_options_item_use">Use</string>
 
 </resources>

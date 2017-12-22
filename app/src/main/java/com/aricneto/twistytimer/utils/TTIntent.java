@@ -130,6 +130,7 @@ public final class TTIntent {
      */
     public static final String ACTION_GENERATE_SCRAMBLE = ACTION_PREFIX + "GENERATE_SCRAMBLE";
 
+    public static final String ACTION_USE_SCRAMBLE = ACTION_PREFIX + "USE_SCRAMBLE";
     /**
      * Selection mode has been turned on for the list of times.
      */
@@ -224,6 +225,7 @@ public final class TTIntent {
                 ACTION_TOOLBAR_RESTORED,
                 ACTION_GENERATE_SCRAMBLE,
                 ACTION_SCROLLED_PAGE,
+                ACTION_USE_SCRAMBLE,
         });
     }};
 

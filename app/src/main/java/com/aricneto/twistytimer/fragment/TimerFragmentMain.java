@@ -77,6 +77,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_SELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_UNSELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_USE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
@@ -193,6 +194,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_USE_SCRAMBLE:
+                    viewPager.setCurrentItem(TIMER_PAGE);
+                    break;
                 case ACTION_TIMER_STARTED: // This was taken from PlusTimer (thanks :D)
                     viewPager.setPagingEnabled(false);
                     activateTabLayout(false);

@@ -5,6 +5,9 @@
         android:id="@+id/history_from"
         android:title="@string/list_options_item_from_history" />
     <item
+        android:id="@+id/use"
+        android:title="@string/list_options_item_use" />
+    <item
         android:id="@+id/share"
         android:title="@string/list_options_item_share" />
     <item
