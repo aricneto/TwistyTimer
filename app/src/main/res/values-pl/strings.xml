@@ -83,7 +83,9 @@
   <string name="inspectionEnabledTitle">Inspekcja</string>
   <string name="inspectionTimeTitle">Czas inspekcji (sekundy)</string>
   <string name="pref_category_title_timer">Timer</string>
-  <string name="inspectionTimeSummary">Domyślnie</string>
+  <plurals name="inspectionTimeSummary">
+    <item quantity="other">%d sekundžių</item>
+  </plurals>
   <string name="drawer_title_reference">Odniesienia</string>
   <string name="edit_algorithm">Edytuj algorytm</string>
   <string name="dialog_set_progress">Ustaw postęp</string>

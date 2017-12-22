@@ -83,7 +83,9 @@
   <string name="inspectionEnabledTitle">Inspección</string>
   <string name="inspectionTimeTitle">Tiempo de inspección (segundos)</string>
   <string name="pref_category_title_timer">Contador</string>
-  <string name="inspectionTimeSummary">Tiempo por defecto: 15 segundos</string>
+  <plurals name="inspectionTimeSummary">
+    <item quantity="other">%d segundos</item>
+  </plurals>
   <string name="drawer_title_reference">Referencia</string>
   <string name="edit_algorithm">Editar algoritmos</string>
   <string name="dialog_set_progress">Establecer progreso</string>
