@@ -193,9 +193,12 @@
 
     <string name="inspectionEnabledTitle">Inspection</string>
 
-    <string name="inspectionTimeSummary">Default duration: 15 seconds</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
 
-    <string name="inspectionTimeTitle">Inspection duration (seconds)</string>
+    <string name="inspectionTimeTitle">Inspection duration</string>
 
     <string name="inspection_time">Inspection time</string>
 
@@ -398,5 +401,6 @@
 
     <string name="pref_inspection_alert_title">Alert time left</string>
     <string name="pref_inspection_alert_summary">Timer will alert you once %1$d and %2$d seconds of inspection have passed</string>
+    <string name="list_options_item_use">Use</string>
 
 </resources>

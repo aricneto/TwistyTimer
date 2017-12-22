@@ -93,11 +93,13 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_USE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.BroadcastBuilder;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
+import static com.aricneto.twistytimer.utils.TTIntent.getSolve;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
@@ -249,6 +251,14 @@ public class TimerFragment extends BaseFragment
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_USE_SCRAMBLE:
+                    // Ensure that any scramble that is being generated is canceled.
+                    // Otherwise, it will replace the scramble we set here when it completes!
+                    scrambleGeneratorAsync.cancel(true);
+
+                    Solve solve = getSolve(intent);
+                    setScramble(solve.getScramble());
+                    break;
                 case ACTION_SCROLLED_PAGE:
                     if (holdEnabled) {
                         holdHandler.removeCallbacks(holdRunnable);
@@ -629,6 +639,7 @@ public class TimerFragment extends BaseFragment
                     chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
                     stopChronometer();
                     addNewSolve();
+                    considerNewScramble();
                     inspectionText.setVisibility(View.GONE);
                 }
             };
@@ -778,6 +789,13 @@ public class TimerFragment extends BaseFragment
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         return root;
+    }
+
+    private void considerNewScramble() {
+        if (scrambleEnabled) {
+            currentScramble = realScramble;
+            generateNewScramble();
+        }
     }
 
     @Override
@@ -1222,15 +1240,11 @@ public class TimerFragment extends BaseFragment
         chronometer.start();
         chronometer.setHighlighted(false); // Clear any start cue or hold-for-start highlight.
 
-        // isRunning should be set before generateNewScramble so the loading spinner doesn't appear
-        // during a solve, since generateNewScramble checks if isRunning is false before setting
-        // the spinner to visible.
+        // Generating a new scramble will show a loading spinner _unless_ the chronometer is
+        // running. Therefore isRunning needs to be set before generating a new scramble.
         isRunning = true;
 
-        if (scrambleEnabled) {
-            currentScramble = realScramble;
-            generateNewScramble();
-        }
+        considerNewScramble();
     }
 
     /**

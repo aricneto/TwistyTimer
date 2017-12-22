@@ -83,6 +83,12 @@ public class TimeDialog extends DialogFragment {
                                     dbHandler.deleteSolveByID(mId);
                                     updateList();
                                     break;
+                                case R.id.use:
+                                    new TTIntent.BroadcastBuilder(TTIntent.CATEGORY_UI_INTERACTIONS, TTIntent.ACTION_USE_SCRAMBLE)
+                                            .solve(solve)
+                                            .broadcast();
+                                    dismiss();
+                                    break;
                                 case R.id.history_to:
                                     solve.setHistory(true);
                                     Toast.makeText(getContext(), getString(R.string.sent_to_history), Toast.LENGTH_SHORT).show();

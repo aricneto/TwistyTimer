@@ -86,7 +86,9 @@
     <string name="inspectionEnabledTitle">Apžiūra</string>
     <string name="inspectionTimeTitle">Apžiūros laikas (sekundėm)</string>
     <string name="pref_category_title_timer">Laikmatis</string>
-    <string name="inspectionTimeSummary">Numatytas laikas: 15 sekundžių</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="other">%d sekundžių</item>
+    </plurals>
     <string name="drawer_title_reference">Algoritmai</string>
     <string name="edit_algorithm">Redaguoti algoritmus</string>
     <string name="dialog_set_progress">Nustatyti progresą</string>

@@ -83,7 +83,9 @@
   <string name="inspectionEnabledTitle">Inspektion</string>
   <string name="inspectionTimeTitle">Inspektionszeit (Sekunden)</string>
   <string name="pref_category_title_timer">Stoppuhr</string>
-  <string name="inspectionTimeSummary">Standard-Zeit: 15 Sekunden</string>
+  <plurals name="inspectionTimeSummary">
+    <item quantity="other">%d sekunden</item>
+  </plurals>
   <string name="drawer_title_reference">Referenz</string>
   <string name="edit_algorithm">Algorithmen bearbeiten</string>
   <string name="dialog_set_progress">Fortschritt einstellen</string>

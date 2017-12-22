@@ -82,7 +82,9 @@
     <string name="inspectionTimeTitle">Tempo de inspeção (segundos)</string>
     <string name="pref_category_title_inspection">Inspeção</string>
     <string name="pref_category_title_timer">Cronômetro</string>
-    <string name="inspectionTimeSummary">Tempo padrão: 15 segundos</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="other">%d segundos</item>
+    </plurals>
     <string name="action_reset">Resetar</string>
     <string name="action_update">Atualizar</string>
     <string name="dialog_revert_content_confirmation">Resetar os algoritmos deste caso de volta para o padrão?</string>

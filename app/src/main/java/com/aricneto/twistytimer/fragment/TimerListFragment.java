@@ -196,17 +196,31 @@ public class TimerListFragment extends BaseFragment
                     break;
 
                 case ACTION_HISTORY_TIMES_SHOWN:
-                    history = true;
+                    setHistory(true);
                     reloadList();
                     break;
 
                 case ACTION_SESSION_TIMES_SHOWN:
-                    history = false;
+                    setHistory(false);
                     reloadList();
                     break;
             }
         }
     };
+
+    private void setHistory(boolean value) {
+        history = value;
+
+        // Need to persist history to fragment arguments so that it is correctly persisted on
+        // re-create (such as when device is rotated).
+        Bundle arguments = getArguments();
+
+        // Cargo-culted this null check from onCreate. Unsure how this could actually be null.
+        if (arguments != null) {
+            arguments.putBoolean(HISTORY, history);
+            setArguments(arguments);
+        }
+    }
 
     // Receives broadcasts about UI interactions that require actions to be taken.
     private TTFragmentBroadcastReceiver mUIInteractionReceiver

@@ -6,7 +6,6 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion '26.0.1'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
@@ -40,8 +39,6 @@ buildscript {
     }
 }
 
-apply plugin: 'com.neenbedankt.android-apt'
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':TNoodle')
@@ -55,9 +52,8 @@ dependencies {
     compile 'com.android.support:percent:26.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.takisoft.fix:preference-v7:26.0.1.0'
-    // Butterknife ("apt" dependency is defined in root "build.gradle" script).
     compile 'com.jakewharton:butterknife:8.2.1'
-    apt     'com.jakewharton:butterknife-compiler:8.2.1'
+    annotationProcessor     'com.jakewharton:butterknife-compiler:8.2.1'
     // Observable scrollview
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     // Dialogs

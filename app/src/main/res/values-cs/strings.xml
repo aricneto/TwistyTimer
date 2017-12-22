@@ -139,7 +139,9 @@
     <string name="import_progress_title">Importuji časy…</string>
     <string name="inspection">Inspekce</string>
     <string name="inspectionEnabledTitle">Inspekce</string>
-    <string name="inspectionTimeSummary">Výchozí čas: 15 sekund</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="other">%d sekund</item>
+    </plurals>
     <string name="inspectionTimeTitle">Čas inspekce (sekundy)</string>
     <string name="inspection_time">Čas inspekce</string>
     <string name="invalid_time">Neplatný čas</string>

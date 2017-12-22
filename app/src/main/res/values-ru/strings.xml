@@ -116,7 +116,9 @@
     <string name="import_progress_title">Импорт сборок...</string>
     <string name="inspection">Инспекция</string>
     <string name="inspectionEnabledTitle">Инспекция</string>
-    <string name="inspectionTimeSummary">Стандартное время: 15 секунд</string>
+    <plurals name="inspectionTimeSummary">
+        <item quantity="other">%d секунд</item>
+    </plurals>
     <string name="inspectionTimeTitle">Время инспекции (в секундах)</string>
     <string name="inspection_time">Время инспекции</string>
     <string name="invalid_time">Неправильное время</string>
