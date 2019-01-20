@@ -24,6 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
+        <include
+            android:id="@+id/scramble_box"
+            layout="@layout/item_scramble_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_below="@id/main_actionbar"/>
+
         <TextView
             android:id="@+id/timer"
             android:layout_width="wrap_content"
@@ -32,7 +40,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:text="42.35"
             android:textColor="#000"
-            android:textSize="58sp" />
+            android:textSize="64sp" />
 
         <TextView
             android:id="@+id/stat_averages"
@@ -64,13 +72,13 @@
             android:textSize="12sp" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="180dp"
+            android:layout_height="36dp"
             android:layout_below="@id/timer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
             android:background="@color/md_white_1000"
-            app:cardCornerRadius="22dp">
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

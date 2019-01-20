@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="36dp"
+    app:cardElevation="2dp"
+    android:layout_height="36dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="horizontal">
 
@@ -10,15 +15,19 @@
         android:id="@+id/qa_remove"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_weight="1"
         android:alpha=".85"
         android:padding="6dp"
-        app:srcCompat="@drawable/ic_outline_view_stream_24px" />
+        app:srcCompat="@drawable/ic_outline_list_alt_24px" />
 
     <ImageView
         android:id="@+id/qa_comment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_weight="1"
         android:alpha=".85"
         android:padding="6dp"
@@ -28,9 +37,12 @@
         android:id="@+id/qa_flag"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_weight="1"
         android:alpha=".85"
         android:padding="6dp"
         app:srcCompat="@drawable/ic_outline_timeline_24px" />
 
 </LinearLayout>
+</androidx.cardview.widget.CardView>
