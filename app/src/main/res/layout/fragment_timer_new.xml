@@ -14,23 +14,16 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?mainColorBackground"
+        android:background="@drawable/background_gradient"
         tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
-
-        <include
-            android:id="@+id/main_actionbar"
-            layout="@layout/main_actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
 
         <include
             android:id="@+id/scramble_box"
             layout="@layout/item_scramble_box"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_below="@id/main_actionbar"/>
+            android:layout_margin="16dp" />
 
         <TextView
             android:id="@+id/timer"
@@ -41,35 +34,6 @@
             android:text="42.35"
             android:textColor="#000"
             android:textSize="64sp" />
-
-        <TextView
-            android:id="@+id/stat_averages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/timer"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/timer"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand_medium"
-            android:text="Ao5: 14.23\nAo12: 12.35\nAo50: 13.95"
-            android:textColor="#000"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/stat_other"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/timer"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@id/timer"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand_medium"
-            android:gravity="right"
-            android:text="Dev: 4.42\nBest: 6.35\nWorst: 24.63"
-            android:textColor="#000"
-            android:textSize="12sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="180dp"
@@ -117,12 +81,21 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/timer_chart"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_height="32dp">
+
+        </com.github.mikephil.charting.charts.LineChart>
+
         <ImageView
             android:id="@+id/scrambleImg"
             android:layout_width="84dp"
             android:layout_height="84dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/timer_chart"
             android:scaleType="fitStart"
             tools:background="@color/red_material" />
 
@@ -130,8 +103,8 @@
             android:id="@+id/progressSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_above="@id/timer_chart"
+            android:layout_centerHorizontal="true"
             android:layout_alignWithParentIfMissing="true"
             android:layout_margin="16dp"
             android:indeterminate="true"
@@ -139,12 +112,33 @@
             app:mpb_progressStyle="circular"
             tools:visibility="visible" />
 
-        <include
-            android:id="@+id/main_nav"
-            layout="@layout/main_navbar"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_above="@id/timer_chart"
+            android:id="@+id/stat_averages"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/scrambleImg"
+            android:alpha=".85"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Ao5: 14.23\nAo12: 12.35\nAo50: 13.95\nAo100: 23.21"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_above="@id/timer_chart"
+            android:id="@+id/stat_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@id/scrambleImg"
+            android:alpha=".85"
+            android:fontFamily="@font/quicksand_medium"
+            android:gravity="right"
+            android:text="Dev: 4.42\nBest: 6.35\nWorst: 24.63\nCount: 142"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
 
     </RelativeLayout>
 
