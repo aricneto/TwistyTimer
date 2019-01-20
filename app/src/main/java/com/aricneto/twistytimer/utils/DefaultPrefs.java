@@ -1,6 +1,6 @@
 package com.aricneto.twistytimer.utils;
 import android.content.res.Resources;
-import android.support.annotation.BoolRes;
+import androidx.annotation.BoolRes;
 
 import com.aricneto.twistytimer.TwistyTimer;
 

@@ -1,7 +1,7 @@
 package com.aricneto.twistytimer.database;
 
 import android.database.Cursor;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.utils.PuzzleUtils;

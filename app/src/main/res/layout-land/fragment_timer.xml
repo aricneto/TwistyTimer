@@ -50,7 +50,7 @@
             tools:drawableLeft="@drawable/ic_dice_white_24dp"
             tools:text="@string/scramble_text_tap_hint" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/hintCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:text="@string/hint"
                 android:textColor="@android:color/white" />
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <!--
         "android:textColorHighlight" is normally used when selecting text, but will be used instead
@@ -199,7 +199,7 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <android.support.v7.widget.GridLayout
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/detailLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -290,7 +290,7 @@
                 app:layout_gravity="right"
                 app:layout_row="7" />
 
-        </android.support.v7.widget.GridLayout>
+        </androidx.gridlayout.widget.GridLayout>
 
         <TextView
             android:id="@+id/detail_average_record_message"

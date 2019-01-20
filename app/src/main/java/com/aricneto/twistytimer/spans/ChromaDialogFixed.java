@@ -1,15 +1,14 @@
 package com.aricneto.twistytimer.spans;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
+import androidx.annotation.ColorInt;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AlertDialog;
+
 import android.util.TypedValue;
 import android.view.WindowManager;
 

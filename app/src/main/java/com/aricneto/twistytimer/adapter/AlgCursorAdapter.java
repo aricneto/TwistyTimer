@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,12 +115,12 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     private void colorCube(AlgHolder holder, final String state) {
         // See the reference image to understand how this works.
-        ButterKnife.apply(holder.stickers, new ButterKnife.Action<View>() {
+        /*ButterKnife.apply(holder.stickers, new ButterKnife.Action<View>() {
             @Override
             public void apply(@NonNull View sticker, int index) {
                 sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
             }
-        });
+        });*/ // FIXME: this broke when updated to AndroidX 
     }
 
     public boolean isLocked() {

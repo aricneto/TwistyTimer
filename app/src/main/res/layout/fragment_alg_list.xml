@@ -8,7 +8,7 @@
     android:keepScreenOn="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/ToolBarStyle"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:elevation="4dp"
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

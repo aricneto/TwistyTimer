@@ -4,15 +4,15 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.widget.AppCompatSeekBar;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceScreen;
+import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -119,10 +119,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         private int inspectionDuration;
 
-        private final android.support.v7.preference.Preference.OnPreferenceClickListener clickListener
-                = new android.support.v7.preference.Preference.OnPreferenceClickListener() {
+        private final androidx.preference.Preference.OnPreferenceClickListener clickListener
+                = new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(android.support.v7.preference.Preference preference) {
+            public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 switch (Prefs.keyToResourceID(preference.getKey(),
                         R.string.pk_inspection_time,
                         R.string.pk_show_scramble_x_cross_hints,

@@ -3,8 +3,8 @@ package com.aricneto.twistytimer.fragment.dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +13,8 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.activity.SettingsActivity;
 import com.aricneto.twistytimer.utils.LocaleUtils;
-import com.aricneto.twistytimer.utils.Prefs;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

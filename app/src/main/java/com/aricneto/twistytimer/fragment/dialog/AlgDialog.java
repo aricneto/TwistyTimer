@@ -5,9 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.AppCompatSeekBar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -203,11 +203,11 @@ public class AlgDialog extends DialogFragment {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         final HashMap<Character, Integer> colorHash = AlgUtils.getColorLetterHashMap(sp);
 
-        ButterKnife.apply(stickers, new ButterKnife.Action<View>() {
+        /*ButterKnife.apply(stickers, new ButterKnife.Action<View>() {
             @Override
             public void apply(@NonNull View sticker, int index) {
                 sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
             }
-        });
+        });*/ // FIXME: this broke when updated to androidX
     }
 }

@@ -5,12 +5,12 @@ android {
         config {
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.1'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 22
         versionName "3.0.0b1"
         vectorDrawables.useSupportLibrary = true
@@ -28,69 +28,61 @@ android {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
     }
-}
-
-// Required for Butterknife support.
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
-apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':TNoodle')
-    compile project(':opencsv')
-    compile 'com.android.support:appcompat-v7:26.0.1'
-    compile 'com.android.support:support-v4:26.0.1'
-    compile 'com.android.support:cardview-v7:26.0.1'
-    compile 'com.android.support:recyclerview-v7:26.0.1'
-    compile 'com.android.support:gridlayout-v7:26.0.1'
-    compile 'com.android.support:design:26.0.1'
-    compile 'com.android.support:percent:26.0.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.takisoft.fix:preference-v7:26.0.1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':TNoodle')
+    implementation project(':opencsv')
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'com.takisoft.fix:preference-v7:26.0.1.0'
     // Butterknife ("apt" dependency is defined in root "build.gradle" script).
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt     'com.jakewharton:butterknife-compiler:8.2.1'
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     // Observable scrollview
-    compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
+    implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     // Dialogs
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.6@aar') {
+    implementation('com.github.afollestad.material-dialogs:core:0.8.5.6@aar') {
         transitive = true
     }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.6@aar') {
+    implementation('com.github.afollestad.material-dialogs:commons:0.8.5.6@aar') {
         transitive = true
     }
     // FAB
-    compile 'com.gordonwong:material-sheet-fab:1.2.1'
+    implementation 'com.gordonwong:material-sheet-fab:1.2.1'
     // Material Drawer
-    compile('com.mikepenz:materialdrawer:5.0.8@aar') {
+    implementation('com.mikepenz:materialdrawer:5.0.8@aar') {
         transitive = true
     }
     // Joda-time
-    compile 'net.danlew:android.joda:2.9.4.1'
+    implementation 'net.danlew:android.joda:2.9.4.1'
     // Android SVG
-    compile 'com.caverock:androidsvg:1.2.1'
+    implementation 'com.caverock:androidsvg:1.2.1'
     // MPAndroidChart
-    compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.0'
     // RippleBackground
-    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     // LicensesDialog
-    compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
+    implementation 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     // Inapp Billing
-    compile 'com.anjlab.android.iab.v3:library:1.0.36'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.36'
     // Material color picker
-    compile 'com.pavelsikun:vintage-chroma:1.5'
+    implementation 'com.pavelsikun:vintage-chroma:1.5'
     // Sliding Up Panel
-    compile 'com.sothree.slidinguppanel:library:3.2.1'
+    implementation 'com.sothree.slidinguppanel:library:3.2.1'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 repositories {

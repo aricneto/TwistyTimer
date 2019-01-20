@@ -24,9 +24,9 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Process;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.util.Log;
@@ -101,7 +101,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
-public class TimerFragment extends BaseFragment
+public class                                                                                                                                                                               TimerFragment extends BaseFragment
         implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
     /**
      * Flag to enable debug logging for this class.

@@ -2,7 +2,7 @@ package com.aricneto.twistytimer.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Solve;

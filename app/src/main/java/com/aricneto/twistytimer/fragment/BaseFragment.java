@@ -3,8 +3,8 @@ package com.aricneto.twistytimer.fragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.TypedArray;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 
