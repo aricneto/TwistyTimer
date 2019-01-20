@@ -120,7 +120,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
             public void apply(@NonNull View sticker, int index) {
                 sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
             }
-        });*/ // FIXME: this broke when updated to AndroidX 
+        });*/ // FIXME: this broke when updated to AndroidX
     }
 
     public boolean isLocked() {

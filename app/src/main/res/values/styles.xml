@@ -27,7 +27,7 @@
         <item name="textColorContrastBackground">@android:color/white</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
-        <item name="mainColorBackground">@color/md_indigo_700</item>
+        <item name="mainColorBackground">#0AFF6C</item>
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryDark">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_amber_500</item>

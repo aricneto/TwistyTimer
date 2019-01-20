@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/montserrat_bold</item>
+        <item>@font/quicksand</item>
+        <item>@font/quicksand_bold</item>
+        <item>@font/quicksand_medium</item>
+        <item>@font/raleway_bold</item>
+        <item>@font/raleway_medium</item>
+        <item>@font/work_sans_bold</item>
+        <item>@font/work_sans_medium</item>
+        <item>@font/work_sans_semibold</item>
+    </array>
+</resources>
