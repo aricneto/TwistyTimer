@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/inconsolata_bold</item>
         <item>@font/montserrat_bold</item>
+        <item>@font/nova_mono</item>
+        <item>@font/overpass_mono_semibold</item>
         <item>@font/quicksand</item>
         <item>@font/quicksand_bold</item>
         <item>@font/quicksand_medium</item>

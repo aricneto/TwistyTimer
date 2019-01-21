@@ -185,26 +185,24 @@ public class                                                                    
 
     @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
 
-    @BindView(R.id.detailLayout)           View     detailLayout;
-
     @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
-    @BindView(R.id.scrambleText)    TextView            scrambleText;
-    @BindView(R.id.scrambleImg)     ImageView           scrambleImg;
+    @BindView(R.id.scramble_text)    TextView            scrambleText;
+    @BindView(R.id.scramble_img)     ImageView           scrambleImg;
     @BindView(R.id.expanded_image)  ImageView           expandedImageView;
-    @BindView(R.id.inspectionText)  TextView            inspectionText;
+    @BindView(R.id.inspection_text)  TextView            inspectionText;
     @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
-    @BindView(R.id.hintCard)         CardView            hintCard;
+    @BindView(R.id.scramble_button_hint)         CardView            hintCard;
     @BindView(R.id.panelText)        TextView            panelText;
     @BindView(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
     @BindView(R.id.panelSpinnerText) TextView            panelSpinnerText;
 
-    @BindView(R.id.button_delete)        ImageView        deleteButton;
-    @BindView(R.id.button_dnf)           ImageView        dnfButton;
-    @BindView(R.id.button_plustwo)       ImageView        plusTwoButton;
-    @BindView(R.id.button_comment)       ImageView        commentButton;
-    @BindView(R.id.button_undo)          ImageView        undoButton;
-    @BindView(R.id.quick_action_buttons) LinearLayout     quickActionButtons;
+    @BindView(R.id.qa_remove)        ImageView        deleteButton;
+    @BindView(R.id.qa_flag)           ImageView        dnfButton;
+    //@BindView(R.id.button_plustwo)       ImageView        plusTwoButton;
+    @BindView(R.id.qa_comment)       ImageView        commentButton;
+    @BindView(R.id.qa_undo)          ImageView        undoButton;
+    @BindView(R.id.qa_layout) CardView     quickActionButtons;
     @BindView(R.id.rippleBackground)     RippleBackground rippleBackground;
 
     @BindView(R.id.root)                  RelativeLayout       rootLayout;
@@ -301,7 +299,7 @@ public class                                                                    
             // reload will probably be required.
 
             switch (view.getId()) {
-                case R.id.button_delete:
+                case R.id.qa_remove:
                     new MaterialDialog.Builder(getContext())
                             .content(R.string.delete_dialog_confirmation_title)
                             .positiveText(R.string.delete_dialog_confirmation_button)
@@ -319,14 +317,14 @@ public class                                                                    
                             })
                             .show();
                     break;
-                case R.id.button_dnf:
+                case R.id.qa_flag:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_DNF);
                     chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
                     dbHandler.updateSolve(currentSolve);
                     hideButtons(true, false);
                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     break;
-                case R.id.button_plustwo:
+                /*case R.id.button_plustwo:
                     if (currentPenalty != PENALTY_PLUSTWO) {
                         currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_PLUSTWO);
                         chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
@@ -334,8 +332,8 @@ public class                                                                    
                         broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     }
                     hideButtons(true, false);
-                    break;
-                case R.id.button_comment:
+                    break;*/
+                case R.id.qa_comment:
                     MaterialDialog dialog = new MaterialDialog.Builder(getContext())
                             .title(R.string.add_comment)
                             .input("", "", new MaterialDialog.InputCallback() {
@@ -364,7 +362,7 @@ public class                                                                    
                     }
                     dialog.show();
                     break;
-                case R.id.hintCard:
+                case R.id.scramble_button_hint:
                     if (canShowHint && showHintsEnabled) {
                         panelText.setVisibility(View.GONE);
                         panelText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -375,7 +373,7 @@ public class                                                                    
                         getNewOptimalCross();
                     }
                     break;
-                case R.id.button_undo:
+                case R.id.qa_undo:
                     // Undo the setting of a DNF or +2 penalty (does not undo a delete or comment).
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, NO_PENALTY);
                     chronometer.setPenalty(PuzzleUtils.NO_PENALTY);
@@ -459,7 +457,7 @@ public class                                                                    
 
         deleteButton.setOnClickListener(buttonClickListener);
         dnfButton.setOnClickListener(buttonClickListener);
-        plusTwoButton.setOnClickListener(buttonClickListener);
+        //plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
         hintCard.setOnClickListener(buttonClickListener);
         undoButton.setOnClickListener(buttonClickListener);
@@ -489,7 +487,7 @@ public class                                                                    
                 deleteButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete_white_36dp));
                 commentButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_comment_white_36dp));
                 dnfButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dnflarge));
-                plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
+                //plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
             }
 
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
@@ -565,7 +563,7 @@ public class                                                                    
         if (! scrambleImgEnabled)
             scrambleImg.setVisibility(View.GONE);
         if (! sessionStatsEnabled) {
-            detailLayout.setVisibility(View.INVISIBLE);
+            //detailLayout.setVisibility(View.INVISIBLE);
         }
         // Preferences //
 
@@ -1087,10 +1085,10 @@ public class                                                                    
                         convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
         }
-        detailLayout.setVisibility(View.VISIBLE);
-        detailLayout.animate()
-                    .alpha(1)
-                    .setDuration(300);
+        //detailLayout.setVisibility(View.VISIBLE);
+        //detailLayout.animate()
+        //            .alpha(1)
+        //            .setDuration(300);
 
     }
 
@@ -1177,15 +1175,15 @@ public class                                                                    
             }
         }
         if (sessionStatsEnabled) {
-            detailLayout.animate()
-                    .alpha(0)
-                    .setDuration(300)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            detailLayout.setVisibility(View.INVISIBLE);
-                        }
-                    });
+            //detailLayout.animate()
+            //        .alpha(0)
+            //        .setDuration(300)
+            //        .withEndAction(new Runnable() {
+             //           @Override
+             //           public void run() {
+             //               detailLayout.setVisibility(View.INVISIBLE);
+             //           }
+             //       });
         }
         if (buttonsEnabled) {
             undoButton.setVisibility(View.GONE);

@@ -37,6 +37,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -204,8 +205,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         @Override
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
                             if (viewPager != null) {
-                                LinearLayout.LayoutParams params =
-                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                RelativeLayout.LayoutParams params =
+                                        (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
                                 params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                 viewPager.setLayoutParams(params);
                                 viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -225,8 +226,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         @Override
                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
                             if (viewPager != null) {
-                                LinearLayout.LayoutParams params =
-                                        (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                RelativeLayout.LayoutParams params =
+                                        (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
                                 params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
                                 viewPager.setLayoutParams(params);
                                 viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
@@ -241,8 +242,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         public void onAnimationEnd(Animator animation) {
                             if (toolbarLayout != null) {
                                 if (toolbarLayout.getTranslationY() == 0) {
-                                    LinearLayout.LayoutParams params =
-                                            (LinearLayout.LayoutParams) viewPager.getLayoutParams();
+                                    RelativeLayout.LayoutParams params =
+                                            (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
                                     params.height = originalContentHeight;
                                     viewPager.setLayoutParams(params);
                                     broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED);

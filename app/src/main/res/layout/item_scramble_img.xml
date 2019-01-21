@@ -5,7 +5,7 @@
     android:layout_height="300dp">
 
     <ImageView
-        android:id="@+id/scrambleImg"
+        android:id="@+id/scramble_img"
         android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="200dp"
