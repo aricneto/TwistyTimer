@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="?tabBarSize"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/send_to_history_card"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_width="match_parent"

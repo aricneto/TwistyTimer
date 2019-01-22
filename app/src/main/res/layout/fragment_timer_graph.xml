@@ -1,9 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="?tabBarSize">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/linechart"
@@ -14,10 +15,10 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardCornerRadius="14dp"
         android:paddingTop="8dp"
-        android:layout_height="wrap_content">
+        app:cardCornerRadius="14dp">
 
         <include
             android:id="@+id/stats_container_pager"

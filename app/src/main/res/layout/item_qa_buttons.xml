@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/qa_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="center"
+    android:background="@drawable/outline_background_card"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/qa_remove"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="24dp"
+        android:layout_weight="1"
+        android:alpha=".85"
+        android:padding="8dp"
+        android:tint="#FF0048"
+        app:srcCompat="@drawable/ic_outline_backspace_24px" />
+
+    <ImageView
+        android:id="@+id/qa_dnf"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:alpha=".85"
+        android:padding="8dp"
+        app:srcCompat="@drawable/ic_outline_block_24px" />
+
+    <ImageView
+        android:id="@+id/qa_plustwo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:alpha=".85"
+        android:padding="8dp"
+        app:srcCompat="@drawable/ic_outline_flag_24px" />
+
+    <ImageView
+        android:id="@+id/qa_comment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="4dp"
+        android:layout_weight="1"
+        android:alpha=".85"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="7dp"
+        android:paddingTop="9dp"
+        app:srcCompat="@drawable/ic_outline_add_comment_24px" />
+
+</LinearLayout>

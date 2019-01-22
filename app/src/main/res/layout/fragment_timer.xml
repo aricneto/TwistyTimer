@@ -14,6 +14,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="?tabBarSize"
         tools:background="@drawable/background_gradient"
         tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_margin="16dp" />
+            android:layout_margin="12dp" />
 
         <TextView
             android:id="@+id/congratsText"
@@ -54,7 +55,6 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:drawablePadding="16dp"
-            android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="@string/personal_best_message"
             android:textColor="?colorTimerText"
@@ -67,14 +67,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fontFamily="@font/inconsolata_bold"
+            android:fontFamily="@font/lato_bold"
             android:text="42.35"
             android:textColor="?colorTimerText"
             android:textColorHighlight="?colorAccent"
             android:textIsSelectable="false"
-            android:textSize="82sp"
-            android:alpha=".85"
-            app:fontFamily="@font/lato_bold" />
+            android:textSize="76sp"
+            android:alpha=".95" />
 
         <TextView
             android:id="@+id/inspection_text"
@@ -113,70 +112,23 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/qa_layout"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_width="180dp"
+        <include
             android:layout_height="36dp"
+            android:layout_width="wrap_content"
             android:layout_below="@id/chronometer"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:background="@color/md_white_1000"
-            app:cardCornerRadius="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/qa_remove"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:alpha=".85"
-                    android:padding="8dp"
-                    app:srcCompat="@drawable/ic_outline_delete_24px" />
-
-                <ImageView
-                    android:id="@+id/qa_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:alpha=".85"
-                    android:padding="8dp"
-                    app:srcCompat="@drawable/ic_outline_add_comment_24px" />
-
-                <ImageView
-                    android:id="@+id/qa_flag"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:alpha=".85"
-                    android:padding="8dp"
-                    app:srcCompat="@drawable/ic_outline_flag_24px" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/timer_chart"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp">
-
-        </com.github.mikephil.charting.charts.LineChart>
+            android:layout_marginTop="32dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            layout="@layout/item_qa_buttons"/>
 
         <ImageView
             android:id="@+id/scramble_img"
             android:layout_width="84dp"
             android:layout_height="84dp"
-            android:layout_above="@id/timer_chart"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
             android:scaleType="fitStart"
             tools:background="@color/red_material" />
 
@@ -185,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
-            android:layout_above="@id/timer_chart"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp"
             android:indeterminate="true"
@@ -212,8 +164,9 @@
             android:id="@+id/sessionDetailTextAverage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/timer_chart"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_toRightOf="@id/scramble_img"
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
@@ -225,8 +178,9 @@
             android:id="@+id/sessionDetailTextOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/timer_chart"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_toLeftOf="@id/scramble_img"
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"

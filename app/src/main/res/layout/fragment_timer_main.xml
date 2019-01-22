@@ -20,7 +20,6 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_tabs"
         android:layout_below="@id/toolbarLayout" />
 
 
@@ -29,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white_text"
+        android:background="@drawable/outline_background_card_top"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed" />

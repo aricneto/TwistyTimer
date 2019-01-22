@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
@@ -307,6 +309,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(NUM_PAGES - 1);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicator(0);
+        tabLayout.setTabIconTint(AppCompatResources.getColorStateList(getContext(), R.color.tab_color));
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
         if (savedInstanceState == null) {
@@ -322,7 +326,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             @Override
             public void onPageSelected(int position) {
                 setupPage(position, inflater);
-                handleIcons(position);
                 currentPage = position;
             }
 
@@ -395,27 +398,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                          });
     }
 
-    private void handleIcons(int index) {
-        // Icons are set in "TimerTabLayout".
-        switch (index) {
-            case TIMER_PAGE:
-                tabLayout.getTabAt(TIMER_PAGE).getIcon().setAlpha(255);
-                tabLayout.getTabAt(LIST_PAGE).getIcon().setAlpha(153); // 70%
-                tabLayout.getTabAt(GRAPH_PAGE).getIcon().setAlpha(153);
-                break;
-            case LIST_PAGE:
-                tabLayout.getTabAt(TIMER_PAGE).getIcon().setAlpha(153);
-                tabLayout.getTabAt(LIST_PAGE).getIcon().setAlpha(255);
-                tabLayout.getTabAt(GRAPH_PAGE).getIcon().setAlpha(153);
-                break;
-            case GRAPH_PAGE:
-                tabLayout.getTabAt(TIMER_PAGE).getIcon().setAlpha(153);
-                tabLayout.getTabAt(LIST_PAGE).getIcon().setAlpha(153);
-                tabLayout.getTabAt(GRAPH_PAGE).getIcon().setAlpha(255);
-                break;
-        }
-    }
-
     private void activateTabLayout(boolean b) {
         tabStrip.setEnabled(b);
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -427,7 +409,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     public void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume() : currentPage=" + currentPage);
         super.onResume();
-        handleIcons(currentPage);
     }
 
     /**

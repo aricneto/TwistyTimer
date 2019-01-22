@@ -8,6 +8,10 @@
     <attr format="color" name="colorItemListBackground"/>
     <attr format="color" name="mainColorBackground"/>
     <attr format="color" name="textColorContrastBackground"/>
+    <attr format="color" name="cardStrokeColor"/>
+    <attr format="color" name="cardStrokeColorLighter"/>
+
+    <attr format="dimension" name="tabBarSize"/>
 
     <attr format="color" name="colorChartAllTimes"/>
     <attr format="color" name="colorChartBestTimes"/>

@@ -191,17 +191,17 @@ public class                                                                    
     @BindView(R.id.inspection_text)  TextView            inspectionText;
     @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
-    @BindView(R.id.scramble_button_hint)         CardView            hintCard;
+    @BindView(R.id.scramble_button_hint)         View            hintCard;
     @BindView(R.id.panelText)        TextView            panelText;
     @BindView(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
     @BindView(R.id.panelSpinnerText) TextView            panelSpinnerText;
 
     @BindView(R.id.qa_remove)        ImageView        deleteButton;
-    @BindView(R.id.qa_flag)           ImageView        dnfButton;
-    //@BindView(R.id.button_plustwo)       ImageView        plusTwoButton;
+    @BindView(R.id.qa_dnf)           ImageView        dnfButton;
+    @BindView(R.id.qa_plustwo)       ImageView        plusTwoButton;
     @BindView(R.id.qa_comment)       ImageView        commentButton;
     @BindView(R.id.qa_undo)          CardView        undoButton;
-    @BindView(R.id.qa_layout) CardView     quickActionButtons;
+    @BindView(R.id.qa_layout) LinearLayout     quickActionButtons;
     @BindView(R.id.rippleBackground)     RippleBackground rippleBackground;
 
     @BindView(R.id.root)                  RelativeLayout       rootLayout;
@@ -316,14 +316,14 @@ public class                                                                    
                             })
                             .show();
                     break;
-                case R.id.qa_flag:
+                case R.id.qa_dnf:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_DNF);
                     chronometer.setPenalty(PuzzleUtils.PENALTY_DNF);
                     dbHandler.updateSolve(currentSolve);
                     hideButtons(true, false);
                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     break;
-                /*case R.id.button_plustwo:
+                case R.id.qa_plustwo:
                     if (currentPenalty != PENALTY_PLUSTWO) {
                         currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_PLUSTWO);
                         chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
@@ -331,7 +331,7 @@ public class                                                                    
                         broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     }
                     hideButtons(true, false);
-                    break;*/
+                    break;
                 case R.id.qa_comment:
                     MaterialDialog dialog = new MaterialDialog.Builder(getContext())
                             .title(R.string.add_comment)
@@ -456,7 +456,7 @@ public class                                                                    
 
         deleteButton.setOnClickListener(buttonClickListener);
         dnfButton.setOnClickListener(buttonClickListener);
-        //plusTwoButton.setOnClickListener(buttonClickListener);
+        plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
         hintCard.setOnClickListener(buttonClickListener);
         undoButton.setOnClickListener(buttonClickListener);
@@ -486,7 +486,7 @@ public class                                                                    
                 deleteButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete_white_36dp));
                 commentButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_comment_white_36dp));
                 dnfButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dnflarge));
-                //plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
+                plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
             }
 
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
@@ -1083,11 +1083,13 @@ public class                                                                    
         detailTextAvg.setVisibility(View.VISIBLE);
         detailTextAvg.animate()
                     .alpha(1)
+                    .translationY(0)
                     .setDuration(300);
 
         detailTextOther.setVisibility(View.VISIBLE);
         detailTextOther.animate()
                 .alpha(1)
+                .translationY(0)
                 .setDuration(300);
 
     }
@@ -1102,10 +1104,17 @@ public class                                                                    
     }
 
     private void showItems() {
+
+        // reset chronometer position
+        chronometer.animate()
+                .translationY(0)
+                .setDuration(300);
+
         if (scrambleEnabled) {
             scrambleBox.setVisibility(View.VISIBLE);
             scrambleBox.animate()
                     .alpha(1)
+                    .translationY(0)
                     .setDuration(300);
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(true);
@@ -1129,12 +1138,14 @@ public class                                                                    
         scrambleImg.setVisibility(View.VISIBLE);
         scrambleImg.animate()
                 .alpha(1)
+                .translationY(0)
                 .setDuration(300);
     }
 
     private void hideImage() {
         scrambleImg.animate()
                 .alpha(0)
+                .translationY(scrambleImg.getHeight())
                 .setDuration(300)
                 .withEndAction(new Runnable() {
                     @Override
@@ -1152,9 +1163,15 @@ public class                                                                    
         congratsText.setVisibility(View.GONE);
         congratsText.setCompoundDrawables(null, null, null, null);
 
+        // bring chronometer up a bit
+        chronometer.animate()
+                .translationY(-getActionBarSize())
+                .setDuration(300);
+
         if (scrambleEnabled) {
             scrambleBox.animate()
                     .alpha(0)
+                    .translationY(-scrambleBox.getHeight())
                     .setDuration(300)
                     .withEndAction(new Runnable() {
                         @Override
@@ -1173,6 +1190,7 @@ public class                                                                    
         if (sessionStatsEnabled) {
             detailTextAvg.animate()
                     .alpha(0)
+                    .translationY(detailTextAvg.getHeight())
                     .setDuration(300)
                     .withEndAction(new Runnable() {
                         @Override
@@ -1182,6 +1200,7 @@ public class                                                                    
                     });
             detailTextOther.animate()
                     .alpha(0)
+                    .translationY(detailTextOther.getHeight())
                     .setDuration(300)
                     .withEndAction(new Runnable() {
                         @Override
