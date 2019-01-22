@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/glegoo_bold</item>
         <item>@font/inconsolata_bold</item>
+        <item>@font/lato_bold</item>
         <item>@font/montserrat_bold</item>
         <item>@font/nova_mono</item>
         <item>@font/overpass_mono_semibold</item>

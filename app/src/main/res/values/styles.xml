@@ -29,7 +29,7 @@
         <!-- These items are those most commonly overridden for the color themes. -->
         <item name="mainColorBackground">#43FF8E</item>
         <item name="colorPrimary">@color/md_indigo_500</item>
-        <item name="colorPrimaryDark">@color/md_indigo_700</item>
+        <item name="colorPrimaryDark">#6E04DD</item>
         <item name="colorAccent">@color/md_amber_500</item>
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>

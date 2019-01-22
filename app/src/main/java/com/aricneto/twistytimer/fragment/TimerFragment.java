@@ -201,7 +201,7 @@ public class                                                                    
     @BindView(R.id.qa_flag)           ImageView        dnfButton;
     //@BindView(R.id.button_plustwo)       ImageView        plusTwoButton;
     @BindView(R.id.qa_comment)       ImageView        commentButton;
-    @BindView(R.id.qa_undo)          ImageView        undoButton;
+    @BindView(R.id.qa_undo)          CardView        undoButton;
     @BindView(R.id.qa_layout) CardView     quickActionButtons;
     @BindView(R.id.rippleBackground)     RippleBackground rippleBackground;
 

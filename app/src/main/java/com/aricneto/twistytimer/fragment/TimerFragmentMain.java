@@ -120,7 +120,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.toolbar)       Toolbar         mToolbar;
+    @BindView(R.id.toolbar)       RelativeLayout         mToolbar;
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
     @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
@@ -163,7 +163,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
+                //getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
             }
             return true; // Return false if nothing is done
         }
@@ -319,8 +319,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
-        handleHeaderSpinner();
-        setupToolbarForFragment(mToolbar);
+        //handleHeaderSpinner();
+        //setupToolbarForFragment(mToolbar);
 
         pagerEnabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(
                 getString(R.string.pk_tab_swiping_enabled), true);
@@ -486,7 +486,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     }
 
     private void setupTypeDialogItem() {
-        mToolbar.getMenu().add(0, 6, 0, R.string.type).setIcon(R.drawable.ic_tag_outline_white_24dp)
+/*        mToolbar.getMenu().add(0, 6, 0, R.string.type).setIcon(R.drawable.ic_tag_outline_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -495,7 +495,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         return true;
                     }
                 })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM); FIXME: broken after custom toolbar*/
     }
 
     private void createDialogs() {
@@ -643,7 +643,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private void setupHistorySwitchItem(LayoutInflater inflater) {
         final SwitchCompat switchCompat = (SwitchCompat) inflater.inflate(R.layout.toolbar_pin_switch, null);
-        mToolbar.getMenu().add(0, 7, 0, "Scope").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        //FIXME: mToolbar.getMenu().add(0, 7, 0, "Scope").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         final Drawable thumb_positive = ThemeUtils.tintPositiveThumb(getContext(), R.drawable.thumb_history_positive, R.attr.colorPrimaryDark);
         final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_history_negative, R.attr.colorPrimaryDark);
@@ -694,13 +694,13 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             return;
         }
 
-        mToolbar.getMenu().clear();
+        //mToolbar.getMenu().clear();
 
         switch (pageNum) {
             case TIMER_PAGE:
                 //((MainActivity) getActivity()).hideFAB();
                 // Scramble icon
-                mToolbar.getMenu()
+                /*mToolbar.getMenu()
                         .add(0, 5, 0, R.string.scramble_action)
                         .setIcon(R.drawable.ic_dice_white_24dp)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -710,7 +710,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                 return true;
                             }
                         })
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM); FIXME: broken after custom toolbar*/
                 break;
 
             case LIST_PAGE:

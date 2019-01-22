@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorBackgroundList"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/send_to_history_card"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
         app:cardBackgroundColor="?colorItemListBackground">
 
         <LinearLayout
@@ -22,12 +26,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:alpha="0.7"
+                android:alpha="0.85"
+                android:textSize="14sp"
                 android:background="?attr/selectableItemBackground"
                 android:drawableLeft="@drawable/ic_delete_black_18dp"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="@string/action_clear"
+                android:fontFamily="@font/quicksand_medium"
                 android:textColor="?colorItemListText"
                 android:visibility="gone"
                 tools:visibility="visible" />
@@ -48,11 +54,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:alpha="0.7"
+                android:alpha="0.85"
+                android:textSize="14sp"
                 android:background="?attr/selectableItemBackground"
                 android:drawableLeft="@drawable/ic_timer_sand_black_18dp"
                 android:drawableRight="@drawable/spacer_18dp"
                 android:gravity="center"
+                android:fontFamily="@font/quicksand_medium"
                 android:padding="8dp"
                 android:text="@string/action_archive"
                 android:textColor="?colorItemListText" />
@@ -69,7 +77,9 @@
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:drawSelectorOnTop="true"
-        android:paddingTop="8dp" />
+        android:paddingTop="8dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"/>
 
 
     <ImageView
@@ -127,6 +137,7 @@
             android:id="@+id/fab_sheet"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="22dp"
             app:cardPreventCornerOverlap="false">
 
             <ScrollView

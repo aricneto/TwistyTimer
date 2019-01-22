@@ -4,7 +4,7 @@
     "DefaultTheme" may be defined differently in "values/styles.xml".
     -->
     <style name="DefaultTheme" parent="BaseDefaultTheme">
-        <item name="android:statusBarColor">@color/md_indigo_700</item>
+        <item name="android:statusBarColor">#0CFFDB</item>
     </style>
 
     <!--

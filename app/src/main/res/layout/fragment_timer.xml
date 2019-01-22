@@ -14,7 +14,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_gradient"
+        tools:background="@drawable/background_gradient"
         tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 
         <!-- The margin is there so that opening the drawer doesn't start the timer -->
@@ -49,15 +49,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/scramble_box"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
             android:drawablePadding="16dp"
+            android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="@string/personal_best_message"
-            android:fontFamily="@font/quicksand_medium"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textStyle="bold"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -69,11 +69,12 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/inconsolata_bold"
             android:text="42.35"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textColorHighlight="?colorAccent"
             android:textIsSelectable="false"
-            android:textSize="64sp"
-            app:fontFamily="@font/inconsolata_bold" />
+            android:textSize="82sp"
+            android:alpha=".85"
+            app:fontFamily="@font/lato_bold" />
 
         <TextView
             android:id="@+id/inspection_text"
@@ -84,7 +85,7 @@
             android:fontFamily="@font/quicksand_bold"
             android:text="Inspection"
             android:textAllCaps="true"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textColorHighlight="?colorAccent"
             android:textIsSelectable="false"
             android:textSize="16sp"
@@ -92,17 +93,17 @@
             tools:visibility="visible" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/qa_undo"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_below="@id/chronometer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:visibility="gone"
             android:background="@color/md_white_1000"
+            android:visibility="gone"
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/qa_undo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -114,6 +115,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/qa_layout"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:layout_width="180dp"
             android:layout_height="36dp"
             android:layout_below="@id/chronometer"
@@ -200,7 +203,7 @@
             android:alpha=".85"
             android:fontFamily="@font/quicksand_bold"
             android:text="@string/timer_detail_average_record_message"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -215,7 +218,7 @@
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
             android:text="Ao5: 14.23"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -228,7 +231,7 @@
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
             android:text="Ao12: 12.35"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -241,7 +244,7 @@
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
             android:text="Ao50: 13.95"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -254,7 +257,7 @@
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
             android:text="Ao100: 23.21"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -268,7 +271,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:gravity="right"
             android:text="Dev: 14.23"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -282,7 +285,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:gravity="right"
             android:text="Best: 12.35"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -296,7 +299,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:gravity="right"
             android:text="Worst: 13.95"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <TextView
@@ -310,7 +313,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:gravity="right"
             android:text="Count: 23.21"
-            android:textColor="#000"
+            android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
         <ImageView

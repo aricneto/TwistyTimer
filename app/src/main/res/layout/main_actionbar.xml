@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?mainColorBackground"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    tools:background="#001100">
 
     <TextView
         android:id="@+id/puzzleName"
@@ -15,7 +17,7 @@
         android:alpha="1"
         android:fontFamily="@font/quicksand_bold"
         android:text="3x3 Cube"
-        android:textColor="#000"
+        android:textColor="?colorTimerText"
         android:textSize="18sp" />
 
     <TextView
@@ -27,7 +29,7 @@
         android:alpha=".85"
         android:fontFamily="@font/quicksand"
         android:text="one-handed"
-        android:textColor="#000"
+        android:textColor="?colorTimerText"
         android:textSize="12sp" />
 
     <ImageView
@@ -39,6 +41,7 @@
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/puzzleCategory"
         android:alpha="0.85"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
 
     <ImageView
@@ -47,11 +50,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_centerVertical="true"
         android:alpha="0.85"
         android:padding="8dp"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_outline_category_24" />
 
     <ImageView
@@ -62,6 +66,7 @@
         android:layout_toLeftOf="@id/category"
         android:alpha="0.85"
         android:padding="8dp"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_outline_cached_24px" />
 
     <ImageView
@@ -71,10 +76,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:alpha="0.85"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:alpha="0.85"
         android:padding="8dp"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_outline_settings_24px" />
 
 </RelativeLayout>

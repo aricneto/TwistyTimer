@@ -6,10 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
+    android:layout_marginBottom="12dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
     android:layout_marginTop="0dp"
+    app:cardCornerRadius="8dp"
     app:cardBackgroundColor="?colorItemListBackground">
 
     <RelativeLayout
@@ -24,11 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:ellipsize="end"
+            android:fontFamily="@font/lato_bold"
+            android:maxLines="1"
             android:padding="16dp"
             android:textColor="?colorItemListText"
             android:textSize="14sp"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:textStyle="bold"
             tools:text="1:26.95" />
 
@@ -48,9 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:fontFamily="@font/quicksand_medium"
             android:gravity="center_vertical"
             android:text="sex, 15 jun"
             android:textColor="?colorItemListText"

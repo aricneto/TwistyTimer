@@ -33,13 +33,13 @@ public class TimerTabLayout extends TabLayout {
     public void addTab(@NonNull Tab tab, int position, boolean setSelected) {
         switch (position) {
             case TimerFragmentMain.TIMER_PAGE:
-                tab.setIcon(R.drawable.ic_timer_white_24dp);
+                tab.setIcon(R.drawable.ic_outline_timer_24px);
                 break;
             case TimerFragmentMain.LIST_PAGE:
-                tab.setIcon(R.drawable.ic_format_list_bulleted_white_24dp);
+                tab.setIcon(R.drawable.ic_outline_list_alt_24px);
                 break;
             case TimerFragmentMain.GRAPH_PAGE:
-                tab.setIcon(R.drawable.ic_timeline_white_24dp);
+                tab.setIcon(R.drawable.ic_outline_timeline_24px);
                 break;
         }
 

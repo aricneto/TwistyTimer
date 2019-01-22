@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="?mainColorBackground"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/toolbarLayout"
@@ -12,35 +12,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/ToolBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            app:titleTextAppearance="@style/Toolbar.TitleText" />
+        <include layout="@layout/main_actionbar" />
 
     </LinearLayout>
 
     <com.aricneto.twistytimer.layout.LockedViewPager
         android:id="@+id/pager"
-        android:layout_below="@id/toolbarLayout"
-        android:layout_above="@id/main_tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/main_tabs"
+        android:layout_below="@id/toolbarLayout" />
 
 
     <com.aricneto.twistytimer.layout.TimerTabLayout
         android:id="@+id/main_tabs"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="@dimen/toolbar_elevation"
-        app:tabMode="fixed"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_text"
+        android:elevation="1dp"
         app:tabGravity="fill"
-        app:tabMaxWidth="0dp"/>
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed" />
 
 
 </RelativeLayout>
