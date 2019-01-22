@@ -27,6 +27,8 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
+
+import android.text.Html;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.util.Log;
@@ -175,17 +177,14 @@ public class                                                                    
     // Ao5, Ao12, Ao50, Ao100, Deviation, Best, Worst, Count
     private String detailTextNamesArray[] = new String[8];
 
-    @BindViews({R.id.sessionDetailTextAo5, R.id.sessionDetailTextAo12, R.id.sessionDetailTextAo50, R
-            .id.sessionDetailTextAo100}) TextView detailTextAvgs[];
+    @BindView(R.id.sessionDetailTextAverage) TextView detailTextAvg;
 
-    @BindView(R.id.sessionDetailTextDeviation) TextView detailTextDeviation;
-    @BindView(R.id.sessionDetailTextBest) TextView detailTextBest;
-    @BindView(R.id.sessionDetailTextWorst) TextView detailTextWorst;
-    @BindView(R.id.sessionDetailTextCount) TextView detailTextCount;
+    @BindView(R.id.sessionDetailTextOther) TextView detailTextOther;
 
     @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
 
     @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
+    @BindView(R.id.scramble_box)    View            scrambleBox;
     @BindView(R.id.scramble_text)    TextView            scrambleText;
     @BindView(R.id.scramble_img)     ImageView           scrambleImg;
     @BindView(R.id.expanded_image)  ImageView           expandedImageView;
@@ -555,7 +554,7 @@ public class                                                                    
                 setScramble(realScramble);
             }
         } else {
-            scrambleText.setVisibility(View.GONE);
+            scrambleBox.setVisibility(View.GONE);
             scrambleImg.setVisibility(View.GONE);
             isLocked = false;
         }
@@ -563,7 +562,8 @@ public class                                                                    
         if (! scrambleImgEnabled)
             scrambleImg.setVisibility(View.GONE);
         if (! sessionStatsEnabled) {
-            //detailLayout.setVisibility(View.INVISIBLE);
+            detailTextAvg.setVisibility(View.INVISIBLE);
+            detailTextOther.setVisibility(View.INVISIBLE);
         }
         // Preferences //
 
@@ -1036,36 +1036,25 @@ public class                                                                    
 
         // detailTextNamesArray should be in the same order as shown in the timer
         // (keep R.arrays.timer_detail_stats in sync with the order!)
-        detailTextDeviation.setText(detailTextNamesArray[4] + ": " + sessionDeviation);
-        detailTextBest.setText(detailTextNamesArray[5] + ": " + sessionBestTime);
-        detailTextWorst.setText(detailTextNamesArray[6] + ": " + sessionWorstTime);
-        detailTextCount.setText(detailTextNamesArray[7] + ": " + sessionCount);
+        StringBuilder stringDetailOther = new StringBuilder();
+        stringDetailOther.append(detailTextNamesArray[4]).append(": ").append(sessionDeviation).append("\n");
+        stringDetailOther.append(detailTextNamesArray[5]).append(": ").append(sessionBestTime).append("\n");
+        stringDetailOther.append(detailTextNamesArray[6]).append(": ").append(sessionWorstTime).append("\n");
+        stringDetailOther.append(detailTextNamesArray[7]).append(": ").append(sessionCount);
 
-        SpannableString avgText;
+        detailTextOther.setText(stringDetailOther.toString());
 
-        Context context = getContext();
-
-        // To prevent the record message being animated for every record (in case the user sets
-        // two or more average records at the same time).
+        // To prevent the record message being animated more than once in case the user sets
+        // two or more average records at the same time.
         boolean hasShownRecordMessage = false;
 
+        StringBuilder stringDetailAvg = new StringBuilder();
         // Iterate through averages and set respective TextViews
         for (int i = 0; i < 4; i++) {
             if (sessionStatsEnabled && averageRecordsEnabled && hasStoppedTimerOnce &&
                     sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
-                // Create string. Spaces on start and end are there to give padding for the
-                // Rectangle (otherwise it would have no padding on left and right)
-                avgText = new SpannableString(" " + detailTextNamesArray[i] + ": " +
-                        convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT) + " ");
-                // Set string style
-                avgText.setSpan(new RoundRectSpan(
-                                ThemeUtils.fetchAttrColor(context, R.attr.colorAccentWhiteContrast))
-                        , 0, avgText.length(), 0);
-                // Set text
-                detailTextAvgs[i].setTextColor(ThemeUtils.fetchAttrColor(context, R.attr
-                        .colorTextContrastAccent));
-                detailTextAvgs[i].setTypeface(Typeface.DEFAULT_BOLD);
-                detailTextAvgs[i].setText(avgText);
+                // Create string.
+                stringDetailAvg.append("<b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b>");
 
                 // Show record message, if it was not shown before
                 if (!hasShownRecordMessage) {
@@ -1077,18 +1066,29 @@ public class                                                                    
                     hasShownRecordMessage = true;
                 }
             } else {
-                // Reset the color and typeface
-                detailTextAvgs[i].setTypeface(Typeface.DEFAULT);
-                detailTextAvgs[i].setTextColor(ThemeUtils.fetchAttrColor(context, R.attr
-                        .colorTimerDetailText));
-                detailTextAvgs[i].setText(detailTextNamesArray[i] + ": " +
-                        convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
+                stringDetailAvg.append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
+            }
+            // append newline to every line but the last
+            if (i < 3) {
+                stringDetailAvg.append("<br>");
             }
         }
-        //detailLayout.setVisibility(View.VISIBLE);
-        //detailLayout.animate()
-        //            .alpha(1)
-        //            .setDuration(300);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            detailTextAvg.setText(Html.fromHtml(stringDetailAvg.toString(), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            detailTextAvg.setText(Html.fromHtml(stringDetailAvg.toString()));
+        }
+
+        detailTextAvg.setVisibility(View.VISIBLE);
+        detailTextAvg.animate()
+                    .alpha(1)
+                    .setDuration(300);
+
+        detailTextOther.setVisibility(View.VISIBLE);
+        detailTextOther.animate()
+                .alpha(1)
+                .setDuration(300);
 
     }
 
@@ -1103,18 +1103,16 @@ public class                                                                    
 
     private void showItems() {
         if (scrambleEnabled) {
-            scrambleText.setEnabled(true);
-            scrambleText.setVisibility(View.VISIBLE);
+            scrambleBox.setVisibility(View.VISIBLE);
+            scrambleBox.animate()
+                    .alpha(1)
+                    .setDuration(300);
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(true);
                 showImage();
             }
             if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
                 hintCard.setEnabled(true);
-                hintCard.setVisibility(View.VISIBLE);
-                hintCard.animate()
-                        .alpha(1)
-                        .setDuration(300);
             }
         }
         if (buttonsEnabled && ! isCanceled) {
@@ -1155,35 +1153,42 @@ public class                                                                    
         congratsText.setCompoundDrawables(null, null, null, null);
 
         if (scrambleEnabled) {
-            scrambleText.setEnabled(false);
-            scrambleText.setVisibility(View.INVISIBLE);
+            scrambleBox.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrambleBox.setVisibility(View.INVISIBLE);
+                        }
+                    });
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(false);
                 hideImage();
             }
             if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
                 hintCard.setEnabled(false);
-                hintCard.animate()
-                        .alpha(0)
-                        .setDuration(300)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                hintCard.setVisibility(View.INVISIBLE);
-                            }
-                        });
             }
         }
         if (sessionStatsEnabled) {
-            //detailLayout.animate()
-            //        .alpha(0)
-            //        .setDuration(300)
-            //        .withEndAction(new Runnable() {
-             //           @Override
-             //           public void run() {
-             //               detailLayout.setVisibility(View.INVISIBLE);
-             //           }
-             //       });
+            detailTextAvg.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            detailTextAvg.setVisibility(View.INVISIBLE);
+                        }
+                    });
+            detailTextOther.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            detailTextOther.setVisibility(View.INVISIBLE);
+                        }
+                    });
         }
         if (buttonsEnabled) {
             undoButton.setVisibility(View.GONE);
@@ -1407,7 +1412,7 @@ public class                                                                    
     }
 
     private void setScramble(final String scramble) {
-        scrambleText.setVisibility(View.INVISIBLE);
+        //scrambleText.setVisibility(View.INVISIBLE);
         scrambleText.setText(scramble);
         scrambleText.post(new Runnable() {
             @Override
@@ -1437,8 +1442,8 @@ public class                                                                    
                         scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         scrambleText.setClickable(false);
                     }
-                    if (! isRunning)
-                        scrambleText.setVisibility(View.VISIBLE);
+                    //if (! isRunning)
+                        //scrambleText.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -1446,7 +1451,7 @@ public class                                                                    
         if (scrambleImgEnabled)
             generateScrambleImage();
         else
-            progressSpinner.setVisibility(View.GONE);
+            progressSpinner.setVisibility(View.INVISIBLE);
         isLocked = false;
 
         canShowHint = true;
@@ -1469,7 +1474,7 @@ public class                                                                    
                     showImage();
             }
             if (progressSpinner != null)
-                progressSpinner.setVisibility(View.GONE);
+                progressSpinner.setVisibility(View.INVISIBLE);
             if (scrambleImg != null)
                 scrambleImg.setImageDrawable(drawable);
             if (expandedImageView != null)

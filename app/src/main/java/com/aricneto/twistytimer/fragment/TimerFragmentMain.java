@@ -123,7 +123,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.toolbar)       RelativeLayout         mToolbar;
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
-    @BindView(R.id.toolbarLayout) LinearLayout    toolbarLayout;
     ActionMode actionMode;
 
     private LinearLayout      tabStrip;
@@ -194,63 +193,37 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case ACTION_TIMER_STARTED: // This was taken from PlusTimer (thanks :D)
+                case ACTION_TIMER_STARTED:
                     viewPager.setPagingEnabled(false);
                     activateTabLayout(false);
-                    originalContentHeight = viewPager.getHeight();
-                    ObjectAnimator hideToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, -toolbarLayout.getHeight());
-                    hideToolbar.setDuration(300);
-                    hideToolbar.setInterpolator(new AccelerateInterpolator());
-                    hideToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                            if (viewPager != null) {
-                                RelativeLayout.LayoutParams params =
-                                        (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-                                params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
-                                viewPager.setLayoutParams(params);
-                                viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
-                            }
-                        }
-                    });
-                    AnimatorSet toolbarSet = new AnimatorSet();
-                    toolbarSet.play(hideToolbar);
-                    toolbarSet.start();
+                    mToolbar.animate()
+                            .translationY(-mToolbar.getHeight())
+                            .alpha(0)
+                            .setDuration(300);
+
+                    tabLayout.animate()
+                             .translationY(tabLayout.getHeight())
+                             .alpha(0)
+                             .setDuration(300);
                     break;
 
                 case ACTION_TIMER_STOPPED:
-                    ObjectAnimator showToolbar = ObjectAnimator.ofFloat(toolbarLayout, View.TRANSLATION_Y, 0);
-                    showToolbar.setDuration(300);
-                    showToolbar.setInterpolator(new DecelerateInterpolator());
-                    showToolbar.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                            if (viewPager != null) {
-                                RelativeLayout.LayoutParams params =
-                                        (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-                                params.height = originalContentHeight - (int) (float) valueAnimator.getAnimatedValue();
-                                viewPager.setLayoutParams(params);
-                                viewPager.setTranslationY((int) (float) valueAnimator.getAnimatedValue());
-                            }
-                        }
-                    });
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(showToolbar);
-                    animatorSet.start();
-                    animatorSet.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (toolbarLayout != null) {
-                                if (toolbarLayout.getTranslationY() == 0) {
-                                    RelativeLayout.LayoutParams params =
-                                            (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-                                    params.height = originalContentHeight;
-                                    viewPager.setLayoutParams(params);
+                    mToolbar.animate()
+                            .translationY(0)
+                            .alpha(1)
+                            .setDuration(300);
+
+                    tabLayout.animate()
+                            .translationY(0)
+                            .alpha(1)
+                            .setDuration(300)
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
                                     broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED);
                                 }
-                            }
-                        }
-                    });
+                            });
+
                     activateTabLayout(true);
                     if (pagerEnabled)
                         viewPager.setPagingEnabled(true);

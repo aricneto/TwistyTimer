@@ -190,20 +190,26 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // The color for the text in the legend and for the values along the chart's axes.
         final int chartTextColor = Color.WHITE;
 
+        // Most of the following settings should be self explanatory.
+        // Those that aren't will be commented
+
+        // General chart settings
         lineChartView.setPinchZoom(true);
         lineChartView.setBackgroundColor(Color.TRANSPARENT);
         lineChartView.setDrawGridBackground(false);
         lineChartView.getAxisLeft().setEnabled(false);
         lineChartView.getLegend().setTextColor(chartTextColor);
-        lineChartView.setViewPortOffsets(8f, 8f, 8f, 70f);
         lineChartView.setDescription("");
 
+        // Set axis colors
         final YAxis axisLeft = lineChartView.getAxisRight();
         final XAxis xAxis = lineChartView.getXAxis();
         final int axisColor = ContextCompat.getColor(getActivity(), R.color.md_amber_400);
         final int gridColor = ContextCompat.getColor(getActivity(), R.color.gridColor);
 
+        // X-axis settings
         xAxis.setDrawGridLines(false);
+        // Draw X line markings on the bottom
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineColor(axisColor);
         xAxis.setDrawAxisLine(false);
@@ -275,7 +281,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             root.post(new Runnable() {
                 @Override
                 public void run() {
@@ -291,7 +297,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                     }
                 }
             });
-        }
+        }*/
 
 
 

@@ -30,7 +30,6 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white_text"
-        android:elevation="1dp"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed" />
