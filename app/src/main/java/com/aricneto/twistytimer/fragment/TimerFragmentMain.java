@@ -66,6 +66,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
@@ -124,6 +125,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
     @BindView(R.id.puzzleSpinner) View puzzleSpinnerLayout;
 
+    @BindView(R.id.nav_button_settings) View navButtonSettings;
+    @BindView(R.id.nav_button_category) View navButtonCategory;
+    @BindView(R.id.nav_button_history) View navButtonHistory;
+
     @BindView(R.id.puzzleCategory) TextView puzzleCategoryText;
     @BindView(R.id.puzzleName) TextView puzzleNameText;
 
@@ -148,6 +153,23 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private int originalContentHeight;
     private int selectCount = 0;
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.nav_button_category:
+                    createDialogs();
+                    subtypeDialog.show();
+                    break;
+                case R.id.nav_button_history:
+                    break;
+                case R.id.nav_button_settings:
+                    getMainActivity().openDrawer();
+                    break;
+            }
+        }
+    };
 
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
 
@@ -255,9 +277,18 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     selectCount -= 1;
                     actionMode.setTitle(getResources().getQuantityString(R.plurals.selected_list, selectCount, selectCount));
                     break;
+
+                case ACTION_CHANGED_CATEGORY:
+                    updatePuzzleSpinnerText();
+                    break;
             }
         }
     };
+
+    private void updatePuzzleSpinnerText() {
+        puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
+        puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
+    }
 
     public TimerFragmentMain() {
         // Required empty public constructor
@@ -296,8 +327,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
-        handleHeaderSpinner();
-        //setupToolbarForFragment(mToolbar);
+        navButtonCategory.setOnClickListener(clickListener);
+        navButtonHistory.setOnClickListener(clickListener);
+        navButtonSettings.setOnClickListener(clickListener);
 
         pagerEnabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(
                 getString(R.string.pk_tab_swiping_enabled), true);
@@ -306,6 +338,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             viewPager.setPagingEnabled(true);
         else
             viewPager.setPagingEnabled(false);
+
 
         viewPagerAdapter = new NavigationAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
@@ -318,6 +351,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (savedInstanceState == null) {
             updateCurrentSubtype();
         }
+
+        // Handle spinner AFTER reading from savedInstanceState, so we can correctly
+        // fill the category field in the spinner
+        handleHeaderSpinner();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -441,19 +478,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder.unbind();
     }
 
-    private void setupTypeDialogItem() {
-/*        mToolbar.getMenu().add(0, 6, 0, R.string.type).setIcon(R.drawable.ic_tag_outline_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        createDialogs();
-                        subtypeDialog.show();
-                        return true;
-                    }
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM); FIXME: broken after custom toolbar*/
-    }
-
     private void createDialogs() {
         final DatabaseHandler          dbHandler         = TwistyTimer.getDBHandler();
         SharedPreferences              sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -472,6 +496,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
                         editor.apply();
                         viewPager.setAdapter(viewPagerAdapter);
+                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
                         Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -512,6 +537,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                         editor.apply();
                                         viewPager.setAdapter(viewPagerAdapter);
                                         viewPager.setCurrentItem(currentPage);
+                                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
                                     }
                                 })
                                 .show();
@@ -539,6 +565,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                         editor.apply();
                                         viewPager.setAdapter(viewPagerAdapter);
                                         viewPager.setCurrentItem(currentPage);
+                                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
                                     }
                                 })
                                 .inputRange(0, 16)
@@ -570,6 +597,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                         history = false; // Resets the checked state of the switch
                         viewPager.setAdapter(viewPagerAdapter);
                         viewPager.setCurrentItem(currentPage);
+                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
 
                         handleStatisticsLoader();
                         subtypeDialog.dismiss();
@@ -662,8 +690,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 setupHistorySwitchItem(inflater);
                 break;
         }
-
-        setupTypeDialogItem();
     }
 
     /**
@@ -736,8 +762,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 viewPager.setCurrentItem(currentPage);
 
                 // update titles
-                puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
-                puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
+                updatePuzzleSpinnerText();
 
                 handleStatisticsLoader();
             }
@@ -768,8 +793,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // to true in each and then watch the log to see fragments being created twice when the
         // application starts up if the following "setSelection" call is commented out.
         // update titles
-        puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
-        puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
+        updatePuzzleSpinnerText();
 
     }
 

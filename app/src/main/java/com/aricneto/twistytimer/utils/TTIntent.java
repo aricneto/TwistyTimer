@@ -163,6 +163,11 @@ public final class TTIntent {
     public static final String ACTION_TIMER_STARTED = ACTION_PREFIX + "TIMER_STARTED";
 
     /**
+     * The user has selected a new puzzle category (subtype)
+     */
+    public static final String ACTION_CHANGED_CATEGORY = ACTION_PREFIX + "CHANGED_CATEGORY";
+
+    /**
      * The timer has been stopped.
      */
     public static final String ACTION_TIMER_STOPPED = ACTION_PREFIX + "TIMER_STOPPED";
@@ -224,6 +229,7 @@ public final class TTIntent {
                 ACTION_TOOLBAR_RESTORED,
                 ACTION_GENERATE_SCRAMBLE,
                 ACTION_SCROLLED_PAGE,
+                ACTION_CHANGED_CATEGORY
         });
     }};
 

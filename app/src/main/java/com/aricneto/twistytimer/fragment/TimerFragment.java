@@ -83,6 +83,7 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
