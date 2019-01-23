@@ -27,8 +27,12 @@
         <item name="textColorContrastBackground">@android:color/white</item>
 
         <item name="android:textColor">#000</item>
-        <item name="cardStrokeColor">#DD1A1A1A</item>
-        <item name="cardStrokeColorLighter">#BF272727</item>
+        <item name="colorCardStroke">#DD1A1A1A</item>
+        <item name="colorCardStrokeLighter">#BF272727</item>
+        <item name="colorCardBackground">#fff</item>
+        <item name="colorCardBackgroundWarn">#FFEF59</item>
+        <item name="colorCardText">#000</item>
+
 
 
         <item name="actionBarSize">62dp</item>

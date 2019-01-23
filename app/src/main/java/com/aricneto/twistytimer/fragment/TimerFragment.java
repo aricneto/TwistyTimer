@@ -1054,7 +1054,7 @@ public class                                                                    
             if (sessionStatsEnabled && averageRecordsEnabled && hasStoppedTimerOnce &&
                     sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
                 // Create string.
-                stringDetailAvg.append("<b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b>");
+                stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
 
                 // Show record message, if it was not shown before
                 if (!hasShownRecordMessage) {
@@ -1136,6 +1136,7 @@ public class                                                                    
 
     private void showImage() {
         scrambleImg.setVisibility(View.VISIBLE);
+        scrambleImg.setEnabled(true);
         scrambleImg.animate()
                 .alpha(1)
                 .translationY(0)
@@ -1150,8 +1151,10 @@ public class                                                                    
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        if (scrambleImg != null)
-                            scrambleImg.setVisibility(View.GONE);
+                        if (scrambleImg != null) {
+                            scrambleImg.setVisibility(View.INVISIBLE);
+                            scrambleImg.setEnabled(false);
+                        }
                     }
                 });
     }

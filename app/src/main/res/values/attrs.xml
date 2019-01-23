@@ -8,8 +8,12 @@
     <attr format="color" name="colorItemListBackground"/>
     <attr format="color" name="mainColorBackground"/>
     <attr format="color" name="textColorContrastBackground"/>
-    <attr format="color" name="cardStrokeColor"/>
-    <attr format="color" name="cardStrokeColorLighter"/>
+
+    <attr format="color" name="colorCardStroke"/>
+    <attr format="color" name="colorCardStrokeLighter"/>
+    <attr format="color" name="colorCardBackground"/>
+    <attr format="color" name="colorCardBackgroundWarn"/>
+    <attr format="color" name="colorCardText"/>
 
     <attr format="dimension" name="tabBarSize"/>
 

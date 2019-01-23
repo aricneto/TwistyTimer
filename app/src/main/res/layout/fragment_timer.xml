@@ -67,13 +67,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:alpha=".95"
             android:fontFamily="@font/lato_bold"
             android:text="42.35"
             android:textColor="?colorTimerText"
             android:textColorHighlight="?colorAccent"
             android:textIsSelectable="false"
-            android:textSize="76sp"
-            android:alpha=".95" />
+            android:textSize="76sp" />
 
         <TextView
             android:id="@+id/inspection_text"
@@ -113,14 +113,14 @@
         </androidx.cardview.widget.CardView>
 
         <include
-            android:layout_height="36dp"
+            layout="@layout/item_qa_buttons"
             android:layout_width="wrap_content"
+            android:layout_height="36dp"
             android:layout_below="@id/chronometer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:visibility="gone"
-            tools:visibility="visible"
-            layout="@layout/item_qa_buttons"/>
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/scramble_img"
@@ -136,7 +136,6 @@
             android:id="@+id/progressSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp"
@@ -151,11 +150,15 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/scramble_img"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand_bold"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/outline_background_card_warn"
+            android:fontFamily="@font/quicksand_medium"
             android:text="@string/timer_detail_average_record_message"
-            android:textColor="?colorTimerText"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="?colorCardText"
             android:textSize="12sp"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -164,30 +167,36 @@
             android:id="@+id/sessionDetailTextAverage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:layout_toRightOf="@id/scramble_img"
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
-            android:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21"
             android:textColor="?colorTimerText"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
         <TextView
             android:id="@+id/sessionDetailTextOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:layout_toLeftOf="@id/scramble_img"
             android:alpha=".85"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="right"
-            android:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21"
             android:textColor="?colorTimerText"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
 
         <ImageView
             android:id="@+id/expanded_image"
