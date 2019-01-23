@@ -185,6 +185,7 @@ public class                                                                    
     @BindView(R.id.expanded_image)  ImageView           expandedImageView;
     @BindView(R.id.inspection_text)  TextView            inspectionText;
     @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
+    @BindView(R.id.scramble_progress) MaterialProgressBar scrambleProgress;
 
     @BindView(R.id.scramble_button_hint)         View scrambleButtonHint;
     @BindView(R.id.scramble_button_reset) View scrambleButtonReset;
@@ -1390,6 +1391,12 @@ public class                                                                    
             scrambleText.setText(R.string.generating_scramble);
             scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             scrambleText.setClickable(false);
+
+            scrambleButtonHint.setVisibility(View.GONE);
+            scrambleButtonEdit.setVisibility(View.GONE);
+            scrambleButtonReset.setVisibility(View.GONE);
+            scrambleProgress.setVisibility(View.VISIBLE);
+
             hideImage();
             if (! isRunning)
                 progressSpinner.setVisibility(View.VISIBLE);
@@ -1449,6 +1456,13 @@ public class                                                                    
             }
         });
         realScramble = scramble;
+
+        if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))
+            scrambleButtonHint.setVisibility(View.VISIBLE);
+        scrambleProgress.setVisibility(View.GONE);
+        scrambleButtonEdit.setVisibility(View.VISIBLE);
+        scrambleButtonReset.setVisibility(View.VISIBLE);
+
         if (scrambleImgEnabled)
             generateScrambleImage();
         else
