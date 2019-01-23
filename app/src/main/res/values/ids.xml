@@ -2,13 +2,5 @@
 <resources>
 
     <!-- Pre-defined IDs allowing forward ID references for RelativeLayout of statistics table. -->
-    <item name="statsTable" type="id"/>
-
-    <item name="horizontalDivider02" type="id"/>
-    <item name="horizontalDivider01" type="id"/>
-
-    <item name="verticalDivider01" type="id"/>
-    <item name="verticalDivider02" type="id"/>
-    <item name="verticalDivider03" type="id"/>
 
 </resources>

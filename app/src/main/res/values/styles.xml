@@ -25,6 +25,7 @@
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
         <item name="textColorContrastBackground">@android:color/white</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
 
         <item name="android:textColor">#000</item>
         <item name="colorCardStroke">#DD1A1A1A</item>
@@ -305,10 +306,29 @@
     Other miscellaneous styles.
     -->
 
-    <style name="TimerDetailTextStyle">
-        <item name="android:textColor">?colorTimerDetailText</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:paddingTop">2dp</item>
+    <style name="BottomPanelListTextStyle">
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:alpha">0.85</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">?colorCardText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/outline_background_card_top</item>
     </style>
 
     <style name="StatTextStyle">
@@ -404,10 +424,6 @@
     </style>
 
     <style name="Widget.Tarefa.Header.Spinner" parent="Base.Widget.Tarefa.Header.Spinner"/>
-
-    <style name="Widget.Tarefa.Body.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="android:textSize">10sp</item>
-    </style>
 
     <style name="HeaderSwitch">
         <!-- Active thumb color & Active track color(30% transparency) -->

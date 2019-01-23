@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="cube_222">2x2x2 Kubas</string>
-    <string name="cube_333">3x3x3 Kubas</string>
-    <string name="cube_444">4x4x4 Kubas</string>
-    <string name="cube_555">5x5x5 Kubas</string>
+    <string name="cube_222">2x2 Kubas</string>
+    <string name="cube_333">3x3 Kubas</string>
+    <string name="cube_444">4x4 Kubas</string>
+    <string name="cube_555">5x5 Kubas</string>
 
 
     <string name="drawer_open">Meniu atidarytas</string>
@@ -17,20 +17,16 @@
     <string name="generating_scramble">Generuojamas maišinys…</string>
     <string name="enter_type_name">Įveskite kategorijos pavadinimą</string>
     <string name="select_solve_type">Pasirinkite kategoriją</string>
-    <string name="type">Kategorija</string>
-    <string name="scramble_action">Maišinys</string>
     <string name="title_activity_settings">Nustatymai</string>
     <string name="list_options_item_share">Dalintis</string>
     <string name="task_remove">Pašalinti</string>
     <string name="action_cancel">Atšaukti</string>
-    <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nVidurkis:\nGeriausias:\nPrasčiausias:\nSkaičius:</string>
     <string name="delete_dialog_confirmation_title">Panaikinti prendimą?</string>
     <string name="delete_dialog_confirmation_button">Panaikinti</string>
     <string name="delete_dialog_cancel_button">Atšaukti</string>
-    <string name="cube_666">6x6x6 Kubas</string>
-    <string name="cube_777">7x7x7 Kubas</string>
+    <string name="cube_666">6x6 Kubas</string>
+    <string name="cube_777">7x7 Kubas</string>
     <string name="select_penalty">Pasirinkite nuobaudą</string>
-    <string name="inspection">Apžiūra</string>
     <string name="add_time">Pridėti laiką</string>
     <string name="action_add">Pridėti</string>
     <string name="action_remove">Pašalinti</string>
@@ -51,10 +47,6 @@
     <string name="scramble_text_tap_hint">Spauskite čia, kad pamatytumėte maišinį</string>
     <string name="action_ok">Gerai</string>
     <string name="drawer_title_changeTheme">Programėlės tema</string>
-    <string name="graph_stats_title">Statistika</string>
-    <string name="graph_card_global">Geriausias</string>
-    <string name="graph_card_session">Sesija</string>
-    <string name="graph_card_refresh_text">Pakrauti statistiką</string>
     <string name="graph_mean">Vidurkis</string>
     <string name="color_indigo">Indigo</string>
     <string name="color_purple">Purpurinė</string>
@@ -96,7 +88,6 @@
     <string name="action_reset">Atsatyti</string>
     <string name="scrambleEnabledSummary">Generuoti mišinį puzlei</string>
     <string name="scrambleEnabledTitle">Generuoti mišinį</string>
-    <string name="timerAppearancePrefTitle">Laikmačio išvaizda</string>
     <string name="millisecondsEnabledSummary">Radyti dešimtasias sprendžiant</string>
     <string name="millisecondsEnabledTitle">Rodyti dešimtasias</string>
     <string name="title_activity_about">Apie ir atsiliepimai</string>
@@ -105,10 +96,6 @@
     <string name="license">Licencija</string>
     <string name="contact">Kontaktai</string>
     <string name="rate_app">Įvertinti programėlę Google Play</string>
-    <string name="rate_dialog_title">Sveiki!</string>
-    <string name="rate_dialog_content">Jei mėgaujatės Twisty Timer, prašau įvertinkite Google Play parduotuvėje.\nAčiū už palaikymą :).</string>
-    <string name="rate_dialog_positive">Įvertinti</string>
-    <string name="rate_dialog_negative">Daugiau neberodyti</string>
     <string name="drawer_title_changeColorScheme">Spalvų schema</string>
     <string name="reset_colorscheme">Atsatyti numatytą spalvų schemą?</string>
     <string name="action_reset_colorscheme">Atsatyti</string>
@@ -134,10 +121,8 @@
     <string name="testers_content">Didelis ačiū šitiems žmonėms, kurie davė vertingų atsiliepimų programėlės alfa statijoje:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
     <string name="list_options_item_history">Archyvas</string>
     <string name="list_options_item_from_history">Išarchyvuoti</string>
-    <string name="selected_list">Pasirinktas</string>
     <string name="remove_session_title">Panaikinti visus sprendimus iš šios sesijos?</string>
     <string name="remove_session_confirmation_content">Jūs negalėsite panaikinti šio veiksmo.</string>
-    <string name="listPrefTitle">Sprendinių sąrašas</string>
     <string name="clearEnabledTitle">Rodyti \"Išvalyti\" mygtuką</string>
     <string name="clearEnabledSummary">\"Išvalyti\" mygtukas yra rodomas laikų sąraše ir leis jums pašalinti sprendimus iš dabartinės sesijos</string>
     <string name="pref_category_title_advanced">Sudėtingi</string>
@@ -147,8 +132,6 @@
     <string name="action_clear">Išvalyti</string>
     <string name="action_archive">Archyvuoti</string>
     <string name="enable_advanced">Įgalinti sudėtingus nustatymus</string>
-    <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
-    <string name="detail_text_more">Vidurkis:\nGeriausias:\nPrasčiausias:\nSkaičius:</string>
     <string name="source">Šaltinis</string>
     <string name="startCueTitle">Pradėti cue</string>
     <string name="startCueSummary">Pakeisti laikmačio spalvą, kai galima pradėti</string>
@@ -165,7 +148,6 @@
     <string name="loading_hints">Pakrauti užuominas…</string>
     <string name="showHintsTitle">Rodyti užuominas</string>
     <string name="showHintsSummary">Įjungti pliuso užuominas ant 3x3 puzlės</string>
-    <string name="hint">Užuomena</string>
     <string name="warning">Perspėjimas</string>
     <string name="action_default">Numatytas</string>
     <string name="scrambleImageSize_summary">Kontroliuoja sumaišyto kubo paveikslėlio dydį</string>
@@ -177,7 +159,6 @@
     <string name="drawer_title_export_import">Eksportuoti/Importuoti</string>
     <string name="dialog_export_import_export">Eksportuoti…</string>
     <string name="dialog_export_import_import">Importuoti…</string>
-    <string name="action_help">Pagalba</string>
     <string name="action_choose">Pasirinkite</string>
     <string name="import_progress_title">Importuojami sprendimai…</string>
     <string name="import_progress_content">Importavimas baigtas su:</string>
@@ -201,7 +182,6 @@
     <string name="fab_add_time">Pridėti laiką</string>
     <string name="fab_share_error">Negalima dalintis. Patikrinkite ar turite pakankamai sprendimų šioje sesijoje.</string>
     <string name="fab_share_histogram_solvecount">%1$s laiko pasiskirstymas (%2$d sprendimuose)</string>
-    <string name="showcase_fab_average">Dabar galite dalintis sesijos vidurkius!\nPalieskite mygtuką, kad pradėtumėte</string>
     <string name="fab_share_title">Dalintis sesija</string>
     <string name="export_import_dialog_from_backup">Iš atsarginės kopijos</string>
     <string name="export_import_dialog_from_txt_file">Iš .txt failo</string>

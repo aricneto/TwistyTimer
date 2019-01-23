@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
+
+import com.aricneto.twistytimer.fragment.dialog.PuzzleSpinnerDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -125,6 +127,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.toolbar)       RelativeLayout         mToolbar;
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
+    @BindView(R.id.puzzleSpinner) View puzzleSpinnerLayout;
     ActionMode actionMode;
 
     private LinearLayout      tabStrip;
@@ -163,9 +166,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // may be called multiple times if the mode is invalidated.
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
-            }
+            //}
             return true; // Return false if nothing is done
         }
 
@@ -293,6 +296,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
+
+        PuzzleSpinnerDialog puzzleSpinnerDialog = PuzzleSpinnerDialog.newInstance();
+
+
+        puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                puzzleSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
+            }
+        });
 
         //handleHeaderSpinner();
         //setupToolbarForFragment(mToolbar);

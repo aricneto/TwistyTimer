@@ -9,7 +9,6 @@
     <string name="action_donate">Donate</string>
     <string name="action_done">Done</string>
     <string name="action_export">Export</string>
-    <string name="action_help">Help</string>
     <string name="action_import">Import</string>
     <string name="action_move">Move</string>
     <string name="action_ok">OK</string>
@@ -79,19 +78,19 @@
     <string name="contributors_content">Huge thanks to these people for contributing to the development of the app:%1$s</string>
     <string name="contributors_names" translatable="false">\n\n•AriNeto\n•damo\n•Combinacijusx\n•druidalek\n•freundTech</string>
 
-    <string name="cube_222">2x2x2 Cube</string>
+    <string name="cube_222">2x2 Cube</string>
     <string name="cube_222_informal" translatable="false">2x2</string>
-    <string name="cube_333">3x3x3 Cube</string>
+    <string name="cube_333">3x3 Cube</string>
     <string name="cube_333_informal" translatable="false">3x3</string>
-    <string name="cube_444">4x4x4 Cube</string>
+    <string name="cube_444">4x4 Cube</string>
     <string name="cube_444_informal" translatable="false">4x4</string>
-    <string name="cube_555">5x5x5 Cube</string>
+    <string name="cube_555">5x5 Cube</string>
     <string name="cube_555_informal" translatable="false">5x5</string>
-    <string name="cube_666">6x6x6 Cube</string>
+    <string name="cube_666">6x6 Cube</string>
     <string name="cube_666_informal" translatable="false">6x6</string>
-    <string name="cube_777">7x7x7 Cube</string>
+    <string name="cube_777">7x7 Cube</string>
     <string name="cube_777_informal" translatable="false">7x7</string>
-    <string name="cube_clock" translatable="false">Rubik\'s Clock</string>
+    <string name="cube_clock" translatable="false">Clock</string>
     <string name="cube_mega" translatable="false">Megaminx</string>
     <string name="cube_pyra" translatable="false">Pyraminx</string>
     <string name="cube_skewb" translatable="false">Skewb</string>
@@ -100,10 +99,6 @@
     <string name="delete_dialog_cancel_button">Cancel</string>
     <string name="delete_dialog_confirmation_button">Remove</string>
     <string name="delete_dialog_confirmation_title">Remove solve?</string>
-
-    <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
-    <string name="detail_text_more">Mean:\nBest:\nWorst:\nCount:</string>
-    <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nMean:\nBest:\nWorst:\nCount:</string>
 
     <string name="dialog_export_import_export">Export…</string>
     <string name="dialog_export_import_import">Import…</string>
@@ -157,22 +152,16 @@
 
     <string name="generating_scramble">Generating scramble…</string>
 
-    <string name="graph_card_global">Best\n(all time)</string>
-    <string name="graph_card_session_best">Best\n(session)</string>
-    <string name="graph_card_session_current">Current</string>
     <string name="graph_legend_all_times">Everything</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Best</string>
     <string name="graph_mean">Mean</string>
-    <string name="graph_stats_title">Stats</string>
 
     <string name="hideTimeSummary">The timer will display your time when you finish</string>
 
     <string name="hideTimeText" translatable="false">…</string>
 
     <string name="hideTimeTitle">Hide time when solving</string>
-
-    <string name="hint">Hint</string>
 
     <string name="holdEnabledSummary">Hold the timer for 0.5 seconds to start</string>
 
@@ -188,8 +177,6 @@
     <string name="import_progress_content_ignored_duplicates">ignored duplicates</string>
     <string name="import_progress_content_successful_imports">successful imports</string>
     <string name="import_progress_title">Importing solves…</string>
-
-    <string name="inspection">Inspection</string>
 
     <string name="inspectionEnabledTitle">Inspection</string>
 
@@ -213,8 +200,6 @@
     <string name="language_spanish" translatable="false">Español</string>
 
     <string name="license">License</string>
-
-    <string name="listPrefTitle">Solve list</string>
 
     <string name="list_empty_state_message">Nothing here yet!\nTap the switch at the top of the screen to see your history.</string>
     <string name="list_empty_state_message_history">Nothing here yet!\nAll your old solves will be stored here.</string>
@@ -271,10 +256,6 @@
     <string name="quick_action_button_large_title">Large quick action buttons</string>
 
     <string name="rate_app">Rate this app on Google Play</string>
-    <string name="rate_dialog_content">If you are enjoying Twisty Timer, please take a moment to rate it in the Google Play Store!.\nThanks for your support :).</string>
-    <string name="rate_dialog_negative">Don\'t show again</string>
-    <string name="rate_dialog_positive">Rate</string>
-    <string name="rate_dialog_title">Hey there!</string>
 
     <string name="remove_session_confirmation_content">You will not be able to undo this action.</string>
     <string name="remove_session_title">Remove all solves from this session?</string>
@@ -298,7 +279,6 @@
     <string name="scrambleImageSize_summary">Controls the size of the scramble image</string>
     <string name="scrambleImageSize_text">Scramble image size</string>
 
-    <string name="scramble_action">Scramble</string>
     <string name="scramble_text_size">Scramble text size</string>
     <string name="scramble_text_size_summary">Controls the size of the scramble sequence text shown in the timer</string>
     <string name="scramble_text_tap_hint">Tap here to see scramble</string>
@@ -330,8 +310,6 @@
 
     <string name="showHintsXCrossTitle">Show extended cross hints</string>
 
-    <string name="showcase_fab_average">You can now share your session averages!\nTap the button to get started</string>
-
     <string name="source">Source</string>
 
     <string name="startCueSummary">Change text color when the timer is ready to start</string>
@@ -342,8 +320,6 @@
 
     <string name="testers">Testers</string>
     <string name="testers_content">Huge thanks to these people for providing valuable feedback during the alpha state of the app:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
-
-    <string name="timerAppearancePrefTitle">Timer appearance</string>
 
     <string name="timer_text_offset">Timer text offset</string>
     <string name="timer_text_offset_summary">Controls the position of the timer text</string>
@@ -357,8 +333,6 @@
     <string name="translators_content">Huge thanks to these people for providing translations for this app:%1$s</string>
     <string name="translators_names" translatable="false">\n\n•Sorashi\n•AriNeto\n•Ivan Nebogatikov\n•Herel Adrastel\n•Combinacijusx\n•Eduardo Cartre\n•Julian Lohuis\n•Carlo Flores\n•Marvin Lehmann\n•mewho1337\n•YTCuber\n•generalpask\n•eliasds\n•kkarol91\n•ax333l\n•SimplyMozzo</string>
 
-    <string name="type">Category</string>
-
     <string name="w_new_subtype">New</string>
 
     <string name="warning">Warning</string>
@@ -370,7 +344,6 @@
     <string name="graph_stats_tab_title_average">Average</string>
     <string name="graph_stats_tab_title_other">Other</string>
 
-    <string name="graph_stats_title_averageof">Average of</string>
     <string name="graph_stats_title_best_all_time">All time best</string>
     <string name="graph_stats_title_session_best">Session best</string>
     <string name="graph_stats_title_current">Current</string>

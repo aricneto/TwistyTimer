@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/outline_background_card_top"
+    android:paddingBottom="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:paddingTop="12dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_outline_category_24"
+        android:paddingRight="22dp"
+        android:paddingBottom="22dp"
+        android:text="Select a puzzle" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black_divider"/>
+
+    <TextView
+        android:id="@+id/puzzle_333"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_grid_on_24px"
+        android:text="@string/cube_333" />
+
+    <TextView
+        android:id="@+id/puzzle_222"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_grid_on_2_24px"
+        android:text="@string/cube_222" />
+
+    <TextView
+        android:id="@+id/puzzle_444"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_looks_4_24px"
+        android:text="@string/cube_444" />
+
+    <TextView
+        android:id="@+id/puzzle_555"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_looks_5_24px"
+        android:text="@string/cube_555" />
+
+    <TextView
+        android:id="@+id/puzzle_666"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_filter_6_24px"
+        android:text="@string/cube_666" />
+
+    <TextView
+        android:id="@+id/puzzle_777"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_filter_7_24px"
+        android:text="@string/cube_777" />
+
+    <TextView
+        android:id="@string/cube_clock"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_radio_button_unchecked_24px"
+        android:text="@string/cube_clock" />
+
+    <TextView
+        style="@style/BottomPanelListTextStyle"
+        android:id="@+id/puzzle_mega"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_megaminx"
+        android:text="@string/cube_mega" />
+
+    <TextView
+        style="@style/BottomPanelListTextStyle"
+        android:id="@+id/puzzle_pyra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_pyra"
+        android:text="@string/cube_pyra" />
+
+    <TextView
+        android:id="@string/cube_sq1"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_looks_one_24px"
+        android:text="@string/cube_sq1" />
+
+    <TextView
+        android:id="@string/cube_skewb"
+        style="@style/BottomPanelListTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_crop_free_24px"
+        android:text="@string/cube_skewb" />
+
+</LinearLayout>

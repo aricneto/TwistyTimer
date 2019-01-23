@@ -47,7 +47,6 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pref_screen_title_timer_appearance_settings">timerAppearance</string>
     <string translatable="false" name="pk_open_timer_behavior_settings">timerBehavior</string>
     <string translatable="false" name="pk_open_inspection_behavior_settings">inspectionBehavior</string>
-    <string translatable="false" name="pk_open_other_settings">otherSettings</string>
 
     <string translatable="false" name="pk_timer_bg_enabled">backgroundEnabled</string>
     <string translatable="false" name="pk_show_hi_res_timer">millisecondsEnabled</string>

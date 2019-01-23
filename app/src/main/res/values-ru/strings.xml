@@ -7,7 +7,6 @@
     <string name="action_clear">Очистить</string>
     <string name="action_default">По умолчанию</string>
     <string name="action_export">Экспортировать</string>
-    <string name="action_help">Помощь</string>
     <string name="action_import">Импортировать</string>
     <string name="action_ok">OK</string>
     <string name="action_remove">Удалить</string>
@@ -43,20 +42,17 @@
     <string name="color_red">Красный</string>
     <string name="color_teal">Зелено-голубой</string>
     <string name="contact">Контакты</string>
-    <string name="cube_222">Куб 2х2х2</string>
-    <string name="cube_333">Куб 3х3х3</string>
+    <string name="cube_222">Куб 2х2</string>
+    <string name="cube_333">Куб 3х3</string>
     <string name="cube_333_informal" translatable="false"></string>
-    <string name="cube_444">Куб 4х4х4</string>
-    <string name="cube_555">Куб 5х5х5</string>
+    <string name="cube_444">Куб 4х4</string>
+    <string name="cube_555">Куб 5х5</string>
     <string name="cube_555_informal" translatable="false"></string>
-    <string name="cube_666">Куб 6х6х6</string>
-    <string name="cube_777">Куб 7х7х7</string>
+    <string name="cube_666">Куб 6х6</string>
+    <string name="cube_777">Куб 7х7</string>
     <string name="delete_dialog_cancel_button">Отмена</string>
     <string name="delete_dialog_confirmation_button">Удалить</string>
     <string name="delete_dialog_confirmation_title">Удалить результат?</string>
-    <string name="detail_text_avg">Ao5:\nAo12:\nAo50:\nAo100:</string>
-    <string name="detail_text_more">Среднее:\nЛучшее:\nХудшее:\nКоличество:</string>
-    <string name="detail_text_plus">Ao3:\nAo5:\nAo12:\nAo50:\nAo100:\nAo1000:\nСреднее:\nЛучшее:\nХудшее:\nКоличество:</string>
     <string name="dialog_export_import_export">Экспорт...</string>
     <string name="dialog_revert_content_confirmation">Вернуть стандартные алгоритмы для этого случая?</string>
     <string name="dialog_export_import_import">Импорт...</string>
@@ -96,15 +92,10 @@
     <string name="file_selection_error_content">Убедитесь, что выбрали правильный %1$s файл</string>
     <string name="file_selection_error_title">Неправильный тип файла</string>
     <string name="generating_scramble">Генерация скрамбла...</string>
-    <string name="graph_card_refresh_text">Нажмите, чтобы загрузить статистику</string>
-    <string name="graph_card_global">Лучшие</string>
-    <string name="graph_card_session">За сессию</string>
     <string name="graph_mean">Среднее</string>
-    <string name="graph_stats_title">Статистика</string>
     <string name="hideTimeSummary">Таймер покажет время, когда вы закончите</string>
     <string name="hideTimeText">...</string>
     <string name="hideTimeTitle">Прятать время во время сборки</string>
-    <string name="hint">Подсказка</string>
     <string name="holdEnabledSummary">Удерживать 0.5 секунд для старта</string>
     <string name="holdEnabledTitle">Удерживать для старта</string>
     <string name="import_external_content_first">На следующем шаге выберете .txt файл со следующим форматом, одна сборка на сторке:\n\n<small><tt>\"время\"; \"скрамбл\"; \"дата\"\n\n<b>Пример:</b>\n\"1:32.15\"; \"R U2\"; \"2016-03-16T08:16:42\"</tt></small></string>
@@ -114,14 +105,12 @@
     <string name="import_progress_content_ignored_duplicates">Игнорировать дубликаты</string>
     <string name="import_progress_content_successful_imports">Успешные импорты</string>
     <string name="import_progress_title">Импорт сборок...</string>
-    <string name="inspection">Инспекция</string>
     <string name="inspectionEnabledTitle">Инспекция</string>
     <string name="inspectionTimeSummary">Стандартное время: 15 секунд</string>
     <string name="inspectionTimeTitle">Время инспекции (в секундах)</string>
     <string name="inspection_time">Время инспекции</string>
     <string name="invalid_time">Неправильное время</string>
     <string name="license">Лицензия</string>
-    <string name="listPrefTitle">Список сборок</string>
     <string name="list_empty_state_message">Здесь пока что ничего нет!\nНажмите вверху экрана, чтобы посмотреть вашу историю.</string>
     <string name="list_empty_state_message_history">Здесь пока что ничего нет!\nВсе ваши старые сборки будут храниться здесь.</string>
     <string name="list_options_item_history">Архивировать</string>
@@ -147,10 +136,6 @@
     <string name="quick_action_button_large_summary">Увеличить кнопки быстрых действий (кнопки, которые появляются после сборки)</string>
     <string name="quick_action_button_large_title">Широкие кнопки быстрых действий</string>
     <string name="rate_app">Оценить это приложение в Google Play</string>
-    <string name="rate_dialog_content">Если вам нравится Twisty Timer, пожалуйста, оцените его в Google Play Store!.\nСпасибо за поддержку :).</string>
-    <string name="rate_dialog_negative">Не показывать это вновь</string>
-    <string name="rate_dialog_positive">Оценить</string>
-    <string name="rate_dialog_title">Эй!</string>
     <string name="remove_session_confirmation_content">Вы не сможете отменить это действие.</string>
     <string name="remove_session_title">Удалить все сборки этой сесии?</string>
     <string name="remove_subtype_confirmation">Удалить категоию?</string>
@@ -165,13 +150,11 @@
     <string name="scrambleImageEnabledTitle">Картинка скрамбла</string>
     <string name="scrambleImageSize_summary">Управление размером картинки скрамбла</string>
     <string name="scrambleImageSize_text">Размер картинки скрамбла</string>
-    <string name="scramble_action">Скрамбл</string>
     <string name="scramble_text_size">Размер текста скрамбла</string>
     <string name="scramble_text_size_summary">Управление размером текста скрамбла на таймере</string>
     <string name="scramble_text_tap_hint">Нажмите здесь, чтобы увидеть скрамбл</string>
     <string name="select_penalty">Выбрать штраф</string>
     <string name="select_solve_type">Выбрать категорию</string>
-    <string name="selected_list">Выбрано</string>
     <string name="send_email_title">Отправить отзыв с...</string>
     <string name="sent_to_history">Отправлено в историю...</string>
     <string name="sent_to_session">Отправлено в сессию...</string>
@@ -181,13 +164,11 @@
     <string name="showHintsTitle">Показывать подсказки</string>
     <string name="showHintsXCrossSummary">Расширенные подсказки для креста могут долго загружаться.\nВключайте этот параметр, если готовы ждать или у вас высокопроизводительное устройство.</string>
     <string name="showHintsXCrossTitle">Раширенные подсказки для креста</string>
-    <string name="showcase_fab_average">Теперь вы можете делиться средними значениями по сессии!\nНажмите на кнопку, чтобы начать</string>
     <string name="source">Исходный код</string>
     <string name="startCueSummary">Изменять цвет текста, когда таймер готов начать</string>
     <string name="startCueTitle">Подавать сигнал</string>
     <string name="task_remove">Удалить</string>
     <string name="testers">Тестировщики</string>
-    <string name="timerAppearancePrefTitle">Внешний вид таймера</string>
     <string name="pref_category_title_timer">Таймер</string>
     <string name="timer_text_offset">Смещение текста таймера</string>
     <string name="timer_text_offset_summary">Контролировать позицию текста таймера</string>
@@ -196,7 +177,6 @@
     <string name="title_activity_about">Справка</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="translators">Переводчики</string>
-    <string name="type">Категория</string>
     <string name="w_new_subtype">Новый</string>
     <string name="warning">Предупреждение</string>
     <string name="worstSolveEnabledSummary">Предупреждать, когда у вас худший личный результат</string>
@@ -209,6 +189,4 @@
     <string name="graph_legend_all_times">Все</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Лучшее</string>
-    <string name="graph_card_session_best">Лучшее (сессия)</string>
-    <string name="graph_card_session_current">Текущее (сессия)</string>
 </resources>

@@ -27,6 +27,4 @@
     <bool name="default_showAverageRecordEnabled">true</bool>
 
     <bool name="default_inspectionAlertEnabled">false</bool>
-    <bool name="default_soundAlertEnabled">false</bool>
-    <bool name="default_vibrationAlertEnabled">true</bool>
 </resources>

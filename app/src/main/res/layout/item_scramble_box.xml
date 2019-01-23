@@ -43,7 +43,6 @@
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
         <ImageView
-            android:id="@+id/scramble_edit"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_below="@id/scramble_text"

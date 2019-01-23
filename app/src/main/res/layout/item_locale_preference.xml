@@ -2,7 +2,6 @@
 <!-- Used in the preferences to display a flag indicating the current locale -->
 <ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/locale_flag"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/locale_current_flag"/>

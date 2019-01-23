@@ -67,7 +67,6 @@
         android:textSize="14sp" />
 
     <TableLayout
-        android:id="@+id/table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rateButton"
