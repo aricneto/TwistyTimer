@@ -8,14 +8,11 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/BottomPanelListTextStyle"
+        style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
-        android:paddingTop="12dp"
         android:fontFamily="@font/quicksand_bold"
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_outline_category_24"
-        android:paddingRight="22dp"
-        android:paddingBottom="16dp"
         android:text="Select a puzzle" />
 
     <View

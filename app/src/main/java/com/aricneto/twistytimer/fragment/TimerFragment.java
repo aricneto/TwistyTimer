@@ -54,6 +54,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.fragment.dialog.BottomSheetDetailDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
@@ -67,8 +68,6 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.skyfishjy.library.RippleBackground;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import java.util.Locale;
 
@@ -82,6 +81,7 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.FORMAT_DEFAULT;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
@@ -190,10 +190,6 @@ public class                                                                    
     @BindView(R.id.scramble_button_reset) View scrambleButtonReset;
     @BindView(R.id.scramble_button_edit) View scrambleButtonEdit;
 
-    @BindView(R.id.panelText)        TextView            panelText;
-    @BindView(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
-    @BindView(R.id.panelSpinnerText) TextView            panelSpinnerText;
-
     @BindView(R.id.qa_remove)        ImageView        deleteButton;
     @BindView(R.id.qa_dnf)           ImageView        dnfButton;
     @BindView(R.id.qa_plustwo)       ImageView        plusTwoButton;
@@ -204,7 +200,6 @@ public class                                                                    
 
     @BindView(R.id.root)                  RelativeLayout       rootLayout;
     @BindView(R.id.startTimerLayout)      FrameLayout          startTimerLayout;
-    @BindView(R.id.sliding_layout) public SlidingUpPanelLayout slidingLayout;
 
     @BindView(R.id.congratsText) TextView congratsText;
 
@@ -279,6 +274,7 @@ public class                                                                    
 
     private RubiksCubeOptimalCross  optimalCross;
     private RubiksCubeOptimalXCross optimalXCross;
+    private BottomSheetDetailDialog scrambleDialog;
 
     public TimerFragment() {
         // Required empty public constructor
@@ -358,17 +354,6 @@ public class                                                                    
                         editText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
                     }
                     dialog.show();
-                    break;
-                case R.id.scramble_button_hint:
-                    if (canShowHint && showHintsEnabled) {
-                        panelText.setVisibility(View.GONE);
-                        panelText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                        panelText.setGravity(Gravity.LEFT);
-                        panelSpinner.setVisibility(View.VISIBLE);
-                        panelSpinnerText.setVisibility(View.VISIBLE);
-                        slidingLayout.setPanelState(PanelState.EXPANDED);
-                        getNewOptimalCross();
-                    }
                     break;
                 case R.id.qa_undo:
                     // Undo the setting of a DNF or +2 penalty (does not undo a delete or comment).
@@ -462,7 +447,6 @@ public class                                                                    
         dnfButton.setOnClickListener(buttonClickListener);
         plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
-        scrambleButtonHint.setOnClickListener(buttonClickListener);
         undoButton.setOnClickListener(buttonClickListener);
         scrambleButtonReset.setOnClickListener(buttonClickListener);
         scrambleButtonEdit.setOnClickListener(buttonClickListener);
@@ -788,12 +772,10 @@ public class                                                                    
     public void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume()");
         super.onResume();
-        slidingLayout.setPanelState(PanelState.HIDDEN);
     }
 
     /**
-     * Hides the sliding panel showing the hints, or stops the chronometer, if either
-     * action is necessary.
+     * Stops the chronometer on back press.
      *
      * @return
      *     {@code true} if the "Back" button press was consumed to hide the scramble or stop the
@@ -806,11 +788,6 @@ public class                                                                    
         if (isResumed()) {
             if (isRunning || countingDown) {
                 cancelChronometer();
-                return true;
-            } else if (slidingLayout != null
-                    && slidingLayout.getPanelState() != PanelState.HIDDEN
-                    && slidingLayout.getPanelState() != PanelState.COLLAPSED) {
-                slidingLayout.setPanelState(PanelState.HIDDEN);
                 return true;
             }
         }
@@ -1122,12 +1099,10 @@ public class                                                                    
                     .alpha(1)
                     .translationY(0)
                     .setDuration(300);
+            scrambleBox.setEnabled(true);
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(true);
                 showImage();
-            }
-            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
-                scrambleButtonHint.setEnabled(true);
             }
         }
         if (buttonsEnabled && ! isCanceled) {
@@ -1178,6 +1153,7 @@ public class                                                                    
                 .setDuration(300);
 
         if (scrambleEnabled) {
+            scrambleBox.setEnabled(false);
             scrambleBox.animate()
                     .alpha(0)
                     .translationY(-scrambleBox.getHeight())
@@ -1191,9 +1167,6 @@ public class                                                                    
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(false);
                 hideImage();
-            }
-            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
-                scrambleButtonHint.setEnabled(false);
             }
         }
         if (sessionStatsEnabled) {
@@ -1394,14 +1367,12 @@ public class                                                                    
         @Override
         protected void onPostExecute(String text) {
             super.onPostExecute(text);
-            if (panelSpinnerText != null && panelText != null && ! isRunning) {
+            if (!isRunning) {
                 // Set the hint text
-                panelText.setText(text);
-                panelText.setVisibility(View.VISIBLE);
-
-                // Hide the "loading" spinner and text
-                panelSpinner.setVisibility(View.GONE);
-                panelSpinnerText.setVisibility(View.GONE);
+                if(scrambleDialog != null) {
+                    scrambleDialog.setHintText(text);
+                    scrambleDialog.setHintVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -1411,8 +1382,10 @@ public class                                                                    
         @Override
         protected void onPreExecute() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
-            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled)
-                slidingLayout.setPanelState(PanelState.HIDDEN);
+            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled && scrambleDialog != null) {
+                scrambleDialog.setHintVisibility(View.GONE);
+                scrambleDialog.dismiss();
+            }
             canShowHint = false;
             scrambleText.setText(R.string.generating_scramble);
             scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -1454,22 +1427,22 @@ public class                                                                    
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                         scrambleText.setClickable(true);
                         scrambleText.setText(R.string.scramble_text_tap_hint);
-                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dice_white_24dp, 0, 0, 0);
-                        scrambleText.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                panelText.setText(scramble);
-                                panelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize());
-                                panelText.setGravity(Gravity.CENTER);
-                                panelSpinner.setVisibility(View.GONE);
-                                panelSpinnerText.setVisibility(View.GONE);
-                                slidingLayout.setPanelState(PanelState.EXPANDED);
-                            }
-                        });
+                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_casino_24px, 0, 0, 0);
                     } else {
                         scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        scrambleText.setClickable(false);
+                        //scrambleText.setClickable(false);
                     }
+                    scrambleBox.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            scrambleDialog = new BottomSheetDetailDialog();
+                            scrambleDialog.setDetailText(scramble);
+                            scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
+                            if (canShowHint && showHintsEnabled && currentPuzzle.equals(TYPE_333)) {
+                                getNewOptimalCross();
+                            }
+                        }
+                    });
                     //if (! isRunning)
                         //scrambleText.setVisibility(View.VISIBLE);
                 }

@@ -60,11 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/scramble_text"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="4dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             android:alpha=".85"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:drawableLeft="@drawable/ic_outline_wb_incandescent_24px"
             android:drawablePadding="8dp"
             android:fontFamily="@font/quicksand_medium"
@@ -74,7 +72,9 @@
             android:scaleY="0.80"
             android:text="Hint"
             android:textColor="#000"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
     </RelativeLayout>

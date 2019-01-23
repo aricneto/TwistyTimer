@@ -21,7 +21,6 @@
             android:indeterminate="false"
             android:progress="50"
             android:visibility="visible"
-            app:mpb_showTrack="false"
             app:mpb_progressStyle="horizontal"
             app:mpb_useIntrinsicPadding="false" />
 

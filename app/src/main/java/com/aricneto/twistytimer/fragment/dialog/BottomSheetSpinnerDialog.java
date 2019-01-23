@@ -6,16 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.List;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -29,11 +25,15 @@ import androidx.core.content.ContextCompat;
 
 public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
-    private TextView mTitle;
-    private ListView mList;
+    private TextView titleTextView;
+    private ListView listView;
     private Context mContext;
+
     private BottomSheetSpinnerAdapter mAdapter;
     private AdapterView.OnItemClickListener mClickListener;
+
+    private String titleText;
+    private int titleIcon;
 
     public static BottomSheetSpinnerDialog newInstance() {
         return new BottomSheetSpinnerDialog();
@@ -45,18 +45,21 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.dialog_puzzle_spinner, container, false);
 
         mContext = getContext();
-        mTitle = view.findViewById(R.id.title);
-        mList = view.findViewById(R.id.list);
+        titleTextView = view.findViewById(R.id.title);
+        listView = view.findViewById(R.id.list);
 
-        mList.setAdapter(mAdapter);
-        mList.setOnItemClickListener(mClickListener);
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(mClickListener);
+
+        titleTextView.setText(titleText);
+        titleTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, titleIcon != 0 ? ContextCompat.getDrawable(mContext, titleIcon) : null, null);
 
         return view;
     }
 
     public void setTitle(String title, @DrawableRes int iconRes) {
-        mTitle.setText(title);
-        mTitle.setCompoundDrawables(null, null, ContextCompat.getDrawable(mContext, iconRes), null);
+        titleText = title;
+        titleIcon = iconRes;
     }
 
     public void setListAdapter(BottomSheetSpinnerAdapter adapter) {

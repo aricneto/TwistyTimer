@@ -1,269 +1,200 @@
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sliding_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    android:keepScreenOn="true"
-    app:umanoPanelHeight="0dp"
-    app:umanoScrollableView="@+id/scrollPanel"
-    app:umanoShadowHeight="4dp">
+    android:paddingBottom="?tabBarSize"
+    tools:background="@drawable/background_gradient"
+    tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 
-    <RelativeLayout
-        android:id="@+id/root"
+    <!-- The margin is there so that opening the drawer doesn't start the timer -->
+    <FrameLayout
+        android:id="@+id/startTimerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="?tabBarSize"
-        tools:background="@drawable/background_gradient"
-        tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
+        android:layout_below="@id/scramble_box"
+        android:layout_marginLeft="16dp" />
 
-        <!-- The margin is there so that opening the drawer doesn't start the timer -->
-        <FrameLayout
-            android:id="@+id/startTimerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/scramble_box"
-            android:layout_marginLeft="16dp" />
-
-        <com.skyfishjy.library.RippleBackground
-            android:id="@+id/rippleBackground"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            app:rb_color="?colorAccent"
-            app:rb_duration="3000"
-            app:rb_radius="64dp"
-            app:rb_rippleAmount="1"
-            app:rb_scale="10" />
-
-        <include
-            android:id="@+id/scramble_box"
-            layout="@layout/item_scramble_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_margin="12dp" />
-
-        <TextView
-            android:id="@+id/congratsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/scramble_box"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:drawablePadding="16dp"
-            android:gravity="center"
-            android:text="@string/personal_best_message"
-            android:textColor="?colorTimerText"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <com.aricneto.twistytimer.layout.ChronometerMilli
-            android:id="@+id/chronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:alpha=".95"
-            android:fontFamily="@font/lato_bold"
-            android:text="42.35"
-            android:textColor="?colorTimerText"
-            android:textColorHighlight="?colorAccent"
-            android:textIsSelectable="false"
-            android:textSize="76sp" />
-
-        <TextView
-            android:id="@+id/inspection_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/chronometer"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/quicksand_bold"
-            android:text="Inspection"
-            android:textAllCaps="true"
-            android:textColor="?colorTimerText"
-            android:textColorHighlight="?colorAccent"
-            android:textIsSelectable="false"
-            android:textSize="16sp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/qa_undo"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_below="@id/chronometer"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:background="@color/md_white_1000"
-            android:visibility="gone"
-            app:cardCornerRadius="20dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:alpha=".85"
-                android:padding="8dp"
-                app:srcCompat="@drawable/ic_outline_undo_24px" />
-
-        </androidx.cardview.widget.CardView>
-
-        <include
-            layout="@layout/item_qa_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_below="@id/chronometer"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/scramble_img"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:scaleType="fitStart"
-            tools:background="@color/red_material" />
-
-        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-            android:id="@+id/progressSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:mpb_progressStyle="circular"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/detail_average_record_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/scramble_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/outline_background_card_warn"
-            android:fontFamily="@font/quicksand_medium"
-            android:text="@string/timer_detail_average_record_message"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:textColor="?colorCardText"
-            android:textSize="12sp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/sessionDetailTextAverage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_toRightOf="@id/scramble_img"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand_medium"
-            android:textColor="?colorTimerText"
-            android:textSize="12sp"
-            tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
-
-        <TextView
-            android:id="@+id/sessionDetailTextOther"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_toLeftOf="@id/scramble_img"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand_medium"
-            android:gravity="right"
-            android:textColor="?colorTimerText"
-            android:textSize="12sp"
-            tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
-
-        <ImageView
-            android:id="@+id/expanded_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
-
-    </RelativeLayout>
-
-    <!-- Scramble text view -->
-
-    <ScrollView
-        android:id="@+id/scrollPanel"
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/rippleBackground"
+        app:rb_color="?colorAccent"
+        app:rb_duration="3000"
+        app:rb_radius="64dp"
+        app:rb_rippleAmount="1"
+        app:rb_scale="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white_text">
+        android:clickable="false" />
 
-        <LinearLayout
+    <include
+        android:id="@+id/scramble_box"
+        layout="@layout/item_scramble_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="12dp" />
+
+    <TextView
+        android:id="@+id/congratsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scramble_box"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:drawablePadding="16dp"
+        android:gravity="center"
+        android:text="@string/personal_best_message"
+        android:textColor="?colorTimerText"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.aricneto.twistytimer.layout.ChronometerMilli
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha=".95"
+        android:fontFamily="@font/lato_bold"
+        android:text="42.35"
+        android:textColor="?colorTimerText"
+        android:textColorHighlight="?colorAccent"
+        android:textIsSelectable="false"
+        android:textSize="76sp" />
+
+    <TextView
+        android:id="@+id/inspection_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Inspection"
+        android:textAllCaps="true"
+        android:textColor="?colorTimerText"
+        android:textColorHighlight="?colorAccent"
+        android:textIsSelectable="false"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/qa_undo"
+        app:cardCornerRadius="20dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_below="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@color/md_white_1000"
+        android:visibility="gone">
+
+        <ImageView
+            app:srcCompat="@drawable/ic_outline_undo_24px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:alpha=".85"
+            android:padding="8dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:drawableLeft="@drawable/ic_keyboard_arrow_down_black_18dp"
-                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_18dp"
-                android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="@string/panel_swipe_down_to_hide"
-                android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
 
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                android:id="@+id/panelSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:mpb_progressStyle="circular" />
+    <include
+        layout="@layout/item_qa_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_below="@id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/panelSpinnerText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="@string/loading_hints"
-                android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/scramble_img"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitStart"
+        tools:background="@color/red_material" />
 
-            <TextView
-                android:id="@+id/panelText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top|left"
-                android:padding="16dp"
-                android:text=""
-                android:textSize="16sp" />
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progressSpinner"
+        app:mpb_progressStyle="circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/detail_average_record_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/scramble_img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/outline_background_card_warn"
+        android:fontFamily="@font/quicksand_medium"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/timer_detail_average_record_message"
+        android:textColor="?colorCardText"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-    </ScrollView>
+    <TextView
+        android:id="@+id/sessionDetailTextAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toRightOf="@id/scramble_img"
+        android:alpha=".85"
+        android:fontFamily="@font/quicksand_medium"
+        android:textColor="?colorTimerText"
+        android:textSize="12sp"
+        tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    <TextView
+        android:id="@+id/sessionDetailTextOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toLeftOf="@id/scramble_img"
+        android:alpha=".85"
+        android:fontFamily="@font/quicksand_medium"
+        android:gravity="right"
+        android:textColor="?colorTimerText"
+        android:textSize="12sp"
+        tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

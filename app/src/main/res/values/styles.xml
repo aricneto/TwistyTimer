@@ -31,7 +31,7 @@
         <item name="colorCardStroke">#DD1A1A1A</item>
         <item name="colorCardStrokeLighter">#BF272727</item>
         <item name="colorCardBackground">#fff</item>
-        <item name="colorCardBackgroundWarn">#FFEF59</item>
+        <item name="colorCardBackgroundWarn">#FFEF6B</item>
         <item name="colorCardText">#000</item>
 
 
@@ -311,6 +311,19 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:paddingBottom">8dp</item>
+        <item name="android:alpha">0.85</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">?colorCardText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BottomPanelListTitleTextStyle">
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingRight">22dp</item>
+        <item name="android:paddingBottom">16dp</item>
         <item name="android:alpha">0.85</item>
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:drawablePadding">20dp</item>

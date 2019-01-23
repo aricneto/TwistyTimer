@@ -719,6 +719,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         BottomSheetSpinnerDialog bottomSheetSpinnerDialog = BottomSheetSpinnerDialog.newInstance();
         BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(getContext(), titles, icons);
 
+        bottomSheetSpinnerDialog.setTitle(getString(R.string.dialog_select_puzzle), R.drawable.ic_outline_casino_24px);
+
         bottomSheetSpinnerDialog.setListAdapter(bottomSheetSpinnerAdapter);
 
         bottomSheetSpinnerDialog.setListClickListener(new AdapterView.OnItemClickListener() {

@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.gordonwong:material-sheet-fab:1.2.1'
     // Material Drawer
     implementation "com.mikepenz:materialdrawer:6.1.2"
+    // Progress
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
     // Joda-time
     implementation 'net.danlew:android.joda:2.9.4.1'
     // Android SVG
@@ -78,8 +80,6 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.36'
     // Material color picker
     implementation 'com.pavelsikun:vintage-chroma:1.5'
-    // Sliding Up Panel
-    implementation 'com.sothree.slidinguppanel:library:3.2.1'
 
     testImplementation 'junit:junit:4.12'
 }

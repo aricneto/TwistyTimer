@@ -371,5 +371,8 @@
 
     <string name="pref_inspection_alert_title">Alert time left</string>
     <string name="pref_inspection_alert_summary">Timer will alert you once %1$d and %2$d seconds of inspection have passed</string>
+    <string name="dialog_scramble_details">Scramble details</string>
+    <string name="dialog_select_puzzle">Select a puzzle</string>
+    <string name="dialog_hint_title">Hint</string>
 
 </resources>
