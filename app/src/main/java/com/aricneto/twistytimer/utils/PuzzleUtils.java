@@ -123,6 +123,24 @@ public class PuzzleUtils {
         }
     }
 
+    public static @StringRes int getPuzzleNameFromType(String puzzle) {
+        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
+        switch (puzzle) {
+            default:
+            case TYPE_333:     return R.string.cube_333;
+            case TYPE_222:     return R.string.cube_222;
+            case TYPE_444:     return R.string.cube_444;
+            case TYPE_555:     return R.string.cube_555;
+            case TYPE_666:     return R.string.cube_666;
+            case TYPE_777:     return R.string.cube_777;
+            case TYPE_CLOCK:   return R.string.cube_clock;
+            case TYPE_MEGA:    return R.string.cube_mega;
+            case TYPE_PYRA:    return R.string.cube_pyra;
+            case TYPE_SKEWB:   return R.string.cube_skewb;
+            case TYPE_SQUARE1: return R.string.cube_sq1;
+        }
+    }
+
     /**
      * Converts a duration value in milliseconds to a String
      * @param time

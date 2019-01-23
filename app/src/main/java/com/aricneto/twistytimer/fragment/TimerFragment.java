@@ -14,7 +14,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.ToneGenerator;
 import android.os.AsyncTask;
@@ -30,7 +29,6 @@ import androidx.cardview.widget.CardView;
 
 import android.text.Html;
 import android.text.InputType;
-import android.text.SpannableString;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -61,7 +59,6 @@ import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalCross;
 import com.aricneto.twistytimer.solver.RubiksCubeOptimalXCross;
-import com.aricneto.twistytimer.spans.RoundRectSpan;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.CountdownWarning;
@@ -69,7 +66,6 @@ import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
@@ -77,7 +73,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -191,7 +186,10 @@ public class                                                                    
     @BindView(R.id.inspection_text)  TextView            inspectionText;
     @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
 
-    @BindView(R.id.scramble_button_hint)         View            hintCard;
+    @BindView(R.id.scramble_button_hint)         View scrambleButtonHint;
+    @BindView(R.id.scramble_button_reset) View scrambleButtonReset;
+    @BindView(R.id.scramble_button_edit) View scrambleButtonEdit;
+
     @BindView(R.id.panelText)        TextView            panelText;
     @BindView(R.id.panelSpinner)     MaterialProgressBar panelSpinner;
     @BindView(R.id.panelSpinnerText) TextView            panelSpinnerText;
@@ -380,6 +378,12 @@ public class                                                                    
                     hideButtons(false, true);
                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                     break;
+                case R.id.scramble_button_reset:
+                    broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
+                    break;
+                case R.id.scramble_button_edit:
+                    // TODO
+                    break;
             }
         }
     };
@@ -458,8 +462,10 @@ public class                                                                    
         dnfButton.setOnClickListener(buttonClickListener);
         plusTwoButton.setOnClickListener(buttonClickListener);
         commentButton.setOnClickListener(buttonClickListener);
-        hintCard.setOnClickListener(buttonClickListener);
+        scrambleButtonHint.setOnClickListener(buttonClickListener);
         undoButton.setOnClickListener(buttonClickListener);
+        scrambleButtonReset.setOnClickListener(buttonClickListener);
+        scrambleButtonEdit.setOnClickListener(buttonClickListener);
 
         // Preferences //
         final boolean inspectionEnabled = Prefs.getBoolean(R.string.pk_inspection_enabled, false);
@@ -541,7 +547,7 @@ public class                                                                    
         }
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
-            hintCard.setVisibility(View.VISIBLE);
+            scrambleButtonHint.setVisibility(View.VISIBLE);
             optimalCross = new RubiksCubeOptimalCross(getString(R.string.optimal_cross));
             optimalXCross = new RubiksCubeOptimalXCross(getString(R.string.optimal_x_cross));
         }
@@ -1121,7 +1127,7 @@ public class                                                                    
                 showImage();
             }
             if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
-                hintCard.setEnabled(true);
+                scrambleButtonHint.setEnabled(true);
             }
         }
         if (buttonsEnabled && ! isCanceled) {
@@ -1187,7 +1193,7 @@ public class                                                                    
                 hideImage();
             }
             if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
-                hintCard.setEnabled(false);
+                scrambleButtonHint.setEnabled(false);
             }
         }
         if (sessionStatsEnabled) {

@@ -29,7 +29,7 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/scramble_reset"
+            android:id="@+id/scramble_button_reset"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_below="@id/scramble_text"
@@ -43,11 +43,12 @@
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
         <ImageView
+            android:id="@+id/scramble_button_edit"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_below="@id/scramble_text"
             android:layout_margin="4dp"
-            android:layout_toLeftOf="@id/scramble_reset"
+            android:layout_toLeftOf="@id/scramble_button_reset"
             android:alpha=".85"
             android:padding="4dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
@@ -62,6 +63,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginLeft="8dp"
             android:alpha=".85"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:drawableLeft="@drawable/ic_outline_wb_incandescent_24px"
             android:drawablePadding="8dp"
             android:fontFamily="@font/quicksand_medium"

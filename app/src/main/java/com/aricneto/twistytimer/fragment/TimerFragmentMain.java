@@ -1,20 +1,17 @@
 package com.aricneto.twistytimer.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
-import com.aricneto.twistytimer.fragment.dialog.PuzzleSpinnerDialog;
+import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
+import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -26,7 +23,7 @@ import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.util.Pair;
 import android.view.ActionMode;
@@ -36,13 +33,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -71,7 +67,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
@@ -128,6 +123,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
     @BindView(R.id.puzzleSpinner) View puzzleSpinnerLayout;
+
+    @BindView(R.id.puzzleCategory) TextView puzzleCategoryText;
+    @BindView(R.id.puzzleName) TextView puzzleNameText;
+
     ActionMode actionMode;
 
     private LinearLayout      tabStrip;
@@ -297,17 +296,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
-        PuzzleSpinnerDialog puzzleSpinnerDialog = PuzzleSpinnerDialog.newInstance();
-
-
-        puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                puzzleSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
-            }
-        });
-
-        //handleHeaderSpinner();
+        handleHeaderSpinner();
         //setupToolbarForFragment(mToolbar);
 
         pagerEnabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(
@@ -665,19 +654,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         switch (pageNum) {
             case TIMER_PAGE:
-                //((MainActivity) getActivity()).hideFAB();
-                // Scramble icon
-                /*mToolbar.getMenu()
-                        .add(0, 5, 0, R.string.scramble_action)
-                        .setIcon(R.drawable.ic_dice_white_24dp)
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
-                                return true;
-                            }
-                        })
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM); FIXME: broken after custom toolbar*/
                 break;
 
             case LIST_PAGE:
@@ -709,31 +685,70 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     }
 
     private void handleHeaderSpinner() {
-        // Setup spinner
-        View spinnerContainer = LayoutInflater.from(getActivity()).inflate(R.layout.toolbar_spinner, mToolbar, false);
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        mToolbar.addView(spinnerContainer, layoutParams);
+        // Create item arrays
+        String[] titles = {
+                getString(R.string.cube_333),
+                getString(R.string.cube_222),
+                getString(R.string.cube_444),
+                getString(R.string.cube_555),
+                getString(R.string.cube_666),
+                getString(R.string.cube_777),
+                getString(R.string.cube_clock),
+                getString(R.string.cube_mega),
+                getString(R.string.cube_pyra),
+                getString(R.string.cube_skewb),
+                getString(R.string.cube_sq1)
+        };
 
-        final List<Pair<String, String>> filterList = new ArrayList<>();
-        filterList.add(Pair.create(getString(R.string.cube_333), ""));
-        filterList.add(Pair.create(getString(R.string.cube_222), ""));
-        filterList.add(Pair.create(getString(R.string.cube_444), ""));
-        filterList.add(Pair.create(getString(R.string.cube_555), ""));
-        filterList.add(Pair.create(getString(R.string.cube_666), ""));
-        filterList.add(Pair.create(getString(R.string.cube_777), ""));
-        filterList.add(Pair.create(getString(R.string.cube_clock), ""));
-        filterList.add(Pair.create(getString(R.string.cube_mega), ""));
-        filterList.add(Pair.create(getString(R.string.cube_pyra), ""));
-        filterList.add(Pair.create(getString(R.string.cube_skewb), ""));
-        filterList.add(Pair.create(getString(R.string.cube_sq1), ""));
+        int[] icons = {
+                R.drawable.ic_outline_grid_on_24px,
+                R.drawable.ic_outline_grid_on_2_24px,
+                R.drawable.ic_outline_looks_4_24px,
+                R.drawable.ic_outline_looks_5_24px,
+                R.drawable.ic_outline_filter_6_24px,
+                R.drawable.ic_outline_filter_7_24px,
+                R.drawable.ic_outline_radio_button_unchecked_24px,
+                R.drawable.ic_outline_megaminx,
+                R.drawable.ic_pyra,
+                R.drawable.ic_outline_crop_free_24px,
+                R.drawable.ic_outline_looks_one_24px,
+        };
 
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getActivity());
-        spinnerAdapter.addItems(filterList);
+        // Setup spinner dialog and adapter
+        BottomSheetSpinnerDialog bottomSheetSpinnerDialog = BottomSheetSpinnerDialog.newInstance();
+        BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(getContext(), titles, icons);
 
-        Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
-        spinner.setAdapter(spinnerAdapter);
+        bottomSheetSpinnerDialog.setListAdapter(bottomSheetSpinnerAdapter);
+
+        bottomSheetSpinnerDialog.setListClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
+
+                bottomSheetSpinnerDialog.dismiss();
+
+                currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
+                updateCurrentSubtype();
+                viewPager.setAdapter(viewPagerAdapter);
+                viewPager.setCurrentItem(currentPage);
+
+                // update titles
+                puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
+                puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
+
+                handleStatisticsLoader();
+            }
+        });
+
+        // Setup action bar click listener
+        puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
+            }
+        });
+
         // Set the selected position before setting the listener. If the selected position is not
         // set, it will be set later during layout and fire the listener. That will cause the three
         // fragments nested in the ViewPager to be destroyed and re-created, together with all of
@@ -750,23 +765,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // To see all this in action, enable debug logging in the fragments by setting "DEBUG_ME"
         // to true in each and then watch the log to see fragments being created twice when the
         // application starts up if the following "setSelection" call is commented out.
-        spinner.setSelection(PuzzleUtils.getPositionOfPuzzle(currentPuzzle), false);
+        // update titles
+        puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
+        puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
-                currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
-                updateCurrentSubtype();
-                viewPager.setAdapter(viewPagerAdapter);
-                viewPager.setCurrentItem(currentPage);
-                handleStatisticsLoader();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
     }
 
     protected class NavigationAdapter extends CacheFragmentStatePagerAdapter {

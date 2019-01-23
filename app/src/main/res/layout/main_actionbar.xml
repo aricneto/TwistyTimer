@@ -27,7 +27,7 @@
             android:layout_centerHorizontal="true"
             android:alpha="1"
             android:fontFamily="@font/quicksand_bold"
-            android:text="3x3 Cube"
+            android:text="Puzzle"
             android:textColor="?colorTimerText"
             android:textSize="18sp" />
 
@@ -35,24 +35,27 @@
             android:id="@+id/puzzleCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/puzzleName"
             android:layout_centerHorizontal="true"
+            android:layout_below="@id/puzzleName"
             android:alpha=".85"
             android:fontFamily="@font/quicksand"
-            android:text="one-handed"
+            android:text="Category"
             android:textColor="?colorTimerText"
             android:textSize="12sp" />
 
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/puzzleName"
+            android:alpha="0.90"
+            android:tint="?colorTimerText"
+            app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
+
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/puzzleSpinner"
-        android:alpha="0.90"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
+
 
     <ImageView
         android:id="@+id/category"
