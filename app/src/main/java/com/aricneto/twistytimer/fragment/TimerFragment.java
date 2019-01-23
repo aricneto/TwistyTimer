@@ -1430,17 +1430,17 @@ public class                                                                    
                         scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_casino_24px, 0, 0, 0);
                     } else {
                         scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        //scrambleText.setClickable(false);
                     }
                     scrambleBox.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             scrambleDialog = new BottomSheetDetailDialog();
                             scrambleDialog.setDetailText(scramble);
-                            scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
                             if (canShowHint && showHintsEnabled && currentPuzzle.equals(TYPE_333)) {
                                 getNewOptimalCross();
+                                scrambleDialog.hasHints(true);
                             }
+                            scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
                         }
                     });
                     //if (! isRunning)

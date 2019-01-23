@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.annotation.DrawableRes;
@@ -28,7 +29,7 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
     private View hintTitleView;
     private View hintProgress;
 
-    private Context mContext;
+    private boolean hasHints = false;
 
     private String detailText;
     private String hintText;
@@ -42,7 +43,6 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_bottomsheet_detail, container, false);
 
-        mContext = getContext();
         detailTextView = view.findViewById(R.id.detail_text);
         hintTextView = view.findViewById(R.id.hint_text);
         hintDividerView = view.findViewById(R.id.hint_divider);
@@ -51,9 +51,14 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
 
         detailTextView.setText(detailText);
 
+        if (!hasHints) {
+            setHintVisibility(999);
+        } else {
+            setHintVisibility(View.GONE);
+        }
+
         return view;
     }
-
 
 
     public void setDetailText(String text) {
@@ -67,14 +72,27 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
         }
     }
 
+    public void hasHints(boolean hasHints) {
+        this.hasHints = hasHints;
+    }
+
     public void setHintVisibility(int visibility) {
         if (hintTextView != null) {
             if (visibility == View.VISIBLE) {
                 hintTextView.setVisibility(View.VISIBLE);
                 hintProgress.setVisibility(View.GONE);
-            } else {
+                hintTitleView.setVisibility(View.VISIBLE);
+                hintDividerView.setVisibility(View.VISIBLE);
+            } else if (visibility == View.GONE) {
                 hintTextView.setVisibility(View.GONE);
                 hintProgress.setVisibility(View.VISIBLE);
+                hintTitleView.setVisibility(View.VISIBLE);
+                hintDividerView.setVisibility(View.VISIBLE);
+            } else {
+                hintProgress.setVisibility(View.GONE);
+                hintTextView.setVisibility(View.GONE);
+                hintTitleView.setVisibility(View.GONE);
+                hintDividerView.setVisibility(View.GONE);
             }
         }
     }

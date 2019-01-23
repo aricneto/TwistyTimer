@@ -58,7 +58,7 @@
         android:drawableRight="@drawable/ic_outline_wb_incandescent_24px"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/dialog_hint_title"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible" />
 
     <View
@@ -69,7 +69,7 @@
         android:layout_marginRight="1dp"
         android:layout_marginBottom="0dp"
         android:background="#B7DBCC3D"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -78,7 +78,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:indeterminate="true"
-        android:visibility="visible"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:mpb_progressTint="@color/md_red_400"
         android:background="?colorCardBackgroundWarn"
         android:layout_marginLeft="1dp"
