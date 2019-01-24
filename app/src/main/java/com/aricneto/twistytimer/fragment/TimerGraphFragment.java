@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.ArrayRes;
@@ -279,23 +280,30 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            root.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (container != null && lineChartView != null) {
-                        final LineChart.LayoutParams params = lineChartView.getLayoutParams();
-
-                        if (params != null) {
+        root.post(new Runnable() {
+            @Override
+            public void run() {
+                if (container != null && lineChartView != null) {
+                    final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+                    if (params != null) {
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                             params.height = container.getHeight();
+                            lineChartView.setLayoutParams(params);
+                            lineChartView.requestLayout();
+                            statsContainerPager.requestLayout();
+                        } else {
+                            // On portrait mode, the graph should occupy about 65% of the view (arbitrarily chosen for aesthetic reasons)
+                            // leaving the rest for the stats card.
+                            params.height = (int) (container.getHeight() * 0.65f);
                             lineChartView.setLayoutParams(params);
                             lineChartView.requestLayout();
                             statsContainerPager.requestLayout();
                         }
                     }
                 }
-            });
-        }*/
+            }
+        });
+
 
 
 
