@@ -16,6 +16,7 @@
         android:theme="@style/DefaultTheme">
         <activity
             android:name="com.aricneto.twistytimer.activity.MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
