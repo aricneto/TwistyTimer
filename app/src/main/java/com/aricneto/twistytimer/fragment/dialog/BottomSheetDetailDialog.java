@@ -19,20 +19,23 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
 
-    private TextView detailTextView;
-
-    private TextView hintTextView;
-    private View hintDividerView;
-    private View hintTitleView;
-    private View hintProgress;
+    @BindView(R.id.detail_text) TextView detailTextView;
+    @BindView(R.id.hint_text) TextView hintTextView;
+    @BindView(R.id.hint_divider) View hintDividerView;
+    @BindView(R.id.hint_title) View hintTitleView;
+    @BindView(R.id.hint_progress) View hintProgress;
 
     private boolean hasHints = false;
 
     private String detailText;
     private String hintText;
+    private Unbinder mUnbinder;
 
     public static BottomSheetDetailDialog newInstance() {
         return new BottomSheetDetailDialog();
@@ -42,12 +45,14 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_bottomsheet_detail, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
 
-        detailTextView = view.findViewById(R.id.detail_text);
-        hintTextView = view.findViewById(R.id.hint_text);
-        hintDividerView = view.findViewById(R.id.hint_divider);
-        hintTitleView = view.findViewById(R.id.hint_title);
-        hintProgress = view.findViewById(R.id.hint_progress);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         detailTextView.setText(detailText);
 
@@ -56,10 +61,7 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
         } else {
             setHintVisibility(View.GONE);
         }
-
-        return view;
     }
-
 
     public void setDetailText(String text) {
         detailText = text;
@@ -95,6 +97,12 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
                 hintDividerView.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
 }

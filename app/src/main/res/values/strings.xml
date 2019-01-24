@@ -374,5 +374,7 @@
     <string name="dialog_scramble_details">Scramble details</string>
     <string name="dialog_select_puzzle">Select a puzzle</string>
     <string name="dialog_hint_title">Hint</string>
+    <string name="category_select_dialog_title">Select a category</string>
+    <string name="category_select_dialog_hint_edit">Long-press an entry to edit</string>
 
 </resources>

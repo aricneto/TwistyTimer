@@ -67,7 +67,7 @@
             android:visibility="gone"
             android:layout_width="12dp"
             android:layout_height="16dp"
-            android:src="@drawable/ic_comment_black_18dp"
+            app:srcCompat="@drawable/ic_outline_insert_comment_24px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="4dp"

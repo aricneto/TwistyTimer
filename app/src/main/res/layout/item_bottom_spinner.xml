@@ -5,7 +5,7 @@
     style="@style/BottomPanelListTextStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawableLeft="@drawable/ic_pyra"
+    android:drawableLeft="@drawable/ic_outline_play_arrow_24px"
     android:orientation="vertical"
     tools:text="@string/cube_333">
 

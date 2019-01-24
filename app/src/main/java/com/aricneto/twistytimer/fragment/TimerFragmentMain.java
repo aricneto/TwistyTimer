@@ -11,7 +11,9 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
+import com.aricneto.twistytimer.fragment.dialog.BottomSheetCategoryDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
+import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -159,8 +161,15 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.nav_button_category:
-                    createDialogs();
-                    subtypeDialog.show();
+                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleSubtype);
+                    categoryDialog.setDialogListener(new DialogListenerMessage() {
+                        @Override
+                        public void onUpdateDialog(String text) {
+                            currentPuzzleSubtype = text;
+                            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
+                        }
+                    });
+                    categoryDialog.show(getFragmentManager(), "bottom_sheet_category_dialog");
                     break;
                 case R.id.nav_button_history:
                     break;
@@ -279,7 +288,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     break;
 
                 case ACTION_CHANGED_CATEGORY:
+                    history = false;
+                    viewPager.setAdapter(viewPagerAdapter);
+                    viewPager.setCurrentItem(currentPage);
                     updatePuzzleSpinnerText();
+                    handleStatisticsLoader();
                     break;
             }
         }
@@ -476,153 +489,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
-    }
-
-    private void createDialogs() {
-        final DatabaseHandler          dbHandler         = TwistyTimer.getDBHandler();
-        SharedPreferences              sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        final SharedPreferences.Editor editor            = sharedPreferences.edit();
-
-        // Create Subtype dialog
-        createSubtypeDialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.enter_type_name)
-                .inputRange(0, 16)
-                .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-                        history = false; // Resets the checked state of the switch
-                        currentPuzzleSubtype = input.toString();
-                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                        editor.apply();
-                        viewPager.setAdapter(viewPagerAdapter);
-                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
-                        Toast.makeText(getContext(), currentPuzzleSubtype, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
-
-        final List<String> subtypeList = dbHandler.getAllSubtypesFromType(currentPuzzle);
-        if (subtypeList.size() == 0) {
-            subtypeList.add("Normal");
-            dbHandler.addSolve(new Solve(1, currentPuzzle, "Normal", 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-        } else if (subtypeList.size() == 1) {
-            currentPuzzleSubtype = subtypeList.get(0);
-        }
-        // Remove Subtype dialog
-        removeSubtypeDialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.remove_subtype_title)
-                .negativeText(R.string.action_cancel)
-                .autoDismiss(true)
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.remove_subtype_confirmation)
-                                .content(getString(R.string.remove_subtype_confirmation_content) +
-                                                 " \"" + typeName.toString() + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
-                                .positiveText(R.string.action_remove)
-                                .negativeText(R.string.action_cancel)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                                        dbHandler.deleteSubtype(currentPuzzle, typeName.toString());
-                                        if (subtypeList.size() > 1) {
-                                            currentPuzzleSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
-                                        } else {
-                                            currentPuzzleSubtype = "Normal";
-                                        }
-                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                        editor.apply();
-                                        viewPager.setAdapter(viewPagerAdapter);
-                                        viewPager.setCurrentItem(currentPage);
-                                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
-                                    }
-                                })
-                                .show();
-                    }
-                })
-                .build();
-
-        //Rename subtype
-        renameSubtypeDialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.rename_subtype_title)
-                .negativeText(R.string.action_cancel)
-                .autoDismiss(true)
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int i, final CharSequence typeName) {
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.enter_new_name_dialog)
-                                .input("", "", false, new MaterialDialog.InputCallback() {
-                                    @Override
-                                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                                        dbHandler.renameSubtype(currentPuzzle, typeName.toString(), input.toString());
-                                        currentPuzzleSubtype = input.toString();
-                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                                        editor.apply();
-                                        viewPager.setAdapter(viewPagerAdapter);
-                                        viewPager.setCurrentItem(currentPage);
-                                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
-                                    }
-                                })
-                                .inputRange(0, 16)
-                                .positiveText(R.string.action_done)
-                                .negativeText(R.string.action_cancel)
-                                .show();
-                    }
-                })
-                .build();
-
-
-        // Select subtype dialog
-        subtypeDialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.select_solve_type)
-                .positiveText(R.string.w_new_subtype)
-                .negativeText(R.string.action_rename)
-                .neutralText(R.string.action_remove)
-                .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                .items(subtypeList.toArray(new CharSequence[subtypeList.size()]))
-                .alwaysCallSingleChoiceCallback()
-                .itemsCallbackSingleChoice(subtypeList.indexOf(currentPuzzleSubtype), new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        // A subtype was selected
-                        currentPuzzleSubtype = subtypeList.get(which);
-                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentPuzzleSubtype);
-                        editor.apply();
-                        history = false; // Resets the checked state of the switch
-                        viewPager.setAdapter(viewPagerAdapter);
-                        viewPager.setCurrentItem(currentPage);
-                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
-
-                        handleStatisticsLoader();
-                        subtypeDialog.dismiss();
-                        return true;
-                    }
-                })
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        createSubtypeDialog.show();
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                        renameSubtypeDialog.show();
-                    }
-
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        super.onNeutral(dialog);
-                        removeSubtypeDialog.show();
-                    }
-                })
-                .build();
     }
 
     private void setupHistorySwitchItem(LayoutInflater inflater) {

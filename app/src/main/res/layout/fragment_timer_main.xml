@@ -29,6 +29,7 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/outline_background_card_top"
+        android:isScrollContainer="false"
         app:tabGravity="fill"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed" />

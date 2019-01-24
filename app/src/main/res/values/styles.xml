@@ -49,7 +49,7 @@
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
+        <item name="md_positive_color">@color/md_red_A400</item>
 
         <item name="md_negative_color">@color/black_secondary_icon</item>
         <item name="md_widget_color">@color/accentDarkColor</item>
@@ -321,7 +321,7 @@
 
     <style name="BottomPanelListTitleTextStyle">
         <item name="android:paddingLeft">24dp</item>
-        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingTop">16dp</item>
         <item name="android:paddingRight">22dp</item>
         <item name="android:paddingBottom">16dp</item>
         <item name="android:alpha">0.85</item>

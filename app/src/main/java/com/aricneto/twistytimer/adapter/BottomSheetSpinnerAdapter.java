@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,11 +23,13 @@ public class BottomSheetSpinnerAdapter extends BaseAdapter {
     private Context mContext;
     private String[] mTitles;
     private int[] mIconRes;
+    private int iconResLenght;
 
     public BottomSheetSpinnerAdapter(Context context, String[] titles, int[] iconRes) {
         this.mContext = context;
         this.mTitles = titles;
         this.mIconRes = iconRes;
+        this.iconResLenght = mIconRes.length;
     }
 
     @Override
@@ -51,7 +54,10 @@ public class BottomSheetSpinnerAdapter extends BaseAdapter {
         TextView titleView = view.findViewById(R.id.item);
 
         titleView.setText(mTitles[position]);
-        titleView.setCompoundDrawablesWithIntrinsicBounds(mIconRes[position] != 0 ? ContextCompat.getDrawable(mContext, mIconRes[position]) : null, null, null, null);
+        if (iconResLenght > 0)
+            titleView.setCompoundDrawablesWithIntrinsicBounds(mIconRes[position] != 0 ? ContextCompat.getDrawable(mContext, mIconRes[position]) : null, null, null, null);
+        else
+            titleView.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(mContext, R.drawable.ic_label), null, null, null);
 
         return view;
     }

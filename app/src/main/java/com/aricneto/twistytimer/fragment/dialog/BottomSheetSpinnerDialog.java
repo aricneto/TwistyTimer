@@ -17,6 +17,9 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Implements a layout for easy creation of spinner-like bottom sheet dialogs (like the ones seen in
@@ -25,8 +28,9 @@ import androidx.core.content.ContextCompat;
 
 public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
-    private TextView titleTextView;
-    private ListView listView;
+    @BindView(R.id.title) TextView titleTextView;
+    @BindView(R.id.list) ListView listView;
+
     private Context mContext;
 
     private BottomSheetSpinnerAdapter mAdapter;
@@ -34,6 +38,7 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
     private String titleText;
     private int titleIcon;
+    private Unbinder mUnbinder;
 
     public static BottomSheetSpinnerDialog newInstance() {
         return new BottomSheetSpinnerDialog();
@@ -43,18 +48,21 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_puzzle_spinner, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
 
         mContext = getContext();
-        titleTextView = view.findViewById(R.id.title);
-        listView = view.findViewById(R.id.list);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(mClickListener);
 
         titleTextView.setText(titleText);
         titleTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, titleIcon != 0 ? ContextCompat.getDrawable(mContext, titleIcon) : null, null);
-
-        return view;
     }
 
     public void setTitle(String title, @DrawableRes int iconRes) {
@@ -68,5 +76,11 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
     public void setListClickListener(AdapterView.OnItemClickListener clickListener) {
         mClickListener = clickListener;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

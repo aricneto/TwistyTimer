@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/outline_background_card_top"
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/BottomPanelListTitleTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/category_select_dialog_title" />
+
+    <TextView
+        android:id="@+id/add_category"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/divider_01"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/outline_background_card_lighter"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_category_add"
+        android:drawablePadding="8dp"
+        android:focusable="true"
+        android:fontFamily="@font/quicksand_medium"
+        android:paddingLeft="12dp"
+        android:paddingTop="0dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="0dp"
+        android:text="@string/w_new_subtype"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/divider_01"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/title"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black_divider" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_01"
+        android:layout_marginBottom="32dp"
+        tools:layout_height="300dp">
+
+    </ListView>
+
+    <View
+        android:id="@+id/divider_02"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/list"
+        android:layout_marginBottom="4dp"
+        android:background="@color/black_divider" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_02"
+        android:fontFamily="@font/quicksand"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:text="@string/category_select_dialog_hint_edit"
+        android:textColor="@color/md_light_primary_text" />
+
+</RelativeLayout>

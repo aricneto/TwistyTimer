@@ -340,6 +340,7 @@ public class                                                                    
                                     // NOTE: At present, the Statistics and ChartStatistics do not
                                     // need to know about changes to a comment, so a notification
                                     // of this change does not need to be broadcast.
+                                    // TODO: it seems that id does need to be broadcast, so the Time List knows when to flag an entry with a comment icon
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     hideButtons(false, true);
                                 }
