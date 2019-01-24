@@ -208,6 +208,7 @@ public final class TTIntent {
             = new HashMap<String, String[]>() {{
         put(CATEGORY_TIME_DATA_CHANGES, new String[] {
                 ACTION_TIME_ADDED,
+                ACTION_TIME_ADDED_MANUALLY,
                 ACTION_TIMES_MODIFIED,
                 ACTION_TIMES_MOVED_TO_HISTORY,
                 ACTION_HISTORY_TIMES_SHOWN,

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.loader.app.LoaderManager;
@@ -23,9 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,17 +33,12 @@ import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.layout.Fab;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
-import com.aricneto.twistytimer.utils.ThemeUtils;
-import com.gordonwong.materialsheetfab.DimOverlayFrameLayout;
-import com.gordonwong.materialsheetfab.MaterialSheetFab;
-import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 
 import org.joda.time.DateTime;
 
@@ -75,7 +67,6 @@ public class TimerListFragment extends BaseFragment
 
     private static final String SHOWCASE_FAB_ID = "SHOWCASE_FAB_ID";
 
-    private MaterialSheetFab<Fab> materialSheetFab;
     // True if you want to search history, false if you only want to search session
     boolean         history;
 
@@ -87,14 +78,7 @@ public class TimerListFragment extends BaseFragment
     @BindView(R.id.clear_button)         TextView              clearButton;
     @BindView(R.id.divider01)            View                  dividerView;
     @BindView(R.id.archive_button)       TextView              archiveButton;
-    @BindView(R.id.fab_button)           Fab                   fabButton;
-    @BindView(R.id.overlay)              DimOverlayFrameLayout overlay;
-    @BindView(R.id.fab_sheet)            CardView              fabSheet;
-    @BindView(R.id.fab_share_ao12)       TextView              fabShareAo12;
-    @BindView(R.id.fab_share_ao5)        TextView              fabShareAo5;
-    @BindView(R.id.fab_share_histogram)  TextView              fabShareHistogram;
-    @BindView(R.id.fab_add_time)         TextView              fabAddTime;
-    @BindView(R.id.fab_scroll)           ScrollView            fabScroll;
+    @BindView(R.id.add_time_button)      View                  addTimeButton;
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
@@ -111,25 +95,7 @@ public class TimerListFragment extends BaseFragment
             final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
-                case R.id.fab_share_ao12:
-                    if (!PuzzleUtils.shareAverageOf(
-                            12, currentPuzzle, mRecentStatistics, getActivity())) {
-                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.fab_share_ao5:
-                    if (!PuzzleUtils.shareAverageOf(
-                            5, currentPuzzle, mRecentStatistics, getActivity())) {
-                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.fab_share_histogram:
-                    if (!PuzzleUtils.shareHistogramOf(
-                            currentPuzzle, mRecentStatistics, getActivity())) {
-                        Toast.makeText(getContext(), R.string.fab_share_error, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case R.id.fab_add_time:
+                case R.id.add_time_button:
                     new MaterialDialog.Builder(getContext())
                         .title(R.string.add_time)
                         .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
@@ -259,30 +225,9 @@ public class TimerListFragment extends BaseFragment
         if (Prefs.getBoolean(R.string.pk_show_clear_button, false)) {
             dividerView.setVisibility(View.VISIBLE);
             clearButton.setVisibility(View.VISIBLE);
-            archiveButton.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_timer_sand_black_18dp, 0, 0, 0);
         }
 
-        materialSheetFab = new MaterialSheetFab<>(
-            fabButton, fabSheet, overlay, Color.WHITE, ThemeUtils.fetchAttrColor(getActivity(), R.attr.colorPrimary));
-
-        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
-            @Override
-            public void onSheetShown() {
-                super.onSheetShown();
-                fabScroll.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        fabScroll.fullScroll(View.FOCUS_DOWN);
-                    }
-                });
-            }
-        });
-
-        fabShareAo12.setOnClickListener(clickListener);
-        fabShareAo5.setOnClickListener(clickListener);
-        fabShareHistogram.setOnClickListener(clickListener);
-        fabAddTime.setOnClickListener(clickListener);
+        addTimeButton.setOnClickListener(clickListener);
 
         archiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,19 +304,6 @@ public class TimerListFragment extends BaseFragment
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (DEBUG_ME) Log.d(TAG, "setUserVisibleHint(isVisibleToUser=" + isVisibleToUser + ")");
         super.setUserVisibleHint(isVisibleToUser);
-
-        if (isResumed()) {
-            if (isVisibleToUser) {
-                if (fabButton != null) {
-                    // Show FAB and intro (if intro was not already dismissed by the user in a
-                    // previous session) if the fragment has become visible.
-                    fabButton.show();
-                }
-            } else if (materialSheetFab != null) {
-                // Hide sheet and FAB if the fragment is no longer visible.
-                materialSheetFab.hideSheetThenFab();
-            }
-        }
     }
 
     /**
@@ -384,10 +316,6 @@ public class TimerListFragment extends BaseFragment
     @Override
     public boolean onBackPressedInFragment() {
         if (DEBUG_ME) Log.d(TAG, "onBackPressedInFragment()");
-        if (isResumed() && materialSheetFab != null && materialSheetFab.isSheetVisible()) {
-            materialSheetFab.hideSheet();
-            return true;
-        }
         return false;
     }
 

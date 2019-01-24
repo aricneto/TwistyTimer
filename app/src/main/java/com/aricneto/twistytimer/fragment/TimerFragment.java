@@ -1422,7 +1422,6 @@ public class                                                                    
     }
 
     private void setScramble(final String scramble) {
-        scrambleText.setVisibility(View.INVISIBLE);
         scrambleText.setText(scramble);
         scrambleText.post(new Runnable() {
             @Override
@@ -1453,8 +1452,6 @@ public class                                                                    
                             scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
                         }
                     });
-                    if (! isRunning)
-                        scrambleText.setVisibility(View.VISIBLE);
                 }
             }
         });
