@@ -81,10 +81,11 @@
         android:layout_marginRight="4dp"
         android:layout_toLeftOf="@id/nav_button_category"
         android:alpha="0.90"
-        android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_history_off" />
 

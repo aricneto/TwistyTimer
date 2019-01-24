@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -35,8 +36,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -128,9 +131,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
     @BindView(R.id.puzzleSpinner) View puzzleSpinnerLayout;
 
-    @BindView(R.id.nav_button_settings) View navButtonSettings;
-    @BindView(R.id.nav_button_category) View navButtonCategory;
-    @BindView(R.id.nav_button_history) View navButtonHistory;
+    @BindView(R.id.nav_button_settings) View      navButtonSettings;
+    @BindView(R.id.nav_button_category) View      navButtonCategory;
+    @BindView(R.id.nav_button_history) ImageView navButtonHistory;
 
     @BindView(R.id.puzzleCategory) TextView puzzleCategoryText;
     @BindView(R.id.puzzleName) TextView puzzleNameText;
@@ -173,6 +176,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     categoryDialog.show(getFragmentManager(), "bottom_sheet_category_dialog");
                     break;
                 case R.id.nav_button_history:
+                    history = !history;
+
+                    updateHistorySwitchItem();
+
+                    broadcast(CATEGORY_TIME_DATA_CHANGES,
+                              history ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
                     break;
                 case R.id.nav_button_settings:
                     getMainActivity().openDrawer();
@@ -300,6 +309,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     history = false;
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
+                    updateHistorySwitchItem();
                     updatePuzzleSpinnerText();
                     handleStatisticsLoader();
                     break;
@@ -348,6 +358,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
+
+        setupHistorySwitchItem();
 
         navButtonCategory.setOnClickListener(clickListener);
         navButtonHistory.setOnClickListener(clickListener);
@@ -500,41 +512,40 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder.unbind();
     }
 
-    private void setupHistorySwitchItem(LayoutInflater inflater) {
-        final SwitchCompat switchCompat = (SwitchCompat) inflater.inflate(R.layout.toolbar_pin_switch, null);
-        //FIXME: mToolbar.getMenu().add(0, 7, 0, "Scope").setActionView(switchCompat).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    TransitionDrawable transitionOnOff;
 
-        final Drawable thumb_positive = ThemeUtils.tintPositiveThumb(getContext(), R.drawable.thumb_history_positive, R.attr.colorPrimaryDark);
-        final Drawable thumb_negative = ThemeUtils.tintNegativeThumb(getContext(), R.drawable.thumb_history_negative, R.attr.colorPrimaryDark);
-        final Drawable track_positive = ThemeUtils.tintDrawable(getContext(), R.drawable.track_positive, R.attr.colorPrimaryDark);
+    private void setupHistorySwitchItem() {
+        Context context = getContext();
 
-        if (history) {
-            switchCompat.setChecked(true);
-            switchCompat.setThumbDrawable(thumb_negative);
-            switchCompat.setTrackResource(R.drawable.track_negative);
-        } else {
-            switchCompat.setChecked(false);
-            switchCompat.setThumbDrawable(thumb_positive);
-            switchCompat.setTrackDrawable(track_positive);
+        if (context != null) {
+            Drawable[] onOff = new Drawable[2];
+
+            onOff[0] = ContextCompat.getDrawable(context, R.drawable.ic_history_off);
+            onOff[1] = ContextCompat.getDrawable(context, R.drawable.ic_history_on);
+
+            transitionOnOff = new TransitionDrawable(onOff);
+            transitionOnOff.setCrossFadeEnabled(true);
+
+            navButtonHistory.setImageDrawable(transitionOnOff);
         }
+    }
 
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                history = isChecked;
-
-                if (isChecked) {
-                    switchCompat.setThumbDrawable(thumb_negative);
-                    switchCompat.setTrackResource(R.drawable.track_negative);
-                } else {
-                    switchCompat.setThumbDrawable(thumb_positive);
-                    switchCompat.setTrackDrawable(track_positive);
-                }
-
-                broadcast(CATEGORY_TIME_DATA_CHANGES,
-                          isChecked ? ACTION_HISTORY_TIMES_SHOWN : ACTION_SESSION_TIMES_SHOWN);
-            }
-        });
+    private void updateHistorySwitchItem() {
+        if (history) {
+            transitionOnOff.startTransition(300);
+            navButtonHistory.animate()
+                    .rotation(-135)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .setDuration(300)
+                    .start();
+        } else {
+            transitionOnOff.reverseTransition(300);
+            navButtonHistory.animate()
+                    .rotation(0)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .setDuration(300)
+                    .start();
+        }
     }
 
     /**
@@ -557,12 +568,22 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         switch (pageNum) {
             case TIMER_PAGE:
+                navButtonHistory.animate()
+                        .withStartAction(() -> navButtonHistory.setEnabled(false))
+                        .alpha(0)
+                        .setDuration(200)
+                        .withEndAction(() -> navButtonHistory.setVisibility(View.GONE))
+                        .start();
                 break;
 
             case LIST_PAGE:
             case GRAPH_PAGE:
-                // Add menu icons
-                setupHistorySwitchItem(inflater);
+                navButtonHistory.setVisibility(View.VISIBLE);
+                navButtonHistory.animate()
+                        .withStartAction(() -> navButtonHistory.setEnabled(true))
+                        .alpha(1)
+                        .setDuration(200)
+                        .start();
                 break;
         }
     }
@@ -651,23 +672,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         });
 
-        // Set the selected position before setting the listener. If the selected position is not
-        // set, it will be set later during layout and fire the listener. That will cause the three
-        // fragments nested in the ViewPager to be destroyed and re-created, together with all of
-        // their loaders and background tasks, slowing down the start-up of the application.
-        //
-        // If "[Abs]Spinner.setSelection(int)" is called, this problem is not solved. Therefore,
-        // call "[Abs]Spinner.setSelection(int, boolean)" and pass "false" to disable animation.
-        // AFAIK, the former method will post a layout request, which will be handled after this
-        // method ("handleHeaderSpinner") returns, but the latter method will perform a layout
-        // directly before it returns to this method. It is the layout that triggers the unwanted
-        // call to "onItemSelected", so the latter method ensures the layout completes before the
-        // listener is added in the next statement. See http://stackoverflow.com/a/17336944.
-        //
-        // To see all this in action, enable debug logging in the fragments by setting "DEBUG_ME"
-        // to true in each and then watch the log to see fragments being created twice when the
-        // application starts up if the following "setSelection" call is commented out.
-        // update titles
         updatePuzzleSpinnerText();
 
     }

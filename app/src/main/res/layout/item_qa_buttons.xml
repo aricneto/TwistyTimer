@@ -17,7 +17,6 @@
         android:layout_weight="1"
         android:alpha=".85"
         android:padding="8dp"
-        android:tint="#FF0048"
         app:srcCompat="@drawable/ic_outline_backspace_24px" />
 
     <ImageView

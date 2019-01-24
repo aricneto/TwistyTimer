@@ -6,7 +6,7 @@
   <group>
     <clip-path android:pathData="M0,0h24v24h-24z M 0,0"/>
     <path
-        android:pathData=" M 14.514 3.2 L 20.8 9.486 L 17.657 12.629 L 12.629 12.629 L 12.629 17.657 L 9.486 20.8 L 3.2 14.514 L 6.343 11.371 L 11.371 11.371 L 11.371 6.343 L 14.514 3.2 Z "
+        android:pathData=" M 7.556 4 L 16.444 4 L 16.444 8.444 L 12.889 12 L 16.444 15.556 L 16.444 20 L 7.556 20 L 7.556 15.556 L 11.111 12 L 7.556 8.444 L 7.556 4 Z "
         android:strokeLineJoin="round"
         android:strokeWidth="2"
         android:fillColor="#000000"
