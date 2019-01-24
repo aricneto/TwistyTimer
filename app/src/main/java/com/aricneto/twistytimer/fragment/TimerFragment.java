@@ -1422,19 +1422,20 @@ public class                                                                    
     }
 
     private void setScramble(final String scramble) {
-        //scrambleText.setVisibility(View.INVISIBLE);
+        scrambleText.setVisibility(View.INVISIBLE);
         scrambleText.setText(scramble);
         scrambleText.post(new Runnable() {
             @Override
             public void run() {
                 if (scrambleText != null) {
+                    // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
+                    // If it does, show only a "tap here to see more" hint instead of the scramble
                     Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
                     Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
                     Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
 
                     if ((Rect.intersects(scrambleRect, chronometerRect)) ||
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
-                        scrambleText.setClickable(true);
                         scrambleText.setText(R.string.scramble_text_tap_hint);
                         scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_casino_24px, 0, 0, 0);
                     } else {
@@ -1452,8 +1453,8 @@ public class                                                                    
                             scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
                         }
                     });
-                    //if (! isRunning)
-                        //scrambleText.setVisibility(View.VISIBLE);
+                    if (! isRunning)
+                        scrambleText.setVisibility(View.VISIBLE);
                 }
             }
         });
