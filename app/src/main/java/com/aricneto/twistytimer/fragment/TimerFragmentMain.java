@@ -69,6 +69,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
@@ -228,6 +229,14 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_CHANGED_THEME:
+                    try {
+                        // If the theme has been changed, then the activity will need to be recreated. The
+                        // theme can only be applied properly during the inflation of the layouts, so it has
+                        // to go back to "Activity.onCreate()" to do that.
+                        ((MainActivity) getActivity()).onRecreateRequired();
+                    } catch (Exception e) {}
+                    break;
                 case ACTION_TIMER_STARTED:
                     viewPager.setPagingEnabled(false);
                     activateTabLayout(false);

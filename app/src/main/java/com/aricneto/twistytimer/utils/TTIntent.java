@@ -173,6 +173,11 @@ public final class TTIntent {
     public static final String ACTION_CHANGED_CATEGORY = ACTION_PREFIX + "CHANGED_CATEGORY";
 
     /**
+     * The user has selected a new theme
+     */
+    public static final String ACTION_CHANGED_THEME = ACTION_PREFIX + "CHANGED_THEME";
+
+    /**
      * The timer has been stopped.
      */
     public static final String ACTION_TIMER_STOPPED = ACTION_PREFIX + "TIMER_STOPPED";
@@ -236,7 +241,8 @@ public final class TTIntent {
                 ACTION_TOOLBAR_RESTORED,
                 ACTION_GENERATE_SCRAMBLE,
                 ACTION_SCROLLED_PAGE,
-                ACTION_CHANGED_CATEGORY
+                ACTION_CHANGED_CATEGORY,
+                ACTION_CHANGED_THEME
         });
     }};
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="14dp"
+    app:cardBackgroundColor="?colorItemListBackground"
     tools:layout_margin="12dp">
 
     <RelativeLayout
@@ -25,7 +26,7 @@
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
-            android:textColor="#000"
+            android:textColor="?colorItemListText"
             android:textSize="16sp" />
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -88,7 +89,7 @@
             android:scaleX="0.80"
             android:scaleY="0.80"
             android:text="Hint"
-            android:textColor="#000"
+            android:textColor="?colorItemListText"
             android:textSize="14sp"
             android:visibility="gone"
             tools:visibility="visible" />

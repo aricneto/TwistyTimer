@@ -5,18 +5,40 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
 import android.util.TypedValue;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.items.Theme;
 
 /**
  * Utility class to make themeing easier.
  */
 public final class ThemeUtils {
+
+    public static final String THEME_INDIGO      = "indigo";
+    public static final String THEME_PURPLE      = "purple";
+    public static final String THEME_TEAL        = "teal";
+    public static final String THEME_PINK        = "pink";
+    public static final String THEME_RED         = "red";
+    public static final String THEME_BROWN       = "brown";
+    public static final String THEME_BLUE        = "blue";
+    public static final String THEME_CYAN        = "cyan";
+    public static final String THEME_LIGHT_BLUE  = "light_blue";
+    public static final String THEME_BLACK       = "black";
+    public static final String THEME_ORANGE      = "orange";
+    public static final String THEME_GREEN       = "green";
+    public static final String THEME_LIGHT_GREEN = "light_green";
+    public static final String THEME_DEEPPURPLE  = "deeppurple";
+    public static final String THEME_BLUEGRAY    = "bluegray";
+    public static final String THEME_WHITE       = "white";
+    public static final String THEME_YELLOW      = "yellow";
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -31,50 +53,84 @@ public final class ThemeUtils {
      * @return The user's chosen preferred theme.
      */
     public static int getPreferredTheme() {
+        return getThemeStyleRes(Prefs.getString(R.string.pk_theme, "indigo"));
+    }
 
-        switch (Prefs.getString(R.string.pk_theme, "indigo")) {
+    public static int getThemeStyleRes(String theme) {
+        switch (theme) {
             default:
-            case "indigo":
+            case THEME_INDIGO:
                 return R.style.DefaultTheme;
-            case "purple":
+            case THEME_PURPLE:
                 return R.style.PurpleTheme;
-            case "teal":
+            case THEME_TEAL:
                 return R.style.TealTheme;
-            case "pink":
+            case THEME_PINK:
                 return R.style.PinkTheme;
-            case "red":
+            case THEME_RED:
                 return R.style.RedTheme;
-            case "brown":
+            case THEME_BROWN:
                 return R.style.BrownTheme;
-            case "cyan":
-                return R.style.CyanTheme;
-            case "blue":
+            case THEME_BLUE:
                 return R.style.BlueTheme;
-            case "light_blue":
+            case THEME_CYAN:
+                return R.style.CyanTheme;
+            case THEME_LIGHT_BLUE:
                 return R.style.LightBlueTheme;
-            case "black":
+            case THEME_BLACK:
                 return R.style.BlackTheme;
-            case "orange":
+            case THEME_ORANGE:
                 return R.style.OrangeTheme;
-            case "green":
+            case THEME_GREEN:
                 return R.style.GreenTheme;
-            case "light_green":
+            case THEME_LIGHT_GREEN:
                 return R.style.LightGreenTheme;
-            case "deepPurple":
+            case THEME_DEEPPURPLE:
                 return R.style.DeepPurpleTheme;
-            case "blueGray":
+            case THEME_BLUEGRAY:
                 return R.style.BlueGrayTheme;
+            case THEME_WHITE:
+                return R.style.WhiteTheme;
+            case THEME_YELLOW:
+                return R.style.YellowTheme;
         }
     }
 
     /**
+     * Used to populate theme select dialogs.
+     *
+     * @return an array containing all available themes
+     */
+    public static Theme[] getAllThemes() {
+        Theme[] themes = {new Theme(THEME_INDIGO, "Bluy\nPurple"),
+                          new Theme(THEME_PURPLE, "Definitely\nPurple"),
+                          new Theme(THEME_PINK, "Pinky\nPromises"),
+                          new Theme(THEME_RED, "Oof\nHot"),
+                          new Theme(THEME_BLUE, "Hazy\nBlues"),
+                          new Theme(THEME_ORANGE, "Unnamed"),
+                          new Theme(THEME_YELLOW, "Notably\nYellow"),
+                          new Theme(THEME_TEAL, "Earthy\nTeal"),
+                          new Theme(THEME_GREEN, "Surprisingly\nGreen"),
+                          new Theme(THEME_LIGHT_GREEN, "Greeny\nGorilla"),
+                          new Theme(THEME_LIGHT_BLUE, "Lightly\nSkyish"),
+                          new Theme(THEME_CYAN, "Cyanic\nSea"),
+                          new Theme(THEME_DEEPPURPLE, "Unnamed"),
+                          new Theme(THEME_BROWN, "Delicious\nBrownie"),
+                          new Theme(THEME_BLACK, "Simply\nBlack"),
+                          new Theme(THEME_WHITE, "Simply\nWhite"),
+                          new Theme(THEME_BLUEGRAY, "Icy\nHills")};
+        return themes;
+    }
+
+    /**
      * Gets a color from an attr resource value
+     *
      * @param context Context
      * @param attrRes The attribute resource (ex. R.attr.colorPrimary)
      * @return @ColorRes
      */
     public static int fetchAttrColor(Context context, @AttrRes int attrRes) {
-        final TypedValue value = new TypedValue ();
+        final TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(attrRes, value, true);
         return value.data;
     }

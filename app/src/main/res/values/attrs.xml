@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BackgroundGradientStyle">
+        <attr format="color" name="colorMainGradientStart"/>
+        <attr format="color" name="colorMainGradientEnd"/>
+    </declare-styleable>
+
     <attr format="color" name="colorBackgroundList"/>
     <attr format="color" name="colorTimerText"/>
     <attr format="color" name="colorTimerDetailText"/>
