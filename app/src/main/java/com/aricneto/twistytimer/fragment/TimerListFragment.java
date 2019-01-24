@@ -8,14 +8,19 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.Loader;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import android.text.Editable;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,14 +79,18 @@ public class TimerListFragment extends BaseFragment
     @BindView(R.id.list)                 RecyclerView          recyclerView;
     @BindView(R.id.nothing_here)         ImageView             nothingHere;
     @BindView(R.id.nothing_text)         TextView              nothingText;
-    @BindView(R.id.send_to_history_card) CardView              moveToHistory;
-    @BindView(R.id.clear_button)         TextView              clearButton;
-    @BindView(R.id.divider01)            View                  dividerView;
-    @BindView(R.id.archive_button)       TextView              archiveButton;
+    @BindView(R.id.buttons_layout)       View                  buttonsLayout;
+    @BindView(R.id.clear_button)         View                  clearButton;
+    @BindView(R.id.archive_button)       View                  archiveButton;
     @BindView(R.id.add_time_button)      View                  addTimeButton;
+    @BindView(R.id.search_box)           AppCompatEditText     searchEditText;
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
+
+    // Stores the current comment search query
+    private String searchComment = "";
+
     private TimeCursorAdapter timeCursorAdapter;
 
     /**
@@ -131,9 +140,11 @@ public class TimerListFragment extends BaseFragment
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
+                case ACTION_COMMENT_ADDED:
                 case ACTION_TIME_ADDED_MANUALLY:
                     if (!history)
                         reloadList();
+                    break;
                 case ACTION_TIME_ADDED:
                     // When "history" is enabled, the list of times does not include times from
                     // the current session. Times are only added to the current session, so
@@ -223,7 +234,6 @@ public class TimerListFragment extends BaseFragment
         mUnbinder = ButterKnife.bind(this, rootView);
 
         if (Prefs.getBoolean(R.string.pk_show_clear_button, false)) {
-            dividerView.setVisibility(View.VISIBLE);
             clearButton.setVisibility(View.VISIBLE);
         }
 
@@ -277,6 +287,24 @@ public class TimerListFragment extends BaseFragment
             }
         });
 
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchComment = s.toString();
+                reloadList();
+            }
+        });
+
         setupRecyclerView();
         getLoaderManager().initLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
 
@@ -307,7 +335,7 @@ public class TimerListFragment extends BaseFragment
     }
 
     /**
-     * Hides the sheet for the floating action button, if the sheet is currently open.
+     * Note: FAB is no longer used. This method does nothing.
      *
      * @return
      *     {@code true} if the "Back" button press was consumed to close the sheet; or
@@ -347,7 +375,7 @@ public class TimerListFragment extends BaseFragment
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         if (DEBUG_ME) Log.d(TAG, "onCreateLoader()");
-        return new TimeTaskLoader(currentPuzzle, currentPuzzleSubtype, history);
+        return new TimeTaskLoader(currentPuzzle, currentPuzzleSubtype, history, searchComment);
     }
 
     @Override
@@ -368,7 +396,6 @@ public class TimerListFragment extends BaseFragment
         if (cursor.getCount() == 0) {
             nothingHere.setVisibility(View.VISIBLE);
             nothingText.setVisibility(View.VISIBLE);
-            moveToHistory.setVisibility(View.GONE);
             if (history) {
                 nothingHere.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.notherehistory));
                 nothingText.setText(R.string.list_empty_state_message_history);
@@ -379,10 +406,6 @@ public class TimerListFragment extends BaseFragment
         } else {
             nothingHere.setVisibility(View.INVISIBLE);
             nothingText.setVisibility(View.INVISIBLE);
-            if (history)
-                moveToHistory.setVisibility(View.GONE);
-            else
-                moveToHistory.setVisibility(View.VISIBLE);
         }
     }
 

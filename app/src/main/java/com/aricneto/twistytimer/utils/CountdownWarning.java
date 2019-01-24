@@ -4,7 +4,10 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
+import android.util.Log;
 
 import com.aricneto.twistytimer.TwistyTimer;
 
@@ -34,8 +37,6 @@ public class CountdownWarning extends CountDownTimer {
         this.toneEnabled = builder.toneEnabled;
         this.toneDuration = builder.toneDuration;
         this.toneCode = builder.toneCode;
-
-        this.toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
     }
 
 
@@ -47,8 +48,26 @@ public class CountdownWarning extends CountDownTimer {
     public void onFinish() {
         if (vibrateEnabled)
             vibrator.vibrate(vibrateDuration);
-        if (toneEnabled)
-            toneGenerator.startTone(toneCode, toneDuration);
+        if (toneEnabled) {
+            try {
+                this.toneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+                toneGenerator.startTone(toneCode, toneDuration);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (toneGenerator != null) {
+                            Log.d("Countdown", "toneGenerator released");
+                            toneGenerator.release();
+                            toneGenerator = null;
+                        }
+                    }
+
+                }, toneDuration);
+            } catch (Exception e) {
+                Log.d("Countdown", "Exception while playing sound:" + e);
+            }
+        }
     }
 
     public static class Builder {
@@ -64,18 +83,16 @@ public class CountdownWarning extends CountDownTimer {
         /**
          * Build a {@link CountdownWarning} object
          *
-         * @param secondsInFuture
-         *      the countdown duration in seconds
+         * @param secondsInFuture the countdown duration in seconds
          */
         public Builder(long secondsInFuture) {
             this.secondsInFuture = secondsInFuture;
         }
 
         /**
-         *  If device should vibrate at the end of countdown
+         * If device should vibrate at the end of countdown
          *
-         * @param vibrateEnabled
-         *      true if device should vibrate
+         * @param vibrateEnabled true if device should vibrate
          */
         public Builder withVibrate(boolean vibrateEnabled) {
             this.vibrateEnabled = vibrateEnabled;
@@ -83,10 +100,9 @@ public class CountdownWarning extends CountDownTimer {
         }
 
         /**
-         *  If device should emit a tone at the end of countdown
+         * If device should emit a tone at the end of countdown
          *
-         * @param toneEnabled
-         *      true if device should emit a tone
+         * @param toneEnabled true if device should emit a tone
          */
 
         public Builder withTone(boolean toneEnabled) {
@@ -95,10 +111,9 @@ public class CountdownWarning extends CountDownTimer {
         }
 
         /**
-         *  Duration, in milliseconds of the vibration (if set)
+         * Duration, in milliseconds of the vibration (if set)
          *
-         * @param vibrateDuration
-         *      vibrate duration in milliseconds
+         * @param vibrateDuration vibrate duration in milliseconds
          */
         public Builder vibrateDuration(long vibrateDuration) {
             this.vibrateDuration = vibrateDuration;
@@ -106,10 +121,9 @@ public class CountdownWarning extends CountDownTimer {
         }
 
         /**
-         *  Duration, in milliseconds of the tone (if set)
+         * Duration, in milliseconds of the tone (if set)
          *
-         * @param toneDuration
-         *      tone duration in milliseconds
+         * @param toneDuration tone duration in milliseconds
          */
         public Builder toneDuration(int toneDuration) {
             this.toneDuration = toneDuration;
@@ -120,8 +134,7 @@ public class CountdownWarning extends CountDownTimer {
          * Code for the tone that should play (if set)
          * Must be one of {@link ToneGenerator}s tone constants
          *
-         * @param toneCode
-         *      the tone code, a {@link ToneGenerator} constant
+         * @param toneCode the tone code, a {@link ToneGenerator} constant
          */
         public Builder toneCode(int toneCode) {
             this.toneCode = toneCode;

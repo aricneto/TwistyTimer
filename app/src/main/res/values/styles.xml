@@ -20,18 +20,25 @@
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
+
         <item name="colorBackgroundList">@color/materialGray</item>
         <item name="colorItemListText">@color/black_text</item>
+        <item name="colorItemListTextAction">#D9000000</item>
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
+
         <item name="textColorContrastBackground">@android:color/white</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
 
         <item name="android:textColor">#000</item>
         <item name="colorCardStroke">#DD1A1A1A</item>
-        <item name="colorCardStrokeLighter">#BF272727</item>
+        <item name="colorCardStrokeLighter">#BF7E7E7E</item>
+        <item name="colorCardStrokeFaded">#BF8F8F8F</item>
+
         <item name="colorCardBackground">#fff</item>
         <item name="colorCardBackgroundWarn">#FFEF6B</item>
+        <item name="colorCardBackgroundInfo">#C3FFF6</item>
+        <item name="colorCardBackgroundFaded">#E2E2E2</item>
         <item name="colorCardText">#000</item>
 
 
@@ -355,7 +362,7 @@
     </style>
 
     <style name="StatTabTextStyle">
-        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingTop">3dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:gravity">center</item>
         <item name="android:background">?graph_stats_card_background</item>

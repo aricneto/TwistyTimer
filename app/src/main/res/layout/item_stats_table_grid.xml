@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toStartOf="@+id/stats_global"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_pound_black_24dp" />
+        app:srcCompat="@drawable/ic_sigma" />
 
     <ImageView
         app:layout_constraintHorizontal_weight="3"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toStartOf="@+id/stats_session"
         app:layout_constraintStart_toEndOf="@+id/stats_label"
         app:layout_constraintTop_toTopOf="@+id/stats_label"
-        app:srcCompat="@drawable/ic_globe_black_24dp" />
+        app:srcCompat="@drawable/ic_alpha_g_box_outline" />
 
     <ImageView
         app:layout_constraintHorizontal_weight="3"
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toStartOf="@+id/stats_current"
         app:layout_constraintStart_toEndOf="@+id/stats_global"
         app:layout_constraintTop_toTopOf="@+id/stats_global"
-        app:srcCompat="@drawable/ic_radio_button_checked_black_24dp" />
+        app:srcCompat="@drawable/ic_alpha_s_box_outline" />
 
     <ImageView
         app:layout_constraintHorizontal_weight="3"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/stats_session"
         app:layout_constraintTop_toTopOf="@+id/stats_session"
-        app:srcCompat="@drawable/ic_radio_button_unchecked_black_24dp" />
+        app:srcCompat="@drawable/ic_alpha_c_box_outline" />
 
 
     <com.aricneto.twistytimer.layout.StaticGridView

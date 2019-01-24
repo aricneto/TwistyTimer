@@ -1,32 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="?tabBarSize">
+    android:layout_height="wrap_content">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="?tabBarSize">
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:paddingTop="8dp"
-        app:cardCornerRadius="14dp">
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="8dp" />
 
-        <include
-            android:id="@+id/stats_container_pager"
-            layout="@layout/stats_table"
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout_height="100dp" />
+            android:layout_margin="8dp"
+            android:paddingTop="8dp"
+            app:cardCornerRadius="14dp">
 
-    </androidx.cardview.widget.CardView>
+            <include
+                android:id="@+id/stats_container_pager"
+                layout="@layout/stats_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-</LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+

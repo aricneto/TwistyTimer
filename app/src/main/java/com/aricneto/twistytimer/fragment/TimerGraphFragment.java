@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.ArrayRes;
@@ -40,7 +39,6 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -398,21 +396,14 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     }
 
     private void highlightStatTab(TextView tab) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        tab.setLayoutParams(params);
         tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_text_color));
-        tab.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
+        tab.setBackgroundResource(R.drawable.outline_background_card_button);
     }
 
     private void fadeStatTab(TextView tab) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
-        params.setMargins(0, (int) Utils.convertDpToPixel(4), 0, 0);
-        tab.setLayoutParams(params);
         tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr
                 .graph_stats_card_text_color_faded));
-        tab.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr
-                .graph_stats_card_background_faded));
+        tab.setBackgroundResource(R.drawable.outline_background_card_button_faded);
     }
 
     private View.OnClickListener statTabClickListener = new View.OnClickListener() {

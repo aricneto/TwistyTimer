@@ -4,15 +4,21 @@
     <attr format="color" name="colorTimerText"/>
     <attr format="color" name="colorTimerDetailText"/>
     <attr format="color" name="colorItemListText"/>
+    <attr format="color" name="colorItemListTextAction"/>
     <attr format="color" name="colorItemListBackgroundSelected"/>
     <attr format="color" name="colorItemListBackground"/>
     <attr format="color" name="mainColorBackground"/>
     <attr format="color" name="textColorContrastBackground"/>
 
     <attr format="color" name="colorCardStroke"/>
+    <attr format="color" name="colorCardStrokeFaded"/>
     <attr format="color" name="colorCardStrokeLighter"/>
+
     <attr format="color" name="colorCardBackground"/>
     <attr format="color" name="colorCardBackgroundWarn"/>
+    <attr format="color" name="colorCardBackgroundInfo"/>
+    <attr format="color" name="colorCardBackgroundFaded"/>
+
     <attr format="color" name="colorCardText"/>
 
     <attr format="dimension" name="tabBarSize"/>

@@ -84,6 +84,7 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_COMMENT_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
@@ -337,10 +338,8 @@ public class                                                                    
                                                     CharSequence input) {
                                     currentSolve.setComment(input.toString());
                                     dbHandler.updateSolve(currentSolve);
-                                    // NOTE: At present, the Statistics and ChartStatistics do not
-                                    // need to know about changes to a comment, so a notification
-                                    // of this change does not need to be broadcast.
-                                    // TODO: it seems that id does need to be broadcast, so the Time List knows when to flag an entry with a comment icon
+
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_COMMENT_ADDED);
                                     Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
                                     hideButtons(false, true);
                                 }
@@ -570,8 +569,8 @@ public class                                                                    
                         .withVibrate(inspectionVibrationAlertEnabled)
                         .withTone(inspectionSoundAlertEnabled)
                         .toneCode(ToneGenerator.TONE_CDMA_NETWORK_BUSY_ONE_SHOT)
-                        .toneDuration(300)
-                        .vibrateDuration(200)
+                        .toneDuration(400)
+                        .vibrateDuration(300)
                         .build();
                 // If inspection time is default, warn at 12 seconds per competition rules, else,
                 // warn at when 80% of the time is up (12 is 80% of 15)
@@ -580,8 +579,8 @@ public class                                                                    
                         .withVibrate(inspectionVibrationAlertEnabled)
                         .withTone(inspectionSoundAlertEnabled)
                         .toneCode(ToneGenerator.TONE_CDMA_NETWORK_BUSY)
-                        .toneDuration(350)
-                        .vibrateDuration(350)
+                        .toneDuration(800)
+                        .vibrateDuration(600)
                         .build();
             }
             countdown = new CountDownTimer(inspectionTime * 1000, 500) {
@@ -1095,6 +1094,9 @@ public class                                                                    
         chronometer.animate()
                 .translationY(0)
                 .setDuration(300);
+        inspectionText.animate()
+                .translationY(0)
+                .setDuration(300);
 
         if (scrambleEnabled) {
             scrambleBox.setVisibility(View.VISIBLE);
@@ -1152,6 +1154,9 @@ public class                                                                    
 
         // bring chronometer up a bit
         chronometer.animate()
+                .translationY(-getActionBarSize())
+                .setDuration(300);
+        inspectionText.animate()
                 .translationY(-getActionBarSize())
                 .setDuration(300);
 
@@ -1518,6 +1523,7 @@ public class                                                                    
         thumbView.getGlobalVisibleRect(startBounds);
         rootLayout.getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(- globalOffset.x, - globalOffset.y);
+        globalOffset.y -= scrambleBox.getHeight();
         finalBounds.offset(- globalOffset.x, - globalOffset.y);
 
         // Adjust the start bounds to be the same aspect ratio as the final

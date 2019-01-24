@@ -1,107 +1,21 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?tabBarSize"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/send_to_history_card"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="?colorItemListBackground">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/clear_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0.85"
-                android:textSize="14sp"
-                android:background="?attr/selectableItemBackground"
-                android:drawableLeft="@drawable/ic_outline_delete_sweep_24px"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/action_clear"
-                android:fontFamily="@font/quicksand_medium"
-                android:textColor="?colorItemListText"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-
-            <include
-                android:id="@+id/divider01"
-                layout="@layout/view_divider"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/archive_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0.85"
-                android:textSize="14sp"
-                android:background="?attr/selectableItemBackground"
-                android:drawableLeft="@drawable/ic_history_20"
-                android:gravity="center"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="8dp"
-                android:text="@string/action_archive"
-                android:textColor="?colorItemListText" />
-
-            <include
-                android:id="@+id/divider02"
-                layout="@layout/view_divider"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/add_time_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0.85"
-                android:textSize="14sp"
-                android:background="?attr/selectableItemBackground"
-                android:drawableLeft="@drawable/ic_outline_add_circle_outline_20px"
-                android:gravity="center"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="8dp"
-                android:text="@string/action_add"
-                android:textColor="?colorItemListText" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/send_to_history_card"
+        android:layout_below="@id/buttons_layout"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:drawSelectorOnTop="true"
-        android:paddingTop="8dp"
         android:paddingLeft="6dp"
-        android:paddingRight="6dp"/>
-
+        android:paddingTop="8dp"
+        android:paddingRight="6dp" />
 
     <ImageView
         android:id="@+id/nothing_here"
@@ -126,5 +40,76 @@
         android:textSize="16sp"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/outline_background_card_button"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/add_time_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:padding="6dp"
+            android:text="@string/action_add"
+            android:textColor="?graph_stats_card_text_color"
+            app:srcCompat="@drawable/ic_outline_add_18px" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_box"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="42dp"
+            android:hint="@string/timelist_searchbox_hint"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/add_time_button"
+            android:layout_toLeftOf="@id/archive_button"
+            />
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/archive_button"
+            android:padding="6dp"
+            android:text="@string/action_add"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textColor="?graph_stats_card_text_color"
+            app:srcCompat="@drawable/ic_outline_delete_sweep_18px" />
+
+        <ImageView
+            android:id="@+id/archive_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:padding="6dp"
+            android:text="@string/action_add"
+            android:textColor="?graph_stats_card_text_color"
+            app:srcCompat="@drawable/ic_history_18" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

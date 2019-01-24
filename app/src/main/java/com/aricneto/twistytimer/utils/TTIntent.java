@@ -104,6 +104,11 @@ public final class TTIntent {
     public static final String ACTION_SESSION_TIMES_SHOWN = ACTION_PREFIX + "SESSION_TIMES_SHOWN";
 
     /**
+     * The user has added a comment to their last solve
+     */
+    public static final String ACTION_COMMENT_ADDED = ACTION_PREFIX + "COMMENT_ADDED";
+
+    /**
      * The user has selected the option to show the fill history of all times for all past and
      * current sessions. Any solve times being presented should be reloaded to match the new state,
      * if necessary.
@@ -213,6 +218,7 @@ public final class TTIntent {
                 ACTION_TIMES_MOVED_TO_HISTORY,
                 ACTION_HISTORY_TIMES_SHOWN,
                 ACTION_SESSION_TIMES_SHOWN,
+                ACTION_COMMENT_ADDED
         });
 
         put(CATEGORY_ALG_DATA_CHANGES, new String[] {

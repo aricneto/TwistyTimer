@@ -5,19 +5,19 @@
         <clip-path android:pathData="M0,0h24v24h-24z M 0,0"/>
         <path android:fillColor="#00000000"
             android:pathData="M4.0,14.5h6.0v6.0h-6.0z"
-            android:strokeColor="#FFC800" android:strokeLineCap="butt"
+            android:strokeColor="#000000" android:strokeLineCap="butt"
             android:strokeLineJoin="miter" android:strokeWidth="2"/>
         <path android:fillColor="#00000000"
             android:pathData="M15.753,10.0l-7.5060005,0.0l3.7530003,-6.0z"
-            android:strokeColor="#FF3F3F" android:strokeLineCap="butt"
+            android:strokeColor="#000000" android:strokeLineCap="butt"
             android:strokeLineJoin="miter" android:strokeWidth="2"/>
         <path android:fillColor="#FF000000"
             android:pathData="M14.0,17.5L21.0,17.5"
-            android:strokeColor="#005EFF" android:strokeLineCap="square"
+            android:strokeColor="#000000" android:strokeLineCap="square"
             android:strokeLineJoin="miter" android:strokeWidth="2"/>
         <path android:fillColor="#FF000000"
             android:pathData="M17.5,14.0L17.5,21.0"
-            android:strokeColor="#005EFF" android:strokeLineCap="square"
+            android:strokeColor="#000000" android:strokeLineCap="square"
             android:strokeLineJoin="miter" android:strokeWidth="2"/>
     </group>
 </vector>

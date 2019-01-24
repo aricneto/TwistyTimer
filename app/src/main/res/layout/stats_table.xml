@@ -22,29 +22,30 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="?graph_stats_card_background"
+            android:layout_margin="4dp"
+            android:background="@drawable/outline_background_card_button"
             android:text="@string/graph_stats_tab_title_improvement"
             android:textColor="?graph_stats_card_text_color" />
 
         <TextView
+            android:layout_margin="4dp"
             android:id="@+id/stats_tab_average"
             style="@style/StatTabTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="?graph_stats_card_background_faded"
+            android:background="@drawable/outline_background_card_button_faded"
             android:text="@string/graph_stats_tab_title_average"
             android:textColor="?graph_stats_card_text_color_faded" />
 
         <TextView
+            android:layout_margin="4dp"
             android:id="@+id/stats_tab_other"
             style="@style/StatTabTextStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="?graph_stats_card_background_faded"
+            android:background="@drawable/outline_background_card_button_faded"
             android:text="@string/graph_stats_tab_title_other"
             android:textColor="?graph_stats_card_text_color_faded" />
 
