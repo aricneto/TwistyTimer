@@ -26,9 +26,9 @@
     <com.aricneto.twistytimer.layout.TimerTabLayout
         android:id="@+id/main_tabs"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="?tabBarSize"
         android:layout_alignParentBottom="true"
-        android:alpha=".95"
+        android:alpha="0.95"
         android:background="@drawable/outline_background_card_top_tab"
         android:isScrollContainer="false"
         app:tabGravity="fill"

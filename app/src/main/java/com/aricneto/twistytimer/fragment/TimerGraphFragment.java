@@ -187,7 +187,11 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         mUnbinder = ButterKnife.bind(this, root);
 
         // The color for the text in the legend and for the values along the chart's axes.
-        final int chartTextColor = Color.WHITE;
+        final int chartTextColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartText);
+
+        // The color for the grid and the axes
+        final int axisColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartAxis);
+        final int gridColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartGrid);
 
         // Most of the following settings should be self explanatory.
         // Those that aren't will be commented
@@ -203,8 +207,6 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // Set axis colors
         final YAxis axisLeft = lineChartView.getAxisRight();
         final XAxis xAxis = lineChartView.getXAxis();
-        final int axisColor = ContextCompat.getColor(getActivity(), R.color.md_amber_400);
-        final int gridColor = ContextCompat.getColor(getActivity(), R.color.gridColor);
 
         // X-axis settings
         xAxis.setDrawGridLines(false);

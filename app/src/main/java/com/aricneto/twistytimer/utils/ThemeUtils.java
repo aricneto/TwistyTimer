@@ -38,6 +38,7 @@ public final class ThemeUtils {
     public static final String THEME_BLUEGRAY    = "bluegray";
     public static final String THEME_WHITE       = "white";
     public static final String THEME_YELLOW      = "yellow";
+    public static final String THEME_WHITE_GREEN = "white_green";
 
     /**
      * Private constructor to prevent instantiation of this utility class.
@@ -93,6 +94,8 @@ public final class ThemeUtils {
                 return R.style.WhiteTheme;
             case THEME_YELLOW:
                 return R.style.YellowTheme;
+            case THEME_WHITE_GREEN:
+                return R.style.WhiteGreenTheme;
         }
     }
 
@@ -102,23 +105,25 @@ public final class ThemeUtils {
      * @return an array containing all available themes
      */
     public static Theme[] getAllThemes() {
-        Theme[] themes = {new Theme(THEME_INDIGO, "Bluy\nPurple"),
-                          new Theme(THEME_PURPLE, "Definitely\nPurple"),
-                          new Theme(THEME_PINK, "Pinky\nPromises"),
-                          new Theme(THEME_RED, "Oof\nHot"),
-                          new Theme(THEME_BLUE, "Hazy\nBlues"),
-                          new Theme(THEME_ORANGE, "Unnamed"),
-                          new Theme(THEME_YELLOW, "Notably\nYellow"),
-                          new Theme(THEME_TEAL, "Earthy\nTeal"),
-                          new Theme(THEME_GREEN, "Surprisingly\nGreen"),
-                          new Theme(THEME_LIGHT_GREEN, "Greeny\nGorilla"),
-                          new Theme(THEME_LIGHT_BLUE, "Lightly\nSkyish"),
-                          new Theme(THEME_CYAN, "Cyanic\nSea"),
-                          new Theme(THEME_DEEPPURPLE, "Unnamed"),
-                          new Theme(THEME_BROWN, "Delicious\nBrownie"),
-                          new Theme(THEME_BLACK, "Simply\nBlack"),
-                          new Theme(THEME_WHITE, "Simply\nWhite"),
-                          new Theme(THEME_BLUEGRAY, "Icy\nHills")};
+        Theme[] themes = {
+                new Theme(THEME_PINK, "Pinky\nPromises"),
+                new Theme(THEME_DEEPPURPLE, "Quite\nPurply"),
+                new Theme(THEME_INDIGO, "Even\nPurplier"),
+                new Theme(THEME_PURPLE, "Definitely\nPurple"),
+                new Theme(THEME_ORANGE, "Tantalizing\nTorange"),
+                new Theme(THEME_RED, "Oof\nHot"),
+                new Theme(THEME_YELLOW, "Notably\nYellow"),
+                new Theme(THEME_GREEN, "Surprisingly\nGreen"),
+                new Theme(THEME_TEAL, "Earthy\nTeal"),
+                new Theme(THEME_LIGHT_GREEN, "Greeny\nGorilla"),
+                new Theme(THEME_LIGHT_BLUE, "Lightly\nSkyish"),
+                new Theme(THEME_CYAN, "Cyanic\nTeal"),
+                new Theme(THEME_BLUE, "Hazy\nBlues"),
+                new Theme(THEME_BLACK, "Simply\nBlack"),
+                new Theme(THEME_BROWN, "Delicious\nBrownie"),
+                new Theme(THEME_BLUEGRAY, "Icy\nHills"),
+                new Theme(THEME_WHITE_GREEN, "Greeny\nEverest"),
+                new Theme(THEME_WHITE, "Simply\nWhite")};
         return themes;
     }
 

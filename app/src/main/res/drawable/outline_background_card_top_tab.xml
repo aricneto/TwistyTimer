@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="?colorCardBackground"/>
     <stroke android:width="1dp" android:color="#363A3A3A" />
-    <corners android:topLeftRadius="16dp" android:topRightRadius="16dp"/>
+    <corners android:topLeftRadius="22dp" android:topRightRadius="22dp"/>
 </shape>
