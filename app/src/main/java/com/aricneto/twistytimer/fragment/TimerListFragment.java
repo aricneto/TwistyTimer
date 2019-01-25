@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -75,15 +74,15 @@ public class TimerListFragment extends BaseFragment
     // True if you want to search history, false if you only want to search session
     boolean         history;
 
-    private Unbinder mUnbinder;
-    @BindView(R.id.list)                 RecyclerView          recyclerView;
-    @BindView(R.id.nothing_here)         ImageView             nothingHere;
-    @BindView(R.id.nothing_text)         TextView              nothingText;
-    @BindView(R.id.buttons_layout)       View                  buttonsLayout;
-    @BindView(R.id.clear_button)         View                  clearButton;
-    @BindView(R.id.archive_button)       View                  archiveButton;
-    @BindView(R.id.add_time_button)      View                  addTimeButton;
-    @BindView(R.id.search_box)           AppCompatEditText     searchEditText;
+    private                        Unbinder          mUnbinder;
+    @BindView(R.id.list)           RecyclerView      recyclerView;
+    @BindView(R.id.warn_empty_list)ImageView         nothingHere;
+    @BindView(R.id.nothing_text)   TextView          nothingText;
+    @BindView(R.id.buttons_layout) View              buttonsLayout;
+    @BindView(R.id.clear_button)   View              clearButton;
+    @BindView(R.id.archive_button) View              archiveButton;
+    @BindView(R.id.add_time_button)View              addTimeButton;
+    @BindView(R.id.search_box)     AppCompatEditText searchEditText;
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
@@ -397,10 +396,8 @@ public class TimerListFragment extends BaseFragment
             nothingHere.setVisibility(View.VISIBLE);
             nothingText.setVisibility(View.VISIBLE);
             if (history) {
-                nothingHere.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.notherehistory));
                 nothingText.setText(R.string.list_empty_state_message_history);
             } else {
-                nothingHere.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.nothere2));
                 nothingText.setText(R.string.list_empty_state_message);
             }
         } else {

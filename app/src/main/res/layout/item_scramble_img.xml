@@ -11,6 +11,6 @@
         android:layout_height="200dp"
         android:background="@color/white_text"
         android:layerType="software"
-        android:src="@drawable/nothere2" />
+        android:src="@drawable/warn_empty_list" />
 
 </FrameLayout>
