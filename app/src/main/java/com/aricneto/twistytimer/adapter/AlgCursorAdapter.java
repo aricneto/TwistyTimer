@@ -114,13 +114,11 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     }
 
     private void colorCube(AlgHolder holder, final String state) {
-        // See the reference image to understand how this works.
-        /*ButterKnife.apply(holder.stickers, new ButterKnife.Action<View>() {
-            @Override
-            public void apply(@NonNull View sticker, int index) {
-                sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
-            }
-        });*/ // FIXME: this broke when updated to AndroidX
+        int i = 0;
+        for (View sticker : holder.stickers) {
+            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
+            i++;
+        }
     }
 
     public boolean isLocked() {
