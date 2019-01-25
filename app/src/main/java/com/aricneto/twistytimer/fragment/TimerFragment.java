@@ -368,7 +368,37 @@ public class                                                                    
                     broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
                     break;
                 case R.id.scramble_button_edit:
-                    // TODO
+                    MaterialDialog editScrambleDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.edit_scramble)
+                            .input("", "", new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(@NonNull MaterialDialog dialog,
+                                                    CharSequence input) {
+                                    realScramble = input.toString();
+
+                                    // update scramble textview and image
+                                    scrambleText.setText(realScramble);
+                                    generateScrambleImage();
+
+                                    // The hint solver will crash if you give it invalid scrambles,
+                                    // so we shouldn't calculate hints for custom scrambles.
+                                    // TODO: We can use the scramble image generator (which has a scramble validity checker) to check a scramble before calling a hint
+                                    canShowHint = false;
+                                    hideButtons(true, true);
+                                }
+                            })
+                            .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                            .positiveText(R.string.action_done)
+                            .negativeText(R.string.action_cancel)
+                            .build();
+                    EditText scrambleEditText = editScrambleDialog.getInputEditText();
+                    if (scrambleEditText != null) {
+                        scrambleEditText.setLines(3);
+                        scrambleEditText.setSingleLine(false);
+                        scrambleEditText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+                        scrambleEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+                    }
+                    editScrambleDialog.show();
                     break;
             }
         }
