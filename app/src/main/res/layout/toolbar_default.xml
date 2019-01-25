@@ -1,9 +1,8 @@
 <androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/ToolBarStyle.NoElevation"
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:background="?attr/colorPrimary"
-    android:minHeight="@dimen/abc_action_bar_default_height_material"
+    android:minHeight="64dp"
     app:title="@string/title_activity_settings"/>

@@ -1,19 +1,37 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/materialGray">
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/actionbar"
-        layout="@layout/toolbar_default"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?colorPrimary"
+        android:fontFamily="@font/quicksand_bold"
+        android:gravity="center"
+        android:text="@string/title_activity_settings"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/title"
+        android:layout_alignBottom="@id/title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <FrameLayout
         android:id="@+id/main_activity_container"
+        android:background="@color/md_white_1000"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/title" />
 
-</LinearLayout>
+</RelativeLayout>

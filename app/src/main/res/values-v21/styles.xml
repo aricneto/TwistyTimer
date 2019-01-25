@@ -75,7 +75,7 @@
     </style>
 
     <style name="ToolBarStyle.NoElevation">
-        <item name="android:elevation">0dp</item>
+        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="Widget.Tarefa.Header.Spinner" parent="Base.Widget.Tarefa.Header.Spinner">

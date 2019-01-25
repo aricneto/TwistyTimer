@@ -96,11 +96,14 @@
     </style>
 
     <style name="SettingsTheme" parent="PreferenceFixTheme.Light.NoActionBar">
-        <item name="colorPrimary">@color/md_brown_800</item>
-        <item name="colorPrimaryDark">@color/md_brown_900</item>
+        <item name="colorPrimary">@color/md_white_1000</item>
+        <item name="colorPrimaryDark">@color/md_white_1000</item>
         <item name="colorAccent">@color/md_teal_500</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="md_positive_color">@color/md_teal_A400</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+
     </style>
 
     <!--

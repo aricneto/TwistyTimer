@@ -48,8 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
 
-    @BindView(R.id.actionbar)
-    Toolbar mToolbar;
+    @BindView(R.id.back) View backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-        mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setNavigationIcon(R.drawable.ic_action_arrow_back_white_24);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -255,7 +251,7 @@ public class SettingsActivity extends AppCompatActivity {
          */
         @Override
         public boolean onBackPressedInFragment() {
-            if (lastPreferenceScreen != null && getPreferenceScreen() != mainScreen) {
+            if (lastPreferenceScreen != null && getPreferenceScreen() != lastPreferenceScreen) {
                 setPreferenceScreen(lastPreferenceScreen);
                 return true;
             }
