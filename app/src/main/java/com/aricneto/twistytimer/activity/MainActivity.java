@@ -675,6 +675,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onFileChooserDismissed(@NonNull FileChooserDialog dialog) {
+
+    }
+
     /**
      * Handles the call-back from a fragment when a puzzle type and/or category are selected. This
      * is used for communication between the export/import fragments. The "source" fragment should

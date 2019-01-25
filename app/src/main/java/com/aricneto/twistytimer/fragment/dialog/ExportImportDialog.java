@@ -61,6 +61,11 @@ public class ExportImportDialog extends DialogFragment
     public static final String FRAG_TAG_EXIM_FILECHOOSER = "exim_file_chooser";
 
 
+    @Override
+    public void onFileChooserDismissed(@NonNull FileChooserDialog dialog) {
+
+    }
+
     /**
      * A call-back interface that supports interaction between the import/export dialogs, file chooser
      * dialogs, and the main activity that will perform the actual import/export operations.
@@ -163,9 +168,9 @@ public class ExportImportDialog extends DialogFragment
                     // the chooser to tell the activity that the chosen puzzle type/category should
                     // be relayed back to this dialog fragment.
                     new FileChooserDialog.Builder(getExImActivity())
-                            .chooseButton(R.string.action_choose)
+                            //.chooseButton(R.string.action_choose)
                             .tag(FRAG_TAG_EXIM_FILECHOOSER)
-                            .show();
+                            .build();
                     break;
 
                 case R.id.import_external:
@@ -185,9 +190,8 @@ public class ExportImportDialog extends DialogFragment
                                 public void onClick(@NonNull MaterialDialog dialog,
                                                     @NonNull DialogAction which) {
                                     new FileChooserDialog.Builder(getExImActivity())
-                                            .chooseButton(R.string.action_choose)
                                             .tag(FRAG_TAG_EXIM_FILECHOOSER)
-                                            .show();
+                                            .build();
                                 }
                             })
                             .show();
