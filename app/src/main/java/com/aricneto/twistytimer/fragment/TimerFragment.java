@@ -227,7 +227,7 @@ public class                                                                    
 
     // True if the user has started (and stopped) the timer at least once. Used to trigger
     // Average highlights, so the user doesn't get a notification when they start the app
-    private boolean hasStoppedTimerOnce;
+    private boolean hasStoppedTimerOnce = false;
 
     /**
      * The most recently notified solve time statistics. When {@link #addNewSolve()} is called to
@@ -406,7 +406,7 @@ public class                                                                    
             if (savedInstanceState.getString(PUZZLE) == getArguments().get(PUZZLE)) {
                 realScramble = savedInstanceState.getString(SCRAMBLE);
             }
-            hasStoppedTimerOnce = savedInstanceState.getBoolean(HAS_STOPPED_TIMER_ONCE, false);
+            //hasStoppedTimerOnce = savedInstanceState.getBoolean(HAS_STOPPED_TIMER_ONCE, false);
         }
 
         detailTextNamesArray = getResources().getStringArray(R.array.timer_detail_stats);
@@ -948,7 +948,7 @@ public class                                                                    
                         if (rippleBackground != null)
                             rippleBackground.stopRippleAnimation();
                     }
-                }, 2940);
+                }, 3500);
             }
         }
 
@@ -1033,6 +1033,9 @@ public class                                                                    
         // two or more average records at the same time.
         boolean hasShownRecordMessage = false;
 
+        // reset card visibility
+        detailAverageRecordMesssage.setVisibility(View.GONE);
+
         StringBuilder stringDetailAvg = new StringBuilder();
         // Iterate through averages and set respective TextViews
         for (int i = 0; i < 4; i++) {
@@ -1050,7 +1053,7 @@ public class                                                                    
                             .setDuration(300);
                     hasShownRecordMessage = true;
                 }
-            } else {
+            } else if (sessionStatsEnabled) {
                 stringDetailAvg.append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
             // append newline to every line but the last

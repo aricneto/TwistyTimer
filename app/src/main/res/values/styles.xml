@@ -36,7 +36,7 @@
         <item name="colorCardStrokeFaded">#86888888</item>
 
         <item name="colorCardBackground">#fff</item>
-        <item name="colorCardBackgroundWarn">#FFEF6B</item>
+        <item name="colorCardBackgroundWarn">#FFEF8F</item>
         <item name="colorCardBackgroundInfo">#C3FFF6</item>
         <item name="colorCardBackgroundFaded">#F0F0F0</item>
         <item name="colorCardText">#000</item>
