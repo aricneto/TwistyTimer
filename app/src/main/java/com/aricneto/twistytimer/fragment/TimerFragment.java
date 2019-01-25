@@ -930,7 +930,7 @@ public class                                                                    
                         if (rippleBackground != null)
                             rippleBackground.stopRippleAnimation();
                     }
-                }, 3500);
+                }, 2900);
             }
         }
 
@@ -1118,7 +1118,7 @@ public class                                                                    
                     @Override
                     public void run() {
                         if (scrambleImg != null) {
-                            scrambleImg.setVisibility(View.INVISIBLE);
+                            scrambleImg.setVisibility(View.GONE);
                             scrambleImg.setEnabled(false);
                         }
                     }
@@ -1414,7 +1414,7 @@ public class                                                                    
                 if (scrambleText != null) {
                     // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
                     // If it does, show only a "tap here to see more" hint instead of the scramble
-                    Rect scrambleRect = new Rect(scrambleText.getLeft(), scrambleText.getTop(), scrambleText.getRight(), scrambleText.getBottom());
+                    Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
                     Rect chronometerRect = new Rect(chronometer.getLeft(), chronometer.getTop(), chronometer.getRight(), chronometer.getBottom());
                     Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
 
