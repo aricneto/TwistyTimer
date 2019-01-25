@@ -378,5 +378,6 @@
     <string name="category_select_dialog_hint_edit">Long-press an entry to edit</string>
     <string name="action_search">Search</string>
     <string name="timelist_searchbox_hint">Search comments</string>
+    <string name="title_algorithms">Algorithms</string>
 
 </resources>

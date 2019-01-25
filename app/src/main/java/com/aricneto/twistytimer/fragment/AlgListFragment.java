@@ -7,14 +7,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
@@ -22,6 +18,10 @@ import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,17 +33,32 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
 public class AlgListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String KEY_SUBSET     = "subset";
+    private static final String KEY_SUBSET = "subset";
+
+    @BindView(R.id.spinnerIcon)
+    View spinnerIcon;
+
+    @BindView(R.id.puzzleName)
+    TextView titleView;
+
+    @BindView(R.id.puzzleCategory)
+    TextView subtitleView;
+
+    @BindView(R.id.nav_button_history)
+    View button1;
+
+    @BindView(R.id.nav_button_category)
+    View button2;
+
+    @BindView(R.id.nav_button_settings)
+    View buttonSettings;
+
+    @BindView(R.id.list)
+    RecyclerView recyclerView;
 
     private Unbinder mUnbinder;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-
     private String currentSubset;
-
     private AlgCursorAdapter algCursorAdapter;
-
-    @BindView(R.id.list) RecyclerView recyclerView;
-
     // Receives broadcasts about changes to the algorithm data.
     private TTFragmentBroadcastReceiver mAlgDataChangedReceiver
             = new TTFragmentBroadcastReceiver(this, CATEGORY_ALG_DATA_CHANGES) {
@@ -84,9 +99,18 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         View rootView = inflater.inflate(R.layout.fragment_alg_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        toolbar.setTitle(currentSubset);
+        titleView.setText(R.string.title_algorithms);
+        subtitleView.setText(currentSubset);
 
-        setupToolbarForFragment(toolbar);
+        spinnerIcon.setVisibility(View.GONE);
+        button1.setVisibility(View.GONE);
+        button2.setVisibility(View.GONE);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMainActivity().openDrawer();
+            }
+        });
 
         setupRecyclerView();
 

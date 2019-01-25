@@ -3,13 +3,18 @@ package com.aricneto.twistytimer.fragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.TypedArray;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.Toolbar;
+
+import android.graphics.PorterDuff;
 import android.util.TypedValue;
 import android.view.View;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 /**
  * Created by Ari on 06/06/2015.
@@ -43,7 +48,9 @@ public class BaseFragment extends Fragment {
      * @param toolbar The toolbar present in the fragment
      */
     protected void setupToolbarForFragment(Toolbar toolbar) {
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_outline_settings_24px);
+        toolbar.getNavigationIcon().setColorFilter(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTimerText), PorterDuff.Mode.SRC_IN);
+
         getMainActivity().setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

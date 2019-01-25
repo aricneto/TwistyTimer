@@ -44,6 +44,7 @@
             android:textSize="12sp" />
 
         <ImageView
+            android:id="@+id/spinnerIcon"
             android:layout_width="42dp"
             android:layout_height="32dp"
             android:layout_centerVertical="true"
