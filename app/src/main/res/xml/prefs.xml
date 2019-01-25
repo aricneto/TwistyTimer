@@ -172,12 +172,6 @@
                     android:summary="@string/buttonsEnabledSummary"
                     android:title="@string/buttonsEnabledTitle" />
 
-                <SwitchPreferenceCompat
-                    android:defaultValue="@bool/default_backgroundEnabled"
-                    android:key="@string/pk_timer_bg_enabled"
-                    android:summary="@string/backgroundEnabledSummary"
-                    android:title="@string/backgroundEnabledTitle" />
-
             </PreferenceCategory>
 
             <Preference android:layout="@layout/divider_preference_category" />
@@ -221,25 +215,11 @@
                     android:title="@string/timer_text_size" />
 
                 <Preference
-                    android:defaultValue="@integer/defaultTimeTextOffset"
-                    android:dependency="@string/pk_advanced_timer_settings_enabled"
-                    android:key="@string/pk_timer_text_offset"
-                    android:summary="@string/timer_text_offset_summary"
-                    android:title="@string/timer_text_offset" />
-
-                <Preference
                     android:defaultValue="@integer/defaultScrambleImageSize"
                     android:dependency="@string/pk_advanced_timer_settings_enabled"
                     android:key="@string/pk_scramble_image_size"
                     android:summary="@string/scrambleImageSize_summary"
                     android:title="@string/scrambleImageSize_text" />
-
-                <SwitchPreferenceCompat
-                    android:defaultValue="@bool/default_large_quickaction"
-                    android:dependency="@string/pk_advanced_timer_settings_enabled"
-                    android:key="@string/pk_large_quick_actions_enabled"
-                    android:summary="@string/quick_action_button_large_summary"
-                    android:title="@string/quick_action_button_large_title" />
 
             </PreferenceCategory>
 

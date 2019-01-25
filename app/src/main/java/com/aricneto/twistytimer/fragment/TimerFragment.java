@@ -210,7 +210,6 @@ public class                                                                    
     private boolean scrambleImgEnabled;
     private boolean sessionStatsEnabled;
     private boolean worstSolveEnabled;
-    private boolean backgroundEnabled;
     private boolean bestSolveEnabled;
     private boolean scrambleEnabled;
     private boolean holdEnabled;
@@ -456,10 +455,7 @@ public class                                                                    
         // Preferences //
         final boolean inspectionEnabled = Prefs.getBoolean(R.string.pk_inspection_enabled, false);
         final int inspectionTime = Prefs.getInt(R.string.pk_inspection_time, 15);
-        final boolean quickActionLarge
-                = Prefs.getBoolean(R.string.pk_large_quick_actions_enabled, false);
         final float timerTextSize = Prefs.getInt(R.string.pk_timer_text_size, 100) / 100f;
-        final int timerTextOffset = Prefs.getInt(R.string.pk_timer_text_offset, 0);
         float scrambleImageSize = Prefs.getInt(R.string.pk_scramble_image_size, 100) / 100f;
         final float scrambleTextSize = Prefs.getInt(R.string.pk_scramble_text_size, 100) / 100f;
         final boolean advancedEnabled
@@ -474,21 +470,8 @@ public class                                                                    
         if (advancedEnabled) {
             chronometer.setTextSize(TypedValue.COMPLEX_UNIT_PX, chronometer.getTextSize() * timerTextSize);
 
-            if (quickActionLarge) {
-                deleteButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete_white_36dp));
-                commentButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_comment_white_36dp));
-                dnfButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dnflarge));
-                plusTwoButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.plustwolarge));
-            }
-
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(scrambleImageSize);
-
-            chronometer.setY(chronometer.getY() - timerTextOffset);
-            inspectionText.setY(inspectionText.getY() - timerTextOffset);
-            quickActionButtons.setY(quickActionButtons.getY() - timerTextOffset);
-            undoButton.setY(undoButton.getY() - timerTextOffset);
-            congratsText.setY(congratsText.getY() - timerTextOffset);
         } else {
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
@@ -507,7 +490,6 @@ public class                                                                    
         sessionStatsEnabled = Prefs.getBoolean(R.string.pk_show_session_stats, true);
         bestSolveEnabled = Prefs.getBoolean(R.string.pk_show_best_time, true);
         worstSolveEnabled = Prefs.getBoolean(R.string.pk_show_worst_time, false);
-        backgroundEnabled = Prefs.getBoolean(R.string.pk_timer_bg_enabled, false);
 
         scrambleEnabled = Prefs.getBoolean(R.string.pk_scramble_enabled, true);
         scrambleImgEnabled = Prefs.getBoolean(R.string.pk_show_scramble_image, true);
@@ -961,12 +943,7 @@ public class                                                                    
                 congratsText.setText(getString(R.string.personal_worst_message,
                         PuzzleUtils.convertTimeToString(newTime - previousWorstTime, PuzzleUtils.FORMAT_DEFAULT)));
 
-                if (backgroundEnabled)
-                    congratsText.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.ic_emoticon_poop_white_18dp, 0,
-                            R.drawable.ic_emoticon_poop_white_18dp, 0);
-                else
-                    congratsText.setCompoundDrawablesWithIntrinsicBounds(
+                congratsText.setCompoundDrawablesWithIntrinsicBounds(
                             R.drawable.ic_emoticon_poop_black_18dp, 0,
                             R.drawable.ic_emoticon_poop_black_18dp, 0);
 

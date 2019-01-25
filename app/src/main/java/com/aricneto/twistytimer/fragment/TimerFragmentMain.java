@@ -8,7 +8,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
@@ -24,11 +23,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SwitchCompat;
 
 import android.util.Log;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,33 +34,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
-import com.aricneto.twistytimer.adapter.SpinnerAdapter;
-import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.layout.LockedViewPager;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.stats.StatisticsLoader;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -306,18 +293,18 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     break;
 
                 case ACTION_CHANGED_CATEGORY:
-                    history = false;
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
-                    updateHistorySwitchItem();
-                    updatePuzzleSpinnerText();
+                    updatePuzzleSpinnerHeader();
                     handleStatisticsLoader();
                     break;
             }
         }
     };
 
-    private void updatePuzzleSpinnerText() {
+    private void updatePuzzleSpinnerHeader() {
+        history = false;
+        updateHistorySwitchItem();
         puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
         puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
     }
@@ -512,34 +499,27 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder.unbind();
     }
 
-    TransitionDrawable transitionOnOff;
+    Drawable[] onOff = new Drawable[2];
 
     private void setupHistorySwitchItem() {
         Context context = getContext();
 
         if (context != null) {
-            Drawable[] onOff = new Drawable[2];
-
-            onOff[0] = ContextCompat.getDrawable(context, R.drawable.ic_history_off);
-            onOff[1] = ContextCompat.getDrawable(context, R.drawable.ic_history_on);
-
-            transitionOnOff = new TransitionDrawable(onOff);
-            transitionOnOff.setCrossFadeEnabled(true);
-
-            navButtonHistory.setImageDrawable(transitionOnOff);
+            onOff[0] = ContextCompat.getDrawable(context, R.drawable.ic_history_on);
+            onOff[1] = ContextCompat.getDrawable(context, R.drawable.ic_history_off);
         }
     }
 
     private void updateHistorySwitchItem() {
         if (history) {
-            transitionOnOff.startTransition(300);
+            navButtonHistory.setImageDrawable(onOff[0]);
             navButtonHistory.animate()
                     .rotation(-135)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .setDuration(300)
                     .start();
         } else {
-            transitionOnOff.reverseTransition(300);
+            navButtonHistory.setImageDrawable(onOff[1]);
             navButtonHistory.animate()
                     .rotation(0)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -658,7 +638,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 viewPager.setCurrentItem(currentPage);
 
                 // update titles
-                updatePuzzleSpinnerText();
+                updatePuzzleSpinnerHeader();
 
                 handleStatisticsLoader();
             }
@@ -672,7 +652,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         });
 
-        updatePuzzleSpinnerText();
+        updatePuzzleSpinnerHeader();
 
     }
 

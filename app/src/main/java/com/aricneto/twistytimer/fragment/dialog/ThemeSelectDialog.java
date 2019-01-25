@@ -53,29 +53,6 @@ public class ThemeSelectDialog extends BottomSheetDialogFragment {
         return new ThemeSelectDialog();
     }
 
-    /*private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            final String oldTheme = Prefs.getString(R.string.pk_theme, "indigo");
-            final String newTheme;
-
-            switch (view.getId()) {
-                case R.id.indigo:
-                    newTheme = "indigo";
-                    break;
-            }
-
-
-            if (!newTheme.equals(oldTheme)) {
-                Prefs.edit().putString(R.string.pk_theme, newTheme).apply();
-
-                ((MainActivity) getActivity()).onRecreateRequired();
-            }
-
-            dismiss();
-        }
-    };*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_bottomsheet_theme_select, container);

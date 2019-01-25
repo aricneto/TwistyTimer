@@ -168,12 +168,6 @@ public class MainActivity extends AppCompatActivity
 
         setTheme(ThemeUtils.getPreferredTheme());
 
-        // If user has background disabled, apply the NoBackground overlay
-        if (!Prefs.getBoolean(R.string.pk_timer_bg_enabled,
-                             DefaultPrefs.getBoolean(R.bool.default_backgroundEnabled))) {
-            getTheme().applyStyle(R.style.OverlayTheme_NoBackground, true);
-        }
-
         LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
 
