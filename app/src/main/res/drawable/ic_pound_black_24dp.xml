@@ -1,9 +1,0 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="18dp"
-        android:height="18dp"
-        android:viewportWidth="24.0"
-        android:viewportHeight="24.0">
-    <path
-        android:fillColor="?graph_stats_card_text_color"
-        android:pathData="M12.7,21.6l0.7,-4h-4.8l-0.7,4h-3.2l0.7,-4h-4l0.6,-3.2h4l0.8,-4.8h-4l0.6,-3.2h4l0.7,-4h3.2l-0.7,4h4.8l0.7,-4h3.2l-0.7,4h4l-0.6,3.2h-4l-0.8,4.8h4l-0.6,3.2h-4l-0.7,4L12.7,21.6zM14,14.4l0.8,-4.8h-4.8l-0.8,4.8L14,14.4z,M5.4,21l0.7,-4h-4l0.4,-2h4l1.1,-6h-4l0.4,-2h4l0.7,-4h2l-0.7,4h6l0.7,-4h2l-0.7,4h4l-0.4,2h-4l-1.1,6h4l-0.4,2h-4l-0.7,4h-2l0.7,-4h-6l-0.7,4L5.4,21M9.5,9l-1.1,6h6l1.1,-6L9.5,9z"/>
-</vector>
