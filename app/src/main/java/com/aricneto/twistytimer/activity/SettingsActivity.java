@@ -163,10 +163,6 @@ public class SettingsActivity extends AppCompatActivity {
                         createSeekTextSizeDialog(R.string.pk_timer_text_size, 60, "12.34", true);
                         break;
 
-                    case R.string.pk_timer_text_offset:
-                        createSeekTextOffsetDialog();
-                        break;
-
                     case R.string.pk_scramble_image_size:
                         createImageSeekDialog(
                                 R.string.pk_scramble_image_size, R.string.scrambleImageSize_text);
@@ -208,7 +204,6 @@ public class SettingsActivity extends AppCompatActivity {
                     R.string.pk_locale,
                     R.string.pk_options_show_scramble_hints,
                     R.string.pk_timer_text_size,
-                    R.string.pk_timer_text_offset,
                     R.string.pk_scramble_text_size,
                     R.string.pk_scramble_image_size,
                     R.string.pk_advanced_timer_settings_enabled};
@@ -351,64 +346,6 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onClick(
                                 @NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             Prefs.edit().putInt(prefKeyResID, 100).apply();
-                        }
-                    })
-                    .show();
-        }
-
-        private void createSeekTextOffsetDialog() {
-            final View dialogView = LayoutInflater.from(
-                    getActivity()).inflate(R.layout.dialog_settings_progress, null);
-            final AppCompatSeekBar seekBar
-                    = (AppCompatSeekBar) dialogView.findViewById(R.id.seekbar);
-            final TextView text = (TextView) dialogView.findViewById(R.id.text);
-            seekBar.setMax(500);
-            seekBar.setProgress(Prefs.getInt(R.string.pk_timer_text_offset, 0) + 250);
-
-            final float defaultY = text.getY();
-
-            text.setY(defaultY - (seekBar.getProgress() - 250));
-            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
-            text.setTypeface(Typeface.DEFAULT_BOLD);
-            text.setText("12.34");
-
-            text.getLayoutParams().height += 650;
-
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                    text.setY(defaultY - (i - 250));
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
-            });
-
-            new MaterialDialog.Builder(getActivity())
-                    .customView(dialogView, true)
-                    .positiveText(R.string.action_done)
-                    .negativeText(R.string.action_cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(
-                                @NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Prefs.edit()
-                                    .putInt(R.string.pk_timer_text_offset,
-                                            seekBar.getProgress() - 250)
-                                    .apply();
-                        }
-                    })
-                    .neutralText(R.string.action_default)
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(
-                                @NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Prefs.edit().putInt(R.string.pk_timer_text_offset, 0).apply();
                         }
                     })
                     .show();
