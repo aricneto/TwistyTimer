@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:background="@drawable/outline_background_card_smoother"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
-        android:drawableLeft="@drawable/ic_cached_black_24dp"
+        android:drawableLeft="@drawable/ic_outline_cached_24px"
         android:drawablePadding="8dp"
         android:layout_below="@id/down"
         android:gravity="center"
@@ -83,7 +83,7 @@
         android:background="?attr/selectableItemBackground"
         android:textAllCaps="true"
         android:layout_alignBottom="@id/reset"
-        android:textColor="?colorAccent"
+        android:textColor="@color/md_deep_purple_A400"
         android:textStyle="bold"
         android:drawablePadding="8dp"
         android:gravity="center"

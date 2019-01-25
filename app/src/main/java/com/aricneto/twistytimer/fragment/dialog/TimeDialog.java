@@ -160,6 +160,7 @@ public class TimeDialog extends DialogFragment {
                     MaterialDialog scrambleDialog = new MaterialDialog.Builder(getContext())
                             .customView(R.layout.item_scramble_img, false)
                             .show();
+
                     ImageView imageView = (ImageView) scrambleDialog.getView().findViewById(R.id.scramble_img);
                     imageView.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
                     break;

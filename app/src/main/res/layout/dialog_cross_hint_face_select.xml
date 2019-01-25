@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:background="@drawable/outline_background_card_smoother"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -70,7 +70,7 @@
         android:layout_alignRight="@id/back"
         android:background="?attr/selectableItemBackground"
         android:textAllCaps="true"
-        android:textColor="?colorAccent"
+        android:textColor="@color/md_deep_purple_A400"
         android:textStyle="bold"
         android:drawablePadding="8dp"
         android:gravity="center"

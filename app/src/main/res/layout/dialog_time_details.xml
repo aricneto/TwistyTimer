@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="32dp"
-    android:paddingTop="32dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
 
     <RelativeLayout
 
@@ -40,14 +40,14 @@
             android:id="@+id/dateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@id/timeText"
-            android:alpha="0.60"
-            android:drawableLeft="@drawable/ic_today_black_18dp"
+            android:layout_alignParentRight="true"
+            android:alpha="0.70"
+            android:drawableLeft="@drawable/ic_outline_date_range_18px"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:paddingRight="16dp"
             android:paddingTop="4dp"
+            android:paddingRight="16dp"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             tools:text="7 Aug 2016\n18:56" />
@@ -66,9 +66,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider01"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_comment_black_18dp"
+            android:layout_marginRight="16dp"
+            android:drawableLeft="@drawable/ic_outline_insert_comment_18px"
             android:drawablePadding="16dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
@@ -82,9 +82,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/commentText"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_dice_black_18dp"
+            android:layout_marginRight="16dp"
+            android:drawableLeft="@drawable/ic_outline_casino_18px"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:textColor="@color/md_blue_500"
@@ -103,45 +103,43 @@
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_below="@id/divider02"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="8dp"
-            android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:paddingBottom="16dp"
             android:paddingLeft="8dp"
-            android:paddingRight="16dp"
             android:paddingTop="8dp"
-            android:src="@drawable/ic_flag_black_18" />
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            app:srcCompat="@drawable/ic_outline_flag_18px" />
 
         <ImageView
             android:id="@+id/commentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/editButton"
-            android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_comment_black_18dp" />
+            app:srcCompat="@drawable/ic_outline_insert_comment_18px" />
 
         <ImageView
             android:id="@+id/overflowButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/divider02"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_more_vert_black_18dp" />
+            app:srcCompat="@drawable/ic_outline_more_horiz_18px" />
 
 
     </RelativeLayout>

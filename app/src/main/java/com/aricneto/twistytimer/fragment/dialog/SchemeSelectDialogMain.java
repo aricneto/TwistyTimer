@@ -126,6 +126,9 @@ public class SchemeSelectDialogMain extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_scheme_select_main, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
 
         setColor(top, Color.parseColor("#" + sp.getString("cubeTop", "FFFFFF")));
@@ -182,8 +185,6 @@ public class SchemeSelectDialogMain extends DialogFragment {
             }
         });
 
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialogView;
     }
 
