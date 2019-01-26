@@ -3,10 +3,13 @@ package com.aricneto.twistytimer.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.utils.ThemeUtils;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +18,18 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class TrainerCursorAdapter extends AlgCursorAdapter{
+public class TrainerCursorAdapter extends AlgCursorAdapter {
 
     private List<Long> selectedItems = new ArrayList<>();
     private FragmentManager fragmentManager;
+    private Context mContext;
 
     int cardColor;
     int selectedCardColor;
 
     public TrainerCursorAdapter(Context context, Cursor cursor, Fragment listFragment) {
         super(context, cursor, listFragment);
+        this.mContext = context;
         this.fragmentManager = listFragment.getFragmentManager();
         cardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackground);
         selectedCardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackgroundSelected);
@@ -39,7 +44,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter{
     }
 
     private void toggleSelection(long id, CardView card) {
-        if (! isSelected(id)) {
+        if (!isSelected(id)) {
             selectedItems.add(id);
             card.setCardBackgroundColor(selectedCardColor);
         } else {
@@ -64,7 +69,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter{
         holder.root.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (! isLocked()) {
+                if (!isLocked()) {
                     setIsLocked(true);
                     AlgDialog algDialog = AlgDialog.newInstance(id);
                     algDialog.show(fragmentManager, "alg_dialog");
@@ -73,6 +78,15 @@ public class TrainerCursorAdapter extends AlgCursorAdapter{
                 return true;
             }
         });
+    }
+
+    @Override
+    public void colorCube(AlgHolder holder, String state) {
+        int i = 0;
+        for (View sticker : holder.stickers) {
+            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
+            i++;
+        }
     }
 
     @Override

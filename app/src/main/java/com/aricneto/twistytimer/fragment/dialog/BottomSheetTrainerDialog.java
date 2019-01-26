@@ -2,6 +2,7 @@ package com.aricneto.twistytimer.fragment.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -34,8 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_ALGS_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_ALG_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
+import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 
 /**
  * TODO: REFACTOR
@@ -57,6 +61,19 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
     public BottomSheetTrainerDialog() {
     }
+
+    // Receives broadcasts about changes to the algorithm data.
+    private TTIntent.TTFragmentBroadcastReceiver mAlgDataChangedReceiver
+            = new TTIntent.TTFragmentBroadcastReceiver(this, CATEGORY_ALG_DATA_CHANGES) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_ALGS_MODIFIED:
+                    reloadList();
+                    break;
+            }
+        }
+    };
 
     public static BottomSheetTrainerDialog newInstance(String subset) {
         BottomSheetTrainerDialog fragment = new BottomSheetTrainerDialog();
@@ -83,6 +100,8 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
         setupRecyclerView();
         getLoaderManager().initLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
+
+        registerReceiver(mAlgDataChangedReceiver);
 
         return dialogView;
     }
@@ -121,9 +140,9 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =
-                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         StaggeredGridLayoutManager gridLayoutManagerVertical =
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
 
         // Adapt to orientation
         if (parentActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)

@@ -38,6 +38,7 @@ import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
+import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
@@ -353,7 +354,31 @@ public class MainActivity extends AppCompatActivity
                             });
                             break;
 
-                            
+                        case TRAINER_OLL_ID:
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    BottomSheetTrainerDialog trainerDialog =
+                                            BottomSheetTrainerDialog.newInstance(DatabaseHandler.SUBSET_OLL);
+                                    trainerDialog.show(fragmentManager, "bottomsheet_trainer_dialog");
+                                }
+                            });
+                            break;
+
+                        case TRAINER_PLL_ID:
+                            mDrawerToggle.runWhenIdle(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragmentManager
+                                            .beginTransaction()
+                                            .replace(R.id.main_activity_container,
+                                                    AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL),
+                                                    "fragment_algs_pll")
+                                            .commit();
+                                }
+                            });
+                            break;
+
                         case OLL_ID:
                             mDrawerToggle.runWhenIdle(new Runnable() {
                                 @Override

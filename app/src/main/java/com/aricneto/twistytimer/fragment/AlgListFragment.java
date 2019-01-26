@@ -202,9 +202,9 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =
-                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         StaggeredGridLayoutManager gridLayoutManagerVertical =
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
 
         // Adapt to orientation
         if (parentActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)

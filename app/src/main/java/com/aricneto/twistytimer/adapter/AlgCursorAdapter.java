@@ -115,7 +115,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     }
 
-    private void colorCube(AlgHolder holder, final String state) {
+    public void colorCube(AlgHolder holder, String state) {
         int i = 0;
         for (View sticker : holder.stickers) {
             sticker.setBackgroundColor(colorHash.get(state.charAt(i)));

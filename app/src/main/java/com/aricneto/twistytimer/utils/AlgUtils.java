@@ -27,7 +27,7 @@ public class AlgUtils {
         hashMap.put('B', Color.parseColor("#" + sp.getString("cubeBack", "304FFE")));
         hashMap.put('O', Color.parseColor("#" + sp.getString("cubeLeft", "FF8B24")));
         hashMap.put('W', Color.parseColor("#" + sp.getString("cubeTop", "FFFFFF")));
-        hashMap.put('N', Color.parseColor("#9E9E9E"));
+        hashMap.put('N', Color.parseColor("#A7A7A7"));
         return hashMap;
     }
 

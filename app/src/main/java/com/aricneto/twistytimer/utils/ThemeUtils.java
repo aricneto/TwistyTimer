@@ -163,6 +163,11 @@ public final class ThemeUtils {
         return value.data;
     }
 
+    public static int convertDoToPixels(Context context, int dp) {
+        return (int) (TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
+    }
+
     public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableRes);
         Drawable wrap = DrawableCompat.wrap(drawable);
