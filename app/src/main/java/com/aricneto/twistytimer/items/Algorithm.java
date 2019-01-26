@@ -5,9 +5,9 @@ package com.aricneto.twistytimer.items;
  */
 public class Algorithm {
     long id;
-    String subset;
-    String name;
-    String state;
+    String subset; // case subset (oll/pll)
+    String name; // case name
+    String state; // sticker colors
     String algs;
     int progress;
 

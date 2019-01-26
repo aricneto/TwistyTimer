@@ -380,5 +380,6 @@
     <string name="timelist_searchbox_hint">Search comments</string>
     <string name="title_algorithms">Algorithms</string>
     <string name="edit_scramble">Enter custom scramble</string>
+    <string name="drawer_title_trainer">Trainer</string>
 
 </resources>

@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity
     private static final int EXPORT_IMPORT_ID = 10;
     private static final int ABOUT_ID         = 4;
     private static final int SETTINGS_ID      = 5;
+    private static final int TRAINER_OLL_ID      = 14;
+    private static final int TRAINER_PLL_ID      = 15;
+
 
     private static final int REQUEST_SETTING           = 42;
     private static final int REQUEST_ABOUT             = 23;
@@ -236,6 +239,25 @@ public class MainActivity extends AppCompatActivity
                         .withIdentifier(TIMER_ID),
 
                 new ExpandableDrawerItem()
+                    .withName(R.string.drawer_title_trainer)
+                    .withIcon(R.drawable.ic_cube_unfolded_black_24dp)
+                    .withSelectable(false)
+                    .withIconTintingEnabled(true)
+                    .withSubItems(
+                            new SecondaryDrawerItem()
+                                    .withName(R.string.drawer_title_oll)
+                                    .withLevel(2)
+                                    .withIcon(R.drawable.ic_oll_black_24dp)
+                                    .withIconTintingEnabled(true)
+                                    .withIdentifier(TRAINER_OLL_ID),
+                            new SecondaryDrawerItem()
+                                    .withName(R.string.drawer_title_pll)
+                                    .withLevel(2)
+                                    .withIcon(R.drawable.ic_pll_black_24dp)
+                                    .withIconTintingEnabled(true)
+                                    .withIdentifier(TRAINER_PLL_ID)),
+
+                new ExpandableDrawerItem()
                         .withName(R.string.drawer_title_reference)
                         .withIcon(R.drawable.ic_cube_unfolded_black_24dp)
                         .withSelectable(false)
@@ -331,6 +353,7 @@ public class MainActivity extends AppCompatActivity
                             });
                             break;
 
+                            
                         case OLL_ID:
                             mDrawerToggle.runWhenIdle(new Runnable() {
                                 @Override

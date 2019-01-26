@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,7 +41,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     // Locks opening new windows until the last one is dismissed
     private boolean isLocked;
 
-    public AlgCursorAdapter(Context context, Cursor cursor, AlgListFragment listFragment) {
+    public AlgCursorAdapter(Context context, Cursor cursor, Fragment listFragment) {
         super(cursor);
         this.mContext = context;
         this.mFragmentManager = listFragment.getFragmentManager();
@@ -82,7 +84,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         setIsLocked(false);
     }
 
-    private void handleTime(final AlgHolder holder, final Cursor cursor) {
+    public void handleTime(final AlgHolder holder, final Cursor cursor) {
         final long mId = cursor.getLong(0); // id
         final String pName = cursor.getString(2);
         final String pState = cursor.getString(3);
@@ -134,6 +136,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         @BindView(R.id.pll_arrows)  ImageView           pllArrows;
         @BindView(R.id.progressBar) MaterialProgressBar progressBar;
         @BindView(R.id.root)        RelativeLayout      root;
+        @BindView(R.id.card)        CardView            card;
 
         @BindViews({
                 R.id.sticker1,  R.id.sticker2,  R.id.sticker3,  R.id.sticker4,

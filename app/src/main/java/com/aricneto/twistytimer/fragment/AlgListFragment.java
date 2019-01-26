@@ -112,7 +112,6 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         // Required empty public constructor
     }
 
-    // We have to put a boolean history here because it resets when we change puzzles.
     public static AlgListFragment newInstance(String subset) {
         AlgListFragment fragment = new AlgListFragment();
         Bundle args = new Bundle();
