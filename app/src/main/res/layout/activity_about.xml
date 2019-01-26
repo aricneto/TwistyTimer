@@ -25,7 +25,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/app_icon" />
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/appTitle"
@@ -37,8 +37,7 @@
         android:textColor="@color/white_text"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/app_icon" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/appVersion"
@@ -48,8 +47,7 @@
         tools:text="APP VERSION"
         android:textColor="@color/white_secondary_icon"
         android:textSize="12sp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/app_icon" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:textColor="@color/white_text"
