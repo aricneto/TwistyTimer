@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:alpha="1"
-            android:fontFamily="@font/quicksand_bold"
+            android:textStyle="bold"
             android:text="Puzzle"
             android:textColor="?colorTimerText"
             android:textSize="18sp" />

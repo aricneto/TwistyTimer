@@ -15,18 +15,11 @@
     <attr format="color" name="mainColorBackground"/>
     <attr format="color" name="textColorContrastBackground"/>
 
-    <attr format="color" name="colorCardStroke"/>
-    <attr format="color" name="colorCardStrokeFaded"/>
-    <attr format="color" name="colorCardStrokeLighter"/>
-
-    <attr format="color" name="colorCardBackground"/>
-    <attr format="color" name="colorCardBackgroundWarn"/>
-    <attr format="color" name="colorCardBackgroundInfo"/>
-    <attr format="color" name="colorCardBackgroundFaded"/>
-
-    <attr format="color" name="colorCardText"/>
-
     <attr format="dimension" name="tabBarSize"/>
+
+    <attr name="colorCardBackgroundWarn" format="color"/>
+    <attr name="colorCardText" format="color"/>
+    <attr name="colorCardBackgroundFaded" format="color"/>
 
     <attr format="color" name="colorChartAllTimes"/>
     <attr format="color" name="colorChartBestTimes"/>

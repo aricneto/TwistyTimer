@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="?tabBarSize"
         android:layout_alignParentBottom="true"
-        android:alpha="0.95"
+        android:alpha="1"
         android:background="@drawable/outline_background_card_top_tab"
         android:isScrollContainer="false"
         app:tabGravity="fill"

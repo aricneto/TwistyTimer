@@ -113,15 +113,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-
-        // Get gradient colors from style
-        TypedArray gradientColors = mContext.obtainStyledAttributes(themeSet[position].getResId(), R.styleable.BackgroundGradientStyle);
-
         // Create gradient drawable
-        GradientDrawable gradientDrawable = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientStart, Color.BLUE),
-                          gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientEnd, Color.BLUE)});
+        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, themeSet[position].getResId());
         gradientDrawable.setCornerRadius(18f);
         gradientDrawable.setStroke(4, Color.BLACK);
 
@@ -144,8 +137,6 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
                 }
             }
         });
-
-        gradientColors.recycle();
     }
 
     @Override

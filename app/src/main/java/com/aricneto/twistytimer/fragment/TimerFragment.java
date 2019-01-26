@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
 
@@ -71,6 +72,7 @@ import com.skyfishjy.library.RippleBackground;
 
 import java.util.Locale;
 
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -180,14 +182,15 @@ public class                                                                    
 
     @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
 
-    @BindView(R.id.chronometer)     ChronometerMilli    chronometer;
-    @BindView(R.id.scramble_box)    View            scrambleBox;
-    @BindView(R.id.scramble_text)    TextView            scrambleText;
+    @BindView(R.id.chronometer)      ChronometerMilli    chronometer;
+    @BindView(R.id.scramble_box)     View                scrambleBox;
+    @BindView(R.id.scramble_text)
+                                     AppCompatTextView   scrambleText;
     @BindView(R.id.scramble_img)     ImageView           scrambleImg;
-    @BindView(R.id.expanded_image)  ImageView           expandedImageView;
+    @BindView(R.id.expanded_image)   ImageView           expandedImageView;
     @BindView(R.id.inspection_text)  TextView            inspectionText;
-    @BindView(R.id.progressSpinner) MaterialProgressBar progressSpinner;
-    @BindView(R.id.scramble_progress) MaterialProgressBar scrambleProgress;
+    @BindView(R.id.progressSpinner)  MaterialProgressBar progressSpinner;
+    @BindView(R.id.scramble_progress)MaterialProgressBar scrambleProgress;
 
     @BindView(R.id.scramble_button_hint)         View scrambleButtonHint;
     @BindView(R.id.scramble_button_reset) View scrambleButtonReset;
@@ -1451,9 +1454,10 @@ public class                                                                    
                     if ((Rect.intersects(scrambleRect, chronometerRect)) ||
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                         scrambleText.setText(R.string.scramble_text_tap_hint);
-                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_casino_24px, 0, 0, 0);
+                        Drawable icon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_outline_casino_24px, null);
+                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                     } else {
-                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     }
                     scrambleBox.setOnClickListener(new View.OnClickListener() {
                         @Override

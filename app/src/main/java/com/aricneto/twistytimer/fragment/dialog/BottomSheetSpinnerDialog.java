@@ -1,6 +1,7 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -28,8 +31,8 @@ import butterknife.Unbinder;
 
 public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
-    @BindView(R.id.title) TextView titleTextView;
-    @BindView(R.id.list) ListView listView;
+    @BindView(R.id.title) AppCompatTextView titleTextView;
+    @BindView(R.id.list)ListView          listView;
 
     private Context mContext;
 
@@ -62,7 +65,11 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
         listView.setOnItemClickListener(mClickListener);
 
         titleTextView.setText(titleText);
-        titleTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, titleIcon != 0 ? ContextCompat.getDrawable(mContext, titleIcon) : null, null);
+
+        if (titleIcon != 0) {
+            Drawable icon = VectorDrawableCompat.create(mContext.getResources(), titleIcon, null);
+            titleTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+        }
     }
 
     public void setTitle(String title, @DrawableRes int iconRes) {

@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/outline_background_card_top"
     android:paddingBottom="16dp"
     android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
         android:fontFamily="@font/quicksand_bold"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_outline_category_24"
         android:text="Select a puzzle" />
 
     <View

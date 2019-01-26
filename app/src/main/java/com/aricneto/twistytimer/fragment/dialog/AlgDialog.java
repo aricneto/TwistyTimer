@@ -203,11 +203,10 @@ public class AlgDialog extends DialogFragment {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         final HashMap<Character, Integer> colorHash = AlgUtils.getColorLetterHashMap(sp);
 
-        /*ButterKnife.apply(stickers, new ButterKnife.Action<View>() {
-            @Override
-            public void apply(@NonNull View sticker, int index) {
-                sticker.setBackgroundColor(colorHash.get(state.charAt(index)));
-            }
-        });*/ // FIXME: this broke when updated to androidX
+        int i = 0;
+        for (View sticker : stickers) {
+            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
+            i++;
+        }
     }
 }

@@ -36,14 +36,14 @@
             android:textStyle="bold"
             tools:text="+2" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/dateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/timeText"
             android:layout_alignParentRight="true"
             android:alpha="0.70"
-            android:drawableLeft="@drawable/ic_outline_date_range_18px"
+            app:drawableLeftCompat="@drawable/ic_outline_date_range_18px"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:paddingTop="4dp"
@@ -60,7 +60,7 @@
             android:layout_below="@id/timeText"
             android:layout_marginTop="8dp" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/commentText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:drawableLeft="@drawable/ic_outline_insert_comment_18px"
+            app:drawableLeftCompat="@drawable/ic_outline_insert_comment_18px"
             android:drawablePadding="16dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
@@ -76,7 +76,7 @@
             tools:text="Got a PLL skip"
             tools:visibility="visible" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/scrambleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:drawableLeft="@drawable/ic_outline_casino_18px"
+            app:drawableLeftCompat="@drawable/ic_outline_casino_18px"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:textColor="@color/md_blue_500"

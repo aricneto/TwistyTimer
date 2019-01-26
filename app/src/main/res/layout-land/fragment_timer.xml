@@ -152,7 +152,7 @@
         android:paddingRight="8dp"
         android:paddingBottom="4dp"
         android:text="@string/timer_detail_average_record_message"
-        android:textColor="?colorCardText"
+        android:textColor="#000"
         android:textSize="12sp"
         android:visibility="gone"
         tools:visibility="visible" />

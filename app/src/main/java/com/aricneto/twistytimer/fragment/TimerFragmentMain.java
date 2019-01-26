@@ -3,8 +3,6 @@ package com.aricneto.twistytimer.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -14,13 +12,13 @@ import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetCategoryDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
-import androidx.core.content.ContextCompat;
 import androidx.loader.content.Loader;
 import androidx.viewpager.widget.ViewPager;
 
@@ -113,10 +111,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.toolbar)       RelativeLayout         mToolbar;
+    @BindView(R.id.root)          RelativeLayout  rootLayout;
+    @BindView(R.id.toolbar)       RelativeLayout  mToolbar;
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
-    @BindView(R.id.puzzleSpinner) View puzzleSpinnerLayout;
+    @BindView(R.id.puzzleSpinner) View            puzzleSpinnerLayout;
 
     @BindView(R.id.nav_button_settings) View      navButtonSettings;
     @BindView(R.id.nav_button_category) View      navButtonCategory;
@@ -346,6 +345,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
+        // setup background gradient
+        rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(getContext(), ThemeUtils.getPreferredTheme()));
+
         setupHistorySwitchItem();
 
         navButtonCategory.setOnClickListener(clickListener);
@@ -499,27 +501,20 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder.unbind();
     }
 
-    Drawable[] onOff = new Drawable[2];
-
     private void setupHistorySwitchItem() {
         Context context = getContext();
-
-        if (context != null) {
-            onOff[0] = ContextCompat.getDrawable(context, R.drawable.ic_history_on);
-            onOff[1] = ContextCompat.getDrawable(context, R.drawable.ic_history_off);
-        }
     }
 
     private void updateHistorySwitchItem() {
         if (history) {
-            navButtonHistory.setImageDrawable(onOff[0]);
+            navButtonHistory.setImageResource(R.drawable.ic_history_on);
             navButtonHistory.animate()
                     .rotation(-135)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .setDuration(300)
                     .start();
         } else {
-            navButtonHistory.setImageDrawable(onOff[1]);
+            navButtonHistory.setImageResource(R.drawable.ic_history_off);
             navButtonHistory.animate()
                     .rotation(0)
                     .setInterpolator(new AccelerateDecelerateInterpolator())

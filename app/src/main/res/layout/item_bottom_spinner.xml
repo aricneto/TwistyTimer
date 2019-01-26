@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item"
     style="@style/BottomPanelListTextStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawableLeft="@drawable/ic_outline_play_arrow_24px"
+    app:drawableLeftCompat="@drawable/ic_outline_play_arrow_24px"
     android:orientation="vertical"
     tools:text="@string/cube_333">
 
-</TextView>
+</androidx.appcompat.widget.AppCompatTextView>

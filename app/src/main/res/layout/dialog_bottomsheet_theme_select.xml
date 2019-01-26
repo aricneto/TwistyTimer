@@ -7,11 +7,11 @@
     android:background="@drawable/outline_background_card_top"
     android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_outline_palette_24px"
+        app:drawableRightCompat="@drawable/ic_outline_palette_24px"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/drawer_title_changeTheme" />
 

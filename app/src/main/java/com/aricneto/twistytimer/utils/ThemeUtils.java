@@ -1,13 +1,16 @@
 package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -125,6 +128,26 @@ public final class ThemeUtils {
                 new Theme(THEME_WHITE_GREEN, "Greeny\nEverest"),
                 new Theme(THEME_WHITE, "Simply\nWhite")};
         return themes;
+    }
+
+    /**
+     * Returns a {@link GradientDrawable} containing a linear gradient with the given style's colors
+     *
+     * @param context Context
+     * @param style The style resource contaning the background color definition (colorMainGradient[Start|End])
+     * @return {@link GradientDrawable} containing a linear gradient with the given style's colors
+     */
+    public static GradientDrawable fetchBackgroundGradient(Context context, @StyleRes int style) {
+        TypedArray gradientColors = context.obtainStyledAttributes(style, R.styleable.BackgroundGradientStyle);
+
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientStart, Color.BLUE),
+                          gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientEnd, Color.BLUE)});
+
+        gradientColors.recycle();
+
+        return gradientDrawable;
     }
 
     /**

@@ -7,11 +7,11 @@
     android:background="@drawable/outline_background_card_top"
     android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_outline_casino_24px"
+        app:drawableRightCompat="@drawable/ic_outline_casino_24px"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/dialog_scramble_details" />
 
@@ -45,7 +45,7 @@
         android:layout_marginBottom="0dp"
         android:background="@color/black_divider" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/hint_title"
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="?colorCardBackgroundWarn"
-        android:drawableRight="@drawable/ic_outline_wb_incandescent_24px"
+        app:drawableRightCompat="@drawable/ic_outline_wb_incandescent_24px"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/dialog_hint_title"
         android:visibility="gone"

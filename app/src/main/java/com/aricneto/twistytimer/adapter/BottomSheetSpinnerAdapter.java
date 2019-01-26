@@ -1,8 +1,9 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,8 +11,8 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 
-import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 /**
  * Custom adapter for {@link com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog}
@@ -20,10 +21,10 @@ import androidx.core.content.ContextCompat;
 
 public class BottomSheetSpinnerAdapter extends BaseAdapter {
 
-    private Context mContext;
+    private Context  mContext;
     private String[] mTitles;
-    private int[] mIconRes;
-    private int iconResLenght;
+    private int[]    mIconRes;
+    private int      iconResLenght;
 
     public BottomSheetSpinnerAdapter(Context context, String[] titles, int[] iconRes) {
         this.mContext = context;
@@ -52,12 +53,23 @@ public class BottomSheetSpinnerAdapter extends BaseAdapter {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_bottom_spinner, parent, false);
 
         TextView titleView = view.findViewById(R.id.item);
+        Drawable icon;
 
         titleView.setText(mTitles[position]);
-        if (iconResLenght > 0)
-            titleView.setCompoundDrawablesWithIntrinsicBounds(mIconRes[position] != 0 ? ContextCompat.getDrawable(mContext, mIconRes[position]) : null, null, null, null);
-        else
-            titleView.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(mContext, R.drawable.ic_label), null, null, null);
+
+        if (iconResLenght > 0) {
+            if (mIconRes[position] != 0) {
+                try {
+                    icon = VectorDrawableCompat.create(mContext.getResources(), mIconRes[position], null);
+                    titleView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                } catch (Exception e) {
+                    Log.e("BottomSheetSpinner", "Error populating list!: " + e);
+                }
+            }
+        } else {
+            icon = VectorDrawableCompat.create(mContext.getResources(), R.drawable.ic_label, null);
+            titleView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        }
 
         return view;
     }

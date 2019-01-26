@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
@@ -17,6 +19,7 @@ import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -45,6 +48,9 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 public class AlgListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_SUBSET = "subset";
+
+    @BindView(R.id.root)
+    LinearLayout rootLayout;
 
     @BindView(R.id.spinnerIcon)
     View spinnerIcon;
@@ -128,6 +134,8 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alg_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
+
+        rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(getContext(), ThemeUtils.getPreferredTheme()));
 
         titleView.setText(R.string.title_algorithms);
         subtitleView.setText(currentSubset);
