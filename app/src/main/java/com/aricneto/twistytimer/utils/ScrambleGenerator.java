@@ -63,6 +63,9 @@ public class ScrambleGenerator {
             case PuzzleUtils.TYPE_SQUARE1:
                 puzzle = new SquareOneUnfilteredPuzzle();
                 break;
+            default:
+                puzzle = new ThreeByThreeCubePuzzle();
+                break;
         }
     }
 

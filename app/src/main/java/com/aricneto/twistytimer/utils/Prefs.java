@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 
 import com.aricneto.twistytimer.TwistyTimer;
 
+import java.util.Set;
+
 /**
  * Utility class to access the default shared preferences.
  *
@@ -184,6 +186,23 @@ public final class Prefs {
          */
         public Editor putString(@StringRes int prefKeyResID, String value) {
             mSPEditor.putString(TwistyTimer.getAppContext().getString(prefKeyResID), value);
+            return this;
+        }
+
+        /**
+         * Sets the value of a shared preference to the given string set.
+         *
+         * @param prefKeyResID
+         *     The string resource ID for the name of the preference key.
+         *     See {@code values/pref_keys.xml}.
+         * @param value
+         *     The new value of the preference.
+         *
+         * @return
+         *     This editor, to allow method calls to be chained.
+         */
+        public Editor putStringSet(@StringRes int prefKeyResID, Set<String> value) {
+            mSPEditor.putStringSet(TwistyTimer.getAppContext().getString(prefKeyResID), value);
             return this;
         }
 

@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetCategoryDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
+import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
+import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -56,6 +58,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.aricneto.twistytimer.fragment.TimerFragment.TIMER_MODE_TIMER;
+import static com.aricneto.twistytimer.fragment.TimerFragment.TIMER_MODE_TRAINER;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
@@ -109,6 +113,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
+    private static final String PUZZLE         = "puzzle";
+    private static final String PUZZLE_SUBTYPE = "puzzle_type";
+    private static final String TIMER_MODE     = "timer_mode";
+    private static final String TRAINER_SUBSET    = "trainer_subset";
+
     private Unbinder mUnbinder;
 
     @BindView(R.id.root)          RelativeLayout  rootLayout;
@@ -135,8 +144,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private MaterialDialog renameSubtypeDialog;
 
     // Stores the current puzzle being timed/shown
-    private String currentPuzzle        = PuzzleUtils.TYPE_333;
-    private String currentPuzzleSubtype = "Normal";
+    private String                         currentPuzzle;
+    private String                         currentPuzzleCategory;
+    private TrainerScrambler.TrainerSubset currentPuzzleSubset;
+    private String                         currentTimerMode;
+
     // Stores the current state of the list switch
     boolean history = false;
 
@@ -151,11 +163,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.nav_button_category:
-                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleSubtype);
+                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory);
                     categoryDialog.setDialogListener(new DialogListenerMessage() {
                         @Override
                         public void onUpdateDialog(String text) {
-                            currentPuzzleSubtype = text;
+                            currentPuzzleCategory = text;
                             broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
                         }
                     });
@@ -294,26 +306,37 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 case ACTION_CHANGED_CATEGORY:
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
+                    bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
                     updatePuzzleSpinnerHeader();
                     handleStatisticsLoader();
                     break;
             }
         }
     };
+    private BottomSheetTrainerDialog bottomSheetTrainerDialog;
 
     private void updatePuzzleSpinnerHeader() {
         history = false;
         updateHistorySwitchItem();
-        puzzleCategoryText.setText(currentPuzzleSubtype.toLowerCase());
-        puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
+        puzzleCategoryText.setText(currentPuzzleCategory.toLowerCase());
+        if (currentTimerMode.equals(TIMER_MODE_TRAINER))
+            puzzleNameText.setText(getString(R.string.title_trainer, currentPuzzleSubset.name()));
+        else
+            puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
     }
 
     public TimerFragmentMain() {
         // Required empty public constructor
     }
 
-    public static TimerFragmentMain newInstance() {
+    public static TimerFragmentMain newInstance(String puzzle, String category, String mode, TrainerScrambler.TrainerSubset subset) {
         final TimerFragmentMain fragment = new TimerFragmentMain();
+        Bundle args = new Bundle();
+        args.putString(PUZZLE, puzzle);
+        args.putString(PUZZLE_SUBTYPE, category);
+        args.putString(TIMER_MODE, mode);
+        args.putSerializable(TRAINER_SUBSET, subset);
+        fragment.setArguments(args);
         if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
     }
@@ -323,7 +346,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (DEBUG_ME) Log.d(TAG, "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
         outState.putString("puzzle", currentPuzzle);
-        outState.putString("subtype", currentPuzzleSubtype);
+        outState.putString("subtype", currentPuzzleCategory);
+        outState.putSerializable("subset", currentPuzzleSubset);
+        outState.putString("mode", currentTimerMode);
         outState.putBoolean("history", history);
     }
 
@@ -331,9 +356,19 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     public void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            currentPuzzle = getArguments().getString(PUZZLE);
+            currentPuzzleCategory = getArguments().getString(PUZZLE_SUBTYPE);
+            currentTimerMode = getArguments().getString(TIMER_MODE);
+            currentPuzzleSubset = (TrainerScrambler.TrainerSubset) getArguments().getSerializable(TRAINER_SUBSET);
+        }
+
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
-            currentPuzzleSubtype = savedInstanceState.getString("subtype");
+            currentPuzzleCategory = savedInstanceState.getString("subtype");
+            currentTimerMode = savedInstanceState.getString("mode", TimerFragment.TIMER_MODE_TIMER);
+            currentPuzzleSubset = (TrainerScrambler.TrainerSubset) savedInstanceState.getSerializable("subset");
             history = savedInstanceState.getBoolean("history");
         }
     }
@@ -428,7 +463,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         // "onCreateLoader".
 
         if (DEBUG_ME)
-            Log.d(TAG, "Puzzle and subtype: " + currentPuzzle + " // " + currentPuzzleSubtype);
+            Log.d(TAG, "Puzzle and subtype: " + currentPuzzle + " // " + currentPuzzleCategory);
         if (DEBUG_ME) Log.d(TAG, "onActivityCreated -> restartLoader: STATISTICS_LOADER_ID");
         getLoaderManager().restartLoader(MainActivity.STATISTICS_LOADER_ID, null,
                                          new LoaderManager.LoaderCallbacks<Wrapper<Statistics>>() {
@@ -437,7 +472,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                                  if (DEBUG_ME)
                                                      Log.d(TAG, "onCreateLoader: STATISTICS_LOADER_ID");
                                                  return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
-                                                                             currentPuzzle, currentPuzzleSubtype);
+                                                                             currentPuzzle, currentPuzzleCategory);
                                              }
 
                                              @Override
@@ -573,11 +608,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         final List<String> subtypeList
                 = TwistyTimer.getDBHandler().getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
-            currentPuzzleSubtype = "Normal";
+            currentPuzzleCategory = "Normal";
             editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
             editor.apply();
         } else {
-            currentPuzzleSubtype = sharedPreferences.getString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
+            currentPuzzleCategory = sharedPreferences.getString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
         }
     }
 
@@ -639,11 +674,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         });
 
+        bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
+
         // Setup action bar click listener
         puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
+                if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
+                    bottomSheetTrainerDialog.show(getFragmentManager(), "trainer_dialog_fragment");
+                else
+                    bottomSheetSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
             }
         });
 
@@ -663,15 +703,15 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
             switch (position) {
                 case TIMER_PAGE:
-                    return TimerFragment.newInstance(currentPuzzle, currentPuzzleSubtype);
+                    return TimerFragment.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
                 case LIST_PAGE:
                     return TimerListFragment.newInstance(
-                            currentPuzzle, currentPuzzleSubtype, history);
+                            currentPuzzle, currentPuzzleCategory, history);
                 case GRAPH_PAGE:
                     return TimerGraphFragment.newInstance(
-                            currentPuzzle, currentPuzzleSubtype, history);
+                            currentPuzzle, currentPuzzleCategory, history);
             }
-            return TimerFragment.newInstance(PuzzleUtils.TYPE_333, "Normal");
+            return TimerFragment.newInstance(PuzzleUtils.TYPE_333, "Normal", TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.OLL);
         }
 
         /**

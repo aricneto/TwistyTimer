@@ -25,7 +25,6 @@ import android.os.Process;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
 
 import android.text.Html;
@@ -33,7 +32,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -86,7 +84,6 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_COMMENT_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
@@ -110,10 +107,8 @@ public class                                                                    
     // Specifies the timer mode
     // i.e: Trainer mode generates only trainer scrambles, and changes the puzzle select spinner
     // Can be used for other features in the future
-    public static enum TimerMode {
-        TIMER,
-        TRAINER
-    }
+    public static final String TIMER_MODE_TIMER = "TIMER_MODE_TIMER";
+    public static final String TIMER_MODE_TRAINER = "TIMER_MODE_TRAINER";
 
     /**
      * Flag to enable debug logging for this class.
@@ -127,9 +122,10 @@ public class                                                                    
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
+    private static final String TRAINER_SUBSET = "trainer_subset";
+    private static final String TIMER_MODE = "timer_mode";
     private static final String SCRAMBLE = "scramble";
     private static final String HAS_STOPPED_TIMER_ONCE = "has_stopped_timer_once";
-    private static final String TIMER_MODE = "timer_mode";
 
 
     /**
@@ -139,7 +135,8 @@ public class                                                                    
     private static final long HOLD_FOR_START_DELAY = 500L;
 
     private String currentPuzzle;
-    private String currentPuzzleSubtype;
+    private String currentPuzzleCategory;
+    private TrainerScrambler.TrainerSubset currentSubset;
 
     private String currentScramble = "";
     private Solve  currentSolve    = null;
@@ -179,6 +176,11 @@ public class                                                                    
     private GetOptimalCross optimalCrossAsync;
 
     private int currentPenalty = NO_PENALTY;
+
+    /**
+     * Specifies the current TimerMode
+     */
+    private String currentTimerMode;
 
     private int      mShortAnimationDuration;
     private Animator mCurrentAnimator;
@@ -294,11 +296,6 @@ public class                                                                    
     private RubiksCubeOptimalXCross optimalXCross;
     private BottomSheetDetailDialog scrambleDialog;
 
-    /**
-     * Specifies the current {@link TimerMode}
-     */
-    private String currentTimerMode;
-
     public TimerFragment() {
         // Required empty public constructor
     }
@@ -395,13 +392,8 @@ public class                                                                    
                                 @Override
                                 public void onInput(@NonNull MaterialDialog dialog,
                                                     CharSequence input) {
-                                    realScramble = input.toString();
 
-                                    // update scramble textview and image
-                                    scrambleText.setText(realScramble);
-
-                                    if (scrambleImgEnabled)
-                                        generateScrambleImage();
+                                    setScramble(input.toString());
 
                                     // The hint solver will crash if you give it invalid scrambles,
                                     // so we shouldn't calculate hints for custom scrambles.
@@ -435,12 +427,13 @@ public class                                                                    
         undoButton.setVisibility(hideUndoButton ? View.GONE : View.VISIBLE);
     }
 
-    public static TimerFragment newInstance(String puzzle, String puzzleSubType, TimerMode timerMode) {
+    public static TimerFragment newInstance(String puzzle, String puzzleSubType, String timerMode, TrainerScrambler.TrainerSubset subset) {
         TimerFragment fragment = new TimerFragment();
         Bundle args = new Bundle();
         args.putString(PUZZLE, puzzle);
         args.putString(PUZZLE_SUBTYPE, puzzleSubType);
-        args.putString(TIMER_MODE, timerMode.toString());
+        args.putString(TIMER_MODE, timerMode);
+        args.putSerializable(TRAINER_SUBSET, subset);
         fragment.setArguments(args);
         if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
@@ -452,7 +445,8 @@ public class                                                                    
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
-            currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
+            currentPuzzleCategory = getArguments().getString(PUZZLE_SUBTYPE);
+            currentSubset = (TrainerScrambler.TrainerSubset) getArguments().getSerializable(TRAINER_SUBSET);
             currentTimerMode = getArguments().getString(TIMER_MODE);
         }
 
@@ -918,7 +912,7 @@ public class                                                                    
     private void addNewSolve() {
         currentSolve = new Solve(
                 (int) chronometer.getElapsedTime(), // Includes any "+2" penalty. Is zero for "DNF".
-                currentPuzzle, currentPuzzleSubtype,
+                currentPuzzle, currentPuzzleCategory,
                 System.currentTimeMillis(), currentScramble, currentPenalty, "", false);
 
         if (currentPenalty != PENALTY_DNF) {
@@ -1380,22 +1374,12 @@ public class                                                                    
      * Generates a new scramble and handles everything.
      */
     public void generateNewScramble() {
-        if (scrambleEnabled && currentTimerMode.equals(TimerMode.TIMER.toString())) {
+        if (scrambleEnabled && currentTimerMode.equals(TIMER_MODE_TIMER)) {
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
             scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else if (currentTimerMode.equals(TimerMode.TRAINER.toString())) {
-            currentScramble = TrainerScrambler.fetchRandomScramble(getContext(), )
-
-            // update scramble textview and image
-            scrambleText.setText(realScramble);
-
-            if (scrambleImgEnabled)
-                generateScrambleImage();
-
-            // The hint solver will crash if you give it invalid scrambles,
-            // so we shouldn't calculate hints for custom scrambles.
-            // TODO: We can use the scramble image generator (which has a scramble validity checker) to check a scramble before calling a hint
+        } else if (currentTimerMode.equals(TIMER_MODE_TRAINER)) {
+            setScramble(TrainerScrambler.fetchRandomScramble(getContext(), currentSubset, currentPuzzleCategory));
             canShowHint = false;
             hideButtons(true, true);
         }
@@ -1461,7 +1445,12 @@ public class                                                                    
 
         @Override
         protected String doInBackground(String... params) {
-            return generator.getPuzzle().generateScramble();
+            try {
+                return generator.getPuzzle().generateScramble();
+            } catch (Exception e) {
+                Log.e(TAG, "Invalid puzzle for generator");
+            }
+            return "An error has ocurred";
         }
 
         @Override
@@ -1475,6 +1464,10 @@ public class                                                                    
         }
     }
 
+    /**
+     * Updates everything related to displaying the current scramble
+     * Ex. scramble image, box, text, dialogs
+     */
     private void setScramble(final String scramble) {
         scrambleText.setText(scramble);
         scrambleText.post(new Runnable() {
@@ -1524,7 +1517,8 @@ public class                                                                    
             progressSpinner.setVisibility(View.INVISIBLE);
         isLocked = false;
 
-        canShowHint = true;
+        if (showHintsEnabled)
+            canShowHint = true;
     }
 
     private class GenerateScrambleImage extends AsyncTask<Void, Void, Drawable> {

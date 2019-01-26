@@ -21,6 +21,7 @@ import com.aricneto.twistytimer.adapter.TrainerCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.items.Theme;
+import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_ALGS_MODIFIED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_ALG_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
@@ -49,6 +51,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_SUBSET = "subset";
+    private static final String KEY_CATEGORY = "category";
 
     @BindView(R.id.title)
     TextView titleView;
@@ -56,8 +59,9 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
     RecyclerView recyclerView;
 
     private Unbinder mUnbinder;
-    String currentSubset;
-    TrainerCursorAdapter trainerCursorAdapter;
+    TrainerScrambler.TrainerSubset currentSubset;
+    String                         currentCategory;
+    TrainerCursorAdapter           trainerCursorAdapter;
 
     public BottomSheetTrainerDialog() {
     }
@@ -74,11 +78,24 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
             }
         }
     };
+    // Receives broadcasts about changes to the time user interface.
+    private TTIntent.TTFragmentBroadcastReceiver mUIInteractionReceiver
+            = new TTIntent.TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
+        @Override
+        public void onReceiveWhileAdded(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_CHANGED_CATEGORY:
+                    reloadList();
+                    break;
+            }
+        }
+    };
 
-    public static BottomSheetTrainerDialog newInstance(String subset) {
+    public static BottomSheetTrainerDialog newInstance(TrainerScrambler.TrainerSubset subset, String category) {
         BottomSheetTrainerDialog fragment = new BottomSheetTrainerDialog();
         Bundle args = new Bundle();
-        args.putString(KEY_SUBSET, subset);
+        args.putSerializable(KEY_SUBSET, subset);
+        args.putString(KEY_CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,7 +104,8 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentSubset = getArguments().getString(KEY_SUBSET);
+            currentSubset = (TrainerScrambler.TrainerSubset) getArguments().getSerializable(KEY_SUBSET);
+            currentCategory = getArguments().getString(KEY_CATEGORY);
         }
     }
 
@@ -102,6 +120,7 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
         getLoaderManager().initLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
 
         registerReceiver(mAlgDataChangedReceiver);
+        registerReceiver(mUIInteractionReceiver);
 
         return dialogView;
     }
@@ -119,7 +138,7 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new AlgTaskLoader(currentSubset);
+        return new AlgTaskLoader(currentSubset.name());
     }
 
     @Override
@@ -136,7 +155,7 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
     private void setupRecyclerView() {
         Activity parentActivity = getActivity();
 
-        trainerCursorAdapter = new TrainerCursorAdapter(getActivity(), null, this);
+        trainerCursorAdapter = new TrainerCursorAdapter(getActivity(), null, this, currentSubset, currentCategory);
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =

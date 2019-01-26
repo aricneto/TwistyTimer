@@ -37,6 +37,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
+import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
@@ -45,6 +46,7 @@ import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
+import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
@@ -84,6 +86,7 @@ import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_SUBTYPE;
 import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TIME;
 import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TYPE;
 import static com.aricneto.twistytimer.database.DatabaseHandler.ProgressListener;
+import static com.aricneto.twistytimer.database.DatabaseHandler.SUBSET_OLL;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             fragmentManager
                 .beginTransaction()
-                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(), "fragment_main")
+                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
                 .commit();
         }
 
@@ -348,7 +351,7 @@ public class MainActivity extends AppCompatActivity
                                     fragmentManager
                                         .beginTransaction()
                                         .replace(R.id.main_activity_container,
-                                                TimerFragmentMain.newInstance(), "fragment_main")
+                                                 TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
                                         .commit();
                                 }
                             });
@@ -358,9 +361,11 @@ public class MainActivity extends AppCompatActivity
                             mDrawerToggle.runWhenIdle(new Runnable() {
                                 @Override
                                 public void run() {
-                                    BottomSheetTrainerDialog trainerDialog =
-                                            BottomSheetTrainerDialog.newInstance(DatabaseHandler.SUBSET_OLL);
-                                    trainerDialog.show(fragmentManager, "bottomsheet_trainer_dialog");
+                                    fragmentManager
+                                            .beginTransaction()
+                                            .replace(R.id.main_activity_container,
+                                                     TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
+                                            .commit();
                                 }
                             });
                             break;

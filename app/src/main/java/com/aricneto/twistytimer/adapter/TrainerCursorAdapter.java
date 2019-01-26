@@ -2,12 +2,15 @@ package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
+import com.aricneto.twistytimer.puzzle.TrainerScrambler;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -20,19 +23,31 @@ import androidx.fragment.app.FragmentManager;
 
 public class TrainerCursorAdapter extends AlgCursorAdapter {
 
-    private List<Long> selectedItems = new ArrayList<>();
+    private List<Long> selectedItems;
     private FragmentManager fragmentManager;
     private Context mContext;
+
+    TrainerScrambler.TrainerSubset currentSubset;
+    String currentPuzzleCategory;
 
     int cardColor;
     int selectedCardColor;
 
-    public TrainerCursorAdapter(Context context, Cursor cursor, Fragment listFragment) {
+    public TrainerCursorAdapter(Context context, Cursor cursor, Fragment listFragment, TrainerScrambler.TrainerSubset subset, String category) {
         super(context, cursor, listFragment);
+        Log.d("TrainerCursor", "Created trainerCursor " + subset + category);
         this.mContext = context;
         this.fragmentManager = listFragment.getFragmentManager();
+
         cardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackground);
         selectedCardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackgroundSelected);
+
+        selectedItems = new ArrayList<>();
+        selectedItems.addAll(TrainerScrambler.fetchSelectedItemsLong(subset, category));
+
+        this.currentSubset = subset;
+        this.currentPuzzleCategory = category;
+
     }
 
     private boolean isSelected(long id) {
@@ -51,6 +66,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
             selectedItems.remove(id);
             card.setCardBackgroundColor(cardColor);
         }
+        TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
     }
 
     @Override
@@ -58,6 +74,12 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         super.handleTime(holder, cursor);
 
         long id = cursor.getLong(0);
+
+        if (isSelected(id)) {
+            holder.card.setCardBackgroundColor(selectedCardColor);
+        } else {
+            holder.card.setCardBackgroundColor(cardColor);
+        }
 
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +114,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
     @Override
     public Cursor swapCursor(Cursor cursor) {
         super.swapCursor(cursor);
-        unselectAll();
+        //unselectAll();
         return cursor;
     }
 }
