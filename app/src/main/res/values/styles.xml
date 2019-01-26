@@ -88,6 +88,11 @@
         <item name="graph_stats_card_text_color">#b2000000</item>
     </style>
 
+    <style name="BaseDefaultTheme.Launcher">
+        <item name="android:windowBackground">@drawable/background_gradient</item>
+        <item name="colorPrimaryDark">#0062ff</item>
+    </style>
+
     <style name="SettingsTheme" parent="PreferenceFixTheme.Light.NoActionBar">
         <item name="colorPrimary">@color/md_white_1000</item>
         <item name="colorPrimaryDark">@color/md_white_1000</item>

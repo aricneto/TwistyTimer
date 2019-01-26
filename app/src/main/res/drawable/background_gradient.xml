@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <!-- The background color, preferably the same as your normal theme -->
     <item>
         <shape>
             <gradient
-                android:angle="270"
-                android:startColor="#fff"
-                android:endColor="#fff"
-                android:type="linear" />
+                android:endColor="#0062ff"
+                android:gradientRadius="100%p"
+                android:startColor="#80ecff"
+                android:type="radial" />
         </shape>
     </item>
-</selector>
+
+
+    <item>
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/twisty_app_icon" />
+
+    </item>
+
+</layer-list>
