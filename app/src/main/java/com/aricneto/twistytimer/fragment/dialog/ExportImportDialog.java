@@ -170,7 +170,8 @@ public class ExportImportDialog extends DialogFragment
                     new FileChooserDialog.Builder(getExImActivity())
                             //.chooseButton(R.string.action_choose)
                             .tag(FRAG_TAG_EXIM_FILECHOOSER)
-                            .build();
+                            .extensionsFilter(".txt")
+                            .build().show(getFragmentManager());
                     break;
 
                 case R.id.import_external:
@@ -191,7 +192,8 @@ public class ExportImportDialog extends DialogFragment
                                                     @NonNull DialogAction which) {
                                     new FileChooserDialog.Builder(getExImActivity())
                                             .tag(FRAG_TAG_EXIM_FILECHOOSER)
-                                            .build();
+                                            .extensionsFilter(".txt")
+                                            .build().show(getFragmentManager());
                                 }
                             })
                             .show();
