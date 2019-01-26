@@ -218,16 +218,16 @@ public class MainActivity extends AppCompatActivity
    */
 
     private void handleDrawer(Bundle savedInstanceState) {
-        //ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
+        ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
 
         //headerView.setImageDrawable(
-        //        ThemeUtils.tintDrawable(this, R.drawable.header, R.attr.colorPrimary));
+        //       ThemeUtils.tintDrawable(this, R.drawable.menu_header, R.attr.colorPrimary));
 
         // Setup drawer
         mDrawer = new DrawerBuilder()
             .withActivity(this)
             .withDelayOnDrawerClose(- 1)
-            //.withHeader(headerView)
+            .withHeader(headerView)
             .addDrawerItems(
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_title_timer)
