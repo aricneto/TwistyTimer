@@ -522,7 +522,7 @@ public class                                                                    
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(scrambleImageSize);
         } else {
-            scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
+            //scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
 
         Resources res = getResources();
@@ -571,9 +571,8 @@ public class                                                                    
 
         if (scrambleEnabled) {
             if (realScramble == null) {
-                scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-            else {
+                generateNewScramble();
+            } else {
                 setScramble(realScramble);
             }
         } else {

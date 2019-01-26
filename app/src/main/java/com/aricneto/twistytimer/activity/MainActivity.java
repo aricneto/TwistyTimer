@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity
 
                 new ExpandableDrawerItem()
                     .withName(R.string.drawer_title_trainer)
-                    .withIcon(R.drawable.ic_cube_unfolded_black_24dp)
+                    .withIcon(R.drawable.ic_outline_control_camera_24px)
                     .withSelectable(false)
                     .withIconTintingEnabled(true)
                     .withSubItems(
@@ -377,8 +377,7 @@ public class MainActivity extends AppCompatActivity
                                     fragmentManager
                                             .beginTransaction()
                                             .replace(R.id.main_activity_container,
-                                                    AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL),
-                                                    "fragment_algs_pll")
+                                                     TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
                                             .commit();
                                 }
                             });
