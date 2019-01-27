@@ -676,6 +676,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
 
+
         // Setup action bar click listener
         puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
