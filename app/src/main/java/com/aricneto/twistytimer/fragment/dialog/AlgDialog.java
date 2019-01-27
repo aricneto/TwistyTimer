@@ -24,6 +24,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Algorithm;
+import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -43,15 +44,6 @@ public class AlgDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
 
-    @BindViews({
-            R.id.sticker1,  R.id.sticker2,  R.id.sticker3,  R.id.sticker4,
-            R.id.sticker5,  R.id.sticker6,  R.id.sticker7,  R.id.sticker8,
-            R.id.sticker9,  R.id.sticker10, R.id.sticker11, R.id.sticker12,
-            R.id.sticker13, R.id.sticker14, R.id.sticker15, R.id.sticker16,
-            R.id.sticker17, R.id.sticker18, R.id.sticker19, R.id.sticker20,
-            R.id.sticker21,
-    }) View[] stickers;
-
     @BindView(R.id.editButton)     ImageView           editButton;
     @BindView(R.id.progressButton) ImageView           progressButton;
     @BindView(R.id.progressBar)    MaterialProgressBar progressBar;
@@ -59,6 +51,7 @@ public class AlgDialog extends DialogFragment {
     @BindView(R.id.nameText)       TextView            nameText;
     @BindView(R.id.revertButton)   ImageView           revertButton;
     @BindView(R.id.pll_arrows)     ImageView           pllArrows;
+    @BindView(R.id.cube)           Cube                cube;
 
     private long            mId;
     private Algorithm       algorithm;
@@ -162,7 +155,7 @@ public class AlgDialog extends DialogFragment {
             algText.setText(algorithm.getAlgs());
             nameText.setText(algorithm.getName());
 
-            colorCube(algorithm.getState());
+            cube.setCubeState(AlgUtils.getCaseState(getContext(), algorithm.getSubset(), algorithm.getName()));
 
             progressBar.setProgress(algorithm.getProgress());
 
@@ -196,17 +189,5 @@ public class AlgDialog extends DialogFragment {
         mUnbinder.unbind();
         if (dialogListener != null)
             dialogListener.onDismissDialog();
-    }
-
-    private void colorCube(final String state) {
-        // See the reference image to understand how this works
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        final HashMap<Character, Integer> colorHash = AlgUtils.getColorLetterHashMap(sp);
-
-        int i = 0;
-        for (View sticker : stickers) {
-            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
-            i++;
-        }
     }
 }

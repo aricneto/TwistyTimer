@@ -103,15 +103,6 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
     }
 
     @Override
-    public void colorCube(AlgHolder holder, String state) {
-        int i = 0;
-        for (View sticker : holder.stickers) {
-            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
-            i++;
-        }
-    }
-
-    @Override
     public Cursor swapCursor(Cursor cursor) {
         super.swapCursor(cursor);
         //unselectAll();

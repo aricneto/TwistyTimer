@@ -34,6 +34,12 @@
     <attr format="color" name="colorChartExtra3"/>
 
 
+    <declare-styleable name="Cube">
+        <attr name="cube_corner_radius" format="dimension"/>
+        <attr name="cube_sticker_corner_radius" format="dimension"/>
+    </declare-styleable>
+
+
     <!-- TODO: add this attr for all themes -->
     <!-- An accent color that provides a clear contrast against a white background.
     Ideally, should just be a darker version of the current accent, if possible-->

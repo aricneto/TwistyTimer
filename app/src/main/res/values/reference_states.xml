@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- WARNING!! DO NOT CHANGE THE NAME OF THESE ARRAYS -->
+    <!-- IF YOU DO, MAKE SURE TO UPDATE THE getCaseColorStates from the AlgUtils class-->
+    <string-array name="alg_reference_OLL">
+        <item>XNYNXYNNNYYNYNYYNNNYXNYNX</item>
+        <item>XNYYXYNNNNYNYNYYNNNNXNYYX</item>
+        <item>XYYNXNNNNYYNYNYNYNNNXNYYX</item>
+        <item>XNYYXYNNNNYNYNYNNNYNXYYNX</item>
+        <item>XYYNXNNNNYYNYYNYNYYNXNNNX</item>
+        <item>XNNNXYNYYNYNYYNNNNNYXYYNX</item>
+        <item>XYNNXNNYNYNYYNYNYNNNXNYYX</item>
+        <item>XNNYXYNYNNYNYYNNNNYNXYYNX</item>
+        <item>XNYNXYNNYNNYYNYNNYNYXYNNX</item>
+        <item>XYYNXNNNYNNYYNYYNYNNXNNYX</item>
+        <item>XYYNXNNNNYYNYYNNYYNNXNNYX</item>
+        <item>XNYNXYNNYNYNYYNNNYNYXYNNX</item>
+        <item>XYYNXNNNNYNYYYNNYNNNXNYYX</item>
+        <item>XNYYXYNNNNNYYYNNNNYNXYYNX</item>
+        <item>XYYNXNNNNYNYYYNYNNYNXNYNX</item>
+        <item>XNYNXYNNYNNYYYNNNNNYXYYNX</item>
+        <item>XNYYXNYNNNYNYNYYNNYNXNYNX</item>
+        <item>XNYNXNYNYNYNYNYNNNNNXYYYX</item>
+        <item>XNYNXNYNYNYNYNYYNNNYXNYNX</item>
+        <item>XNYNXNYNYNYNYNYNYNYNXNYNX</item>
+        <item>XNNNXYNYNYNYYYNYNYNYXNNNX</item>
+        <item>XNNYXYNYNNNYYYNYNYNNXNNYX</item>
+        <item>XNNNXNYYYNNYYYNNNYNNXYNYX</item>
+        <item>XYNNXNNYYNNYYYNNNYYNXYNNX</item>
+        <item>XNNNXNYYNYNYYYNNNYYNXYNNX</item>
+        <item>XNNYXNYYNNNYYYNNNYNYXYNNX</item>
+        <item>XYNNXNNYNYNYYYNNYYNNXNNYX</item>
+        <item>XNNNXNYYYNNYYNYNYNYNXNYNX</item>
+        <item>XNYNXNYNYNNYYNYYNYNYXNNNX</item>
+        <item>XNYNXNYNYNYNYYNYNYNYXNNNX</item>
+        <item>XYNNXNNYYNYNYYNNNNYNXYYNX</item>
+        <item>XYYNXNNNYNYNYYNNNYYNXYNNX</item>
+        <item>XYYNXNNNYNNYYYNNNNYNXYYNX</item>
+        <item>XNYNXNYNYNNYYYNYNNNYXNYNX</item>
+        <item>XNYNXNYNNYYNYYNNNYYNXYNNX</item>
+        <item>XNYNXNYNNYNYYNYNNYYNXYNNX</item>
+        <item>XNNNXNYYNYNYYNYNNNYNXYYNX</item>
+        <item>XYNNXNNYYNNYYNYNYNNYXNYNX</item>
+        <item>XNNYXNYYNNYNYNYYNYYNXNNNX</item>
+        <item>XNNNXYNYYNYNYNYNYYNNXNNYX</item>
+        <item>XNYNXNYNYNYNYYNNNYNNXYNYX</item>
+        <item>XNYNXNYNYNNYYNYNNYNNXYNYX</item>
+        <item>XNYNXNYNNYNYYNYNYYNYXNNNX</item>
+        <item>XNYNXYNNYNYNYYNYNYYNXNNNX</item>
+        <item>XNYNXYNNYNNYYYNYNNYNXNYNX</item>
+        <item>XNNNXNYYNYYNYNYNYYNYXNNNX</item>
+        <item>XYNNXNNYNYYNYYNNNNNYXYYNX</item>
+        <item>XNNYXYNYNNNYYNYYNNNNXNYYX</item>
+        <item>XYYNXNNNNYNYYNYNNYNYXYNNX</item>
+        <item>XNYYXYNNNNYNYYNYNYNNXNNYX</item>
+        <item>XNYYXYNNNNNYYYNYNNNNXNYYX</item>
+        <item>XYNNXNNYNYYNYNYNNYNYXYNNX</item>
+        <item>XNYNXYNNNYYNYYNYNYNYXNNNX</item>
+        <item>XNNNXYNYNYYNYYNYNNNYXNYNX</item>
+        <item>XNNNXYNYNYYNYNYYNYNYXNNNX</item>
+        <item>XNYNXYNNNYNYYYNYNNNYXNYNX</item>
+        <item>XNYNXNYNYNNYYYNNYNYNXNYNX</item>
+    </string-array>
+    <string-array name="alg_reference_PLL">
+        <item>XOROXBYYYGGYYYBBYYYGXRORX</item>
+        <item>XOBOXBYYYGGYYYOBYYYGXRRRX</item>
+        <item>XOGOXBYYYGOYYYBBYYYGXRRRX</item>
+        <item>XOBOXBYYYGOYYYRBYYYGXRGRX</item>
+        <item>XGOGXOYYYRBYYYGBYYYBXRROX</item>
+        <item>XOORXBYYYBBYYYGRYYYOXGRGX</item>
+        <item>XGOBXOYYYOBYYYGRYYYRXGRBX</item>
+        <item>XGOBXOYYYOGYYYBBYYYGXRRRX</item>
+        <item>XRBOXGYYYGRYYYGOYYYRXBOBX</item>
+        <item>XBROXRYYYGOYYYGRYYYBXGBOX</item>
+        <item>XOGRXBYYYBBYYYRRYYYOXGOGX</item>
+        <item>XORGXBYYYRBYYYOGYYYRXOGBX</item>
+        <item>XBOOXRYYYGRYYYGOYYYGXBBRX</item>
+        <item>XOOGXBYYYRBYYYRBYYYOXRGGX</item>
+        <item>XOORXBYYYBGYYYBGYYYGXORRX</item>
+        <item>XROOXGYYYGGYYYBBYYYBXRROX</item>
+        <item>XOGOXBYYYGBYYYORYYYRXGRBX</item>
+        <item>XGOBXOYYYOBYYYRBYYYGXRGRX</item>
+        <item>XOOGXBYYYRGYYYBBYYYOXRRGX</item>
+        <item>XRGOXGYYYGBYYYOBYYYBXRROX</item>
+        <item>XRBOXGYYYGOYYYGBYYYBXRROX</item>
+    </string-array>
+
+</resources>

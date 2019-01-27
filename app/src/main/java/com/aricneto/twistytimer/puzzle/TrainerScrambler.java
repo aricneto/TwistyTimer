@@ -114,7 +114,7 @@ public abstract class TrainerScrambler {
             Log.e("TRAINER_SCRAMBLE", "Error retrieving scramble: " + e);
         }
 
-        return "Select your cases first";
+        return context.getString(R.string.trainer_help_message);
     }
 
 }

@@ -8,7 +8,7 @@
     android:layout_margin="6dp"
     app:cardBackgroundColor="?colorItemListBackground"
     app:cardCornerRadius="14dp"
-    tools:cardBackgroundColor="#575757"
+    tools:cardBackgroundColor="#fff"
     tools:layout_width="140dp">
 
     <RelativeLayout
@@ -30,11 +30,12 @@
             android:textSize="10sp"
             android:textStyle="normal" />
 
-        <include
-            layout="@layout/item_3x3cube"
-            android:id="@+id/item_cube"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.aricneto.twistytimer.layout.Cube
+            android:id="@+id/cube"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:cube_corner_radius="9dp"
+            app:cube_sticker_corner_radius="2dp"
             android:layout_below="@id/progressBar"
             android:layout_margin="8dp"
             android:layout_centerHorizontal="true" />
@@ -45,12 +46,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/progressBar"
             android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
-            android:layout_alignTop="@id/item_cube"
-            android:layout_alignBottom="@id/item_cube"
-            android:layout_alignLeft="@id/item_cube"
-            android:layout_alignRight="@id/item_cube"
-            android:src="@drawable/pll_h_perm"
+            android:layout_margin="15dp"
+            android:layout_alignTop="@id/cube"
+            android:layout_alignBottom="@id/cube"
+            android:layout_alignLeft="@id/cube"
+            android:layout_alignRight="@id/cube"
+            android:src="@drawable/pll_gc_perm"
             android:visibility="gone"
             tools:visibility="visible" />
 

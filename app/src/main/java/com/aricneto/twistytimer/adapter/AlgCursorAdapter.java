@@ -17,8 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
+import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 
@@ -45,8 +47,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         super(cursor);
         this.mContext = context;
         this.mFragmentManager = listFragment.getFragmentManager();
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-        colorHash = AlgUtils.getColorLetterHashMap(sp);
+        colorHash = AlgUtils.getColorLetterHashMap();
     }
 
     @Override
@@ -87,7 +88,8 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     public void handleTime(final AlgHolder holder, final Cursor cursor) {
         final long mId = cursor.getLong(0); // id
         final String pName = cursor.getString(2);
-        final String pState = cursor.getString(3);
+        final String pSubset = cursor.getString(1);
+        final String pState = AlgUtils.getCaseState(mContext, pSubset, pName);
         final int pProgress = cursor.getInt(5);
 
         holder.root.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
         holder.name.setText(pName);
         holder.progressBar.setProgress(pProgress);
-        colorCube(holder, pState);
+        holder.cube.setCubeState(pState);
 
         // If the subset is PLL, it'll need to show the pll arrows.
         if (cursor.getString(1).equals("PLL")) {
@@ -113,14 +115,6 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
             holder.pllArrows.setVisibility(View.VISIBLE);
         }
 
-    }
-
-    public void colorCube(AlgHolder holder, String state) {
-        int i = 0;
-        for (View sticker : holder.stickers) {
-            sticker.setBackgroundColor(colorHash.get(state.charAt(i)));
-            i++;
-        }
     }
 
     public boolean isLocked() {
@@ -137,15 +131,7 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         @BindView(R.id.progressBar) MaterialProgressBar progressBar;
         @BindView(R.id.root)        RelativeLayout      root;
         @BindView(R.id.card)        CardView            card;
-
-        @BindViews({
-                R.id.sticker1,  R.id.sticker2,  R.id.sticker3,  R.id.sticker4,
-                R.id.sticker5,  R.id.sticker6,  R.id.sticker7,  R.id.sticker8,
-                R.id.sticker9,  R.id.sticker10, R.id.sticker11, R.id.sticker12,
-                R.id.sticker13, R.id.sticker14, R.id.sticker15, R.id.sticker16,
-                R.id.sticker17, R.id.sticker18, R.id.sticker19, R.id.sticker20,
-                R.id.sticker21,
-        }) View[] stickers;
+        @BindView(R.id.cube)        Cube                cube;
 
         public AlgHolder(View view) {
             super(view);

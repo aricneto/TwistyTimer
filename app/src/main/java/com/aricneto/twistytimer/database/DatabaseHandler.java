@@ -72,7 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String YEL                = "Y";
     private static final String NUL                = "N";
     // Database Version
-    private static final int    DATABASE_VERSION   = 9;
+    private static final int    DATABASE_VERSION   = 10;
     // Database Name
     private static final String DATABASE_NAME      = "databaseManager";
     private static final String CREATE_TABLE_TIMES =
@@ -677,7 +677,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // TODO: this info should REALLY be in a separate file. I'll get to it when I add other alg sets.
 
     private void createInitialAlgs(SQLiteDatabase db) {
-        // OLL
+        // OLL FIXME: the state field is deprecated. use the reference_states xml file
         createAlg(db, SUBSET_OLL, "OLL 01", "NNNNYNNNNNYNYYYNYNYYY", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 01"));
         createAlg(db, SUBSET_OLL, "OLL 02", "NNNNYNNNNNYYNYNYYNYYY", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 02"));
         createAlg(db, SUBSET_OLL, "OLL 03", "NNNNYNYNNYYNYYNYYNNYN", AlgUtils.getDefaultAlgs(SUBSET_OLL, "OLL 03"));

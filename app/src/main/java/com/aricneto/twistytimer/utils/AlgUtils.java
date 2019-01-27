@@ -2,33 +2,127 @@ package com.aricneto.twistytimer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+
+import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 
 import com.aricneto.twistify.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Used by the alg list
  */
-public class AlgUtils {
+public final class AlgUtils {
 
+    private AlgUtils() {
+
+    }
+
+    private static HashMap<Character, Integer> colorLetterMap;
+    private static String[] colorStates;
+    private static String mSubset = "";
+
+    private static List<String> CASES_PLL;
 
     /**
      * This function returns a hashmap which contains the colors for each face of the cube
      */
-    public static HashMap<Character, Integer> getColorLetterHashMap(SharedPreferences sp) {
-        HashMap<Character, Integer> hashMap = new HashMap<>(7);
-        hashMap.put('Y', Color.parseColor("#" + sp.getString("cubeDown", "FDD835")));
-        hashMap.put('R', Color.parseColor("#" + sp.getString("cubeRight", "EC0000")));
-        hashMap.put('G', Color.parseColor("#" + sp.getString("cubeFront", "02D040")));
-        hashMap.put('B', Color.parseColor("#" + sp.getString("cubeBack", "304FFE")));
-        hashMap.put('O', Color.parseColor("#" + sp.getString("cubeLeft", "FF8B24")));
-        hashMap.put('W', Color.parseColor("#" + sp.getString("cubeTop", "FFFFFF")));
-        hashMap.put('N', Color.parseColor("#A7A7A7"));
-        return hashMap;
+    public static HashMap<Character, Integer> getColorLetterHashMap() {
+        if (colorLetterMap == null) {
+            colorLetterMap = new HashMap<>(7);
+            colorLetterMap.put('Y', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_down_color, "FDD835")));
+            colorLetterMap.put('R', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_right_color, "EC0000")));
+            colorLetterMap.put('G', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_front_color, "02D040")));
+            colorLetterMap.put('B', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_back_color, "304FFE")));
+            colorLetterMap.put('O', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_left_color, "FF8B24")));
+            colorLetterMap.put('W', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_top_color, "FFFFFF")));
+            colorLetterMap.put('N', Color.parseColor("#A7A7A7"));
+            colorLetterMap.put('X', 0);
+        }
+
+        return colorLetterMap;
+    }
+
+    /**
+     * Returns an array containing all color states for the given alg subset.
+     * The subset name is stored in the database {@link com.aricneto.twistytimer.database.DatabaseHandler}
+     * @return
+     */
+    public static String[] getCaseColorStates(Context context, String subset) {
+        if (colorStates == null || !subset.equals(mSubset)) {
+            try {
+                Resources res = context.getResources();
+                int resId = res.getIdentifier("alg_reference_" + subset,
+                        "array",
+                        context.getPackageName()
+                );
+
+                colorStates = res.getStringArray(resId);
+            } catch (Exception e) {
+                Log.e("ALGUTILS", "Error retrieving subset: " + e);
+            }
+        }
+
+        return colorStates;
+    }
+
+    /**
+     * Returns a array list containing all cases of a subset
+     * currently, we only have PLL subset with weird names,
+     * this function can be expanded in the future
+     * @return
+     */
+    private static List<String> getSubsetCases() {
+        if (CASES_PLL == null) {
+            String[] casesPLL = {"H", "Ua", "Ub", "Z", "Aa", "Ab", "E", "F", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "Na", "Nb", "Ra", "Rb", "T", "V", "Y"};
+            CASES_PLL = new ArrayList<>(Arrays.asList(casesPLL));
+        }
+        return CASES_PLL;
+    }
+
+    /**
+     * Converts a case name to its specific id reference in the reference_states.xml file
+     * @return
+     */
+    public static int caseNameToSubsetId(String subset, String name) {
+        switch (subset) {
+            case "PLL":
+                return getSubsetCases().indexOf(name);
+            case "OLL":
+                return Integer.valueOf(name.substring(4)) - 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Translates a char to a color
+     * i.e: Y -> yellow
+     * The index is a number between 0-24 (number of cells in a 2d array)
+     *
+     * @param state
+     * @param index
+     * @return
+     */
+    public static @ColorInt int getColorFromStateIndex (String state, int index) {
+        try {
+            return getColorLetterHashMap().get(state.charAt(index));
+        } catch (Exception e) {
+            Log.e("ALGUTILS", "Invalid cube state: " + e);
+        }
+        return Color.WHITE;
+    }
+
+    public static String getCaseState (Context context, String subset, String name) {
+        return getCaseColorStates(context, subset)[caseNameToSubsetId(subset, name)];
     }
 
     public static Drawable getPllArrow(Context context, String name) {

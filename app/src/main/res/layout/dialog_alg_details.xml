@@ -43,15 +43,16 @@
             android:layout_below="@id/nameText"
             android:layout_marginTop="8dp" />
 
-        <include
+        <com.aricneto.twistytimer.layout.Cube
             android:id="@+id/cube"
-            layout="@layout/item_3x3cube"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_below="@id/divider01"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            app:cube_corner_radius="9dp"
+            app:cube_sticker_corner_radius="2dp"
             android:layout_marginTop="16dp" />
 
         <ImageView
@@ -60,11 +61,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider01"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="26dp"
+            android:layout_margin="22dp"
+            android:layout_alignTop="@id/cube"
+            android:layout_alignBottom="@id/cube"
+            android:layout_alignLeft="@id/cube"
+            android:layout_alignRight="@id/cube"
             android:visibility="gone"
-            tools:src="@drawable/pll_h_perm" />
+            tools:visibility="visible"
+            tools:src="@drawable/pll_gc_perm" />
 
         <TextView
             android:id="@+id/algText"
