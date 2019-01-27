@@ -11,9 +11,11 @@ import android.graphics.drawable.LayerDrawable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StyleRes;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import android.text.style.ImageSpan;
 import android.util.TypedValue;
 
 import com.aricneto.twistify.R;
@@ -168,8 +170,16 @@ public final class ThemeUtils {
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
 
-    public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
-        Drawable drawable = ContextCompat.getDrawable(context, drawableRes);
+    /**
+     * Fetches a drawable from a resource id (can be a vector drawable),
+     * tints with {@param colorAttrRes} and returns it.
+     * @param context {@link Context}
+     * @param drawableRes resource id for the drawable
+     * @param colorAttrRes attr res id for the tint
+     * @return a tinted drawable
+     */
+    public static Drawable fetchTintedDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
+        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes);
         Drawable wrap = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
         DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
@@ -178,40 +188,13 @@ public final class ThemeUtils {
         return wrap;
     }
 
-    // The following two functions are used to tint the history switch
-    // TODO: simplify these functions
+    /**
+     * @return A ImageSpan with the given size multiplier. Supports vector drawables
+     */
+    public static ImageSpan getIconSpan(Context context, float size) {
+        Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_history_off);
+        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * size), (int) (drawable.getIntrinsicHeight() * size));
 
-    public static Drawable tintPositiveThumb(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.thumb_circle);
-        Drawable wrap = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
-        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
-        wrap = wrap.mutate();
-
-        Drawable[] layers = new Drawable[2];
-        layers[0] = wrap;
-        layers[1] = ContextCompat.getDrawable(context, drawableRes);
-
-        return new LayerDrawable(layers);
-    }
-
-    public static Drawable tintNegativeThumb(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
-        Drawable drawable = ContextCompat.getDrawable(context, drawableRes);
-        Drawable wrap = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
-        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
-        wrap = wrap.mutate();
-
-        Drawable circle = ContextCompat.getDrawable(context, R.drawable.thumb_circle);
-        Drawable circleWrap = DrawableCompat.wrap(circle);
-        DrawableCompat.setTint(circleWrap, Color.WHITE);
-        DrawableCompat.setTintMode(circleWrap, PorterDuff.Mode.MULTIPLY);
-        circleWrap = circleWrap.mutate();
-
-        Drawable[] layers = new Drawable[2];
-        layers[0] = circleWrap;
-        layers[1] = wrap;
-
-        return new LayerDrawable(layers);
+        return new ImageSpan(drawable);
     }
 }

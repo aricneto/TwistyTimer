@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.Loader;
@@ -43,6 +47,7 @@ import com.aricneto.twistytimer.stats.StatisticsCache;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import org.joda.time.DateTime;
 
@@ -59,6 +64,8 @@ public class TimerListFragment extends BaseFragment
      * Flag to enable debug logging for this class.
      */
     private static final boolean DEBUG_ME = false;
+
+    private Context mContext;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -104,7 +111,7 @@ public class TimerListFragment extends BaseFragment
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.add_time_button:
-                    new MaterialDialog.Builder(getContext())
+                    new MaterialDialog.Builder(mContext)
                         .title(R.string.add_time)
                         .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
                             @Override
@@ -128,6 +135,45 @@ public class TimerListFragment extends BaseFragment
                         .positiveText(R.string.action_add)
                         .negativeText(R.string.action_cancel)
                         .show();
+                    break;
+                case R.id.archive_button:
+                    final Spannable text = new SpannableString(getString(R.string.move_solves_to_history_content) + "  ");
+                    text.setSpan(ThemeUtils.getIconSpan(mContext, 0.6f), text.length() - 1, text.length(), 0);
+
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.move_solves_to_history)
+                            .content(text)
+                            .positiveText(R.string.action_move)
+                            .negativeText(R.string.action_cancel)
+                            .neutralColor(ContextCompat.getColor(mContext, R.color.black_secondary))
+                            .negativeColor(ContextCompat.getColor(mContext, R.color.black_secondary))
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    TwistyTimer.getDBHandler().moveAllSolvesToHistory(
+                                            currentPuzzle, currentPuzzleSubtype);
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
+                                    reloadList();
+                                }
+                            })
+                            .show();
+                    break;
+                case R.id.clear_button:
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.remove_session_title)
+                            .content(R.string.remove_session_confirmation_content)
+                            .positiveText(R.string.action_remove)
+                            .negativeText(R.string.action_cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    TwistyTimer.getDBHandler().deleteAllFromSession(
+                                            currentPuzzle, currentPuzzleSubtype);
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
+                                    reloadList();
+                                }
+                            })
+                            .show();
                     break;
             }
         }
@@ -218,6 +264,7 @@ public class TimerListFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
+        mContext = getContext();
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
@@ -238,53 +285,9 @@ public class TimerListFragment extends BaseFragment
 
         addTimeButton.setOnClickListener(clickListener);
 
-        archiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Spannable text = new SpannableString(getString(R.string.move_solves_to_history_content) + "  ");
-                ImageSpan icon = new ImageSpan(getContext(), R.drawable.ic_icon_history_demonstration);
-                text.setSpan(icon, text.length() - 1, text.length(), 0);
+        archiveButton.setOnClickListener(clickListener);
 
-                new MaterialDialog.Builder(getContext())
-                    .title(R.string.move_solves_to_history)
-                    .content(text)
-                    .positiveText(R.string.action_move)
-                    .negativeText(R.string.action_cancel)
-                    .neutralColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                    .negativeColor(ContextCompat.getColor(getContext(), R.color.black_secondary))
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            TwistyTimer.getDBHandler().moveAllSolvesToHistory(
-                                    currentPuzzle, currentPuzzleSubtype);
-                            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
-                            reloadList();
-                        }
-                    })
-                    .show();
-            }
-        });
-
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(getContext())
-                    .title(R.string.remove_session_title)
-                    .content(R.string.remove_session_confirmation_content)
-                    .positiveText(R.string.action_remove)
-                    .negativeText(R.string.action_cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            TwistyTimer.getDBHandler().deleteAllFromSession(
-                                    currentPuzzle, currentPuzzleSubtype);
-                            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
-                            reloadList();
-                        }
-                    })
-                    .show();
-            }
-        });
+        clearButton.setOnClickListener(clickListener);
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override

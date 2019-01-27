@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
 
         //headerView.setImageDrawable(
-        //       ThemeUtils.tintDrawable(this, R.drawable.menu_header, R.attr.colorPrimary));
+        //       ThemeUtils.fetchTintedDrawable(this, R.drawable.menu_header, R.attr.colorPrimary));
 
         // Setup drawer
         mDrawer = new DrawerBuilder()
