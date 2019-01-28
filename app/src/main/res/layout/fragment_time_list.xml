@@ -22,6 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_below="@id/buttons_layout"
+        android:layout_above="@id/nothing_text"
         android:scaleType="fitCenter"
         android:src="@drawable/warn_empty_list"
         android:visibility="gone"
@@ -31,14 +33,16 @@
         android:id="@+id/nothing_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/warn_empty_list"
+        android:layout_alignParentBottom="true"
         android:alpha="0.80"
         android:gravity="center"
         android:padding="16dp"
+        android:layout_marginBottom="?tabBarSize"
         android:text="@string/list_empty_state_message"
         android:textColor="?colorTimerText"
         android:textSize="16sp"
         android:visibility="gone"
+        tools:textColor="#000"
         tools:visibility="visible" />
 
     <RelativeLayout

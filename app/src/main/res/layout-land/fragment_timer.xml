@@ -117,7 +117,7 @@
     <ImageView
         android:id="@+id/scramble_img"
         android:layout_width="84dp"
-        android:layout_height="84dp"
+        android:layout_height="68dp"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/sessionDetailTextOther"
         android:layout_alignWithParentIfMissing="true"
