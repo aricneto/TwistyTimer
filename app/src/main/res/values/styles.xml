@@ -12,10 +12,9 @@
 
     <style name="BaseDefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">?colorPrimary</item>
-        <item name="actionModeBackground">?colorPrimary</item>
         <item name="android:actionModeStyle">@style/ActionModeStyle</item>
-        <item name="actionModeStyle">@style/ActionModeStyle</item>
+
+
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
@@ -129,6 +128,14 @@
     <style name="DefaultTheme.Overflow">
         <item name="android:src">@drawable/ic_action_more_vert_white_24</item>
         <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="BaseDefaultTheme.ActionMode">
+        <item name="android:actionModeStyle">@style/ActionModeStyle.Custom</item>
+    </style>
+
+    <style name="ActionModeStyle.Custom" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">?colorTimerText</item>
     </style>
 
     <!--
@@ -500,7 +507,6 @@
     </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">?colorTimerText</item>
         <item name="android:gravity">center</item>

@@ -286,6 +286,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 case ACTION_SELECTION_MODE_ON:
                     selectCount = 0;
                     actionMode = mToolbar.startActionMode(actionModeCallback);
+
                     break;
 
                 case ACTION_SELECTION_MODE_OFF:
