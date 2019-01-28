@@ -29,6 +29,7 @@ public class LocaleUtils {
     public static final String DUTCH             = "nl_NL";
     public static final String SWEDISH           = "sv_SE";
     public static final String VALENCIAN         = "val_ES";
+    public static final String ITALIAN           = "it_IT";
     public static final String ESPERANTO         = "eo_UY";
     public static final String ENGLISH           = "en_UK";
     public static final String ENGLISH_USA       = "en_US";

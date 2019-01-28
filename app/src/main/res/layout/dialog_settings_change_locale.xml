@@ -132,6 +132,12 @@
             android:drawableLeft="@drawable/flag_poland"
             android:text="@string/language_esperanto"/>
 
+        <TextView
+            android:id="@+id/it"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_italy"
+            android:text="@string/language_italian"/>
+
 
     </LinearLayout>
 
