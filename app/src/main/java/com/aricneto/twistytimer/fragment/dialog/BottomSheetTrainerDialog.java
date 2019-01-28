@@ -136,6 +136,7 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
         button.setOnClickListener(v -> {
             trainerCursorAdapter.selectAll();
             recyclerView.setAdapter(trainerCursorAdapter);
+            dismiss();
         });
 
         setupRecyclerView();
