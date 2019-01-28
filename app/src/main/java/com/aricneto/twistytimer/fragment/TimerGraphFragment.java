@@ -218,7 +218,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         xAxis.setAvoidFirstLastClipping(true);
 
         axisLeft.setDrawGridLines(true);
-        axisLeft.setSpaceTop(30f);
+        //axisLeft.setSpaceTop(30f);
         axisLeft.setTextColor(axisColor);
         axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         axisLeft.setAxisLineColor(axisColor);
