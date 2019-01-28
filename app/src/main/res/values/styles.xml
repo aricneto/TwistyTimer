@@ -243,8 +243,6 @@
         <item name="colorTimerText">@android:color/white</item>
         <item name="colorBackgroundList">@color/md_black_1000</item>
         <item name="android:textColorPrimaryInverse">@color/white_text</item>
-        <item name="colorItemListText">@color/white_text</item>
-        <item name="colorItemListBackground">@color/md_grey_800</item>
     </style>
 
     <style name="BaseGreenTheme" parent="DefaultTheme">
