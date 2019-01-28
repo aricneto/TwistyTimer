@@ -170,7 +170,7 @@
                 android:id="@+id/translatorsButton"
                 android:layout_margin="8dp"
                 android:background="@drawable/outline_background_card"
-                android:drawableLeft="@drawable/ic_outline_translate_18px"
+                app:drawableLeftCompat="@drawable/ic_outline_translate_18px"
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:padding="8dp"

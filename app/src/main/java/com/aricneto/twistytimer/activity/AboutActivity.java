@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -25,14 +26,14 @@ public class AboutActivity extends AppCompatActivity {
     private final static String APP_TITLE = "Twisty Timer";
     private final static String APP_PNAME = "com.aricneto.twistytimer";
 
-    @BindView(R.id.rateButton)         TextView rateButton;
-    @BindView(R.id.feedbackButton)     TextView feedbackButton;
-    @BindView(R.id.licenseButton)      TextView licenseButton;
-    @BindView(R.id.testersButton)      TextView testersButton;
-    @BindView(R.id.sourceButton)       TextView sourceButton;
-    @BindView(R.id.appVersion)         TextView appVersion;
-    @BindView(R.id.translatorsButton)  TextView translatorsButton;
-    @BindView(R.id.contributorsButton) TextView contributorsButton;
+    @BindView(R.id.rateButton)        AppCompatTextView rateButton;
+    @BindView(R.id.feedbackButton)    AppCompatTextView feedbackButton;
+    @BindView(R.id.licenseButton)     AppCompatTextView licenseButton;
+    @BindView(R.id.testersButton)     AppCompatTextView testersButton;
+    @BindView(R.id.sourceButton)      AppCompatTextView sourceButton;
+    @BindView(R.id.appVersion)        AppCompatTextView appVersion;
+    @BindView(R.id.translatorsButton) AppCompatTextView translatorsButton;
+    @BindView(R.id.contributorsButton)AppCompatTextView contributorsButton;
     @BindView(R.id.back)               View     backButton;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
