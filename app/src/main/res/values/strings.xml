@@ -382,7 +382,7 @@
     <string name="edit_scramble">Enter custom scramble</string>
     <string name="drawer_title_trainer">Trainer</string>
     <string name="title_trainer">Training %1$s</string>
-    <string name="trainer_help_message">To start training, select the cases you want to train by tapping the title above.\nYou can also create categories with different case sets.</string>
+    <string name="trainer_help_message">To start training, select the cases you want to train by tapping the title above\nYou can also create categories with different case sets</string>
     <string name="trainer_spinner_title">Select cases to train</string>
     <string name="trainer_select_all">Select all</string>
 

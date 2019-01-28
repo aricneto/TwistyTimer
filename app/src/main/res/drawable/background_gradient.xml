@@ -18,7 +18,7 @@
 
         <bitmap
             android:gravity="center"
-            android:src="@drawable/twisty_app_icon" />
+            android:src="@drawable/icon_launch" />
 
     </item>
 
