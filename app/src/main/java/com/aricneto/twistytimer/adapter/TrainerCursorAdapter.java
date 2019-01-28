@@ -70,7 +70,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
                 }
                 break;
             case PLL:
-                if (size != 21) {
+                if (size != 22) {
                     for (int i = 0; i < 22; i++)
                         selectedItems.add((long) i + 57);
                 }
