@@ -2,22 +2,21 @@ package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
-import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -30,8 +29,8 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
     TrainerScrambler.TrainerSubset currentSubset;
     String currentPuzzleCategory;
 
-    int cardColor;
-    int selectedCardColor;
+    Drawable cardBackground;
+    Drawable selectedCardBackground;
 
     public TrainerCursorAdapter(Context context, Cursor cursor, Fragment listFragment, TrainerScrambler.TrainerSubset subset, String category) {
         super(context, cursor, listFragment);
@@ -39,8 +38,8 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         this.mContext = context;
         this.fragmentManager = listFragment.getFragmentManager();
 
-        cardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackground);
-        selectedCardColor = ThemeUtils.fetchAttrColor(context, R.attr.colorItemListBackgroundSelected);
+        cardBackground = ContextCompat.getDrawable(mContext, R.drawable.no_stroke_card);
+        selectedCardBackground = ContextCompat.getDrawable(mContext, R.drawable.stroke_card);
 
         selectedItems = new ArrayList<>();
         selectedItems.addAll(TrainerScrambler.fetchSelectedItemsLong(subset, category));
@@ -56,15 +55,37 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
 
     public void unselectAll() {
         selectedItems.clear();
+        TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
+    }
+
+    public void selectAll() {
+        int size = selectedItems.size();
+        Log.d("TRAINER","selecteditems: " + size);
+        selectedItems.clear();
+        switch (currentSubset) {
+            case OLL:
+                if (size != 58) {
+                    for (int i = 0; i < 58; i++)
+                        selectedItems.add((long) i);
+                }
+                break;
+            case PLL:
+                if (size != 21) {
+                    for (int i = 0; i < 22; i++)
+                        selectedItems.add((long) i + 57);
+                }
+                break;
+        }
+        TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
     }
 
     private void toggleSelection(long id, CardView card) {
         if (!isSelected(id)) {
             selectedItems.add(id);
-            card.setCardBackgroundColor(selectedCardColor);
+            card.setBackground(selectedCardBackground);
         } else {
             selectedItems.remove(id);
-            card.setCardBackgroundColor(cardColor);
+            card.setBackground(cardBackground);
         }
         TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
     }
@@ -76,9 +97,9 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         long id = cursor.getLong(0);
 
         if (isSelected(id)) {
-            holder.card.setCardBackgroundColor(selectedCardColor);
+            holder.card.setBackground(selectedCardBackground);
         } else {
-            holder.card.setCardBackgroundColor(cardColor);
+            holder.card.setBackground(cardBackground);
         }
 
         holder.root.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +122,8 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
             }
         });
     }
+
+
 
     @Override
     public Cursor swapCursor(Cursor cursor) {

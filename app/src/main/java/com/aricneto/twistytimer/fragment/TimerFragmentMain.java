@@ -63,6 +63,7 @@ import static com.aricneto.twistytimer.fragment.TimerFragment.TIMER_MODE_TRAINER
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_DELETE_SELECTED_TIMES;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
@@ -309,6 +310,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
                     updatePuzzleSpinnerHeader();
                     handleStatisticsLoader();
+
+                    if (currentTimerMode.equals(TIMER_MODE_TRAINER))
+                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
                     break;
             }
         }

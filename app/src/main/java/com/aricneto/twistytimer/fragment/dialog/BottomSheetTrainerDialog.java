@@ -30,6 +30,8 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.widget.TextViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,9 +62,11 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
     private static final String KEY_CATEGORY = "category";
 
     @BindView(R.id.title)
-    TextView titleView;
+    TextView          titleView;
     @BindView(R.id.list)
-    RecyclerView recyclerView;
+    RecyclerView      recyclerView;
+    @BindView(R.id.button)
+    AppCompatTextView button;
 
     private Unbinder mUnbinder;
     TrainerScrambler.TrainerSubset currentSubset;
@@ -124,7 +128,15 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
         titleView.setText(R.string.trainer_spinner_title);
         Drawable icon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_outline_control_camera_24px, null);
-        titleView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+        titleView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
+        button.setVisibility(View.VISIBLE);
+        button.setText(R.string.trainer_select_all);
+        button.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        button.setOnClickListener(v -> {
+            trainerCursorAdapter.selectAll();
+            recyclerView.setAdapter(trainerCursorAdapter);
+        });
 
         setupRecyclerView();
         getLoaderManager().initLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
@@ -133,6 +145,10 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
         registerReceiver(mUIInteractionReceiver);
 
         return dialogView;
+    }
+
+    private void resetRecyclerView() {
+
     }
 
     @Override

@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +41,8 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
     private final Context           mContext;  // Current context
     private final FragmentManager   mFragmentManager;
 
-    int cardColor;
-    int selectedCardColor;
+    Drawable cardBackground;
+    Drawable selectedCardBackground;
 
     String mDateFormatSpec;
 
@@ -55,8 +57,8 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         super(cursor);
         this.mContext = context;
         this.mFragmentManager = listFragment.getFragmentManager();
-        cardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackground);
-        selectedCardColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackgroundSelected);
+        cardBackground = ContextCompat.getDrawable(mContext, R.drawable.no_stroke_card_smoother);
+        selectedCardBackground = ContextCompat.getDrawable(mContext, R.drawable.stroke_card_smoother);
         mDateFormatSpec = context.getString(R.string.shortDateFormat);
     }
 
@@ -114,11 +116,11 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         if (! isSelected(id)) {
             broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIME_SELECTED);
             selectedItems.add(id);
-            card.setCardBackgroundColor(selectedCardColor);
+            card.setBackground(selectedCardBackground);
         } else {
             broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIME_UNSELECTED);
             selectedItems.remove(id);
-            card.setCardBackgroundColor(cardColor);
+            card.setBackground(cardBackground);
         }
 
         if (selectedItems.size() == 0) {
@@ -137,9 +139,9 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         holder.dateText.setText(new DateTime(pDate).toString(mDateFormatSpec));
 
         if (isSelected(mId))
-            holder.card.setCardBackgroundColor(selectedCardColor);
+            holder.card.setBackground(selectedCardBackground);
         else
-            holder.card.setCardBackgroundColor(cardColor);
+            holder.card.setBackground(cardBackground);
 
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
