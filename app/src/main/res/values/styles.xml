@@ -42,13 +42,14 @@
         <item name="android:fontFamily">@font/quicksand_medium</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
-        <item name="colorMainGradientStart">#920EE6</item>
-        <item name="colorMainGradientEnd">#6304E9</item>
+        <item name="colorMainGradientStart">#084dff</item>
+        <item name="colorMainGradientEnd">#3b12ff</item>
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
         <item name="colorPrimary">?colorMainGradientStart</item>
+        <item name="colorAccent">@color/md_amber_A200</item>
+
 
         <item name="mainColorBackground">#43FF8E</item>
-        <item name="colorAccent">@color/md_amber_500</item>
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
@@ -148,6 +149,7 @@
         <item name="colorMainGradientStart">#3AFAFA</item>
         <item name="colorMainGradientEnd">#42F7CD</item>
 
+
         <item name="colorAccent">@color/md_amber_A200</item>
         <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
@@ -221,10 +223,10 @@
     </style>
 
     <style name="BaseBlueTheme" parent="DefaultTheme">
-        <item name="colorMainGradientStart">#0048FF</item>
-        <item name="colorMainGradientEnd">#005bea</item>
+        <item name="colorMainGradientStart">#920EE6</item>
+        <item name="colorMainGradientEnd">#6304E9</item>
 
-        <item name="colorAccent">@color/md_amber_A200</item>
+        <item name="colorAccent">@color/md_amber_500</item>
     </style>
 
     <style name="BaseBlackTheme" parent="DefaultTheme">
@@ -335,6 +337,23 @@
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
     </style>
 
+    <style name="BaseDawnTheme" parent="DefaultTheme">
+        <item name="colorMainGradientStart">#ffd342</item>
+        <item name="colorMainGradientEnd">#bf54fe</item>
+
+        <item name="colorTimerText">@color/black_text_lighter</item>
+        <item name="colorAccent">@color/md_red_A400</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+
+        <item name="colorChartAllTimes">@color/black_light_100</item>
+        <item name="colorChartGrid">@color/black_light_50</item>
+        <item name="colorChartAxis">@color/black_light_50</item>
+        <item name="colorChartText">@color/black_light_100</item>
+
+        <item name="colorChartBestTimes">@color/md_indigo_A700</item>
+        <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
+    </style>
+
 
     <!--
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.
@@ -373,6 +392,8 @@
     <style name="YellowTheme" parent="BaseYellowTheme"/>
 
     <style name="WhiteGreenTheme" parent="BaseWhiteGreenTheme"/>
+
+    <style name="DawnTheme" parent="BaseDawnTheme"/>
     <!--
     Other miscellaneous styles.
     -->
