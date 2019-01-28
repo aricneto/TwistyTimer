@@ -21,8 +21,10 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
+import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -50,12 +52,14 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
     ListView listView;
 
     // Puzzle and subtypes that are currently selected
-    String currentPuzzle;
-    String currentSubtype;
-    List<String> subtypeList;
+    private String                         currentPuzzle;
+    private String                         currentSubtype;
+    private String                         currentTimerMode;
+    private TrainerScrambler.TrainerSubset currentSubset;
+    private List<String>                   subtypeList;
 
     // Subtype that's currently being edited
-    String currentEditSubtype = "";
+    private String currentEditSubtype = "";
 
     private Unbinder mUnbinder;
 
@@ -66,11 +70,13 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
     private AdapterView.OnItemLongClickListener mItemLongClickListener;
     private View.OnClickListener mOnClickListener;
 
-    public static BottomSheetCategoryDialog newInstance(String currentPuzzle, String currentPuzzleSubtype) {
+    public static BottomSheetCategoryDialog newInstance(String currentPuzzle, String currentPuzzleSubtype, String currentTimerMode, TrainerScrambler.TrainerSubset currentSubset) {
         BottomSheetCategoryDialog dialog = new BottomSheetCategoryDialog();
         Bundle args = new Bundle();
         args.putString("puzzle", currentPuzzle);
         args.putString("subtype", currentPuzzleSubtype);
+        args.putString("mode", currentTimerMode);
+        args.putSerializable("subset", currentSubset);
         dialog.setArguments(args);
         return dialog;
     }
@@ -92,6 +98,8 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
         // retrieve arguments
         currentPuzzle = getArguments().getString("puzzle");
         currentSubtype = getArguments().getString("subtype");
+        currentTimerMode = getArguments().getString("mode");
+        currentSubset = (TrainerScrambler.TrainerSubset) getArguments().getSerializable("subset");
 
         DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -174,6 +182,8 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
                                                 updateList(dbHandler);
 
                                                 editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
+                                                if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
+                                                    TrainerScrambler.renameCategory(currentSubset, currentEditSubtype, currentSubtype);
                                                 editor.apply();
                                                 dialogListenerMessage.onUpdateDialog(currentSubtype);
                                             }

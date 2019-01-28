@@ -66,15 +66,30 @@ public abstract class TrainerScrambler {
     }
 
     /**
+     * Utility function to rename a Trainer category, maintaining trainer subsets
+     * @param subset
+     * @param oldCategoryName
+     * @param newCategoryName
+     */
+    public static void renameCategory(TrainerSubset subset, String oldCategoryName, String newCategoryName) {
+        List<Long> items = fetchSelectedItemsLong(subset, oldCategoryName);
+        Prefs.getPrefs().edit().remove(KEY_TRAINER + subset.name() + oldCategoryName).apply();
+        saveSelectedItems(subset, newCategoryName, items);
+    }
+
+    /**
      * Fetches previously selected cases depending on current subset and category
      * @param subset
      * @param category
      * @return
      */
     public static List<String> fetchSelectedItems(TrainerSubset subset, String category) {
-        Set<String> prefs = Prefs.getPrefs()
+        return new ArrayList<>(fetchSelectedPrefs(subset, category));
+    }
+
+    private static Set<String> fetchSelectedPrefs(TrainerSubset subset, String category) {
+        return Prefs.getPrefs()
                 .getStringSet(KEY_TRAINER + subset.name() + category, new HashSet<>());
-        return new ArrayList<>(prefs);
     }
 
     /**

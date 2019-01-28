@@ -164,7 +164,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.nav_button_category:
-                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory);
+                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
                     categoryDialog.setDialogListener(new DialogListenerMessage() {
                         @Override
                         public void onUpdateDialog(String text) {
