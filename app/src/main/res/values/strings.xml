@@ -385,5 +385,13 @@
     <string name="trainer_help_message">To start training, select the cases you want to train by tapping the title above\nYou can also create categories with different case sets</string>
     <string name="trainer_spinner_title">Select cases to train</string>
     <string name="trainer_select_all">Select all</string>
+    <string name="language_chinese">Chinese</string>
+    <string name="language_catalan">Catalan</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="language_hebrew">Hebrew</string>
+    <string name="language_dutch">Dutch</string>
+    <string name="language_swedish">Swedish</string>
+    <string name="language_valencian">Valencian</string>
+    <string name="language_esperanto">Esperanto</string>
 
 </resources>

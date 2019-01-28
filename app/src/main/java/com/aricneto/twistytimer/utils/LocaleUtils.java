@@ -20,6 +20,16 @@ public class LocaleUtils {
     // and alpha-2 ISO 3166 country/subdivision code if necessary.
 
     // English is separated into "normal" and "USA" since America has its own date format
+    public static final String CZECH             = "cs";
+    public static final String CHINESE           = "zh_CN";
+    public static final String CATALAN           = "ca_ES";
+    public static final String HUNGARIAN         = "hu_HU";
+    public static final String INDONESIAN        = "in_ID";
+    public static final String HEBREW            = "iw_IL";
+    public static final String DUTCH             = "nl_NL";
+    public static final String SWEDISH           = "sv_SE";
+    public static final String VALENCIAN         = "val_ES";
+    public static final String ESPERANTO         = "eo_UY";
     public static final String ENGLISH           = "en_UK";
     public static final String ENGLISH_USA       = "en_US";
     public static final String SPANISH           = "es";
@@ -27,9 +37,10 @@ public class LocaleUtils {
     public static final String FRENCH            = "fr";
     public static final String RUSSIAN           = "ru";
     public static final String PORTUGUESE_BRAZIL = "pt_BR";
-    public static final String CZECH             = "cs";
     public static final String LITHUANIAN        = "lt";
     public static final String POLISH            = "pl";
+
+
 
     public static Context updateLocale(Context context) {
         // toString returns language + "_" + country + "_" + (variant + "_#" | "#") + script + "-" + extensions

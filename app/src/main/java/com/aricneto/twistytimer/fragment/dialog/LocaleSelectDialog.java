@@ -36,6 +36,15 @@ public class LocaleSelectDialog extends DialogFragment {
     @BindView(R.id.cs)    TextView cs;
     @BindView(R.id.lt)    TextView lt;
     @BindView(R.id.pl)    TextView pl;
+    @BindView(R.id.cn)    TextView cn;
+    @BindView(R.id.ca)    TextView ca;
+    @BindView(R.id.hu)    TextView hu;
+    @BindView(R.id.in)    TextView in;
+    @BindView(R.id.iw)    TextView iw;
+    @BindView(R.id.nl)    TextView nl;
+    @BindView(R.id.sv)    TextView sv;
+    @BindView(R.id.val)   TextView val;
+    @BindView(R.id.eo)    TextView eo;
 
     private Unbinder mUnbinder;
 
@@ -56,6 +65,15 @@ public class LocaleSelectDialog extends DialogFragment {
                 case R.id.cs:     newLocale = LocaleUtils.CZECH; break;
                 case R.id.lt:     newLocale = LocaleUtils.LITHUANIAN; break;
                 case R.id.pl:     newLocale = LocaleUtils.POLISH; break;
+                case R.id.cn:     newLocale = LocaleUtils.CHINESE; break;
+                case R.id.ca:     newLocale = LocaleUtils.CATALAN; break;
+                case R.id.hu:     newLocale = LocaleUtils.HUNGARIAN; break;
+                case R.id.in:     newLocale = LocaleUtils.INDONESIAN; break;
+                case R.id.iw:     newLocale = LocaleUtils.HEBREW; break;
+                case R.id.nl:     newLocale = LocaleUtils.DUTCH; break;
+                case R.id.sv:     newLocale = LocaleUtils.SWEDISH; break;
+                case R.id.val:    newLocale = LocaleUtils.VALENCIAN; break;
+                case R.id.eo:     newLocale = LocaleUtils.ESPERANTO; break;
                 default:          newLocale = oldLocale;
             }
 
@@ -101,6 +119,15 @@ public class LocaleSelectDialog extends DialogFragment {
         cs.setOnClickListener(clickListener);
         lt.setOnClickListener(clickListener);
         pl.setOnClickListener(clickListener);
+        ca.setOnClickListener(clickListener);
+        hu.setOnClickListener(clickListener);
+        in.setOnClickListener(clickListener);
+        iw.setOnClickListener(clickListener);
+        nl.setOnClickListener(clickListener);
+        sv.setOnClickListener(clickListener);
+        val.setOnClickListener(clickListener);
+        eo.setOnClickListener(clickListener);
+        cn.setOnClickListener(clickListener);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

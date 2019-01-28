@@ -78,6 +78,61 @@
             android:drawableLeft="@drawable/flag_poland"
             android:text="@string/language_polish"/>
 
+        <TextView
+            android:id="@+id/cn"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_china"
+            android:text="@string/language_chinese"/>
+
+        <TextView
+            android:id="@+id/ca"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_spain"
+            android:text="@string/language_catalan"/>
+
+        <TextView
+            android:id="@+id/hu"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_hungary"
+            android:text="@string/language_catalan"/>
+
+        <TextView
+            android:id="@+id/in"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_indonesia"
+            android:text="@string/language_indonesian"/>
+
+        <TextView
+            android:id="@+id/iw"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_israel"
+            android:text="@string/language_hebrew"/>
+
+        <TextView
+            android:id="@+id/nl"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_netherlands"
+            android:text="@string/language_dutch"/>
+
+        <TextView
+            android:id="@+id/sv"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_sweden"
+            android:text="@string/language_swedish"/>
+
+        <TextView
+            android:id="@+id/val"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_spain"
+            android:text="@string/language_valencian"/>
+
+        <TextView
+            android:id="@+id/eo"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_poland"
+            android:text="@string/language_esperanto"/>
+
+
     </LinearLayout>
 
 </ScrollView>
