@@ -442,7 +442,7 @@ public class                                                                    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
+        if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
@@ -832,7 +832,7 @@ public class                                                                    
      * inspection countdown timer and associated "+2" countdown timer and hides the inspection text.
      */
     private void stopInspectionCountdown() {
-        // These timers may be null if inspection was not enabled when "onCreate" was called.
+        // These timers may be null if inspection was not enabled when "updateLocale" was called.
         if (countdown != null) {
             countdown.cancel();
         }
@@ -860,7 +860,7 @@ public class                                                                    
      *     The inspection time in seconds.
      */
     private void startInspectionCountdown(int inspectionTime) {
-        // The "countdown" timer may be null if inspection was not enabled when "onCreate" was
+        // The "countdown" timer may be null if inspection was not enabled when "updateLocale" was
         // called. In that case this method will not be called from the touch listener.
 
         // So it doesn't flash the old time when the inspection starts

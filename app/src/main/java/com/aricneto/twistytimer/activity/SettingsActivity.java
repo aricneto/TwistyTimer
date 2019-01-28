@@ -1,6 +1,6 @@
 package com.aricneto.twistytimer.activity;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceScreen;
 import androidx.appcompat.widget.AppCompatSeekBar;
-import androidx.appcompat.widget.Toolbar;
+
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -52,11 +52,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
+        if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
 
         setTheme(R.style.SettingsTheme);
 
-        LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
@@ -103,6 +102,11 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleUtils.updateLocale(newBase));
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements OnBackPressedInFragmentListener {

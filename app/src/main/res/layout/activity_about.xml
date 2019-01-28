@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,23 +7,38 @@
     android:background="?colorPrimary"
     tools:context="com.aricneto.twistytimer.activity.AboutActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ToolBarStyle"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="0dp"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/quicksand_bold"
+        android:gravity="center"
+        android:text="@string/title_activity_about"
+        android:textColor="?colorTimerText"
+        android:textSize="20sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/title"
+        android:layout_alignBottom="@id/title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:tint="?colorTimerText"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <ImageView
         android:id="@+id/appIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
@@ -32,140 +46,163 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/appIcon"
-        android:text="@string/app_name"
-        android:textSize="16sp"
-        android:textColor="@color/white_text"
-        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/app_name"
+        android:textColor="?colorTimerText"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/appVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/appTitle"
-        tools:text="APP VERSION"
-        android:textColor="@color/white_secondary_icon"
+        android:layout_centerHorizontal="true"
+        android:textColor="?colorTimerText"
         android:textSize="12sp"
-        android:layout_centerHorizontal="true" />
+        tools:text="APP VERSION" />
 
-    <TextView
-        android:textColor="@color/white_text"
-        android:padding="8dp"
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/rateButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/appVersion"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:drawableLeft="@drawable/ic_google_play_white_18dp"
-        android:gravity="center"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/outline_background_card_info"
+        app:drawableLeftCompat="@drawable/ic_outline_star_border_18px"
         android:drawablePadding="8dp"
+        android:gravity="center"
+        android:padding="8dp"
         android:text="@string/rate_app"
+        android:textColor="#000"
         android:textSize="14sp" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rateButton"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true">
+        android:stretchColumns="1,0">
 
         <TableRow
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
-                android:padding="8dp"
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/feedbackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/contact"
-                android:drawableLeft="@drawable/ic_email_white_18dp"
-                android:gravity="center"
+                android:layout_margin="8dp"
+                android:background="@drawable/outline_background_card"
                 android:drawablePadding="8dp"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
+                android:gravity="center"
                 android:padding="8dp"
+                android:text="@string/contact"
+                android:textColor="@color/black_light_100"
+                android:textSize="14sp"
+                app:drawableLeftCompat="@drawable/ic_outline_email_24px" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/licenseButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_marginLeft="32dp"
-                android:drawableLeft="@drawable/ic_account_balance_white_18dp"
-                android:gravity="center"
+                android:background="@drawable/outline_background_card"
                 android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/license"
-                android:textSize="14sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
-                android:padding="8dp"
-                android:id="@+id/testersButton"
-                android:drawableLeft="@drawable/ic_bug_report_white_18dp"
-                android:gravity="center"
-                android:drawablePadding="8dp"
-                android:text="@string/testers"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
-                android:padding="8dp"
-                android:id="@+id/sourceButton"
-                android:drawableLeft="@drawable/ic_github_circle_white_18dp"
-                android:gravity="center"
-                android:layout_marginLeft="32dp"
-                android:drawablePadding="8dp"
-                android:text="@string/source"
+                android:textColor="@color/black_light_100"
                 android:textSize="14sp"
-                android:layout_column="0" />
+                app:drawableLeftCompat="@drawable/ic_outline_copyright_18px" />
 
         </TableRow>
 
         <TableRow
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/testersButton"
+                android:layout_margin="8dp"
+                android:background="@drawable/outline_background_card"
+                android:drawablePadding="8dp"
+                android:gravity="center"
                 android:padding="8dp"
+                android:text="@string/testers"
+                android:textColor="@color/black_light_100"
+                android:textSize="14sp"
+                app:drawableLeftCompat="@drawable/ic_outline_bug_report_18px" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/sourceButton"
+                android:layout_column="0"
+                android:layout_margin="8dp"
+                android:layout_marginLeft="32dp"
+                android:background="@drawable/outline_background_card"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/source"
+                android:textColor="@color/black_light_100"
+                android:textSize="14sp"
+                app:drawableLeftCompat="@drawable/ic_outline_track_changes_18px" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/translatorsButton"
-                android:drawableLeft="@drawable/ic_translate_white_18"
-                android:gravity="center"
+                android:layout_margin="8dp"
+                android:background="@drawable/outline_background_card"
+                android:drawableLeft="@drawable/ic_outline_translate_18px"
                 android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/translators"
+                android:textColor="@color/black_light_100"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white_text"
-                android:padding="8dp"
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/contributorsButton"
-                android:drawableLeft="@drawable/ic_code_white_24dp"
-                android:gravity="center"
+                android:layout_margin="8dp"
+                android:background="@drawable/outline_background_card"
                 android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/contributors"
-                android:textSize="14sp" />
+                android:textColor="@color/black_light_100"
+                android:textSize="14sp"
+                app:drawableLeftCompat="@drawable/ic_outline_build_24px" />
 
         </TableRow>
 
     </TableLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:text="Created and maintained by:\naricneto"
+        android:gravity="center"
+        android:textColor="?colorTimerText"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

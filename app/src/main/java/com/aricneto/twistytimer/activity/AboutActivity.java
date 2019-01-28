@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -24,7 +25,6 @@ public class AboutActivity extends AppCompatActivity {
     private final static String APP_TITLE = "Twisty Timer";
     private final static String APP_PNAME = "com.aricneto.twistytimer";
 
-    @BindView(R.id.toolbar)            Toolbar  toolbar;
     @BindView(R.id.rateButton)         TextView rateButton;
     @BindView(R.id.feedbackButton)     TextView feedbackButton;
     @BindView(R.id.licenseButton)      TextView licenseButton;
@@ -33,6 +33,7 @@ public class AboutActivity extends AppCompatActivity {
     @BindView(R.id.appVersion)         TextView appVersion;
     @BindView(R.id.translatorsButton)  TextView translatorsButton;
     @BindView(R.id.contributorsButton) TextView contributorsButton;
+    @BindView(R.id.back)               View     backButton;
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -86,22 +87,19 @@ public class AboutActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleUtils.updateLocale(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeUtils.getPreferredTheme());
-        LocaleUtils.onCreate();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        toolbar.setTitle(R.string.title_activity_about);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.drawable.ic_action_arrow_back_white_24);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
+        backButton.setOnClickListener(v -> onBackPressed());
 
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

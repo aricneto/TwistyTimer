@@ -241,7 +241,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     try {
                         // If the theme has been changed, then the activity will need to be recreated. The
                         // theme can only be applied properly during the inflation of the layouts, so it has
-                        // to go back to "Activity.onCreate()" to do that.
+                        // to go back to "Activity.updateLocale()" to do that.
                         ((MainActivity) getActivity()).onRecreateRequired();
                     } catch (Exception e) {}
                     break;
@@ -358,7 +358,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState=" + savedInstanceState + ")");
+        if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {

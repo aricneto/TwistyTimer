@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
@@ -23,8 +22,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,7 +36,6 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
-import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
@@ -47,10 +43,8 @@ import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
-import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
-import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -75,6 +69,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -86,7 +81,6 @@ import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_SUBTYPE;
 import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TIME;
 import static com.aricneto.twistytimer.database.DatabaseHandler.IDX_TYPE;
 import static com.aricneto.twistytimer.database.DatabaseHandler.ProgressListener;
-import static com.aricneto.twistytimer.database.DatabaseHandler.SUBSET_OLL;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
@@ -170,12 +164,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (DEBUG_ME) Log.d(TAG, "onCreate(savedInstanceState="
+        if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState="
                 + savedInstanceState + "): " + this);
 
         setTheme(ThemeUtils.getPreferredTheme());
 
-        LocaleUtils.onCreate();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -263,7 +256,7 @@ public class MainActivity extends AppCompatActivity
 
                 new ExpandableDrawerItem()
                         .withName(R.string.drawer_title_reference)
-                        .withIcon(R.drawable.ic_cube_unfolded_black_24dp)
+                        .withIcon(R.drawable.ic_outline_library_books_24px)
                         .withSelectable(false)
                         .withIconTintingEnabled(true)
                         .withSubItems(
@@ -292,7 +285,7 @@ public class MainActivity extends AppCompatActivity
 
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_title_changeTheme)
-                        .withIcon(R.drawable.ic_brush_black_24dp)
+                        .withIcon(R.drawable.ic_outline_palette_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(THEME_ID),
@@ -308,21 +301,21 @@ public class MainActivity extends AppCompatActivity
 
                 new PrimaryDrawerItem()
                         .withName(R.string.action_settings)
-                        .withIcon(R.drawable.ic_action_settings_black_24)
+                        .withIcon(R.drawable.ic_outline_settings_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(SETTINGS_ID),
 
                 new PrimaryDrawerItem()
                         .withName(R.string.action_donate)
-                        .withIcon(R.drawable.ic_mood_black_24dp)
+                        .withIcon(R.drawable.ic_outline_favorite_border_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(DONATE_ID),
 
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_about)
-                        .withIcon(R.drawable.ic_action_help_black_24)
+                        .withIcon(R.drawable.ic_outline_help_outline_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(ABOUT_ID)
@@ -627,6 +620,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleUtils.updateLocale(newBase));
     }
 
     @Override

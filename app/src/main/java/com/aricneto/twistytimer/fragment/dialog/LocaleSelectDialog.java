@@ -63,7 +63,7 @@ public class LocaleSelectDialog extends DialogFragment {
 
             // If the locale has been changed, then the activity will need to be recreated. The
             // locale can only be applied properly during the inflation of the layouts, so it has
-            // to go back to "Activity.onCreate()" to do that.
+            // to go back to "Activity.updateLocale()" to do that.
             if (!newLocale.equals(oldLocale)) {
                 LocaleUtils.setLocale(newLocale);
 

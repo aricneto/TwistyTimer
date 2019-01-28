@@ -45,7 +45,7 @@ public class TwistyTimer extends Application {
         // database (particularly for the first time) can take some time.
         sDBHandler = new DatabaseHandler();
 
-        LocaleUtils.onCreate();
+        LocaleUtils.updateLocale(getAppContext());
     }
 
     /**

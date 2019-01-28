@@ -1,7 +1,11 @@
 package com.aricneto.twistytimer.utils;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
+
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import java.util.Locale;
@@ -27,10 +31,14 @@ public class LocaleUtils {
     public static final String LITHUANIAN        = "lt";
     public static final String POLISH            = "pl";
 
-    public static void onCreate() {
+    public static Context updateLocale(Context context) {
         // toString returns language + "_" + country + "_" + (variant + "_#" | "#") + script + "-" + extensions
         String language = Prefs.getString(R.string.pk_locale, Locale.getDefault().toString());
-        updateResources(language);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return updateResources(context, language);
+        } else {
+            return updateResourcesLegacy(context, language);
+        }
     }
 
     /**
@@ -49,28 +57,26 @@ public class LocaleUtils {
      */
     public static void setLocale(String language) {
         Prefs.edit().putString(R.string.pk_locale, language).apply();
-        updateResources(language);
+        updateLocale(TwistyTimer.getAppContext());
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private static Context updateResources(Context context, String language) {
+        Locale locale = fetchLocaleFromString(language);
+        Configuration configuration = context.getResources().getConfiguration();
+        configuration.setLocale(locale);
+        return context.createConfigurationContext(configuration);
     }
 
     /**
      * Updates the app to use the new locale
+     * This method was deprecated in newer versions of Android. See {@code updateResources}
+     * for a method that'll work from API version N and above
      *
      * @param language the language code (use one of the constants)
      */
-    private static void updateResources(String language) {
-
-        Locale locale;
-        /**
-         * If a language has a country code, we have to create a {@link Locale} with a country parameter.
-          */
-        if (language.length() > 2) {
-            // e.g.: pt_BR becomes "pt" (index 0) and "BR" (index 1)
-            String[] localeString = language.split("_|-");
-            locale = new Locale(localeString[0], localeString[1]);
-        } else {
-            // e.g.: en, pt, fr
-            locale = new Locale(language);
-        }
+    private static Context updateResourcesLegacy(Context context, String language) {
+        Locale locale = fetchLocaleFromString(language);
 
         Locale.setDefault(locale);
 
@@ -82,5 +88,25 @@ public class LocaleUtils {
         // way since, as far as I've read, these functions don't pose any serious issues.
         configuration.locale = locale;
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        return context;
+    }
+
+    /**
+     * Converts a string like pt_BR into its appropriate locale object
+     * @param language
+     * @return
+     */
+    private static Locale fetchLocaleFromString(String language) {
+        /**
+         * If a language has a country code, we have to create a {@link Locale} with a country parameter.
+         */
+        if (language.length() > 2) {
+            // e.g.: pt_BR becomes "pt" (index 0) and "BR" (index 1)
+            String[] localeString = language.split("_|-");
+            return new Locale(localeString[0], localeString[1]);
+        } else {
+            // e.g.: en, pt, fr
+            return new Locale(language);
+        }
     }
 }
