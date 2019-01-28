@@ -33,7 +33,7 @@ public class LocaleUtils {
     public static final String ESPERANTO         = "eo_UY";
     public static final String ENGLISH           = "en_UK";
     public static final String ENGLISH_USA       = "en_US";
-    public static final String SPANISH           = "es";
+    public static final String SPANISH           = "es_ES";
     public static final String GERMAN            = "de";
     public static final String FRENCH            = "fr";
     public static final String RUSSIAN           = "ru";

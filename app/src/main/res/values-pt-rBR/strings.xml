@@ -223,8 +223,8 @@
     <string name="graph_stats_label_total_time">Tempo total</string>
     <string name="graph_stats_label_solve_count">Total</string>
     <!-- Full names for Average of... -->
-    <string name="graph_stats_label_ao5_full">Média de 5</string>
-    <string name="graph_stats_label_ao12_full">Média de 12</string>
+    <string name="graph_stats_label_ao5_full">Md5</string>
+    <string name="graph_stats_label_ao12_full">Md12</string>
     <string name="graph_stats_label_ao50_full">Md50</string>
     <string name="graph_stats_label_ao100_full">Md100</string>
     <string name="timer_detail_average_record_message">Nova melhor média!</string>

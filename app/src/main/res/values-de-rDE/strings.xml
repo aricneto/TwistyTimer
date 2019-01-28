@@ -235,4 +235,18 @@
     <string name="pref_inspection_alert_both">Beide</string>
     <string name="pref_inspection_alert_title">Verbleibende Alarmzeit</string>
     <string name="pref_inspection_alert_summary">Der Timer wird dich benachrichtigen sobald %1$d und %2$d Sekunden der Inspektion vorbei sind</string>
+    <string name="dialog_scramble_details">Scramble details</string>
+    <string name="dialog_select_puzzle">Wähle ein Puzzle</string>
+    <string name="dialog_hint_title">Hinweis</string>
+    <string name="category_select_dialog_title">Wähle eine Kategorie</string>
+    <string name="category_select_dialog_hint_edit">Zum Bearbeiten gedrückt halten</string>
+    <string name="action_search">Suche</string>
+    <string name="timelist_searchbox_hint">Durchsuche Kommentare</string>
+    <string name="title_algorithms">Algorithmen</string>
+    <string name="edit_scramble">Eigenen Scramble eingeben</string>
+    <string name="drawer_title_trainer">Trainer</string>
+    <string name="title_trainer">Trainiere %1$s</string>
+    <string name="trainer_help_message">Um das Training zu beginnen, wähle die Fälle, die du üben möchtest aus, indem du das Feld oben antippst. \nDu kannst auch verschiedene Kategorien mit anderen Gruppen von Fällen erstellen</string>
+    <string name="trainer_spinner_title">Wähle zu übende Fälle</string>
+    <string name="trainer_select_all">Alle auswählen</string>
 </resources>

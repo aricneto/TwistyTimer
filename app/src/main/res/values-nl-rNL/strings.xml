@@ -19,7 +19,10 @@
     <string name="add_time">Tijd toevoegen</string>
     <string name="added_comment">Opmerking toegevoegd</string>
     <string name="choose_donation_amount">Kies een hoeveelheid om te doneren</string>
+    <string name="color_black">Zwart</string>
+    <string name="color_blue">Blauw</string>
     <string name="color_blueGray">Blauwgrijs</string>
+    <string name="color_brown">Bruin</string>
     <string name="color_cyan">Cyaan</string>
     <string name="color_deepPurple">Donker Paars</string>
     <string name="color_green">Groen</string>
@@ -27,7 +30,13 @@
     <string name="color_light_blue">Lichtblauw</string>
     <string name="color_light_green">Lichtgroen</string>
     <string name="color_orange">Oranje</string>
+    <string name="color_pink">Roze</string>
     <string name="color_purple">Paars</string>
+    <string name="color_red">Rood</string>
+    <string name="color_teal">Groenblauw</string>
+    <string name="contact">Contact</string>
+    <string name="contributors">Medewerkers</string>
+    <string name="contributors_content">Hartelijke dank voor deze mensen om bij te dragen aan de ontwikkeling van de app:%1$s</string>
     <string name="cube_222">2x2x2 Kubus</string>
     <string name="cube_333">3x3x3 Kubus</string>
     <string name="cube_444">4x4x4 Kubus</string>
@@ -37,6 +46,8 @@
     <string name="delete_dialog_cancel_button">Anuleren</string>
     <string name="delete_dialog_confirmation_button">Verwijderen</string>
     <string name="delete_dialog_confirmation_title">Solve verwijderen?</string>
+    <string name="dialog_export_import_export">Exporteren&#8230;</string>
+    <string name="dialog_export_import_import">Importeren&#8230;</string>
     <string name="donation_tier1">1 USD</string>
     <string name="donation_tier2">2 USD</string>
     <string name="donation_tier3">3 USD</string>
