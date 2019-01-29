@@ -23,7 +23,7 @@
     <string name="add_time">Adicionar tempo</string>
     <string name="added_comment">Comentário adicionado</string>
     <string name="advanced_pref_summary">Mudar estas configurações pode causar alguns problemas de clipping</string>
-    <string name="backCancelEnabledSummary">Pressionar o botão voltar enquanto estiver solucionando irá cancelar o cronômetro</string>
+    <string name="backCancelEnabledSummary">Pressionar o botão \"voltar\" durante uma solução irá cancelar o cronômetro</string>
     <string name="backCancelEnabledTitle">Botão voltar cancela a solução</string>
     <string name="backgroundEnabledSummary">Colorir o fundo do cronômetro com a cor do tema</string>
     <string name="backgroundEnabledTitle">Fundo colorido</string>
@@ -36,21 +36,6 @@
     <string name="choose_donation_amount">Escolha um valor para doar</string>
     <string name="clearEnabledSummary">O botão \"Limpar\" aparece na lista de soluções, e deixa você remover todas as soluções da sessão atual</string>
     <string name="clearEnabledTitle">Mostrar o botão \"Limpar\"</string>
-    <string name="color_black">Preto</string>
-    <string name="color_blue">Azul</string>
-    <string name="color_blueGray">Azul-Cinza</string>
-    <string name="color_brown">Marrom</string>
-    <string name="color_cyan">Ciano</string>
-    <string name="color_deepPurple">Roxo Escuro</string>
-    <string name="color_green">Verde</string>
-    <string name="color_indigo">Indigo</string>
-    <string name="color_light_blue">Azul Claro</string>
-    <string name="color_light_green">Verde Claro</string>
-    <string name="color_orange">Laranja</string>
-    <string name="color_pink">Rosa</string>
-    <string name="color_purple">Roxo</string>
-    <string name="color_red">Vermelho</string>
-    <string name="color_teal">Teal</string>
     <string name="contact">Contato</string>
     <string name="contributors">Contribuintes</string>
     <string name="contributors_content">Muito obrigado a estas pessoas por contribuirem ao desenvolvimento do aplicativo:%1$s</string>
@@ -156,9 +141,10 @@
     <string name="pref_category_title_timer">Cronômetro</string>
     <string name="pref_screen_title_inspection_behavior">Comportamento da inspeção</string>
     <string name="pref_screen_title_timer_behavior">Comportamento do cronômetro</string>
+    <string name="pref_screen_title_timer_appearance">Aparência do cronômetro</string>
+    <string name="pref_scramble_box_title">Fundo do embaralhamento</string>
+    <string name="pref_scramble_box_description">Mostra um fundo branco atrás do embaralhamento</string>
     <string name="preference_application_language_title">Língua</string>
-    <string name="quick_action_button_large_summary">Mostrar botões de ação rápida maiores (os botões que aparecem depois de uma solução)</string>
-    <string name="quick_action_button_large_title">Botões de ação rápida grandes</string>
     <string name="rate_app">Avaliar este app no Google Play</string>
     <string name="remove_session_confirmation_content">Você não poderá desfazer esta ação.</string>
     <string name="remove_session_title">Remover todas as soluções desta sessão?</string>
@@ -223,8 +209,8 @@
     <string name="graph_stats_label_total_time">Tempo total</string>
     <string name="graph_stats_label_solve_count">Total</string>
     <!-- Full names for Average of... -->
-    <string name="graph_stats_label_ao5_full">Md5</string>
-    <string name="graph_stats_label_ao12_full">Md12</string>
+    <string name="graph_stats_label_ao5_full">Média de 5</string>
+    <string name="graph_stats_label_ao12_full">Média de 12</string>
     <string name="graph_stats_label_ao50_full">Md50</string>
     <string name="graph_stats_label_ao100_full">Md100</string>
     <string name="timer_detail_average_record_message">Nova melhor média!</string>
@@ -247,6 +233,6 @@
     <string name="drawer_title_trainer">Treinar</string>
     <string name="title_trainer">Treinando %1$s</string>
     <string name="trainer_help_message">Para começar a treinar, selecione os casos que você quer treinar tocando o título acima\nVocê também pode criar categorias com diferentes conjuntos de casos</string>
-    <string name="trainer_spinner_title">Selecione casos para treinar</string>
+    <string name="trainer_spinner_title">Selecionar casos para treinar</string>
     <string name="trainer_select_all">Selecionar todos</string>
 </resources>

@@ -36,9 +36,6 @@
     <string name="choose_donation_amount">Escull una quantitat a donar</string>
     <string name="clearEnabledSummary">El boto \"Netejar\" es mostra en la llista de temps, i et permet esborrar totes les resolucions de la sessió actual</string>
     <string name="clearEnabledTitle">Mostra el botó de suprimir</string>
-    <string name="color_black">Negre</string>
-    <string name="color_blue">Blau</string>
-    <string name="color_blueGray">Blau grisós</string>
     <string name="delete_dialog_cancel_button">Cancel·la</string>
     <string name="fab_add_time">Afegir el temps</string>
     <string name="title_activity_settings">Configuració</string>

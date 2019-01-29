@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="?tabBarSize"
+    android:keepScreenOn="true"
     tools:background="@drawable/background_gradient"
     tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 

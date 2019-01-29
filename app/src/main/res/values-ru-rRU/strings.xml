@@ -36,21 +36,6 @@
     <string name="choose_donation_amount">Выберете сумму пожертвования</string>
     <string name="clearEnabledSummary">Кнопка \"Очистить\" показывается в списке с результатами и позволяет удалить результаты сборок последней сессии</string>
     <string name="clearEnabledTitle">Показывать кнопку \"Очистить\"</string>
-    <string name="color_black">Черный</string>
-    <string name="color_blue">Синий</string>
-    <string name="color_blueGray">Серо-Голубой</string>
-    <string name="color_brown">Коричневый</string>
-    <string name="color_cyan">Голубой</string>
-    <string name="color_deepPurple">Темно-фиолетовый</string>
-    <string name="color_green">Зеленый</string>
-    <string name="color_indigo">Индиго</string>
-    <string name="color_light_blue">Светло-синий</string>
-    <string name="color_light_green">Светло-зеленый</string>
-    <string name="color_orange">Оранжевый</string>
-    <string name="color_pink">Розовый</string>
-    <string name="color_purple">Пурпурный</string>
-    <string name="color_red">Красный</string>
-    <string name="color_teal">Зелено-голубой</string>
     <string name="contact">Контакт</string>
     <string name="contributors">Соавторы</string>
     <string name="contributors_content">Огромное спасибо этим людям за вклад в разработку app:%1$s</string>
@@ -157,8 +142,6 @@
     <string name="pref_screen_title_inspection_behavior">Поведение инспекции</string>
     <string name="pref_screen_title_timer_behavior">Поведение таймера</string>
     <string name="preference_application_language_title">Язык</string>
-    <string name="quick_action_button_large_summary">Увеличить кнопки быстрых действий (кнопки, которые появляются после сборки)</string>
-    <string name="quick_action_button_large_title">Широкие кнопки быстрых действий</string>
     <string name="rate_app">Оценить это приложение в Google Play</string>
     <string name="remove_session_confirmation_content">Вы не сможете отменить это действие.</string>
     <string name="remove_session_title">Удалить все сборки этой сесии?</string>
@@ -220,7 +203,7 @@
     <string name="graph_stats_label_solve_count">К-во</string>
     <!-- Full names for Average of... -->
     <string name="graph_stats_label_ao5_full">Среднее из 5</string>
-    <string name="graph_stats_label_ao12_full">Среднее из 12</string>
+    <string name="graph_stats_label_ao12_full">Ao12</string>
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>
     <string name="timer_detail_average_record_message">Новое лучшее среднее!</string>

@@ -30,18 +30,6 @@
     <string name="choose_donation_amount">Vyberte částku k darování</string>
     <string name="clearEnabledSummary">Tlačítko \"Vyčistit\" se ukazuje v seznamu časů a umožňuje vyčistit všechny časy z aktuálního sezení</string>
     <string name="clearEnabledTitle">Zobrazit tlačítko \"Vyčistit\"</string>
-    <string name="color_black">Černá</string>
-    <string name="color_blue">Modrá</string>
-    <string name="color_blueGray">Modrošedá</string>
-    <string name="color_brown">Hnědá</string>
-    <string name="color_deepPurple">Temně fialová</string>
-    <string name="color_green">Zelená</string>
-    <string name="color_indigo">Indigová</string>
-    <string name="color_orange">Oranžová</string>
-    <string name="color_pink">Růžová</string>
-    <string name="color_purple">Fialová</string>
-    <string name="color_red">Červená</string>
-    <string name="color_teal">Modrozelená</string>
     <string name="contact">Kontakt</string>
     <string name="cube_222">Kostka 2x2x2</string>
     <string name="cube_333">Kostka 3x3x3</string>
@@ -134,8 +122,6 @@
     <string name="pref_category_title_other">Ostatní</string>
     <string name="pref_category_title_scramble">Zamíchání</string>
     <string name="pref_category_title_timer">Časovač</string>
-    <string name="quick_action_button_large_summary">Zobrazit větší tlačítka rychlé akce (ta tlačítka, která se ukazují po stopnutí časovače)</string>
-    <string name="quick_action_button_large_title">Velká tlačítka rychlé akce</string>
     <string name="rate_app">Ohodnoit tuto aplikaci na Google Play</string>
     <string name="remove_session_confirmation_content">Tato akce se nedá vzít zpět.</string>
     <string name="remove_session_title">Odstranit všechny časy v tomto sezení?</string>

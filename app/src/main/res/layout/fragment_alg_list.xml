@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    android:keepScreenOn="true"
     android:orientation="vertical">
 
     <include layout="@layout/main_actionbar" />

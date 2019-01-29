@@ -31,17 +31,6 @@
     <string name="choose_donation_amount">Pasirinkite aukojimo sumą</string>
     <string name="clearEnabledSummary">\"Išvalyti\" mygtukas yra rodomas laikų sąraše ir leis jums pašalinti sprendimus iš dabartinės sesijos</string>
     <string name="clearEnabledTitle">Rodyti \"Išvalyti\" mygtuką</string>
-    <string name="color_black">Juoda</string>
-    <string name="color_blue">Mėlyna</string>
-    <string name="color_blueGray">Pilkai mėlyna</string>
-    <string name="color_brown">Ruda</string>
-    <string name="color_deepPurple">Gili purpurinė</string>
-    <string name="color_green">Žalia</string>
-    <string name="color_orange">Oranžinė</string>
-    <string name="color_pink">Rožinė</string>
-    <string name="color_purple">Purpurinė</string>
-    <string name="color_red">Raudona</string>
-    <string name="color_teal">Mėlynai-žalia</string>
     <string name="contact">Kontaktai</string>
     <string name="cube_222">2x2x2 Kubas</string>
     <string name="cube_333">3x3x3 Kubas</string>
@@ -127,8 +116,6 @@
     <string name="pref_category_title_other">Kiti</string>
     <string name="pref_category_title_scramble">Maišinys</string>
     <string name="pref_category_title_timer">Laikmatis</string>
-    <string name="quick_action_button_large_summary">Rodo didesnius greito veiksmo mygtukus (mygtukai, kurie atsirando po sprendimo)</string>
-    <string name="quick_action_button_large_title">Dideli greito veiksmo mygtukai</string>
     <string name="rate_app">Įvertinti programėlę Google Play</string>
     <string name="remove_session_confirmation_content">Jūs negalėsite panaikinti šio veiksmo.</string>
     <string name="remove_session_title">Panaikinti visus sprendimus iš šios sesijos?</string>

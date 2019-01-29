@@ -56,22 +56,6 @@
 
     <string name="clearEnabledTitle">Show \"Clear\" button</string>
 
-    <string name="color_black">Black</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_blueGray">Blue Gray</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_cyan">Cyan</string>
-    <string name="color_deepPurple">Deep Purple</string>
-    <string name="color_green">Green</string>
-    <string name="color_indigo">Indigo</string>
-    <string name="color_light_blue">Light Blue</string>
-    <string name="color_light_green">Light Green</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_red">Red</string>
-    <string name="color_teal">Teal</string>
-
     <string name="contact">Contact</string>
 
     <string name="contributors">Contributors</string>
@@ -188,17 +172,6 @@
 
     <string name="invalid_time">Invalid time</string>
 
-    <string name="language_czech" translatable="false">Čeština</string>
-    <string name="language_english" translatable="false">English</string>
-    <string name="language_english_usa" translatable="false">English (United States)</string>
-    <string name="language_french" translatable="false">Français</string>
-    <string name="language_german" translatable="false">Deutsch</string>
-    <string name="language_lithuanian" translatable="false">Lietuvių kalba</string>
-    <string name="language_polish" translatable="false">Język polski</string>
-    <string name="language_portuguese_br" translatable="false">Português (Brasil)</string>
-    <string name="language_russian" translatable="false">Русский</string>
-    <string name="language_spanish" translatable="false">Español</string>
-
     <string name="license">License</string>
 
     <string name="list_empty_state_message">Nothing here yet!\nTap the switch at the top of the screen to see your history.</string>
@@ -249,11 +222,12 @@
     <string name="pref_category_title_timer">Timer</string>
     <string name="pref_screen_title_inspection_behavior">Inspection behavior</string>
     <string name="pref_screen_title_timer_behavior">Timer behavior</string>
+    <string name="pref_screen_title_timer_appearance">Timer appearance</string>
+
+	<string name="pref_scramble_box_title">Scramble background</string>
+	<string name="pref_scramble_box_description">Show a white background behind the scramble</string>
 
     <string name="preference_application_language_title">Language</string>
-
-    <string name="quick_action_button_large_summary">Show bigger quick action buttons (the buttons that appear after a solve)</string>
-    <string name="quick_action_button_large_title">Large quick action buttons</string>
 
     <string name="rate_app">Rate this app on Google Play</string>
 
@@ -385,14 +359,24 @@
     <string name="trainer_help_message">To start training, select the cases you want to train by tapping the title above\nYou can also create categories with different case sets</string>
     <string name="trainer_spinner_title">Select cases to train</string>
     <string name="trainer_select_all">Select all</string>
-    <string name="language_chinese">Chinese</string>
-    <string name="language_catalan">Catalan</string>
-    <string name="language_indonesian">Indonesian</string>
-    <string name="language_hebrew">Hebrew</string>
-    <string name="language_dutch">Dutch</string>
-    <string name="language_swedish">Swedish</string>
-    <string name="language_valencian">Valencian</string>
-    <string name="language_esperanto">Esperanto</string>
-    <string name="language_italian">Italian</string>
+    <string name="language_chinese" translatable="false">Chinese</string>
+    <string name="language_catalan" translatable="false">Catalan</string>
+    <string name="language_indonesian" translatable="false">Indonesian</string>
+    <string name="language_hebrew" translatable="false">Hebrew</string>
+    <string name="language_dutch" translatable="false">Dutch</string>
+    <string name="language_swedish" translatable="false">Swedish</string>
+    <string name="language_valencian" translatable="false">Valencian</string>
+    <string name="language_esperanto" translatable="false">Esperanto</string>
+    <string name="language_italian" translatable="false">Italian</string>
+    <string name="language_czech" translatable="false">Čeština</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_english_usa" translatable="false">English (United States)</string>
+    <string name="language_french" translatable="false">Français</string>
+    <string name="language_german" translatable="false">Deutsch</string>
+    <string name="language_lithuanian" translatable="false">Lietuvių kalba</string>
+    <string name="language_polish" translatable="false">Język polski</string>
+    <string name="language_portuguese_br" translatable="false">Português (Brasil)</string>
+    <string name="language_russian" translatable="false">Русский</string>
+    <string name="language_spanish" translatable="false">Español</string>
 
 </resources>

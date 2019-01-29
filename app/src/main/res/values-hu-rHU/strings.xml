@@ -24,16 +24,6 @@
     <string name="added_comment">Megjegyzés hozzáadva</string>
     <string name="advanced_pref_summary">Ezeknek a beállításoknak a megváltoztatása grafikus hibákat eredményezhet</string>
     <string name="clearEnabledTitle">Összes törlése gomb megjelenítése</string>
-    <string name="color_black">Fekete</string>
-    <string name="color_blue">Kék</string>
-    <string name="color_blueGray">Kékesszürke</string>
-    <string name="color_brown">Barna</string>
-    <string name="color_deepPurple">Sötétlila</string>
-    <string name="color_green">Zöld</string>
-    <string name="color_indigo">Indigó</string>
-    <string name="color_light_blue">Világoskék</string>
-    <string name="color_orange">Narancssárga</string>
-    <string name="color_red">Piros</string>
     <string name="delete_dialog_cancel_button">Mégse</string>
     <string name="dialog_export_import_export">Exportálás&#8230;</string>
     <string name="fab_add_time">Idő hozzáadása</string>

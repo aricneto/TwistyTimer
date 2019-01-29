@@ -1,6 +1,7 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,8 @@ public class StatGridAdapter extends BaseAdapter {
 
 
         textView.setGravity(Gravity.RIGHT);
+        textView.setSingleLine(true);
+        textView.setMaxLines(1);
 
         // IMPORTANT: keep padding in sync with StatTextStyle so layout doesn't get out of order
         textView.setPadding(0, (int) Utils.convertDpToPixel(3f), (int) Utils.convertDpToPixel(8f), (int) Utils.convertDpToPixel(3f));
