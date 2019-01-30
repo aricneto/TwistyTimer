@@ -150,7 +150,7 @@
         <PreferenceScreen
             android:icon="@drawable/ic_format_shapes_black_24dp"
             android:key="@string/pref_screen_title_timer_appearance_settings"
-            android:title="Timer appearance">
+            android:title="@string/pref_screen_title_timer_appearance">
 
             <PreferenceCategory android:title="@string/pref_category_title_features">
 
