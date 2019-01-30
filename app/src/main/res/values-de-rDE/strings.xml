@@ -143,6 +143,7 @@
     <string name="pref_screen_title_timer_behavior">Timerverhalten</string>
     <string name="pref_screen_title_timer_appearance">Timer Aussehen</string>
     <string name="pref_scramble_box_title">Scramble Hintergrund</string>
+    <string name="pref_scramble_box_description">Zeige einen weißen Hintergrund hinter dem Scramble</string>
     <string name="preference_application_language_title">Sprache</string>
     <string name="rate_app">Bewerte diese App bei Google Play</string>
     <string name="remove_session_confirmation_content">Sie werden nicht in der Lage, diese Aktion rückgängig zu machen.</string>

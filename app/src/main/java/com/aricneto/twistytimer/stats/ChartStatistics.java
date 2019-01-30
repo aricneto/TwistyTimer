@@ -344,8 +344,6 @@ public class ChartStatistics {
         // the finer details will be more visible.
         dataSet.setLineWidth(getLineWidth());
         dataSet.setColor(color);
-        dataSet.setDrawCubic(true);
-        dataSet.setCubicIntensity(0.2f);
         dataSet.setHighlightEnabled(false);
 
         dataSet.setDrawCircles(false);

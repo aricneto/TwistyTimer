@@ -143,6 +143,9 @@
     <string name="pref_category_title_timer">Chronomètre</string>
     <string name="pref_screen_title_inspection_behavior">Fonctionnement de l\'inspection</string>
     <string name="pref_screen_title_timer_behavior">Fonctionnement du chronomètre</string>
+    <string name="pref_screen_title_timer_appearance">Apparence du chronomètre</string>
+    <string name="pref_scramble_box_title">Arrière-plan du mélange</string>
+    <string name="pref_scramble_box_description">Afficher un arrière-plan blanc derrière le mélange</string>
     <string name="preference_application_language_title">Langue</string>
     <string name="rate_app">Notez the application sur le Google Play</string>
     <string name="remove_session_confirmation_content">Vous ne pourrez plus revenir en arrière.</string>
@@ -223,5 +226,15 @@
     <string name="dialog_scramble_details">Détails du mélange</string>
     <string name="dialog_select_puzzle">Sélectionner un cube</string>
     <string name="dialog_hint_title">Astuce</string>
+    <string name="category_select_dialog_title">Sélectionnez une catégorie</string>
+    <string name="category_select_dialog_hint_edit">Appuyez longuement sur une résolution pour la modifier</string>
+    <string name="action_search">Rechercher</string>
+    <string name="timelist_searchbox_hint">Rechercher des commentaires</string>
+    <string name="title_algorithms">Algorithmes</string>
     <string name="edit_scramble">Entrez un mélange personnalisé</string>
+    <string name="drawer_title_trainer">Entraînement</string>
+    <string name="title_trainer">Apprentissage des %1$s</string>
+    <string name="trainer_help_message">Pour commencer l\'entraînement, sélectionnez les algorithmes en cliquant sur le titre ci-dessus\nVous pouvez aussi créer des catégories avec différentes listes d\'algorithmes</string>
+    <string name="trainer_spinner_title">Choisissez les algorithmes à réviser</string>
+    <string name="trainer_select_all">Tout sélectionner</string>
 </resources>

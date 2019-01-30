@@ -78,7 +78,7 @@
     <string name="export_progress_title">Экспортирование...</string>
     <string name="fab_add_time">Добавить время</string>
     <string name="fab_share_ao12">Среднее из 12</string>
-    <string name="fab_share_ao5">Среднее из 5</string>
+    <string name="fab_share_ao5">Ao5</string>
     <string name="fab_share_distribution">Распределение</string>
     <string name="fab_share_error">Невозможно поделиться. Убедитесь что у вас достаточно сборок в этой сессии.</string>
     <string name="fab_share_histogram_solvecount">Распределение времени %1$s (%2$d решений)</string>
@@ -202,7 +202,7 @@
     <string name="graph_stats_label_total_time">Общее время</string>
     <string name="graph_stats_label_solve_count">К-во</string>
     <!-- Full names for Average of... -->
-    <string name="graph_stats_label_ao5_full">Среднее из 5</string>
+    <string name="graph_stats_label_ao5_full">Ao5</string>
     <string name="graph_stats_label_ao12_full">Ao12</string>
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>

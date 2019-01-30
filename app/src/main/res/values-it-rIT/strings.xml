@@ -141,6 +141,9 @@
     <string name="pref_category_title_timer">Timer</string>
     <string name="pref_screen_title_inspection_behavior">Comportamento ispezione</string>
     <string name="pref_screen_title_timer_behavior">Comportamento timer</string>
+    <string name="pref_screen_title_timer_appearance">Aspetto del timer</string>
+    <string name="pref_scramble_box_title">Sfondo dello scramble</string>
+    <string name="pref_scramble_box_description">Mostra uno sfondo bianco dietro allo scramble</string>
     <string name="preference_application_language_title">Lingua</string>
     <string name="remove_session_confirmation_content">Non potrai annullare questa azione.</string>
     <string name="remove_session_title">Rimuovere tutte le solve di questa sessione?</string>
@@ -217,4 +220,18 @@
     <string name="pref_inspection_alert_both">Entrambi</string>
     <string name="pref_inspection_alert_title">Avviso tempo rimasto</string>
     <string name="pref_inspection_alert_summary">Il Timer avvisa una volta che sono trascorsi %1$d e %2$d secondi di ispezione</string>
+    <string name="dialog_scramble_details">Dettagli sullo scramble</string>
+    <string name="dialog_select_puzzle">Scegli un puzzle</string>
+    <string name="dialog_hint_title">Suggerimenti</string>
+    <string name="category_select_dialog_title">Seleziona una categoria</string>
+    <string name="category_select_dialog_hint_edit">Premi a lungo su una voce per modificarla</string>
+    <string name="action_search">Cerca</string>
+    <string name="timelist_searchbox_hint">Cerca commenti</string>
+    <string name="title_algorithms">Algoritmi</string>
+    <string name="edit_scramble">Inserisci scramble personalizzato</string>
+    <string name="drawer_title_trainer">Allenamento</string>
+    <string name="title_trainer">Allenamento %1$s</string>
+    <string name="trainer_help_message">Per iniziare l\'allenamento, seleziona i casi che vuoi allenare toccando il titolo sopra\nPuoi anche creare categorie con altri casi</string>
+    <string name="trainer_spinner_title">Seleziona i casi da allenare</string>
+    <string name="trainer_select_all">Seleziona tutto</string>
 </resources>
