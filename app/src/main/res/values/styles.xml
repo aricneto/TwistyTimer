@@ -361,7 +361,7 @@
 
     <style name="BaseBluyGray" parent="DefaultTheme">
         <item name="colorMainGradientStart">#455a64</item>
-        <item name="colorMainGradientEnd">#607d8b</item>
+        <item name="colorMainGradientEnd">#546e7a</item>
 
         <item name="colorAccent">@color/md_amber_A200</item>
     </style>
