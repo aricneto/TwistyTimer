@@ -4,7 +4,6 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?tabBarSize"
     android:keepScreenOn="true"
     tools:background="?colorPrimary"
     tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
@@ -14,7 +13,7 @@
         android:id="@+id/startTimerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="16dp" />
 
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/rippleBackground"
@@ -119,7 +118,7 @@
         android:layout_height="68dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         tools:background="@color/red_material" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -129,7 +128,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="56dp"
         android:indeterminate="true"
         android:visibility="invisible"
         tools:visibility="visible" />
@@ -160,7 +161,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:alpha=".85"
         android:textColor="?colorTimerText"
         android:textSize="12sp"
@@ -175,7 +176,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:alpha=".85"
         android:gravity="left"
         android:textColor="?colorTimerText"

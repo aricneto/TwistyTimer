@@ -4,7 +4,6 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?tabBarSize"
     android:keepScreenOn="true"
     tools:background="@drawable/background_gradient"
     tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
@@ -14,7 +13,7 @@
         android:id="@+id/startTimerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="16dp" />
 
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/rippleBackground"
@@ -122,7 +121,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/sessionDetailTextOther"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:scaleType="fitStart"
         tools:background="@color/red_material" />
 
@@ -134,7 +133,9 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/sessionDetailTextOther"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="56dp"
         android:indeterminate="true"
         android:visibility="invisible"
         tools:visibility="visible" />
@@ -166,7 +167,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:alpha=".85"
         android:fontFamily="@font/quicksand_medium"
         android:textColor="?colorTimerText"
@@ -182,7 +183,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:alpha=".85"
         android:fontFamily="@font/quicksand_medium"
         android:gravity="left"
