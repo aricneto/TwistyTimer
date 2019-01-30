@@ -378,5 +378,7 @@
     <string name="language_portuguese_br" translatable="false">Português (Brasil)</string>
     <string name="language_russian" translatable="false">Русский</string>
     <string name="language_spanish" translatable="false">Español</string>
+    <string name="language_serbian" translatable="false">Serbian</string>
+    <string name="language_croatian" translatable="false">Croatian</string>
 
 </resources>

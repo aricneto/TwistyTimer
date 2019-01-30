@@ -40,6 +40,8 @@ public class LocaleUtils {
     public static final String PORTUGUESE_BRAZIL = "pt_BR";
     public static final String LITHUANIAN        = "lt";
     public static final String POLISH            = "pl";
+    public static final String SERBIAN_LATIN     = "sr_CS";
+    public static final String CROATIAN          = "hr";
 
 
 
