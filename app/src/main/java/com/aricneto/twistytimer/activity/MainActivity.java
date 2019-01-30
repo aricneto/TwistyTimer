@@ -1037,7 +1037,7 @@ public class MainActivity extends AppCompatActivity
                 final DatabaseHandler handler = TwistyTimer.getDBHandler();
 
                 // Perform a bulk insertion of the solves.
-                successes = handler.addSolves(solveList, new ProgressListener() {
+                successes = handler.addSolves(mFileFormat, solveList, new ProgressListener() {
                             @Override
                             public void onProgress(int numCompleted, int total) {
                                 publishProgress(numCompleted, total);

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
+import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.stats.ChartStatistics;
@@ -290,6 +291,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * {@link #addSolve(Solve)} method. Any given solve that matches a solve already in the
      * database will not be inserted.
      *
+     * @param fileFormat
+     *      The solve file format, must be {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL}, or
+     *          *     {@link ExportImportDialog#EXIM_FORMAT_BACKUP}.
      * @param solves
      *     The collection of solves to be added to the database. Must not be {@code null}, but may
      *     be empty.
@@ -304,7 +308,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *     The number of unique solves inserted. Solves that are duplicates of existing solves
      *     (by {@link #solveExists(Solve)}) are not inserted.
      */
-    public int addSolves(Collection<Solve> solves, ProgressListener listener) {
+    public int addSolves(int fileFormat, Collection<Solve> solves, ProgressListener listener) {
         final int total = solves.size();
         int numProcessed = 0; // Whether inserted or not (i.e., includes duplicates).
 
@@ -322,7 +326,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 db.beginTransaction();
 
                 for (Solve solve : solves) {
-                    if (!solveExists(solve)) {
+                    // Do not check for duplicates if importing from external
+                    if ((fileFormat == ExportImportDialog.EXIM_FORMAT_EXTERNAL || !solveExists(solve))) {
                         addSolveInternal(db, solve);
                         numInserted++;
                     }
