@@ -15,6 +15,7 @@
         android:drawSelectorOnTop="true"
         android:paddingLeft="6dp"
         android:paddingTop="8dp"
+        android:paddingBottom="56dp"
         android:paddingRight="6dp" />
 
     <ImageView
