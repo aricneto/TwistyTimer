@@ -359,6 +359,13 @@
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
     </style>
 
+    <style name="BaseBluyGray" parent="DefaultTheme">
+        <item name="colorMainGradientStart">#455a64</item>
+        <item name="colorMainGradientEnd">#607d8b</item>
+
+        <item name="colorAccent">@color/md_amber_A200</item>
+    </style>
+
 
     <!--
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.
@@ -399,6 +406,8 @@
     <style name="WhiteGreenTheme" parent="BaseWhiteGreenTheme"/>
 
     <style name="DawnTheme" parent="BaseDawnTheme"/>
+
+    <style name="BluyGray" parent="BaseBluyGray"/>
     <!--
     Other miscellaneous styles.
     -->

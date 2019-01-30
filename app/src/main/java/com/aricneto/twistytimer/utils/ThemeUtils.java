@@ -45,6 +45,7 @@ public final class ThemeUtils {
     public static final String THEME_YELLOW      = "yellow";
     public static final String THEME_WHITE_GREEN = "white_green";
     public static final String THEME_DAWN        = "dawn";
+    public static final String THEME_BLUY_GRAY   = "bluy_gray";
 
     /**
      * Private constructor to prevent instantiation of this utility class.
@@ -104,6 +105,8 @@ public final class ThemeUtils {
                 return R.style.WhiteGreenTheme;
             case THEME_DAWN:
                 return R.style.DawnTheme;
+            case THEME_BLUY_GRAY:
+                return R.style.BluyGray;
         }
     }
 
@@ -123,6 +126,7 @@ public final class ThemeUtils {
                 new Theme(THEME_BLUE, "Even\nPurplier"),
                 new Theme(THEME_PURPLE, "Definitely\nPurple"),
                 new Theme(THEME_ORANGE, "Tantalizing\nTorange"),
+                new Theme(THEME_BLUY_GRAY, "Bluy\nGray"),
                 new Theme(THEME_DAWN, "Relaxing\nDawn"),
                 new Theme(THEME_RED, "Oof\nHot"),
                 new Theme(THEME_PINK, "Pinky\nPromises"),
