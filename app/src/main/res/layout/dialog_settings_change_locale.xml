@@ -129,7 +129,7 @@
         <TextView
             android:id="@+id/eo"
             style="@style/DialogItem"
-            android:drawableLeft="@drawable/flag_poland"
+            android:drawableLeft="@drawable/flag_esperanto"
             android:text="@string/language_esperanto"/>
 
         <TextView
