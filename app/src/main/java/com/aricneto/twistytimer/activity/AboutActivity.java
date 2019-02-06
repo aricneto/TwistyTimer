@@ -32,6 +32,7 @@ public class AboutActivity extends AppCompatActivity {
     @BindView(R.id.testersButton)     AppCompatTextView testersButton;
     @BindView(R.id.sourceButton)      AppCompatTextView sourceButton;
     @BindView(R.id.appVersion)        AppCompatTextView appVersion;
+    @BindView(R.id.translateButton)    AppCompatTextView translateButton;
     @BindView(R.id.translatorsButton) AppCompatTextView translatorsButton;
     @BindView(R.id.contributorsButton)AppCompatTextView contributorsButton;
     @BindView(R.id.back)               View     backButton;
@@ -83,6 +84,10 @@ public class AboutActivity extends AppCompatActivity {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/aricneto/TwistyTimer"));
                     startActivity(browserIntent);
                     break;
+                case R.id.translateButton:
+                    Intent translateBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://crwd.in/twisty-timer"));
+                    startActivity(translateBrowserIntent);
+                    break;
             }
         }
     };
@@ -116,5 +121,6 @@ public class AboutActivity extends AppCompatActivity {
         sourceButton.setOnClickListener(clickListener);
         translatorsButton.setOnClickListener(clickListener);
         contributorsButton.setOnClickListener(clickListener);
+        translateButton.setOnClickListener(clickListener);
     }
 }

@@ -72,7 +72,6 @@
         android:layout_marginRight="24dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
         android:background="@drawable/outline_background_card_info"
         app:drawableLeftCompat="@drawable/ic_outline_star_border_18px"
         android:drawablePadding="8dp"
@@ -82,15 +81,34 @@
         android:textColor="#000"
         android:textSize="14sp" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/translateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rateButton"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/outline_background_card_warn_stroke"
+        app:drawableLeftCompat="@drawable/ic_outline_translate_18px"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/about_translate_title"
+        android:textColor="#000"
+        android:textSize="14sp" />
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rateButton"
+        android:layout_below="@+id/translateButton"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:stretchColumns="1,0">
+        android:stretchColumns="*">
 
         <TableRow
             android:layout_width="match_parent"

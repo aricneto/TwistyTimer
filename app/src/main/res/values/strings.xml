@@ -380,5 +380,6 @@
     <string name="language_spanish" translatable="false">Español</string>
     <string name="language_serbian" translatable="false">Serbian</string>
     <string name="language_croatian" translatable="false">Croatian</string>
+    <string name="about_translate_title">Help translate Twisty Timer!</string>
 
 </resources>

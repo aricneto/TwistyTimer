@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="14dp"
+    app:cardBackgroundColor="?colorItemListBackground"
+    tools:layout_margin="12dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scramble_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="44dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/scramble_button_hint"
+            android:layout_toLeftOf="@id/scramble_button_edit"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="2dp"
+            android:alpha="0.85"
+            android:fontFamily="@font/quicksand_medium"
+            android:gravity="center"
+            android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
+            android:textColor="?colorItemListText"
+            android:textSize="16sp" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/scramble_progress"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:indeterminate="true"
+            android:layout_below="@id/scramble_text"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:mpb_progressTint="@color/md_red_400"
+            android:background="?colorCardBackgroundWarn"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="1dp"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false" />
+
+        <ImageView
+            android:id="@+id/scramble_button_reset"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="4dp"
+            android:alpha=".85"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_outline_cached_24px" />
+
+        <ImageView
+            android:id="@+id/scramble_button_edit"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="4dp"
+            android:layout_toLeftOf="@id/scramble_button_reset"
+            android:alpha=".85"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_outline_edit_24px" />
+
+        <ImageView
+            android:id="@+id/scramble_button_hint"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="4dp"
+            android:alpha=".85"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
