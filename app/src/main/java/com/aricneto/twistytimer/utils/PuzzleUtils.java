@@ -6,6 +6,7 @@ import androidx.annotation.StringRes;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.solver.StringUtils;
 import com.aricneto.twistytimer.stats.AverageCalculator;
 import com.aricneto.twistytimer.stats.Statistics;
 
@@ -13,6 +14,7 @@ import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
@@ -333,22 +335,75 @@ public class PuzzleUtils {
         return s.toString();
     }
 
-    /**
-     * Shares an average-of-N, formatted to a simple string.
-     *
-     * @param n
-     *     The value of "N" for which the average is required.
-     * @param puzzleType
-     *     The name of the type of puzzle being shared.
-     * @param stats
-     *     The statistics that contain the required details about the average.
-     * @param activityContext
-     *     An activity context required to start the sharing activity. An application context is
-     *     not appropriate, as using it may disrupt the task stack.
-     *
-     * @return
-     *     {@code true} if it is possible to share the average; or {@code false} if it is not.
-     */
+    private static String replaceAll(String str, HashMap map) {
+        StringBuilder rotated = new StringBuilder();
+        Character move;
+
+        for (String turn : str.split(" ")) {
+            // If a turn is a prime move, get only the first char (F' becomes F)
+            move = turn.charAt(0);
+            if (map.containsKey(move.toString()))
+                rotated.append(map.get(move.toString())).append(turn.length() > 1 ? turn.charAt(1) + " " : " ");
+            else
+                rotated.append(turn).append(" ");
+        }
+
+        return rotated.toString();
+    }
+
+    // returns new string with transformed algorithm.
+    // Returnes sequence of moves that get the cube to the same position as (alg + rot) does, but without cube rotations.
+    // Example: applyRotationForAlgorithm("R U R'", "y") = "F U F'"
+    public static String applyRotationForAlgorithm(String alg, String rot) {
+        HashMap<String, String> map;
+        switch (rot) {
+            case "y":
+                map = new HashMap<String, String>() {{
+                   put("R", "F");
+                   put("F", "L");
+                   put("L", "B");
+                   put("B", "R");
+                }};
+                break;
+            case "y'":
+                map = new HashMap<String, String>() {{
+                    put("R", "B");
+                    put("B", "L");
+                    put("L", "F");
+                    put("F", "R");
+                }};
+                break;
+            case "y2":
+                map = new HashMap<String, String>() {{
+                    put("R", "L");
+                    put("L", "R");
+                    put("B", "F");
+                    put("F", "B");
+                }};
+                break;
+            default:
+                return alg;
+        }
+
+        return replaceAll(alg, map);
+    }
+
+        /**
+         * Shares an average-of-N, formatted to a simple string.
+         *
+         * @param n
+         *     The value of "N" for which the average is required.
+         * @param puzzleType
+         *     The name of the type of puzzle being shared.
+         * @param stats
+         *     The statistics that contain the required details about the average.
+         * @param activityContext
+         *     An activity context required to start the sharing activity. An application context is
+         *     not appropriate, as using it may disrupt the task stack.
+         *
+         * @return
+         *     {@code true} if it is possible to share the average; or {@code false} if it is not.
+         */
     public static boolean shareAverageOf(
             int n, String puzzleType, Statistics stats, Activity activityContext) {
         final String averageOfN = formatAverageOfN(n, stats);

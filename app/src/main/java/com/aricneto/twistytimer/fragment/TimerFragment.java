@@ -84,7 +84,6 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_COMMENT_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
@@ -1379,7 +1378,7 @@ public class                                                                    
             scrambleGeneratorAsync = new GenerateScrambleSequence();
             scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (currentTimerMode.equals(TIMER_MODE_TRAINER)) {
-            setScramble(TrainerScrambler.fetchRandomScramble(getContext(), currentSubset, currentPuzzleCategory));
+            setScramble(TrainerScrambler.generateTrainerCase(getContext(), currentSubset, currentPuzzleCategory));
             canShowHint = false;
             hideButtons(true, true);
         }

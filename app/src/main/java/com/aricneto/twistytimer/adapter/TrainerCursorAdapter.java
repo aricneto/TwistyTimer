@@ -13,7 +13,9 @@ import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -22,7 +24,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class TrainerCursorAdapter extends AlgCursorAdapter {
 
-    private List<Long> selectedItems;
+    private List<String> selectedItems;
     private FragmentManager fragmentManager;
     private Context mContext;
 
@@ -42,15 +44,15 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         selectedCardBackground = ContextCompat.getDrawable(mContext, R.drawable.stroke_card);
 
         selectedItems = new ArrayList<>();
-        selectedItems.addAll(TrainerScrambler.fetchSelectedItemsLong(subset, category));
+        selectedItems.addAll(TrainerScrambler.fetchSelectedItems(subset, category));
 
         this.currentSubset = subset;
         this.currentPuzzleCategory = category;
 
     }
 
-    private boolean isSelected(long id) {
-        return selectedItems.contains(id);
+    private boolean isSelected(String name) {
+        return selectedItems.contains(name);
     }
 
     public void unselectAll() {
@@ -64,27 +66,27 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         selectedItems.clear();
         switch (currentSubset) {
             case OLL:
-                if (size != 58) {
-                    for (int i = 0; i < 58; i++)
-                        selectedItems.add((long) i);
+                if (size != 57) {
+                    for (int i = 1; i < 58; i++)
+                        selectedItems.add("OLL " + String.format(Locale.US, "%02d", i));
                 }
                 break;
             case PLL:
-                if (size != 22) {
-                    for (int i = 0; i < 22; i++)
-                        selectedItems.add((long) i + 57);
+                if (size != 21) {
+                    String[] pll_cases = {"H", "Ua", "Ub", "Z", "Aa", "Ab", "E", "F", "Ga", "Gb", "Gc", "Gd", "Ja", "Jb", "Na", "Nb", "Ra", "Rb", "T", "V", "Y"};
+                    selectedItems.addAll(Arrays.asList(pll_cases));
                 }
                 break;
         }
         TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
     }
 
-    private void toggleSelection(long id, CardView card) {
-        if (!isSelected(id)) {
-            selectedItems.add(id);
+    private void toggleSelection(String name, CardView card) {
+        if (!isSelected(name)) {
+            selectedItems.add(name);
             card.setBackground(selectedCardBackground);
         } else {
-            selectedItems.remove(id);
+            selectedItems.remove(name);
             card.setBackground(cardBackground);
         }
         TrainerScrambler.saveSelectedItems(currentSubset, currentPuzzleCategory, selectedItems);
@@ -95,8 +97,9 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         super.handleTime(holder, cursor);
 
         long id = cursor.getLong(0);
+        String pName = cursor.getString(2);
 
-        if (isSelected(id)) {
+        if (isSelected(pName)) {
             holder.card.setBackground(selectedCardBackground);
         } else {
             holder.card.setBackground(cardBackground);
@@ -105,7 +108,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleSelection(id, holder.card);
+                toggleSelection(pName, holder.card);
             }
         });
 

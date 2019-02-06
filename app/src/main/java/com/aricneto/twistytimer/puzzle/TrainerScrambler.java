@@ -8,7 +8,12 @@ import android.util.Log;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Algorithm;
+import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.Prefs;
+import com.aricneto.twistytimer.utils.PuzzleUtils;
+
+import net.gnehzr.tnoodle.scrambles.InvalidScrambleException;
+import net.gnehzr.tnoodle.scrambles.Puzzle;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,15 +25,29 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import puzzle.CubePuzzle;
+import puzzle.ThreeByThreeCubePuzzle;
+
 /**
  * Provides scramble algorithms to be used in the trainer
  */
 public abstract class TrainerScrambler {
     // The algorithms were taken from
     // github.com/Roman-/oll_trainer TODO: credit them in the app
+    private static Random random = new Random();
+
+    private static String[] Y_ROTATIONS = {"", "y", "y2", "y'"};
+
+    private static CubePuzzle puzzle = new ThreeByThreeCubePuzzle();
+    private static CubePuzzle.CubeState solved = puzzle.getSolvedState();
+
     private TrainerScrambler() {}
 
-    public static final String KEY_TRAINER = "TRAINER";
+    // The key preceding every trainer entry.
+    // The version MUST NOT be decreased, only increased, as previous users may have
+    // configurations saved in a different TRAINER version that is incompatible with the current
+    // implementation, causing crashes.
+    public static final String KEY_TRAINER = "TRAINER_V2";
 
     public static enum TrainerSubset {
         OLL, PLL
@@ -53,16 +72,20 @@ public abstract class TrainerScrambler {
      *      key: TRAINER[SUBSET][CATEGORY]
      *      set: ITEMS
      */
-    public static void saveSelectedItems(TrainerSubset subset, String category, List<Long> selectedItems) {
-        Set<String> set = new HashSet<>();
-
-        for (Long item : selectedItems) {
-            set.add(item.toString());
-        }
-
+    public static void saveSelectedItems(TrainerSubset subset, String category, Set<String> selectedItems) {
         Prefs.getPrefs().edit()
-                .putStringSet(KEY_TRAINER + subset.name() + category, set)
+                .putStringSet(KEY_TRAINER + subset.name() + category, selectedItems)
                 .apply();
+    }
+
+    /**
+     * Saves selected cases to preferences, to be fetched later. Accepts a List<String> input.
+     * Preference will be saved in the format:
+     *      key: TRAINER[SUBSET][CATEGORY]
+     *      set: ITEMS
+     */
+    public static void saveSelectedItems(TrainerSubset subset, String category, List<String> selectedItems) {
+        saveSelectedItems(subset, category, new HashSet<>(selectedItems));
     }
 
     /**
@@ -72,7 +95,7 @@ public abstract class TrainerScrambler {
      * @param newCategoryName
      */
     public static void renameCategory(TrainerSubset subset, String oldCategoryName, String newCategoryName) {
-        List<Long> items = fetchSelectedItemsLong(subset, oldCategoryName);
+        Set<String> items = fetchSelectedItems(subset, oldCategoryName);
         Prefs.getPrefs().edit().remove(KEY_TRAINER + subset.name() + oldCategoryName).apply();
         saveSelectedItems(subset, newCategoryName, items);
     }
@@ -83,53 +106,62 @@ public abstract class TrainerScrambler {
      * @param category
      * @return
      */
-    public static List<String> fetchSelectedItems(TrainerSubset subset, String category) {
-        return new ArrayList<>(fetchSelectedPrefs(subset, category));
-    }
-
-    private static Set<String> fetchSelectedPrefs(TrainerSubset subset, String category) {
+    public static Set<String> fetchSelectedItems(TrainerSubset subset, String category) {
         return Prefs.getPrefs()
                 .getStringSet(KEY_TRAINER + subset.name() + category, new HashSet<>());
     }
 
     /**
-     * Fetches previously selected cases depending on current subset and category
-     * @param subset
-     * @param category
-     * @return
+     * Generates a random trainer case from the selected cases
      */
-    public static List<Long> fetchSelectedItemsLong(TrainerSubset subset, String category) {
-        List<String> prefs = fetchSelectedItems(subset, category);
-        List<Long> list = new ArrayList<>();
-        for(String s : prefs) list.add(Long.valueOf(s));
-        return list;
+    public static String generateTrainerCase(Context context, TrainerSubset subset, String category) {
+        List<String> selectedItems = new ArrayList<>(fetchSelectedItems(subset, category));
+        String caseAlg = "";
+        String scramble = "";
+
+        CubePuzzle.CubeState state = null;
+
+        if (selectedItems.size() != 0) {
+            try {
+                // Fetch a random setup algorithm and set it as the cube state
+                caseAlg = fetchCaseAlgorithm(context, subset.name(), selectedItems.get(random.nextInt(selectedItems.size())));
+                state = (CubePuzzle.CubeState) solved.applyAlgorithm(caseAlg);
+
+                // Solve the state
+                scramble = ((ThreeByThreeCubePuzzle) puzzle).solveIn(state, 20, null);
+            } catch (InvalidScrambleException e) {
+                e.printStackTrace();
+            }
+        } else {
+            scramble = context.getString(R.string.trainer_help_message);
+        }
+
+        return PuzzleUtils.applyRotationForAlgorithm(scramble, Y_ROTATIONS[random.nextInt(4)]);
     }
 
-    /**
-     * Fetches a random scramble from XML file
-     */
-    public static String fetchRandomScramble(Context context, TrainerSubset subset, String category) {
+    private static String fetchCaseAlgorithm(Context context, String subset, String name) {
         Resources resources = context.getResources();
-        List<String> selectedItems = fetchSelectedItems(subset, category);
 
-        // Finds a resource with a name matching the subset and a random number from the selected.
-        // Ex. oll_5
-        Log.d("TrainerScramble", String.valueOf(selectedItems));
+        // Finds an algorithm resource with a matching name on the file trainer_scrambles.xml
 
         try {
+            // Find the resource
             int resId = resources.getIdentifier(
-                    subset.name() + "_" + selectedItems.get(new Random().nextInt(selectedItems.size())),
+                    "TRAINER_" + subset + "_" + name.replace(" ", "_").toUpperCase(),
                     "array",
                     context.getPackageName()
             );
 
+            // Split the resouce entries
             String[] res = resources.getStringArray(resId);
-            return res[new Random().nextInt(res.length)];
+
+            // Return one of the entries
+            return res[random.nextInt(res.length)];
         } catch (Exception e) {
             Log.e("TRAINER_SCRAMBLE", "Error retrieving scramble: " + e);
         }
 
-        return context.getString(R.string.trainer_help_message);
+        return "U";
     }
 
 }
