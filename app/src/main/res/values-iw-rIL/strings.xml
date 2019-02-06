@@ -111,6 +111,9 @@
     <string name="pref_category_title_timer">טיימר</string>
     <string name="pref_screen_title_inspection_behavior">אפשרויות סקירה</string>
     <string name="pref_screen_title_timer_behavior">אפשרויות טיימר</string>
+    <string name="pref_screen_title_timer_appearance">תצוגת טיימר</string>
+    <string name="pref_scramble_box_title">רקע ערבוב</string>
+    <string name="pref_scramble_box_description">הצג רקע לבן מאחורי הערבוב</string>
     <string name="preference_application_language_title">שפה</string>
     <string name="title_activity_settings">הגדרות</string>
     <string name="graph_stats_title_current">נוכחי</string>

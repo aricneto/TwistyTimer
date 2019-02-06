@@ -88,7 +88,7 @@
             android:padding="2dp"
             android:scaleX="0.80"
             android:scaleY="0.80"
-            android:text="Hint"
+            android:text="@string/dialog_hint_title"
             android:textColor="?colorItemListText"
             android:textSize="14sp"
             android:visibility="gone"

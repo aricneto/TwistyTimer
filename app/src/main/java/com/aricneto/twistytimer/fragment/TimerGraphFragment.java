@@ -220,7 +220,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         axisLeft.setDrawGridLines(true);
         //axisLeft.setSpaceTop(30f);
         axisLeft.setTextColor(axisColor);
-        axisLeft.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         axisLeft.setAxisLineColor(axisColor);
         axisLeft.setDrawAxisLine(false);
         axisLeft.setGridColor(gridColor);

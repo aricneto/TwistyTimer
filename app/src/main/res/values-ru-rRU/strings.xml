@@ -39,12 +39,12 @@
     <string name="contact">Контакт</string>
     <string name="contributors">Соавторы</string>
     <string name="contributors_content">Огромное спасибо этим людям за вклад в разработку app:%1$s</string>
-    <string name="cube_222">Куб 2х2х2</string>
-    <string name="cube_333">Куб 3х3х3</string>
-    <string name="cube_444">Куб 4х4х4</string>
-    <string name="cube_555">Куб 5х5х5</string>
-    <string name="cube_666">Куб 6х6х6</string>
-    <string name="cube_777">Куб 7х7х7</string>
+    <string name="cube_222">Куб 2х2</string>
+    <string name="cube_333">Куб 3х3</string>
+    <string name="cube_444">Куб 4х4</string>
+    <string name="cube_555">Куб 5х5</string>
+    <string name="cube_666">Куб 6х6</string>
+    <string name="cube_777">Куб 7х7</string>
     <string name="delete_dialog_cancel_button">Отмена</string>
     <string name="delete_dialog_confirmation_button">Удалить</string>
     <string name="delete_dialog_confirmation_title">Удалить результат?</string>
@@ -141,6 +141,7 @@
     <string name="pref_category_title_timer">Таймер</string>
     <string name="pref_screen_title_inspection_behavior">Поведение инспекции</string>
     <string name="pref_screen_title_timer_behavior">Поведение таймера</string>
+    <string name="pref_scramble_box_title">Фон скрамбла</string>
     <string name="preference_application_language_title">Язык</string>
     <string name="rate_app">Оценить это приложение в Google Play</string>
     <string name="remove_session_confirmation_content">Вы не сможете отменить это действие.</string>
@@ -214,4 +215,6 @@
     <string name="pref_inspection_alert_both">Оба</string>
     <string name="pref_inspection_alert_title">Оповещать об оставшемся времени</string>
     <string name="pref_inspection_alert_summary">Таймер оповестит вас, когда пройдут %1$d и %2$d секунд инспекции</string>
+    <string name="dialog_scramble_details">Детали скрамбла</string>
+    <string name="dialog_select_puzzle">Выбрать пазл</string>
 </resources>

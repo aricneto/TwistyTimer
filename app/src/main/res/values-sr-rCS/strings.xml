@@ -57,12 +57,12 @@
     <string name="donation_tier2">2 Dolara</string>
     <string name="donation_tier3">3 Dolara</string>
     <string name="donation_tier4">5 Dolara</string>
-    <string name="drawer_about">O aplikaciji i povratne informacije</string>
+    <string name="drawer_about">O tajmeru i povratne informacije</string>
     <string name="drawer_title_changeColorScheme">Šema boja</string>
     <string name="drawer_title_changeTheme">Tema aplikazije</string>
     <string name="drawer_title_export_import">Izvoz/Uvoz</string>
     <string name="drawer_title_other">Ostalo</string>
-    <string name="drawer_title_reference">Napomena</string>
+    <string name="drawer_title_reference">Referenca</string>
     <string name="drawer_title_timer">Tajmer</string>
     <string name="edit_algorithm">Uredi algoritme</string>
     <string name="edit_comment">Uredi komentar</string>
@@ -90,7 +90,7 @@
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Najbolje</string>
     <string name="graph_mean">Mean</string>
-    <string name="hideTimeSummary">Tajmer će prikazati vaše vreme kada završite sa slaganjem</string>
+    <string name="hideTimeSummary">Tajmer će prikazati vaše vreme tek kada završite sa slaganjem</string>
     <string name="hideTimeTitle">Sakrij vreme dok slazem</string>
     <string name="holdEnabledSummary">Drži tajmer 0.5 sekundi da bi započeo</string>
     <string name="holdEnabledTitle">Drži da započneš</string>
@@ -117,7 +117,7 @@
     <string name="list_options_item_history">Arhiviraj</string>
     <string name="list_options_item_share">Podeli</string>
     <string name="loading_hints">Učitavam predloge&#8230;</string>
-    <string name="millisecondsEnabledSummary">Prikaži decimale kada merim slaganje</string>
+    <string name="millisecondsEnabledSummary">Prikaži decimale kada merim vreme</string>
     <string name="millisecondsEnabledTitle">Prikaži decimale</string>
     <string name="move_solves_to_history">Pomeri vremena slaganja u istoriju slaganja?</string>
     <string name="move_solves_to_history_content">Moći ćete da im pristupite tako što ćete dodirnuti dugme za istoriju slaganja</string>
@@ -129,7 +129,7 @@
     <string name="option_show_scramble_hints">Strana kocke prikazana na predlogu</string>
     <string name="option_show_scramble_hints_summary">Odaberi stranu kocke za koju želiš da vidiš predloge</string>
     <string name="pagerEnabledSummary">Ako je ova opcija omogućena, moraćete da dodirnete tab kako biste ih menjali međusobno.</string>
-    <string name="pagerEnabledTitle">Dozvili menjanje izmedju tabova</string>
+    <string name="pagerEnabledTitle">Dozvoli menjanje izmedju tabova</string>
     <string name="panel_swipe_down_to_hide">Povuci dole da sakriješ</string>
     <string name="permission_denied_explanation">Kako bi izvoz/uvoz opcija radila, moraćete da date Twisty timer-u dozvolu da pristupi vašoj memoriji telefona.</string>
     <string name="personal_best_message">Svaka čast! \nUpravo si oborio svoj rekord za %1$s</string>
@@ -164,7 +164,7 @@
     <string name="scrambleImageSize_summary">Kontroliše veličinu slike za scramble</string>
     <string name="scrambleImageSize_text">Veličina slike za scramble</string>
     <string name="scramble_text_size">Veličina teksta za scramble</string>
-    <string name="scramble_text_size_summary">Kontroliše veličinu teksta niza scramble-ova prikazanih na timeru</string>
+    <string name="scramble_text_size_summary">Kontroliše veličinu teksta niza scramble-ova prikazanih na tajmeru</string>
     <string name="scramble_text_tap_hint">Dodirni ovde da vidiš scramble</string>
     <string name="select_penalty">Odaberi kaznu</string>
     <string name="select_solve_type">Izaberite kategoriju</string>
@@ -192,7 +192,7 @@
     <string name="timer_text_offset_summary">Kontroliše poziciju teksta tajmera</string>
     <string name="timer_text_size">Veličina teksta tajmera</string>
     <string name="timer_text_size_summary">Kontroliše veličinu teksta tajmera</string>
-    <string name="title_activity_about">O aplikaciji i povratne informacije</string>
+    <string name="title_activity_about">O tajmeru i povratne informacije</string>
     <string name="title_activity_settings">Podešavanja</string>
     <string name="translators">Prevodioci</string>
     <string name="translators_content">Veliko hvala ovim ljudima koji su obezbedili prevode za aplikaciju:%1$s</string>
@@ -210,8 +210,8 @@
     <string name="graph_stats_label_mean">Mean</string>
     <string name="graph_stats_label_best">Najbolje</string>
     <string name="graph_stats_label_worst">Najgore</string>
-    <string name="graph_stats_label_total_time">Ukupno vreme</string>
-    <string name="graph_stats_label_solve_count">Broj</string>
+    <string name="graph_stats_label_total_time">Ukupno</string>
+    <string name="graph_stats_label_solve_count">Količina</string>
     <!-- Full names for Average of... -->
     <string name="graph_stats_label_ao5_full">Ao5</string>
     <string name="graph_stats_label_ao12_full">Ao12</string>

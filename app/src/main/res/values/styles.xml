@@ -272,6 +272,7 @@
         <item name="colorMainGradientStart">#ED1C24</item>
         <item name="colorMainGradientEnd">#FF6219</item>
 
+        <item name="colorChartExtra1">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_deep_purple_A200</item>
     </style>
 
