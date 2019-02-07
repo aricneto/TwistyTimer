@@ -86,6 +86,7 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_COMMENT_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCRAMBLE_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SCROLLED_PAGE;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
@@ -1518,6 +1519,11 @@ public class                                                                    
 
         if (showHintsEnabled)
             canShowHint = true;
+
+        // Broadcast the new scramble
+        new BroadcastBuilder(CATEGORY_UI_INTERACTIONS, ACTION_SCRAMBLE_MODIFIED)
+                .scramble(realScramble)
+                .broadcast();
     }
 
     private class GenerateScrambleImage extends AsyncTask<Void, Void, Drawable> {

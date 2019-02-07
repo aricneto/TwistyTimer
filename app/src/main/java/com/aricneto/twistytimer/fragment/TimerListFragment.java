@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -40,7 +41,9 @@ import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
+import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
@@ -93,6 +96,7 @@ public class TimerListFragment extends BaseFragment
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
+    private String            currentScramble;
 
     // Stores the current comment search query
     private String searchComment = "";
@@ -111,30 +115,8 @@ public class TimerListFragment extends BaseFragment
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.add_time_button:
-                    new MaterialDialog.Builder(mContext)
-                        .title(R.string.add_time)
-                        .input(getString(R.string.add_time_hint), "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                int time = PuzzleUtils.parseTime(input.toString());
-                                if (time != 0) {
-                                    final Solve solve = new Solve(time, currentPuzzle,
-                                            currentPuzzleSubtype, new DateTime().getMillis(), "",
-                                            PuzzleUtils.NO_PENALTY, "", false);
-
-                                    dbHandler.addSolve(solve);
-                                    // The receiver might be able to use the new solve and avoid
-                                    // accessing the database.
-                                    new TTIntent.BroadcastBuilder(
-                                            CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED_MANUALLY)
-                                            .solve(solve)
-                                            .broadcast();
-                                }
-                            }
-                        })
-                        .positiveText(R.string.action_add)
-                        .negativeText(R.string.action_cancel)
-                        .show();
+                    AddTimeDialog addTimeDialog = AddTimeDialog.newInstance(currentPuzzle, currentPuzzleSubtype, currentScramble);
+                    addTimeDialog.show(getFragmentManager(), "dialog_add_time");
                     break;
                 case R.id.archive_button:
                     final Spannable text = new SpannableString(getString(R.string.move_solves_to_history_content) + "  ");
@@ -186,7 +168,11 @@ public class TimerListFragment extends BaseFragment
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_COMMENT_ADDED:
+                    if (!history)
+                        reloadList();
+                    break;
                 case ACTION_TIME_ADDED_MANUALLY:
+                    onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
                     if (!history)
                         reloadList();
                     break;
@@ -240,6 +226,10 @@ public class TimerListFragment extends BaseFragment
                     // Operation will delete times and then broadcast "ACTION_TIMES_MODIFIED".
                     timeCursorAdapter.deleteAllSelected();
                     break;
+                case ACTION_SCRAMBLE_MODIFIED:
+                    // A new scramble was generated
+                    currentScramble = TTIntent.getScramble(intent);
+                    break;
             }
         }
     };
@@ -269,6 +259,9 @@ public class TimerListFragment extends BaseFragment
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
+        }
+        if (savedInstanceState != null) {
+            currentScramble = savedInstanceState.getString("scramble");
         }
     }
 
@@ -319,6 +312,12 @@ public class TimerListFragment extends BaseFragment
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("scramble", currentScramble);
     }
 
     @Override

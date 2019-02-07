@@ -136,6 +136,11 @@ public final class TTIntent {
     public static final String ACTION_GENERATE_SCRAMBLE = ACTION_PREFIX + "GENERATE_SCRAMBLE";
 
     /**
+     * The current scramble has been modified, either by the user or by the timer itself.
+     */
+    public static final String ACTION_SCRAMBLE_MODIFIED = ACTION_PREFIX + "SCRAMBLE_MODIFIED";
+
+    /**
      * Selection mode has been turned on for the list of times.
      */
     public static final String ACTION_SELECTION_MODE_ON = ACTION_PREFIX + "SELECTION_MODE_ON";
@@ -203,6 +208,11 @@ public final class TTIntent {
     public static final String EXTRA_SOLVE = EXTRA_PREFIX + "SOLVE";
 
     /**
+     * The name of an intent extra that can be used to record a scramble
+     */
+    public static final String EXTRA_SCRAMBLE = EXTRA_PREFIX + "SCRAMBLE";
+
+    /**
      * The actions that are allowed under each category. The category name is the key and the
      * corresponding entry is a collection of action names that are supported for that category.
      * An action may be supported by more than one category.
@@ -240,6 +250,7 @@ public final class TTIntent {
                 ACTION_TIMER_STOPPED,
                 ACTION_TOOLBAR_RESTORED,
                 ACTION_GENERATE_SCRAMBLE,
+                ACTION_SCRAMBLE_MODIFIED,
                 ACTION_SCROLLED_PAGE,
                 ACTION_CHANGED_CATEGORY,
                 ACTION_CHANGED_THEME
@@ -428,6 +439,19 @@ public final class TTIntent {
     }
 
     /**
+     * Gets the scramble specified in an intent extra.
+     *
+     * @param intent The intent from which to get the scramble.
+     * @return The scramble, or {@code null} if the intent does not specify a scramble.
+     */
+    public static String getScramble(Intent intent) {
+        final String scramble = intent.getStringExtra(EXTRA_SCRAMBLE);
+
+        return scramble;
+    }
+
+
+    /**
      * A builder for local broadcasts.
      *
      * @author damo
@@ -516,6 +540,24 @@ public final class TTIntent {
             if (solve != null) {
                 // "Solve" implements "Parcelable" to allow it to be passed in an intent extra.
                 mIntent.putExtra(EXTRA_SOLVE, solve);
+            }
+
+            return this;
+        }
+
+        /**
+         * Sets an optional extra that identifies a scramble string related to the action of the intent
+         * that will be broadcast. The receiver can call {@link TTIntent#getScramble(Intent)} to
+         * retrieve the solve from the intent.
+         *
+         * @param scramble The scramble to be added to the broadcast intent.
+         *
+         * @return {@code this} broadcast builder, allowing method calls to be chained.
+         */
+        public BroadcastBuilder scramble(String scramble) {
+            if (scramble != null) {
+                // "Solve" implements "Parcelable" to allow it to be passed in an intent extra.
+                mIntent.putExtra(EXTRA_SCRAMBLE, scramble);
             }
 
             return this;

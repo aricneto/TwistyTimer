@@ -2,6 +2,8 @@ package com.aricneto.twistytimer.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
+
 import androidx.annotation.StringRes;
 
 import com.aricneto.twistify.R;
@@ -11,11 +13,15 @@ import com.aricneto.twistytimer.stats.AverageCalculator;
 import com.aricneto.twistytimer.stats.Statistics;
 
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
@@ -255,6 +261,35 @@ public class PuzzleUtils {
         }
 
         return 10 * ((parsedTime + 5) / 10);
+    }
+
+    /**
+     * Parses a time in the format hh'h'mm:ss.SS and returns it in milliseconds
+     * @param time the string to be parsed
+     * @return the time in milliseconds
+     */
+    public static long parseAddedTime(String time) {
+        long timeMillis = 0;
+        String[] times = time.split("[h]|:|\\.");
+
+        switch (times.length) {
+            case 2: // ss.SS
+                timeMillis += Long.valueOf(times[0]) * 1_000
+                              + Long.valueOf(times[1]) * 10;
+                break;
+            case 3: // mm:ss.SS
+                timeMillis += Long.valueOf(times[0]) * 60_000
+                              + Long.valueOf(times[1]) * 1_000
+                              + Long.valueOf(times[2]) * 10;
+                break;
+            case 4: // hh'h'mm:ss.SS
+                timeMillis += Long.valueOf(times[0]) * 3_600_000
+                              + Long.valueOf(times[1]) * 60_000
+                              + Long.valueOf(times[2]) * 1_000
+                              + Long.valueOf(times[3]) * 10;
+                break;
+        }
+        return timeMillis;
     }
 
     /**
