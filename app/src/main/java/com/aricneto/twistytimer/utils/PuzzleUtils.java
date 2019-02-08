@@ -3,6 +3,7 @@ package com.aricneto.twistytimer.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 
@@ -456,6 +457,7 @@ public class PuzzleUtils {
             return true;
         }
 
+        Toast.makeText(activityContext, R.string.fab_share_error, Toast.LENGTH_SHORT).show();
         return false;
     }
 

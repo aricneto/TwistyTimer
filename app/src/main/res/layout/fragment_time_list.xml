@@ -116,7 +116,7 @@
             android:id="@+id/archive_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/more_button"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginRight="4dp"
@@ -125,6 +125,20 @@
             android:text="@string/action_add"
             android:textColor="?graph_stats_card_text_color"
             app:srcCompat="@drawable/ic_history_18" />
+
+        <ImageView
+            android:id="@+id/more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/action_add"
+            android:textColor="?graph_stats_card_text_color"
+            app:srcCompat="@drawable/ic_outline_share_24px" />
 
     </RelativeLayout>
 

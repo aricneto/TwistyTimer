@@ -14,6 +14,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
@@ -28,6 +29,7 @@ import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -93,6 +95,7 @@ public class TimerListFragment extends BaseFragment
     @BindView(R.id.archive_button) View              archiveButton;
     @BindView(R.id.add_time_button)View              addTimeButton;
     @BindView(R.id.search_box)     AppCompatEditText searchEditText;
+    @BindView(R.id.more_button)    View              moreButton;
 
     private String            currentPuzzle;
     private String            currentPuzzleSubtype;
@@ -156,6 +159,30 @@ public class TimerListFragment extends BaseFragment
                                 }
                             })
                             .show();
+                    break;
+                case R.id.more_button:
+                    PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_list_more, popupMenu.getMenu());
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.share_ao5:
+                                    PuzzleUtils.shareAverageOf(5, currentPuzzle, mRecentStatistics, getActivity());
+                                    break;
+                                case R.id.share_ao12:
+                                    PuzzleUtils.shareAverageOf(12, currentPuzzle, mRecentStatistics, getActivity());
+                                    break;
+                                case R.id.share_histogram:
+                                    PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+
+                    popupMenu.show();
                     break;
             }
         }
@@ -281,6 +308,8 @@ public class TimerListFragment extends BaseFragment
         archiveButton.setOnClickListener(clickListener);
 
         clearButton.setOnClickListener(clickListener);
+
+        moreButton.setOnClickListener(clickListener);
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
