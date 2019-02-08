@@ -57,7 +57,6 @@
             android:background="@drawable/outline_background_card"
             android:gravity="center"
             android:maxLength="11"
-            android:hint="--"
             android:padding="8dp"
             android:textSize="22sp" />
 
