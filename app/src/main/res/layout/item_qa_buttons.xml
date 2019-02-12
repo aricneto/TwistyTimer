@@ -13,22 +13,21 @@
         android:layout_height="match_parent"
         android:layout_marginRight="16dp"
         android:layout_weight="1"
-        android:alpha=".85"
         android:background="@drawable/outline_background_card_error"
         android:padding="8dp"
         app:srcCompat="@drawable/ic_clear_black_24dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="94dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/outline_background_card_smoother">
+        android:background="@drawable/outline_background_card">
 
         <ImageView
             android:id="@+id/qa_dnf"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:alpha=".85"
             android:padding="8dp"
@@ -43,8 +42,8 @@
             android:id="@+id/qa_plustwo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:alpha=".85"
             android:padding="8dp"
@@ -57,8 +56,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_weight="1"
-        android:alpha=".85"
-        android:background="@drawable/outline_background_card_warn_stroke"
+        android:background="@drawable/outline_background_card"
         android:paddingLeft="8dp"
         android:paddingTop="9dp"
         android:paddingRight="8dp"

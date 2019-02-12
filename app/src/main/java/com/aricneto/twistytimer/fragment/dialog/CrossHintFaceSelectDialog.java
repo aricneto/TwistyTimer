@@ -36,7 +36,7 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
     @BindView(R.id.right) View right;
     @BindView(R.id.back)  View back;
     @BindView(R.id.down)  View down;
-    @BindView(R.id.done)  TextView done;
+    @BindView(R.id.button_save)  View save;
 
     public static CrossHintFaceSelectDialog newInstance() {
         return new CrossHintFaceSelectDialog();
@@ -137,7 +137,7 @@ public class CrossHintFaceSelectDialog extends DialogFragment {
         initSelected(back, Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintBackEnabled)));
         initSelected(down, Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintDownEnabled)));
 
-        done.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getActivity() instanceof MainActivity) {

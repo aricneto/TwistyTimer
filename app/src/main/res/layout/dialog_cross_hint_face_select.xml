@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/outline_background_card_smoother"
     android:orientation="vertical"
     android:padding="16dp">
@@ -60,22 +60,18 @@
         tools:background="@drawable/square"
         android:layout_margin="4dp"/>
 
-    <TextView
-        android:id="@+id/done"
+    <ImageView
+        android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
         android:layout_below="@id/down"
         android:layout_alignRight="@id/back"
-        android:background="?attr/selectableItemBackground"
-        android:textAllCaps="true"
-        android:textColor="@color/md_deep_purple_A400"
-        android:textStyle="bold"
-        android:drawablePadding="8dp"
-        android:gravity="center"
+        android:alpha="0.70"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:padding="8dp"
-        android:text="@string/action_done" />
+        app:srcCompat="@drawable/ic_outline_done_outline_16px" />
+
 
 
 </RelativeLayout>

@@ -555,7 +555,7 @@ public class                                                                    
         showHintsEnabled = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
         showHintsXCrossEnabled = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
 
-        scrambleBackgroundEnabled = Prefs.getBoolean(R.string.pk_show_scramble_background, true);
+        scrambleBackgroundEnabled = Prefs.getBoolean(R.string.pk_show_scramble_background, false);
 
         inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
         final String vibrationAlert = getString(R.string.pk_inspection_alert_vibration);
