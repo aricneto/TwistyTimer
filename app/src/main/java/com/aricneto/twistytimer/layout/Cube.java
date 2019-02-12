@@ -114,14 +114,28 @@ public class Cube extends View {
         // draw cube background
         canvas.drawRoundRect(mCubeRect, mCubeCornerRadius, mCubeCornerRadius, mCubePaint);
 
+        // Draw the cube
+        // The ternary conditions are used to draw half-stickers in the borders only
+        // This code is rather complicated to explain
+        // Basically, for every line, we create a rect at the beginning. We then draw that rect
+        // and use its properties to calculate where the next sticker should be.
         for (int i = 0; i < 5; i++) {
             mStickerRect.set(
                     mPadding,
-                    mPadding + ((mStickerSize + mPadding) * i),
+                    i != 0 ? mPadding + ((mStickerSize + mPadding) * i) : mPadding + ((mStickerSize + mPadding) * i) + (mStickerSize / 1.7f),
                     mPadding + mStickerSize,
-                    mPadding + mStickerSize + ((mStickerSize + mPadding) * i)
+                    i != 4 ? mPadding + mStickerSize + ((mStickerSize + mPadding) * i) : mPadding + mStickerSize + ((mStickerSize + mPadding) * i) - (mStickerSize / 1.7f)
             );
             for (int j = 0; j < 5; j++) {
+                if (j == 0) {
+                    mStickerRect.set(
+                            mStickerRect.left + (mStickerSize / 1.7f),
+                            mStickerRect.top,
+                            mStickerRect.right,
+                            mStickerRect.bottom
+                    );
+                }
+
                 // ignore the four corners
                 if (!((i == 0 || i == 4) && (j == 0 || j == 4))) {
                     mStickerPaint.setColor(AlgUtils.getColorFromStateIndex(mCubeState, (5 * i) + j));
@@ -135,7 +149,7 @@ public class Cube extends View {
                 mStickerRect.set(
                         mStickerRect.right + mPadding,
                         mStickerRect.top,
-                        mStickerRect.right + mPadding + mStickerSize,
+                        j != 3 ? mStickerRect.right + mPadding + mStickerSize : mStickerRect.right + mPadding + mStickerSize - (mStickerSize / 1.7f),
                         mStickerRect.bottom
                 );
             }
