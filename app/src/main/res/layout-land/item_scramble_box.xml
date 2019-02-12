@@ -48,7 +48,7 @@
             app:mpb_progressStyle="horizontal"
             app:mpb_useIntrinsicPadding="false" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_reset"
             android:layout_width="28dp"
             android:layout_height="28dp"
@@ -58,7 +58,7 @@
             android:padding="4dp"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_edit"
             android:layout_width="28dp"
             android:layout_height="28dp"
@@ -68,7 +68,7 @@
             android:padding="4dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/scramble_button_hint"
             android:layout_width="28dp"
             android:layout_height="28dp"
@@ -76,7 +76,7 @@
             android:layout_margin="4dp"
             android:alpha=".85"
             android:padding="4dp"
-            app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
+            app:drawableLeftCompat="@drawable/ic_outline_wb_incandescent_24px" />
 
 
     </RelativeLayout>

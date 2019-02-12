@@ -178,6 +178,12 @@
 
             <PreferenceCategory android:title="@string/pref_category_title_other">
 
+                <SwitchPreference
+                    android:defaultValue="true"
+                    android:key="@string/pk_show_scramble_background"
+                    android:title="@string/pref_scramble_box_title"
+                    android:summary="@string/pref_scramble_box_description"/>
+
                 <Preference
                     android:defaultValue="@integer/defaultScrambleTextSize"
                     android:key="@string/pk_scramble_text_size"

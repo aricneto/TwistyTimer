@@ -31,6 +31,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
 
     <string translatable="false" name="pk_scramble_enabled">scrambleEnabled</string>
     <string translatable="false" name="pk_show_scramble_hints">showHints</string>
+    <string translatable="false" name="pk_show_scramble_background">showScrambleBackground</string>
     <string translatable="false" name="pk_options_show_scramble_hints">optionsShowHints</string>
     <string translatable="false" name="pk_show_scramble_x_cross_hints">showHintsXCross</string>
 

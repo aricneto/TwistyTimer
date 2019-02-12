@@ -198,6 +198,23 @@ public final class ThemeUtils {
     }
 
     /**
+     * Tints a drawable with {@param colorAttrRes} and returns it.
+     * @param context {@link Context}
+     * @param drawable drawable to be tinted
+     * @param colorAttrRes attr res id for the tint
+     * @return a tinted drawable
+     */
+    public static Drawable tintDrawable(Context context, Drawable drawable, @AttrRes int colorAttrRes) {
+        Drawable wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
+        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.SRC_IN);
+        wrap = wrap.mutate();
+
+        return wrap;
+    }
+
+
+    /**
      * @return A ImageSpan with the given size multiplier. Supports vector drawables
      */
     public static ImageSpan getIconSpan(Context context, float size) {

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
@@ -67,10 +69,12 @@ import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.Locale;
 
+import androidx.core.widget.ImageViewCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,6 +154,8 @@ public class                                                                    
     CountdownWarning firstWarning;
     CountdownWarning secondWarning;
 
+    private Context mContext;
+
     // True If the show toolbar animation is done
     boolean animationDone = true;
 
@@ -199,7 +205,7 @@ public class                                                                    
     @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
 
     @BindView(R.id.chronometer)      ChronometerMilli    chronometer;
-    @BindView(R.id.scramble_box)     View                scrambleBox;
+    @BindView(R.id.scramble_box)     CardView                scrambleBox;
     @BindView(R.id.scramble_text)
                                      AppCompatTextView   scrambleText;
     @BindView(R.id.scramble_img)     ImageView           scrambleImg;
@@ -208,9 +214,9 @@ public class                                                                    
     @BindView(R.id.progressSpinner)  MaterialProgressBar progressSpinner;
     @BindView(R.id.scramble_progress)MaterialProgressBar scrambleProgress;
 
-    @BindView(R.id.scramble_button_hint)         View scrambleButtonHint;
-    @BindView(R.id.scramble_button_reset) View scrambleButtonReset;
-    @BindView(R.id.scramble_button_edit) View scrambleButtonEdit;
+    @BindView(R.id.scramble_button_hint)  AppCompatTextView  scrambleButtonHint;
+    @BindView(R.id.scramble_button_reset) AppCompatImageView scrambleButtonReset;
+    @BindView(R.id.scramble_button_edit)  AppCompatImageView scrambleButtonEdit;
 
     @BindView(R.id.qa_remove)        ImageView        deleteButton;
     @BindView(R.id.qa_dnf)           ImageView        dnfButton;
@@ -231,6 +237,7 @@ public class                                                                    
     private boolean worstSolveEnabled;
     private boolean bestSolveEnabled;
     private boolean scrambleEnabled;
+    private boolean scrambleBackgroundEnabled;
     private boolean holdEnabled;
     private boolean backCancelEnabled;
     private boolean startCueEnabled;
@@ -478,6 +485,8 @@ public class                                                                    
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
+        mContext = getContext();
+
         // Necessary for the scramble image to show
         scrambleImg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         expandedImageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -546,6 +555,8 @@ public class                                                                    
         showHintsEnabled = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
         showHintsXCrossEnabled = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
 
+        scrambleBackgroundEnabled = Prefs.getBoolean(R.string.pk_show_scramble_background, true);
+
         inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
         final String vibrationAlert = getString(R.string.pk_inspection_alert_vibration);
         final String soundAlert = getString(R.string.pk_inspection_alert_sound);
@@ -562,6 +573,20 @@ public class                                                                    
                 inspectionVibrationAlertEnabled = true;
                 inspectionSoundAlertEnabled = true;
             }
+        }
+
+        if (!scrambleBackgroundEnabled) {
+            scrambleBox.setBackgroundColor(Color.TRANSPARENT);
+            scrambleBox.setCardElevation(0);
+            scrambleText.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
+            scrambleButtonHint.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
+            scrambleButtonEdit.setImageDrawable(
+                    ThemeUtils.tintDrawable(mContext, scrambleButtonEdit.getDrawable(), R.attr.colorTimerText));
+            scrambleButtonReset.setImageDrawable(
+                    ThemeUtils.tintDrawable(mContext, scrambleButtonReset.getDrawable(), R.attr.colorTimerText));
+            scrambleButtonHint.setCompoundDrawablesWithIntrinsicBounds(
+                    ThemeUtils.tintDrawable(mContext, scrambleButtonHint.getCompoundDrawables()[0], R.attr.colorTimerText),
+                    null, null, null);
         }
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
