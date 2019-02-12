@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/progressBar"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
+            android:layout_margin="7dp"
             android:layout_alignTop="@id/cube"
             android:layout_alignBottom="@id/cube"
             android:layout_alignLeft="@id/cube"

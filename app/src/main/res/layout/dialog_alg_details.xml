@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider01"
             android:layout_centerHorizontal="true"
-            android:layout_margin="22dp"
+            android:layout_margin="14dp"
             android:layout_alignTop="@id/cube"
             android:layout_alignBottom="@id/cube"
             android:layout_alignLeft="@id/cube"

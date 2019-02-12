@@ -32,7 +32,7 @@ public class Cube extends View {
     private RectF mCubeRect;
 
     private int   mPadding;
-    private int   mStickerSize;
+    private float mStickerSize;
     private float mCubeCornerRadius;
     private float mStickerCornerRadius;
 
@@ -104,39 +104,71 @@ public class Cube extends View {
         final int width = getWidth();
 
         // padding is 3% of the cube's size
-        mPadding = (int) (width * 0.03f);
-        mStickerSize = (width - (mPadding * 6)) / 5;
+        mPadding = (int) (width * 0.04f);
+
+        // sticker size. in a 3x3, there'll be 5 stickers (3 for the face, 2 for the sides)
+        // in each line.
+        mStickerSize = (width - (mPadding * 6)) / (3 + 0.75f);
+        // size to subtract from outermost stickers
+        // you MUST change mStickerSize to divide by the correct amount
+        // i.e. if sizeSubtract = mStickerSize / 2, there'll be 3 whole stickers and 2 half-stickers
+        // which equals 4 stickers. Likewise, if you were to divide by 1.6, there would be 3.75 stickers
+        float sizeSubtract = (mStickerSize / 1.6f);
 
         mCubeRect.set(0, 0,
-                      (mPadding * 6) + (mStickerSize * 5),
-                      (mPadding * 6) + (mStickerSize * 5));
+                      (mPadding * 6) + (mStickerSize * 5) - (sizeSubtract * 2),
+                      (mPadding * 6) + (mStickerSize * 5) - (sizeSubtract * 2));
 
         // draw cube background
         canvas.drawRoundRect(mCubeRect, mCubeCornerRadius, mCubeCornerRadius, mCubePaint);
 
         // Draw the cube
-        // The ternary conditions are used to draw half-stickers in the borders only
+        // The edge conditions are used to draw half-stickers in the borders only
         // This code is rather complicated to explain
         // Basically, for every line, we create a rect at the beginning. We then draw that rect
         // and use its properties to calculate where the next sticker should be.
         for (int i = 0; i < 5; i++) {
             mStickerRect.set(
                     mPadding,
-                    i != 0 ? mPadding + ((mStickerSize + mPadding) * i) : mPadding + ((mStickerSize + mPadding) * i) + (mStickerSize / 1.7f),
+                    mPadding + ((mStickerSize + mPadding) * i) - sizeSubtract,
                     mPadding + mStickerSize,
-                    i != 4 ? mPadding + mStickerSize + ((mStickerSize + mPadding) * i) : mPadding + mStickerSize + ((mStickerSize + mPadding) * i) - (mStickerSize / 1.7f)
+                    mPadding + mStickerSize + ((mStickerSize + mPadding) * i) - sizeSubtract
             );
+
+            // top outer border
+            if (i == 0) {
+                mStickerRect.set(
+                        mStickerRect.left,
+                        mPadding,
+                        mStickerRect.right,
+                        mStickerRect.bottom
+                );
+            }
+
+            // bottom outer border
+            if (i == 4) {
+                mStickerRect.set(
+                        mStickerRect.left,
+                        mStickerRect.top,
+                        mStickerRect.right,
+                        mStickerRect.bottom - sizeSubtract
+                );
+            }
+
             for (int j = 0; j < 5; j++) {
+
+                // left outer border
                 if (j == 0) {
                     mStickerRect.set(
-                            mStickerRect.left + (mStickerSize / 1.7f),
+                            mPadding, //mStickerRect.left + sizeSubtract,
                             mStickerRect.top,
-                            mStickerRect.right,
+                            mStickerRect.right - sizeSubtract,
                             mStickerRect.bottom
                     );
                 }
 
                 // ignore the four corners
+                // TODO: Error check if string is of correct size/format!
                 if (!((i == 0 || i == 4) && (j == 0 || j == 4))) {
                     mStickerPaint.setColor(AlgUtils.getColorFromStateIndex(mCubeState, (5 * i) + j));
                     canvas.drawRoundRect(
@@ -149,7 +181,7 @@ public class Cube extends View {
                 mStickerRect.set(
                         mStickerRect.right + mPadding,
                         mStickerRect.top,
-                        j != 3 ? mStickerRect.right + mPadding + mStickerSize : mStickerRect.right + mPadding + mStickerSize - (mStickerSize / 1.7f),
+                        j != 3 ? mStickerRect.right + mPadding + mStickerSize : mStickerRect.right + mPadding + mStickerSize - sizeSubtract, // right outer border
                         mStickerRect.bottom
                 );
             }
