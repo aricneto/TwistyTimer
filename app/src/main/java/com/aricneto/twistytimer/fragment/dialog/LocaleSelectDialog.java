@@ -38,7 +38,6 @@ public class LocaleSelectDialog extends DialogFragment {
     @BindView(R.id.pl)    TextView pl;
     @BindView(R.id.cn)    TextView cn;
     @BindView(R.id.ca)    TextView ca;
-    @BindView(R.id.hu)    TextView hu;
     @BindView(R.id.in)    TextView in;
     @BindView(R.id.iw)    TextView iw;
     @BindView(R.id.nl)    TextView nl;
@@ -70,7 +69,6 @@ public class LocaleSelectDialog extends DialogFragment {
                 case R.id.pl:     newLocale = LocaleUtils.POLISH; break;
                 case R.id.cn:     newLocale = LocaleUtils.CHINESE; break;
                 case R.id.ca:     newLocale = LocaleUtils.CATALAN; break;
-                case R.id.hu:     newLocale = LocaleUtils.HUNGARIAN; break;
                 case R.id.in:     newLocale = LocaleUtils.INDONESIAN; break;
                 case R.id.iw:     newLocale = LocaleUtils.HEBREW; break;
                 case R.id.nl:     newLocale = LocaleUtils.DUTCH; break;
@@ -126,7 +124,6 @@ public class LocaleSelectDialog extends DialogFragment {
         lt.setOnClickListener(clickListener);
         pl.setOnClickListener(clickListener);
         ca.setOnClickListener(clickListener);
-        hu.setOnClickListener(clickListener);
         in.setOnClickListener(clickListener);
         iw.setOnClickListener(clickListener);
         nl.setOnClickListener(clickListener);

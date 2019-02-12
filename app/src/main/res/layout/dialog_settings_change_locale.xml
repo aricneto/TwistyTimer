@@ -91,12 +91,6 @@
             android:text="@string/language_catalan"/>
 
         <TextView
-            android:id="@+id/hu"
-            style="@style/DialogItem"
-            android:drawableLeft="@drawable/flag_hungary"
-            android:text="@string/language_catalan"/>
-
-        <TextView
             android:id="@+id/in"
             style="@style/DialogItem"
             android:drawableLeft="@drawable/flag_indonesia"
