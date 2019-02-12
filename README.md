@@ -1,4 +1,6 @@
-# Twisty Timer
+<p align="center">
+  <img src="https://i.imgur.com/OLlZRiO.png"/>
+</p>
 
 <a href="https://play.google.com/store/apps/details?id=com.aricneto.twistytimer" target="_blank">
   <img alt="Get it on Google Play"
@@ -14,6 +16,8 @@ Special thanks to Prisma Puzzle Timer, TNoodle and PlusTimer for being my inspir
 # I want to translate this app!
 
 That's great! If you're interested in translating Twisty Timer, just go to <a href="https://crowdin.com/project/twisty-timer">this page</a> and select your language. If it's not on the list, just contact me and I'll add it.
+
+If you spot a problem in any of the translations, please correct it on the Crowdin page and send me a message, don't open a request here! This makes it easier to manage the localizations.
 
 # License (GNU GPL v3)
 
