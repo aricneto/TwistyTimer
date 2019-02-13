@@ -178,7 +178,7 @@
 
             <PreferenceCategory android:title="@string/pref_category_title_other">
 
-                <SwitchPreference
+                <SwitchPreferenceCompat
                     android:defaultValue="false"
                     android:icon="@drawable/ic_outline_star_border_18px"
                     android:key="@string/pk_show_scramble_background"
@@ -240,7 +240,7 @@
         android:title="@string/w_new_subtype"
         android:summary="@string/pref_summary_new">
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:icon="@drawable/ic_outline_star_border_18px"
             android:defaultValue="false"
             android:key="@string/pk_show_scramble_background"
