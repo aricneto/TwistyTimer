@@ -128,7 +128,7 @@ public abstract class TrainerScrambler {
                 state = (CubePuzzle.CubeState) solved.applyAlgorithm(caseAlg);
 
                 // Solve the state
-                scramble = ((ThreeByThreeCubePuzzle) puzzle).solveIn(state, 20, null);
+                scramble = ((ThreeByThreeCubePuzzle) puzzle).solveIn(state, 20, null, null);
             } catch (InvalidScrambleException e) {
                 e.printStackTrace();
             }
