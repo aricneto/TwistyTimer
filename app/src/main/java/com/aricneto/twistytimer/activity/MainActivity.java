@@ -45,6 +45,7 @@ import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -168,6 +169,9 @@ public class MainActivity extends AppCompatActivity
                 + savedInstanceState + "): " + this);
 
         setTheme(ThemeUtils.getPreferredTheme());
+        if (!Prefs.getString(R.string.pk_text_style, "default").equals("default")) {
+            getTheme().applyStyle(ThemeUtils.getPreferredTextStyle(), true);
+        }
 
         super.onCreate(savedInstanceState);
 

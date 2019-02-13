@@ -3,6 +3,8 @@ package com.aricneto.twistytimer.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -18,6 +20,7 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
@@ -402,7 +405,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         else
             viewPager.setPagingEnabled(false);
 
-
         viewPagerAdapter = new NavigationAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(NUM_PAGES - 1);
@@ -410,6 +412,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         tabLayout.setSelectedTabIndicator(0);
         tabLayout.setTabIconTint(AppCompatResources.getColorStateList(getContext(), R.color.tab_color));
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+
+        tabLayout.getBackground().setColorFilter(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTabBar), PorterDuff.Mode.SRC_IN);
 
         if (savedInstanceState == null) {
             updateCurrentSubtype();

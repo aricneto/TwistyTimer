@@ -5,8 +5,11 @@
         <attr format="color" name="colorMainGradientEnd"/>
     </declare-styleable>
 
+    <declare-styleable name="TextThemeStyle">
+        <attr format="color" name="colorTimerText"/>
+    </declare-styleable>
+
     <attr format="color" name="colorBackgroundList"/>
-    <attr format="color" name="colorTimerText"/>
     <attr format="color" name="colorTimerDetailText"/>
     <attr format="color" name="colorItemListText"/>
     <attr format="color" name="colorItemListTextAction"/>
@@ -16,6 +19,10 @@
     <attr format="color" name="textColorContrastBackground"/>
 
     <attr format="dimension" name="tabBarSize"/>
+    <attr format="color" name="colorTabBar"/>
+
+    <attr format="color" name="colorTabIconSelected"/>
+    <attr format="color" name="colorTabIconFaded"/>
 
     <attr name="colorCardBackgroundWarn" format="color"/>
     <attr name="colorCardText" format="color"/>

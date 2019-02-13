@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -47,6 +48,13 @@ public final class ThemeUtils {
     public static final String THEME_DAWN        = "dawn";
     public static final String THEME_BLUY_GRAY   = "bluy_gray";
 
+
+    public static final String TEXT_DEFAULT   = "default";
+    public static final String TEXT_TARKOVSKY = "tarkovsky";
+    public static final String TEXT_MATSSON   = "matsson";
+    public static final String TEXT_TOLKIEN   = "tolkien";
+    public static final String TEXT_PESSOA    = "pessoa";
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -62,6 +70,10 @@ public final class ThemeUtils {
      */
     public static int getPreferredTheme() {
         return getThemeStyleRes(Prefs.getString(R.string.pk_theme, "indigo"));
+    }
+
+    public static int getPreferredTextStyle() {
+        return getThemeStyleRes(Prefs.getString(R.string.pk_text_style, "default"));
     }
 
     public static int getThemeStyleRes(String theme) {
@@ -107,6 +119,16 @@ public final class ThemeUtils {
                 return R.style.DawnTheme;
             case THEME_BLUY_GRAY:
                 return R.style.BluyGray;
+            case TEXT_DEFAULT:
+                return getPreferredTheme();
+            case TEXT_TARKOVSKY:
+                return R.style.TextStyleTarkovsky;
+            case TEXT_TOLKIEN:
+                return R.style.TextStyleTolkien;
+            case TEXT_MATSSON:
+                return R.style.TextStyleMatsson;
+            case TEXT_PESSOA:
+                return R.style.TextStylePessoa;
         }
     }
 
@@ -141,6 +163,17 @@ public final class ThemeUtils {
         return themes;
     }
 
+    public static Theme[] getAllTextStyles() {
+        Theme[] styles = {
+                new Theme(TEXT_DEFAULT, "Default"),
+                new Theme(TEXT_MATSSON, "Matsson"),
+                new Theme(TEXT_TARKOVSKY, "Tarkovsky"),
+                new Theme(TEXT_TOLKIEN, "Tolkien"),
+                new Theme(TEXT_PESSOA, "Pessoa")
+        };
+        return styles;
+    }
+
     /**
      * Returns a {@link GradientDrawable} containing a linear gradient with the given style's colors
      *
@@ -159,6 +192,23 @@ public final class ThemeUtils {
         gradientColors.recycle();
 
         return gradientDrawable;
+    }
+
+    /**
+     * Fetches and returns a Styleable value
+     * @param context
+     * @param styleable The styleable to fetch
+     * @param style Property of the styleable to fetch
+     * @param defaultAttr default attr to return if styleable can't be fetched
+     * @return
+     */
+    public static int fetchStyleableAttr(Context context, @StyleRes int style, @StyleableRes int[] styleable, @StyleableRes int styleableStyle, @AttrRes int defaultAttr) {
+        TypedArray textColors = context.obtainStyledAttributes(style, styleable);
+
+        int color = textColors.getColor(styleableStyle, fetchAttrColor(context, defaultAttr));
+        textColors.recycle();
+
+        return color;
     }
 
     /**

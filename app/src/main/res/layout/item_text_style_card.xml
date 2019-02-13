@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="80dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
     android:gravity="center"
     android:orientation="vertical">
 
-    <View
+    <TextView
         android:id="@+id/card"
-        android:layout_width="50dp"
-        android:layout_height="85dp"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:paddingTop="4dp"
         android:background="@drawable/outline_background_card_theme_select_gradient"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:text="Aa"
+        android:textColor="@color/md_white_1000"
+        android:textSize="24sp">
 
-    </View>
+    </TextView>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:text="Indigo"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_medium"
         android:gravity="center_horizontal"
         android:lines="2"
-        android:fontFamily="@font/quicksand_medium"
-        android:layout_height="wrap_content" />
+        android:text="Indigo" />
 
 </LinearLayout>

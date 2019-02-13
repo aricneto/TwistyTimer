@@ -18,6 +18,10 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
+
+        <item name="colorTabIconSelected">#E2000000</item>
+        <item name="colorTabIconFaded">#5C1A1A1A</item>
+
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
 
         <item name="colorBackgroundList">@color/materialGray</item>
@@ -37,6 +41,7 @@
 
         <item name="actionBarSize">62dp</item>
         <item name="tabBarSize">40dp</item>
+        <item name="colorTabBar">@color/md_white_1000</item>
 
         <item name="android:fontFamily">@font/quicksand_medium</item>
 
@@ -247,7 +252,11 @@
         <item name="md_positive_color">@color/md_amber_A400</item>
         <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
 
-        <item name="colorTimerText">@android:color/white</item>
+        <item name="colorTimerText">@color/md_white_1000</item>
+        <item name="colorTabBar">#161616</item>
+        <item name="colorTabIconSelected">?colorTimerText</item>
+        <item name="colorTabIconFaded">#D3FFFFFF</item>
+
         <item name="colorBackgroundList">@color/md_black_1000</item>
         <item name="android:textColorPrimaryInverse">@color/white_text</item>
     </style>
@@ -365,6 +374,26 @@
         <item name="colorMainGradientEnd">@color/md_blue_grey_700</item>
 
         <item name="colorAccent">@color/md_amber_A200</item>
+    </style>
+
+
+    <!--
+    Custom text styles
+    -->
+    <style name="TextStyleTarkovsky">
+        <item name="colorTimerText">@color/md_green_A400</item>
+    </style>
+
+    <style name="TextStyleTolkien">
+        <item name="colorTimerText">#FFFF4C</item>
+    </style>
+
+    <style name="TextStyleMatsson">
+        <item name="colorTimerText">#0BFFC6</item>
+    </style>
+
+    <style name="TextStylePessoa">
+        <item name="colorTimerText">@color/md_red_A400</item>
     </style>
 
 

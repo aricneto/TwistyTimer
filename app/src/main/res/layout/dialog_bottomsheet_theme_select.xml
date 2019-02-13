@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/outline_background_card_top"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        style="@style/BottomPanelListTitleTextStyle"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        app:drawableRightCompat="@drawable/ic_outline_palette_24px"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/drawer_title_changeTheme" />
+
+    <View
+        android:id="@+id/divider01"
+        android:layout_width="match_parent"
+        android:layout_below="@id/title"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black_divider" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/button"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/divider01"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/outline_background_card_button"
+        android:clickable="true"
+        app:drawableLeftCompat="@drawable/ic_category_add"
+        android:drawablePadding="8dp"
+        android:focusable="true"
+        android:fontFamily="@font/quicksand_medium"
+        android:paddingLeft="12dp"
+        android:paddingTop="0dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="0dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:text="Button"
+        android:textSize="12sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_below="@id/divider01"
+        android:layout_width="match_parent"
+        android:paddingLeft="8dp"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_style_title"
+        style="@style/BottomPanelListTitleTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_below="@id/list"
+        android:background="?colorCardBackgroundFaded"
+        android:fontFamily="@font/quicksand_bold"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/dialog_theme_text_style"
+        app:drawableRightCompat="@drawable/ic_outline_text_fields_24px" />
+
+    <View
+        android:id="@+id/text_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_below="@id/text_style_title"
+        android:layout_marginBottom="0dp"
+        android:background="@color/black_divider"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list2"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:paddingLeft="8dp"
+        android:layout_below="@id/text_divider"
+        android:background="?colorCardBackgroundFaded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -17,6 +17,8 @@ import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import androidx.annotation.StyleRes;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -34,7 +36,10 @@ public class ThemeSelectDialog extends BottomSheetDialogFragment {
     private Unbinder mUnbinder;
 
     @BindView(R.id.list)
-    RecyclerView recyclerView;
+    RecyclerView themeRecycler;
+
+    @BindView(R.id.list2)
+    RecyclerView textStyleRecycler;
 
     public static ThemeSelectDialog newInstance() {
         return new ThemeSelectDialog();
@@ -42,17 +47,24 @@ public class ThemeSelectDialog extends BottomSheetDialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View dialogView = inflater.inflate(R.layout.dialog_bottomsheet_recycler, container);
+        View dialogView = inflater.inflate(R.layout.dialog_bottomsheet_theme_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        recyclerView.setHasFixedSize(true);
+        themeRecycler.setHasFixedSize(true);
+        textStyleRecycler.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(null);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
 
-        ThemeListAdapter recyclerAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), getContext());
-        recyclerView.setAdapter(recyclerAdapter);
+        themeRecycler.setLayoutManager(gridLayoutManager);
+        textStyleRecycler.setLayoutManager(layoutManager);
+
+        ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), getContext());
+        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(), getContext());
+        themeRecycler.setAdapter(themeListAdapter);
+        textStyleRecycler.setAdapter(textStyleListAdapter);
 
         return dialogView;
     }
@@ -119,6 +131,79 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
                 if (!newTheme.equals(currentTheme)) {
                     Prefs.edit().putString(R.string.pk_theme, newTheme).apply();
+
+                    TTIntent.broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_THEME);
+                }
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return themeSet.length;
+    }
+}
+
+class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.CardViewHolder> {
+
+    private Theme[] themeSet;
+    private Context mContext;
+
+    String currentTextStyle = Prefs.getString(R.string.pk_text_style, "default");
+    @StyleRes int currentTheme = ThemeUtils.getPreferredTheme();
+
+    static class CardViewHolder extends RecyclerView.ViewHolder {
+        View view;
+        TextView themeCard;
+        TextView themeTitle;
+
+        public CardViewHolder(View view) {
+            super(view);
+            this.view = view;
+            this.themeCard = view.findViewById(R.id.card);
+            this.themeTitle = view.findViewById(R.id.title);
+        }
+    }
+
+    TextStyleListAdapter(Theme[] themeSet, Context context) {
+        this.themeSet = themeSet;
+        this.mContext = context;
+    }
+
+    @Override
+    public TextStyleListAdapter.CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // create a new view
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_style_card, parent, false);
+
+        CardViewHolder viewHolder = new CardViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(CardViewHolder holder, int position) {
+        // Create gradient drawable
+        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, currentTheme);
+        gradientDrawable.setCornerRadius(18f);
+        gradientDrawable.setStroke(4, Color.BLACK);
+
+        // Set card title and background
+        holder.themeTitle.setText(themeSet[position].getName());
+        holder.themeCard.setBackground(gradientDrawable);
+        holder.themeCard.setTextColor(ThemeUtils.fetchStyleableAttr(mContext, themeSet[position].getResId(),
+                                                                    R.styleable.TextThemeStyle,
+                                                                    R.styleable.TextThemeStyle_colorTimerText,
+                                                                    R.attr.colorTimerText));
+
+        // Create onClickListener
+        holder.themeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newTheme;
+
+                newTheme = themeSet[position].getPrefName();
+
+                if (!newTheme.equals(currentTextStyle)) {
+                    Prefs.edit().putString(R.string.pk_text_style, newTheme).apply();
 
                     TTIntent.broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_THEME);
                 }
