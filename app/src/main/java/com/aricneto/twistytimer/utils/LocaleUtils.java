@@ -20,7 +20,7 @@ public class LocaleUtils {
     // and alpha-2 ISO 3166 country/subdivision code if necessary.
 
     // English is separated into "normal" and "USA" since America has its own date format
-    public static final String CZECH             = "cs";
+    public static final String CZECH             = "cs_CZ";
     public static final String CHINESE           = "zh_CN";
     public static final String CATALAN           = "ca_ES";
     public static final String HUNGARIAN         = "hu_HU";
@@ -34,21 +34,21 @@ public class LocaleUtils {
     public static final String ENGLISH           = "en_UK";
     public static final String ENGLISH_USA       = "en_US";
     public static final String SPANISH           = "es_ES";
-    public static final String GERMAN            = "de";
-    public static final String FRENCH            = "fr";
-    public static final String RUSSIAN           = "ru";
+    public static final String GERMAN            = "de_DE";
+    public static final String FRENCH            = "fr_FR";
+    public static final String RUSSIAN           = "ru_RU";
     public static final String PORTUGUESE_BRAZIL = "pt_BR";
-    public static final String LITHUANIAN        = "lt";
-    public static final String POLISH            = "pl";
+    public static final String LITHUANIAN        = "lt_LT";
+    public static final String POLISH            = "pl_PL";
     public static final String SERBIAN_LATIN     = "sr_CS";
-    public static final String CROATIAN          = "hr";
+    public static final String CROATIAN          = "hr_HR";
 
 
 
     public static Context updateLocale(Context context) {
         // toString returns language + "_" + country + "_" + (variant + "_#" | "#") + script + "-" + extensions
         String language = Prefs.getString(R.string.pk_locale, Locale.getDefault().toString());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return updateResources(context, language);
         } else {
             return updateResourcesLegacy(context, language);
@@ -74,7 +74,8 @@ public class LocaleUtils {
         updateLocale(TwistyTimer.getAppContext());
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private static Context updateResources(Context context, String language) {
         Locale locale = fetchLocaleFromString(language);
         Configuration configuration = context.getResources().getConfiguration();

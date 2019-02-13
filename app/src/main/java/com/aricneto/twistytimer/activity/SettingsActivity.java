@@ -56,6 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         setTheme(R.style.SettingsTheme);
 
+        LocaleUtils.updateLocale(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
