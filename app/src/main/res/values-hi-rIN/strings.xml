@@ -44,10 +44,10 @@
     <string name="cube_666">6x6 क्यूब</string>
     <string name="cube_777">7x7 क्यूब</string>
     <string name="delete_dialog_cancel_button">रद्द करें</string>
-    <string name="delete_dialog_confirmation_button">मिटाएं</string>
+    <string name="delete_dialog_confirmation_button">हटाएं</string>
     <string name="delete_dialog_confirmation_title">समाधान मिटाएं?</string>
-    <string name="dialog_export_import_export">निर्यात&#8230;</string>
-    <string name="dialog_export_import_import">आयात&#8230;</string>
+    <string name="dialog_export_import_export">निर्यात…</string>
+    <string name="dialog_export_import_import">आयात…</string>
     <string name="dialog_revert_content_confirmation">इस केस के लिए एल्गोरिथ्म को वापस डिफ़ॉल्ट पर रीसेट करें?</string>
     <string name="donation_tier1">१ अमेरिकी डॉलर</string>
     <string name="donation_tier2">२ अमेरिकी डॉलर</string>
@@ -75,7 +75,7 @@
     <string name="list_options_item_from_history">असंग्रहित</string>
     <string name="list_options_item_history">संग्रह</string>
     <string name="list_options_item_share">शेयर करें</string>
-    <string name="loading_hints">संकेत लोड हो रहे हैं&#8230;</string>
+    <string name="loading_hints">संकेत लोड हो रहे हैं…</string>
     <string name="millisecondsEnabledTitle">दशमलव दिखाएं</string>
     <string name="name_category">श्रेणी</string>
     <string name="personal_best_message">बधाइयाँ! \nआपने अपना सर्वश्रेष्ठ बनाया है %1$s</string>

@@ -39,7 +39,7 @@
     <string name="contact">Contacto</string>
     <string name="contributors">Colaboradores</string>
     <string name="contributors_content">Muchísimas gracias a estas personas por contribuir al desarrollo de la app: %1$s</string>
-    <string name="cube_222">Cubo 2x2x2</string>
+    <string name="cube_222">Cubo 2x2</string>
     <string name="cube_333">Cubo 3x3</string>
     <string name="cube_444">Cubo 4x4</string>
     <string name="cube_555">Cubo 5x5</string>
@@ -48,8 +48,8 @@
     <string name="delete_dialog_cancel_button">Cancelar</string>
     <string name="delete_dialog_confirmation_button">Eliminar</string>
     <string name="delete_dialog_confirmation_title">¿Quitar resolución?</string>
-    <string name="dialog_export_import_export">Exportar&#8230;</string>
-    <string name="dialog_export_import_import">Importar&#8230;</string>
+    <string name="dialog_export_import_export">Exportar…</string>
+    <string name="dialog_export_import_import">Importar…</string>
     <string name="dialog_revert_content_confirmation">¿Restablecer los algoritmos para este caso a los valores predeterminados?</string>
     <string name="dialog_revert_title_confirmation">Restablecer algoritmos</string>
     <string name="dialog_set_progress">Establecer progreso</string>
@@ -75,17 +75,17 @@
     <string name="export_import_dialog_from_txt_file">Desde archivo .txt</string>
     <string name="export_progress_complete">Exportado con éxito en:</string>
     <string name="export_progress_error">Desafortunadamente ocurrió un error mientras se exportaba.\nRevisa los permisos</string>
-    <string name="export_progress_title">Exportando&#8230;</string>
+    <string name="export_progress_title">Exportando…</string>
     <string name="fab_add_time">Agregar tiempo</string>
     <string name="fab_share_ao12">Ao12</string>
     <string name="fab_share_ao5">Ao5</string>
     <string name="fab_share_distribution">Distribución</string>
     <string name="fab_share_error">No se pudo compartir. Asegúrate de que haya suficientes resoluciones en esta sesión.</string>
     <string name="fab_share_histogram_solvecount">%1$s distribución de tiempos (%2$d resoluciones)</string>
-    <string name="fab_share_title">Compartir sesión&#8230;</string>
+    <string name="fab_share_title">Compartir sesión…</string>
     <string name="file_selection_error_content">Asegúrate de que seleccionaste un archivo %1$s válido</string>
     <string name="file_selection_error_title">Tipo de archivo incorrecto</string>
-    <string name="generating_scramble">Generando mezcla&#8230;</string>
+    <string name="generating_scramble">Generando mezcla…</string>
     <string name="graph_legend_all_times">Todo</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Mejor</string>
@@ -100,7 +100,7 @@
     <string name="import_progress_content_errors">errores</string>
     <string name="import_progress_content_ignored_duplicates">duplicados ignorados</string>
     <string name="import_progress_content_successful_imports">importaciones exitosas</string>
-    <string name="import_progress_title">Importando resoluciones&#8230;</string>
+    <string name="import_progress_title">Importando resoluciones…</string>
     <string name="inspectionEnabledTitle">Inspección</string>
     <string name="inspectionTimeSummary">Tiempo predeterminado: 15 segundos</string>
     <string name="inspectionTimeTitle">Tiempo de inspección (segundos)</string>
@@ -112,7 +112,7 @@
     <string name="list_options_item_from_history">Desarchivar</string>
     <string name="list_options_item_history">Archivar</string>
     <string name="list_options_item_share">Compartir</string>
-    <string name="loading_hints">Cargando sugerencias&#8230;</string>
+    <string name="loading_hints">Cargando sugerencias…</string>
     <string name="millisecondsEnabledSummary">Mostrar decimales cuando el cronómetro esté en marcha</string>
     <string name="millisecondsEnabledTitle">Mostrar decimales</string>
     <string name="move_solves_to_history">¿Mover resoluciones al historial?</string>
@@ -168,7 +168,7 @@
         <item quantity="one">1 Solve seleccionado</item>
         <item quantity="other">%d Solves seleccionados</item>
     </plurals>
-    <string name="send_email_title">Enviar comentarios con&#8230;</string>
+    <string name="send_email_title">Enviar comentarios con…</string>
     <string name="sent_to_history">Se trasladó al historial</string>
     <string name="sent_to_session">Se trasladó a sesión</string>
     <string name="sessionStatsEnabledSummary">Mostrar las estadísticas de la sesión actual en el cronómetro</string>
@@ -188,7 +188,7 @@
     <string name="timer_text_size">Tamaño del texto del cronómetro</string>
     <string name="timer_text_size_summary">Controla la posición del texto del cronómetro</string>
     <string name="title_activity_about">Acerca de y comentarios</string>
-    <string name="title_activity_settings">Opciones</string>
+    <string name="title_activity_settings">Ajustes</string>
     <string name="translators">Traductores</string>
     <string name="translators_content">Enormes gracias a estas personas para proporcionar las traducciones para este app:%1$s</string>
     <string name="w_new_subtype">Nuevo</string>

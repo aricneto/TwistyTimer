@@ -45,7 +45,7 @@
     <string name="cube_555">Куб 5х5</string>
     <string name="cube_666">Куб 6х6</string>
     <string name="cube_777">Куб 7х7</string>
-    <string name="delete_dialog_cancel_button">Отмена</string>
+    <string name="delete_dialog_cancel_button">Отменить</string>
     <string name="delete_dialog_confirmation_button">Удалить</string>
     <string name="delete_dialog_confirmation_title">Удалить результат?</string>
     <string name="dialog_export_import_export">Экспорт...</string>
@@ -182,7 +182,7 @@
     <string name="timer_text_offset_summary">Контролировать позицию текста таймера</string>
     <string name="timer_text_size">Размер текста таймера</string>
     <string name="timer_text_size_summary">Контролировать размер текста таймера</string>
-    <string name="title_activity_about">Справка</string>
+    <string name="title_activity_about">О приложении</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="translators">Переводчики</string>
     <string name="translators_content">Огромное спасибо этим людям за перевод приложения:%1$s</string>

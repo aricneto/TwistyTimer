@@ -13,7 +13,7 @@
     <string name="action_import">Importa</string>
     <string name="action_move">Sposta</string>
     <string name="action_ok">OK</string>
-    <string name="action_remove">Rimuovi</string>
+    <string name="action_remove">Cancella</string>
     <string name="action_rename">Rinomina</string>
     <string name="action_reset">Ripristina</string>
     <string name="action_reset_colorscheme">Ripristina</string>
@@ -48,8 +48,8 @@
     <string name="delete_dialog_cancel_button">Annulla</string>
     <string name="delete_dialog_confirmation_button">Cancella</string>
     <string name="delete_dialog_confirmation_title">Rimuovere la solve?</string>
-    <string name="dialog_export_import_export">Esporta&#8230;</string>
-    <string name="dialog_export_import_import">Importa&#8230;</string>
+    <string name="dialog_export_import_export">Esporta…</string>
+    <string name="dialog_export_import_import">Importa…</string>
     <string name="dialog_revert_content_confirmation">Ripristinare gli algoritmi per questo caso?</string>
     <string name="dialog_revert_title_confirmation">Ripristina gli algoritmi</string>
     <string name="dialog_set_progress">Imposta progresso</string>
@@ -75,17 +75,17 @@
     <string name="export_import_dialog_from_txt_file">Da un file .txt</string>
     <string name="export_progress_complete">Esportato correttamente in:</string>
     <string name="export_progress_error">Un errore si è verificato durante l\'esportazione.\nVerifica le autorizzazioni dell\'app</string>
-    <string name="export_progress_title">Esportazione&#8230;</string>
+    <string name="export_progress_title">Esportazione…</string>
     <string name="fab_add_time">Aggiungi tempo</string>
     <string name="fab_share_ao12">Ao12</string>
     <string name="fab_share_ao5">Ao5</string>
     <string name="fab_share_distribution">Distribuzione</string>
     <string name="fab_share_error">Errore nella condivisione. Assicurati di aver fatto abbastanza solve in questa sessione.</string>
     <string name="fab_share_histogram_solvecount">Distribuzione tempi %1$s (%2$d solve)</string>
-    <string name="fab_share_title">Condividi sessione&#8230;</string>
+    <string name="fab_share_title">Condividi sessione…</string>
     <string name="file_selection_error_content">Assicurati di selezionare un file %1$s valido</string>
     <string name="file_selection_error_title">Tipo di file errato</string>
-    <string name="generating_scramble">Generazione scramble in corso&#8230;</string>
+    <string name="generating_scramble">Generazione scramble in corso…</string>
     <string name="graph_legend_all_times">Tutte</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Migliore</string>
@@ -100,7 +100,7 @@
     <string name="import_progress_content_errors">errori</string>
     <string name="import_progress_content_ignored_duplicates">duplicati ignorati</string>
     <string name="import_progress_content_successful_imports">solve importate correttamente</string>
-    <string name="import_progress_title">Importazione solve&#8230;</string>
+    <string name="import_progress_title">Importazione solve…</string>
     <string name="inspectionEnabledTitle">Ispezione</string>
     <string name="inspectionTimeSummary">Tempo predefinito: 15 secondi</string>
     <string name="inspectionTimeTitle">Tempo di ispezione (secondi)</string>
@@ -112,7 +112,7 @@
     <string name="list_options_item_from_history">Ripristina</string>
     <string name="list_options_item_history">Archivia</string>
     <string name="list_options_item_share">Condividi</string>
-    <string name="loading_hints">Caricamento dei suggerimenti&#8230;</string>
+    <string name="loading_hints">Caricamento dei suggerimenti…</string>
     <string name="millisecondsEnabledSummary">Mostra i decimali durante una solve</string>
     <string name="millisecondsEnabledTitle">Mostra i decimali</string>
     <string name="move_solves_to_history">Vuoi spostare le solve nell\'archivio?</string>
@@ -168,7 +168,7 @@
         <item quantity="one">%d soluzioni selezionate</item>
         <item quantity="other">%d soluzione selezionata</item>
     </plurals>
-    <string name="send_email_title">Invia feedback con&#8230;</string>
+    <string name="send_email_title">Invia feedback con…</string>
     <string name="sent_to_history">Spostato nell\'archivio</string>
     <string name="sent_to_session">Spostato alla sessione</string>
     <string name="sessionStatsEnabledSummary">Mostra le statistiche per la sessione corrente sul timer</string>

@@ -16,7 +16,7 @@
     <string name="action_remove">Remover</string>
     <string name="action_rename">Renomear</string>
     <string name="action_reset">Restaurar</string>
-    <string name="action_reset_colorscheme">Resetar</string>
+    <string name="action_reset_colorscheme">Restaurar</string>
     <string name="action_settings">Configurações</string>
     <string name="action_update">Atualizar</string>
     <string name="add_comment">Adicionar comentário</string>
@@ -75,17 +75,17 @@
     <string name="export_import_dialog_from_txt_file">De um arquivo .txt</string>
     <string name="export_progress_complete">Exportado com sucesso para:</string>
     <string name="export_progress_error">Infelizmente, ocorreu um erro na exportação.\nCheque suas permissões</string>
-    <string name="export_progress_title">Exportando&#8230;</string>
+    <string name="export_progress_title">Exportando…</string>
     <string name="fab_add_time">Adicionar tempo</string>
     <string name="fab_share_ao12">Média de 12</string>
     <string name="fab_share_ao5">Md5</string>
     <string name="fab_share_distribution">Distribuição</string>
     <string name="fab_share_error">Não foi possível compartilhar. Certifique-se de que você fez resoluções o suficiente nesta sessão.</string>
     <string name="fab_share_histogram_solvecount">Distribuição de tempo do %1$s (%2$d resoluções)</string>
-    <string name="fab_share_title">Compartilhar sessão&#8230;</string>
+    <string name="fab_share_title">Compartilhar sessão…</string>
     <string name="file_selection_error_content">Certifique-se de que você está selecionando um arquivo %1$s válido</string>
     <string name="file_selection_error_title">Extensão de arquivo errada</string>
-    <string name="generating_scramble">Gerando embaralhamento&#8230;</string>
+    <string name="generating_scramble">Gerando embaralhamento…</string>
     <string name="graph_legend_all_times">Tudo</string>
     <string name="graph_legend_avg_prefix">Md</string>
     <string name="graph_legend_best_times">Melhor</string>
@@ -100,7 +100,7 @@
     <string name="import_progress_content_errors">erros</string>
     <string name="import_progress_content_ignored_duplicates">duplicados ignorados</string>
     <string name="import_progress_content_successful_imports">importações bem-sucedidas</string>
-    <string name="import_progress_title">Importando resoluções&#8230;</string>
+    <string name="import_progress_title">Importando resoluções…</string>
     <string name="inspectionEnabledTitle">Inspeção</string>
     <string name="inspectionTimeSummary">Tempo padrão: 15 segundos</string>
     <string name="inspectionTimeTitle">Tempo de inspeção (segundos)</string>
@@ -112,7 +112,7 @@
     <string name="list_options_item_from_history">Desarquivar</string>
     <string name="list_options_item_history">Arquivar</string>
     <string name="list_options_item_share">Compartilhar</string>
-    <string name="loading_hints">Carregando dicas&#8230;</string>
+    <string name="loading_hints">Carregando dicas…</string>
     <string name="millisecondsEnabledSummary">Mostrar decimais quando estiver cronometrando</string>
     <string name="millisecondsEnabledTitle">Mostrar decimais</string>
     <string name="move_solves_to_history">Mover soluções para o histórico?</string>
@@ -169,7 +169,7 @@
         <item quantity="one">%d tempo selecionado</item>
         <item quantity="other">%d tempos selecionados</item>
     </plurals>
-    <string name="send_email_title">Enviar feedback com&#8230;</string>
+    <string name="send_email_title">Enviar feedback com…</string>
     <string name="sent_to_history">Movido para histórico</string>
     <string name="sent_to_session">Movido para sessão</string>
     <string name="sessionStatsEnabledSummary">Mostrar estatísticas da sessão no cronômetro</string>
@@ -235,4 +235,7 @@
     <string name="trainer_help_message">Para começar a treinar, selecione os casos que você quer treinar tocando o título acima\nVocê também pode criar categorias com diferentes conjuntos de casos</string>
     <string name="trainer_spinner_title">Selecionar casos para treinar</string>
     <string name="trainer_select_all">Selecionar todos</string>
+    <string name="about_translate_title">Ajude a traduzir o Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Salvar embaralhamento atual</string>
+    <string name="pref_summary_new">Preferências adicionadas recentemente</string>
 </resources>

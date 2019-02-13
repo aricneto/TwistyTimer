@@ -13,7 +13,7 @@
     <string name="action_import">Import</string>
     <string name="action_move">Zug</string>
     <string name="action_ok">OK</string>
-    <string name="action_remove">Löschen</string>
+    <string name="action_remove">Entfernen</string>
     <string name="action_rename">Umbenennen</string>
     <string name="action_reset">Zurücksetzen</string>
     <string name="action_reset_colorscheme">Zurücksetzen</string>
@@ -29,7 +29,7 @@
     <string name="backgroundEnabledTitle">Farbiger Hintergrund</string>
     <string name="bestSolveEnabledSummary">Benachrichtigen, wenn Bestzeit gebrochen</string>
     <string name="bestSolveEnabledTitle">Benachrichtigung bei Rekord</string>
-    <string name="averageRecordsEnabledSummary">Hebe neuen besten Durchschnitte hervor</string>
+    <string name="averageRecordsEnabledSummary">Hebe die neuen besten Durchschnitte hervor</string>
     <string name="averageRecordsEnabledTitle">Benachrichtigung bei bestem Durchschnitt</string>
     <string name="buttonsEnabledSummary">Zeigt die Schaltflächen, die unter dem Timer nach einem Solve erscheinen</string>
     <string name="buttonsEnabledTitle">Knöpfe für schnelle Aktionen</string>
@@ -48,8 +48,8 @@
     <string name="delete_dialog_cancel_button">Abbrechen</string>
     <string name="delete_dialog_confirmation_button">Entfernen</string>
     <string name="delete_dialog_confirmation_title">Solve löschen?</string>
-    <string name="dialog_export_import_export">Exportieren&#8230;</string>
-    <string name="dialog_export_import_import">Importieren&#8230;</string>
+    <string name="dialog_export_import_export">Exportieren…</string>
+    <string name="dialog_export_import_import">Importieren…</string>
     <string name="dialog_revert_content_confirmation">Die Algorithmen für diesen Fall zu den Voreinstellungen zurücksetzen?</string>
     <string name="dialog_revert_title_confirmation">Algorithmen zurücksetzen</string>
     <string name="dialog_set_progress">Fortschritt einstellen</string>
@@ -75,17 +75,17 @@
     <string name="export_import_dialog_from_txt_file">Aus .txt-Datei</string>
     <string name="export_progress_complete">Datei erfolgreich exportiert nach:</string>
     <string name="export_progress_error">Leider ist beim Exportieren ein Fehler aufgetreten. \nPrüfen Sie Ihre Berechtigungen</string>
-    <string name="export_progress_title">Wird exportiert&#8230;</string>
+    <string name="export_progress_title">Wird exportiert…</string>
     <string name="fab_add_time">Zeit hinzufügen</string>
     <string name="fab_share_ao12">Ao12</string>
     <string name="fab_share_ao5">Ao5</string>
     <string name="fab_share_distribution">Auslieferung</string>
     <string name="fab_share_error">Konnte nicht teilen. Stelle sicher, dass du in dieser Session genug Solves gemacht hast.</string>
     <string name="fab_share_histogram_solvecount">%1$s zeitliche Verteilung (%2$d Solves)</string>
-    <string name="fab_share_title">Session teilen&#8230;</string>
+    <string name="fab_share_title">Session teilen…</string>
     <string name="file_selection_error_content">Stellen Sie sicher, dass Sie eine gültige %1$s-Datei auswählen</string>
     <string name="file_selection_error_title">Falscher Dateityp</string>
-    <string name="generating_scramble">Scramble wird generiert&#8230;</string>
+    <string name="generating_scramble">Scramble wird generiert…</string>
     <string name="graph_legend_all_times">Alles</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">Bester</string>
@@ -100,7 +100,7 @@
     <string name="import_progress_content_errors">Fehler</string>
     <string name="import_progress_content_ignored_duplicates">Duplikate ignoriert</string>
     <string name="import_progress_content_successful_imports">erfolgreiche Imports</string>
-    <string name="import_progress_title">Importiere Solves&#8230;</string>
+    <string name="import_progress_title">Importiere Solves…</string>
     <string name="inspectionEnabledTitle">Inspektion</string>
     <string name="inspectionTimeSummary">Standard-Zeit: 15 Sekunden</string>
     <string name="inspectionTimeTitle">Inspektionszeit (Sekunden)</string>
@@ -112,7 +112,7 @@
     <string name="list_options_item_from_history">Dearchivieren</string>
     <string name="list_options_item_history">Archivieren</string>
     <string name="list_options_item_share">Teilen</string>
-    <string name="loading_hints">Hinweise werden geladen&#8230;</string>
+    <string name="loading_hints">Hinweise werden geladen…</string>
     <string name="millisecondsEnabledSummary">Zeige Dezimalstellen während des Lösens</string>
     <string name="millisecondsEnabledTitle">Dezimalstellen anzeigen</string>
     <string name="move_solves_to_history">Bewege Solves zur Vergangenheit?</string>
@@ -169,7 +169,7 @@
         <item quantity="one">%d Solve ausgewählt</item>
         <item quantity="other">%d Solves ausgewählt</item>
     </plurals>
-    <string name="send_email_title">Senden Sie Feedback mit&#8230;</string>
+    <string name="send_email_title">Senden Sie Feedback mit…</string>
     <string name="sent_to_history">In die Vergangenheit verschoben</string>
     <string name="sent_to_session">Zur Sitzung verschoben</string>
     <string name="sessionStatsEnabledSummary">Zeige aktuelle Sitzungsstatistiken</string>
@@ -213,7 +213,7 @@
     <string name="graph_stats_label_ao12_full">Ao12</string>
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>
-    <string name="timer_detail_average_record_message">Neuer Durschnitts-Rekord!</string>
+    <string name="timer_detail_average_record_message">Neuer Durchschnitts-Rekord!</string>
     <string name="pref_inspection_alert_type_title">Warnungstyp</string>
     <string name="pref_inspection_alert_type_summary">Wählen Sie, wie der Timer Sie warnen soll</string>
     <string name="pref_inspection_alert_vibration">Vibration</string>
