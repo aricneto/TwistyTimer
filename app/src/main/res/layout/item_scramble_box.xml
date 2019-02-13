@@ -22,12 +22,11 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="2dp"
-            android:alpha="0.85"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/scramble_progress"
@@ -72,25 +71,17 @@
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_below="@id/scramble_text"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
             android:alpha=".85"
-            app:drawableLeftCompat="@drawable/ic_outline_wb_incandescent_24px"
-            android:drawablePadding="8dp"
-            android:fontFamily="@font/quicksand_medium"
-            android:gravity="center"
-            android:padding="2dp"
-            android:scaleX="0.80"
-            android:scaleY="0.80"
-            android:text="@string/dialog_hint_title"
-            android:textColor="?colorItemListText"
-            android:textSize="14sp"
+            app:srcCompat="@drawable/ic_outline_wb_incandescent_24px"
+            android:padding="4dp"
             android:visibility="gone"
             tools:visibility="visible" />
 

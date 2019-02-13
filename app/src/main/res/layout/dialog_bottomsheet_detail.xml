@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/outline_background_card_top"
     android:orientation="vertical">
 
@@ -11,9 +11,9 @@
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:drawableRightCompat="@drawable/ic_outline_casino_24px"
         android:fontFamily="@font/quicksand_bold"
-        android:text="@string/dialog_scramble_details" />
+        android:text="@string/dialog_scramble_details"
+        app:drawableRightCompat="@drawable/ic_outline_casino_24px" />
 
     <View
         android:layout_width="match_parent"
@@ -21,90 +21,96 @@
         android:layout_marginBottom="8dp"
         android:background="@color/black_divider" />
 
-    <TextView
-        android:id="@+id/detail_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
-        android:alpha="0.85"
-        android:fontFamily="@font/overpass_mono_semibold"
-        android:gravity="center"
-        android:lineSpacingExtra="5dp"
-        android:textColor="#000"
-        android:textSize="20sp"
-        tools:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B " />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="0dp"
-        android:background="@color/black_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/hint_title"
-        style="@style/BottomPanelListTitleTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:background="?colorCardBackgroundWarn"
-        app:drawableRightCompat="@drawable/ic_outline_wb_incandescent_24px"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="@string/dialog_hint_title"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <View
-        android:id="@+id/hint_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="0dp"
-        android:background="#B7DBCC3D"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/hint_progress"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:indeterminate="true"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:mpb_progressTint="@color/md_red_400"
-        android:background="?colorCardBackgroundWarn"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_useIntrinsicPadding="false" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/hint_text"
-        style="@style/BottomPanelListTitleTextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:alpha=".7"
-        android:background="?colorCardBackgroundWarn"
-        android:fontFamily="@font/quicksand_bold"
-        android:visibility="gone"
-        tools:text="Cross on U:\nF U F B U'\nF U F B2 F'"
-        tools:visibility="visible" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/detail_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="16dp"
+                android:alpha="0.85"
+                android:fontFamily="@font/overpass_mono_semibold"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:textColor="#000"
+                android:textSize="20sp"
+                tools:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B " />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="0dp"
+                android:background="@color/black_divider" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/hint_title"
+                style="@style/BottomPanelListTitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="?colorCardBackgroundWarn"
+                android:fontFamily="@font/quicksand_bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/dialog_hint_title"
+                android:visibility="gone"
+                app:drawableRightCompat="@drawable/ic_outline_wb_incandescent_24px"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/hint_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="0dp"
+                android:background="#B7DBCC3D"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/hint_progress"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="?colorCardBackgroundWarn"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:mpb_progressStyle="horizontal"
+                app:mpb_progressTint="@color/md_red_400"
+                app:mpb_useIntrinsicPadding="false"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/hint_text"
+                style="@style/BottomPanelListTitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:alpha=".7"
+                android:background="?colorCardBackgroundWarn"
+                android:fontFamily="@font/quicksand_bold"
+                android:visibility="gone"
+                tools:text="Cross on U:\nF U F B U'\nF U F B2 F'"
+                tools:visibility="visible" />
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

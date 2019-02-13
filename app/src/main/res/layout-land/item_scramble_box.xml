@@ -24,12 +24,11 @@
             android:layout_toLeftOf="@id/scramble_button_edit"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="2dp"
-            android:alpha="0.85"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/scramble_progress"
@@ -68,7 +67,7 @@
             android:padding="4dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_hint"
             android:layout_width="28dp"
             android:layout_height="28dp"
@@ -76,7 +75,7 @@
             android:layout_margin="4dp"
             android:alpha=".85"
             android:padding="4dp"
-            app:drawableLeftCompat="@drawable/ic_outline_wb_incandescent_24px" />
+            app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
 
 
     </RelativeLayout>

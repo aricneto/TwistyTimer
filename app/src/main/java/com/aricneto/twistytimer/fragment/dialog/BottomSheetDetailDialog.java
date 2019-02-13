@@ -36,6 +36,7 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
     private String detailText;
     private String hintText;
     private Unbinder mUnbinder;
+    private float detailTextSize;
 
     public static BottomSheetDetailDialog newInstance() {
         return new BottomSheetDetailDialog();
@@ -55,6 +56,7 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         detailTextView.setText(detailText);
+        detailTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailTextView.getTextSize() * detailTextSize);
 
         if (!hasHints) {
             setHintVisibility(999);
@@ -72,6 +74,10 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
         if (hintTextView != null) {
             hintTextView.setText(hintText);
         }
+    }
+
+    public void setDetailTextSize (float size) {
+        this.detailTextSize = size;
     }
 
     public void hasHints(boolean hasHints) {

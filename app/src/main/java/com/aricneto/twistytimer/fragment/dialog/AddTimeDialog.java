@@ -33,8 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED_MANUALLY;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
 /**
  * Shows the algList dialog
@@ -74,10 +78,12 @@ public class AddTimeDialog extends DialogFragment {
                         TwistyTimer.getDBHandler().addSolve(solve);
                         // The receiver might be able to use the new solve and avoid
                         // accessing the database.
-                        new TTIntent.BroadcastBuilder(
-                                CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED_MANUALLY)
+                        new TTIntent.BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
                                 .solve(solve)
                                 .broadcast();
+
+                        // Generate new scramble
+                        broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
 
                         dismiss();
                     } else {

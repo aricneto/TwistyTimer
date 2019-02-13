@@ -179,7 +179,8 @@
             <PreferenceCategory android:title="@string/pref_category_title_other">
 
                 <SwitchPreference
-                    android:defaultValue="true"
+                    android:defaultValue="false"
+                    android:icon="@drawable/ic_outline_star_border_18px"
                     android:key="@string/pk_show_scramble_background"
                     android:title="@string/pref_scramble_box_title"
                     android:summary="@string/pref_scramble_box_description"/>
@@ -230,6 +231,21 @@
             </PreferenceCategory>
 
         </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <Preference android:layout="@layout/divider_preference_category" />
+
+    <PreferenceCategory
+        android:title="@string/w_new_subtype"
+        android:summary="@string/pref_summary_new">
+
+        <SwitchPreference
+            android:icon="@drawable/ic_outline_star_border_18px"
+            android:defaultValue="false"
+            android:key="@string/pk_show_scramble_background"
+            android:title="@string/pref_scramble_box_title"
+            android:summary="@string/pref_scramble_box_description"/>
 
     </PreferenceCategory>
 

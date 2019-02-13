@@ -214,7 +214,7 @@ public class                                                                    
     @BindView(R.id.progressSpinner)  MaterialProgressBar progressSpinner;
     @BindView(R.id.scramble_progress)MaterialProgressBar scrambleProgress;
 
-    @BindView(R.id.scramble_button_hint)  AppCompatTextView  scrambleButtonHint;
+    @BindView(R.id.scramble_button_hint)  AppCompatImageView  scrambleButtonHint;
     @BindView(R.id.scramble_button_reset) AppCompatImageView scrambleButtonReset;
     @BindView(R.id.scramble_button_edit)  AppCompatImageView scrambleButtonEdit;
 
@@ -249,6 +249,7 @@ public class                                                                    
     private boolean inspectionVibrationAlertEnabled;
     private boolean inspectionSoundAlertEnabled;
 
+    float scrambleTextSize;
 
     // True if the user has started (and stopped) the timer at least once. Used to trigger
     // Average highlights, so the user doesn't get a notification when they start the app
@@ -516,7 +517,7 @@ public class                                                                    
         final int inspectionTime = Prefs.getInt(R.string.pk_inspection_time, 15);
         final float timerTextSize = Prefs.getInt(R.string.pk_timer_text_size, 100) / 100f;
         float scrambleImageSize = Prefs.getInt(R.string.pk_scramble_image_size, 100) / 100f;
-        final float scrambleTextSize = Prefs.getInt(R.string.pk_scramble_text_size, 100) / 100f;
+        scrambleTextSize = Prefs.getInt(R.string.pk_scramble_text_size, 100) / 100f;
         final boolean advancedEnabled
                 = Prefs.getBoolean(R.string.pk_advanced_timer_settings_enabled, false);
 
@@ -579,14 +580,9 @@ public class                                                                    
             scrambleBox.setBackgroundColor(Color.TRANSPARENT);
             scrambleBox.setCardElevation(0);
             scrambleText.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
-            scrambleButtonHint.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
-            scrambleButtonEdit.setImageDrawable(
-                    ThemeUtils.tintDrawable(mContext, scrambleButtonEdit.getDrawable(), R.attr.colorTimerText));
-            scrambleButtonReset.setImageDrawable(
-                    ThemeUtils.tintDrawable(mContext, scrambleButtonReset.getDrawable(), R.attr.colorTimerText));
-            scrambleButtonHint.setCompoundDrawablesWithIntrinsicBounds(
-                    ThemeUtils.tintDrawable(mContext, scrambleButtonHint.getCompoundDrawables()[0], R.attr.colorTimerText),
-                    null, null, null);
+            scrambleButtonEdit.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
+            scrambleButtonReset.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
+            scrambleButtonHint.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
         }
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
@@ -1508,16 +1504,13 @@ public class                                                                    
                     if ((Rect.intersects(scrambleRect, chronometerRect)) ||
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                         scrambleText.setText(R.string.scramble_text_tap_hint);
-                        Drawable icon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_outline_casino_24px, null);
-                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                    } else {
-                        scrambleText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     }
                     scrambleBox.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             scrambleDialog = new BottomSheetDetailDialog();
                             scrambleDialog.setDetailText(scramble);
+                            scrambleDialog.setDetailTextSize(scrambleTextSize);
                             if (canShowHint && showHintsEnabled && currentPuzzle.equals(TYPE_333)) {
                                 getNewOptimalCross();
                                 scrambleDialog.hasHints(true);
