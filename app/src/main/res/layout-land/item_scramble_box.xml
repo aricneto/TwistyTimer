@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="14dp"
     app:cardBackgroundColor="?colorItemListBackground"
+    app:cardCornerRadius="14dp"
+    tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
 
     <RelativeLayout
@@ -18,15 +19,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
             android:layout_marginLeft="44dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/scramble_button_hint"
-            android:layout_toLeftOf="@id/scramble_button_edit"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="2dp"
+            android:layout_toLeftOf="@id/scramble_button_edit"
+            android:layout_toRightOf="@id/scramble_button_hint"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
-            android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
+            android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L' U2 F2 D2 U2 U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"
             android:textSize="18sp" />
 
@@ -35,17 +35,17 @@
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:indeterminate="true"
             android:layout_below="@id/scramble_text"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:mpb_progressTint="@color/md_red_400"
-            android:background="?colorCardBackgroundWarn"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="6dp"
             android:layout_marginRight="1dp"
+            android:background="@android:color/transparent"
+            android:indeterminate="true"
+            android:visibility="gone"
             app:mpb_progressStyle="horizontal"
-            app:mpb_useIntrinsicPadding="false" />
+            app:mpb_progressTint="@color/md_red_400"
+            app:mpb_useIntrinsicPadding="false"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_reset"

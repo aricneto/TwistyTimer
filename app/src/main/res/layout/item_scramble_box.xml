@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="14dp"
     app:cardBackgroundColor="?colorItemListBackground"
+    tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
 
     <RelativeLayout
@@ -38,7 +39,7 @@
             android:visibility="gone"
             tools:visibility="visible"
             app:mpb_progressTint="@color/md_red_400"
-            android:background="?colorCardBackgroundWarn"
+            android:background="@android:color/transparent"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="6dp"
             android:layout_marginRight="1dp"
