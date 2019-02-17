@@ -62,7 +62,7 @@ public class ThemeSelectDialog extends BottomSheetDialogFragment {
         textStyleRecycler.setLayoutManager(layoutManager);
 
         ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), getContext());
-        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(), getContext());
+        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(getContext()), getContext());
         themeRecycler.setAdapter(themeListAdapter);
         textStyleRecycler.setAdapter(textStyleListAdapter);
 
@@ -121,6 +121,12 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
         holder.themeTitle.setText(themeSet[position].getName());
         holder.themeCard.setBackground(gradientDrawable);
 
+        if (themeSet[position].getPrefName().equals(currentTheme)) {
+            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
+        } else {
+            holder.view.setBackground(null);
+        }
+
         // Create onClickListener
         holder.themeCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +137,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
                 if (!newTheme.equals(currentTheme)) {
                     Prefs.edit().putString(R.string.pk_theme, newTheme).apply();
+                    // Reset text style
+                    Prefs.edit().putString(R.string.pk_text_style, "default").apply();
 
                     TTIntent.broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_THEME);
                 }
@@ -193,6 +201,12 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
                                                                     R.styleable.TextThemeStyle,
                                                                     R.styleable.TextThemeStyle_colorTimerText,
                                                                     R.attr.colorTimerText));
+
+        if (themeSet[position].getPrefName().equals(currentTextStyle)) {
+            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
+        } else {
+            holder.view.setBackground(null);
+        }
 
         // Create onClickListener
         holder.themeCard.setOnClickListener(new View.OnClickListener() {

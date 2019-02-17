@@ -389,7 +389,7 @@
     </style>
 
     <style name="TextStyleMatsson">
-        <item name="colorTimerText">#0BFFC6</item>
+        <item name="colorTimerText">#651FFF</item>
     </style>
 
     <style name="TextStylePessoa">

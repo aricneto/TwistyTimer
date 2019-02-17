@@ -163,12 +163,12 @@ public final class ThemeUtils {
         return themes;
     }
 
-    public static Theme[] getAllTextStyles() {
+    public static Theme[] getAllTextStyles(Context context) {
         Theme[] styles = {
-                new Theme(TEXT_DEFAULT, "Default"),
-                new Theme(TEXT_MATSSON, "Matsson"),
+                new Theme(TEXT_DEFAULT, context.getString(R.string.action_default)),
                 new Theme(TEXT_TARKOVSKY, "Tarkovsky"),
                 new Theme(TEXT_TOLKIEN, "Tolkien"),
+                new Theme(TEXT_MATSSON, "Matsson"),
                 new Theme(TEXT_PESSOA, "Pessoa")
         };
         return styles;
