@@ -1056,10 +1056,10 @@ public class                                                                    
         long allTimeBestAvg[] = new long[4];
         long sessionCurrentAvg[] = new long[4];
 
-        allTimeBestAvg[0] = tr(stats.getAverageOf(5, true).getBestAverage());
-        allTimeBestAvg[1] = tr(stats.getAverageOf(12, true).getBestAverage());
-        allTimeBestAvg[2] = tr(stats.getAverageOf(50, true).getBestAverage());
-        allTimeBestAvg[3] = tr(stats.getAverageOf(100, true).getBestAverage());
+        allTimeBestAvg[0] = tr(stats.getAverageOf(5, false).getBestAverage());
+        allTimeBestAvg[1] = tr(stats.getAverageOf(12, false).getBestAverage());
+        allTimeBestAvg[2] = tr(stats.getAverageOf(50, false).getBestAverage());
+        allTimeBestAvg[3] = tr(stats.getAverageOf(100, false).getBestAverage());
 
         sessionCurrentAvg[0] = tr(stats.getAverageOf(5, true).getCurrentAverage());
         sessionCurrentAvg[1] = tr(stats.getAverageOf(12, true).getCurrentAverage());
