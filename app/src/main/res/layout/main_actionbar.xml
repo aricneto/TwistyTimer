@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -46,10 +47,12 @@
         <ImageView
             android:id="@+id/spinnerIcon"
             android:layout_width="42dp"
-            android:layout_height="32dp"
+            android:layout_height="0dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/puzzleName"
+            android:layout_alignTop="@id/puzzleName"
+            android:layout_alignBottom="@id/puzzleCategory"
             android:alpha="0.90"
             android:tint="?colorTimerText"
             app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
