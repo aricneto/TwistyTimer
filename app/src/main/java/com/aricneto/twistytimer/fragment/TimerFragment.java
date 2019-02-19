@@ -285,7 +285,18 @@ public class                                                                    
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            broadcastNewSolve();
+                            if (!isCanceled) {
+                                // Only broadcast a new solve if it hasn't been canceled
+                                broadcastNewSolve();
+                            } else {
+                                // The detail stats are triggered by a stats update.
+                                // Since the solve has been canceled, there's no new stats
+                                // to load, and it must be triggered manually
+                                showDetailStats();
+                            }
+
+                            // reset isCanceled state
+                            isCanceled = false;
                         }
                     }, 320);
                     break;
@@ -1115,17 +1126,7 @@ public class                                                                    
             detailTextAvg.setText(Html.fromHtml(stringDetailAvg.toString()));
         }
 
-        detailTextAvg.setVisibility(View.VISIBLE);
-        detailTextAvg.animate()
-                    .alpha(1)
-                    .translationY(0)
-                    .setDuration(300);
-
-        detailTextOther.setVisibility(View.VISIBLE);
-        detailTextOther.animate()
-                .alpha(1)
-                .translationY(0)
-                .setDuration(300);
+        showDetailStats();
 
     }
 
@@ -1167,7 +1168,20 @@ public class                                                                    
                     .alpha(1)
                     .setDuration(300);
         }
-        isCanceled = false;
+    }
+
+    private void showDetailStats() {
+        detailTextAvg.setVisibility(View.VISIBLE);
+        detailTextAvg.animate()
+                .alpha(1)
+                .translationY(0)
+                .setDuration(300);
+
+        detailTextOther.setVisibility(View.VISIBLE);
+        detailTextOther.animate()
+                .alpha(1)
+                .translationY(0)
+                .setDuration(300);
     }
 
     private void showImage() {
