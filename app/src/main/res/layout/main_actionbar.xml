@@ -5,19 +5,22 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/transparent_card_black"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    tools:background="#001100">
+    android:paddingBottom="8dp">
 
     <RelativeLayout
         android:id="@+id/puzzleSpinner"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -27,10 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:alpha="1"
-            android:textStyle="bold"
             android:text="Puzzle"
             android:textColor="?colorTimerText"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/puzzleCategory"
@@ -48,11 +51,11 @@
             android:id="@+id/spinnerIcon"
             android:layout_width="42dp"
             android:layout_height="0dp"
+            android:layout_alignTop="@id/puzzleName"
+            android:layout_alignBottom="@id/puzzleCategory"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/puzzleName"
-            android:layout_alignTop="@id/puzzleName"
-            android:layout_alignBottom="@id/puzzleCategory"
             android:alpha="0.90"
             android:tint="?colorTimerText"
             app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
@@ -88,10 +91,10 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_history_off" />
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_history_off"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/nav_button_settings"

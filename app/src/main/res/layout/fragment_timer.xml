@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
+    android:paddingTop="16dp"
     tools:background="?colorPrimary"
     tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
 
@@ -34,7 +35,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="?actionBarSize"/>
 
     <TextView
         android:id="@+id/congratsText"

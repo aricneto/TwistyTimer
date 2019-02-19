@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="14dp"
+    app:cardCornerRadius="8dp"
     app:cardBackgroundColor="?colorItemListBackground"
     tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
@@ -20,12 +20,12 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="2dp"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
-            android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B "
+            android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L'F' U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"
             android:textSize="18sp" />
 
