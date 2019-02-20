@@ -148,7 +148,6 @@
         tools:visibility="visible"
         app:cardElevation="2dp"
         app:cardCornerRadius="14dp"
-        android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 

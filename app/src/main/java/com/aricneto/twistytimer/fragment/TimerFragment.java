@@ -75,6 +75,7 @@ import com.skyfishjy.library.RippleBackground;
 import java.util.Locale;
 
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -315,6 +316,7 @@ public class                                                                    
     private RubiksCubeOptimalCross  optimalCross;
     private RubiksCubeOptimalXCross optimalXCross;
     private BottomSheetDetailDialog scrambleDialog;
+    private FragmentManager mFragManager;
 
     public TimerFragment() {
         // Required empty public constructor
@@ -481,6 +483,8 @@ public class                                                                    
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
         optimalCrossAsync = new GetOptimalCross();
+
+        mFragManager = getFragmentManager();
 
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
@@ -1504,6 +1508,7 @@ public class                                                                    
      * Ex. scramble image, box, text, dialogs
      */
     private void setScramble(final String scramble) {
+        realScramble = scramble;
         scrambleText.setText(scramble);
         scrambleText.post(new Runnable() {
             @Override
@@ -1518,24 +1523,17 @@ public class                                                                    
                     if ((Rect.intersects(scrambleRect, chronometerRect)) ||
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                         scrambleText.setText(R.string.scramble_text_tap_hint);
+                        scrambleBox.setClickable(true);
+                        scrambleBox.setOnClickListener(scrambleDetailClickListener);
+                    } else {
+                        scrambleBox.setOnClickListener(null);
+                        scrambleBox.setClickable(false);
+                        scrambleBox.setFocusable(false);
                     }
-                    scrambleButtonHint.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            scrambleDialog = new BottomSheetDetailDialog();
-                            scrambleDialog.setDetailText(scramble);
-                            scrambleDialog.setDetailTextSize(scrambleTextSize);
-                            if (canShowHint && showHintsEnabled && currentPuzzle.equals(TYPE_333)) {
-                                getNewOptimalCross();
-                                scrambleDialog.hasHints(true);
-                            }
-                            scrambleDialog.show(getFragmentManager(), "fragment_dialog_scramble_detail");
-                        }
-                    });
+                    scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
                 }
             }
         });
-        realScramble = scramble;
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))
             scrambleButtonHint.setVisibility(View.VISIBLE);
@@ -1557,6 +1555,21 @@ public class                                                                    
                 .scramble(realScramble)
                 .broadcast();
     }
+
+    View.OnClickListener scrambleDetailClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            scrambleDialog = new BottomSheetDetailDialog();
+            scrambleDialog.setDetailText(realScramble);
+            scrambleDialog.setDetailTextSize(scrambleTextSize);
+            if (canShowHint && showHintsEnabled && currentPuzzle.equals(TYPE_333)) {
+                getNewOptimalCross();
+                scrambleDialog.hasHints(true);
+            }
+            if (mFragManager != null)
+                scrambleDialog.show(mFragManager, "fragment_dialog_scramble_detail");
+        }
+    };
 
     private class GenerateScrambleImage extends AsyncTask<Void, Void, Drawable> {
 
