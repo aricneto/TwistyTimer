@@ -151,7 +151,7 @@
     <!--
     The "Base<Color>Theme" styles in extend "DefaultTheme", which may be defined differently in
     "values-v21/styles.xml".
-    -->#A00CE0
+    -->
     <style name="BasePinkTheme" parent="DefaultTheme">
         <item name="colorMainGradientStart">#FF577E</item>
         <item name="colorMainGradientEnd">#FD61C0</item>
