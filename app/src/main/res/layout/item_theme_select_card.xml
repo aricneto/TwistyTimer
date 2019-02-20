@@ -22,6 +22,8 @@
         android:text="Indigo"
         android:gravity="center_horizontal"
         android:lines="2"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
         android:fontFamily="@font/quicksand_medium"
         android:layout_height="wrap_content" />
 

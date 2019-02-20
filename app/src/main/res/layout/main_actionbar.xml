@@ -5,12 +5,12 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_marginRight="8dp"
-    android:background="@drawable/transparent_card_black"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:background="@drawable/transparent_card_black">
 
     <RelativeLayout
         android:id="@+id/puzzleSpinner"
@@ -73,7 +73,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:alpha="0.90"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
@@ -93,6 +93,7 @@
         android:padding="8dp"
         android:tint="?colorTimerText"
         android:visibility="gone"
+        android:background="?selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_history_off"
         tools:visibility="visible" />
 
@@ -106,7 +107,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:alpha="0.90"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"

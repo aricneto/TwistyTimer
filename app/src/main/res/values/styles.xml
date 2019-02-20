@@ -39,7 +39,8 @@
         <item name="colorCardBackgroundFaded">#F0F0F0</item>
         <item name="colorCardText">#000</item>
 
-        <item name="actionBarSize">62dp</item>
+        <item name="actionBarSize">54dp</item>
+        <item name="actionBarPadding">70dp</item>
         <item name="tabBarSize">40dp</item>
         <item name="colorTabBar">@color/md_white_1000</item>
 

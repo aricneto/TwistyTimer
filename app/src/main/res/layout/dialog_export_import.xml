@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@drawable/outline_background_card_smoother"
         android:minWidth="220dp"
         android:orientation="vertical"
         android:padding="16dp">

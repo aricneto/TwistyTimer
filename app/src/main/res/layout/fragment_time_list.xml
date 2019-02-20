@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="?actionBarPadding"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -55,7 +56,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/outline_background_card_button"
+        android:background="@drawable/outline_background_card"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
