@@ -19,9 +19,6 @@
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
 
-        <item name="colorTabIconSelected">#E2000000</item>
-        <item name="colorTabIconFaded">#5C1A1A1A</item>
-
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
 
         <item name="colorBackgroundList">@color/materialGray</item>
@@ -43,17 +40,22 @@
         <item name="actionBarPadding">70dp</item>
         <item name="tabBarSize">40dp</item>
         <item name="tabBarPadding">48dp</item>
-        <item name="colorTabBar">@color/md_white_1000</item>
 
         <item name="android:fontFamily">@font/quicksand_medium</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
         <item name="colorMainGradientStart">#084dff</item>
         <item name="colorMainGradientEnd">#3b12ff</item>
+
+        <item name="colorTabBar">#2E0CD3</item>
+        <item name="colorTabIconSelected">?colorTimerText</item>
+        <item name="colorTabIconFaded">#B4FFFFFF</item>
+
         <item name="colorActionBar">?colorMainGradientEnd</item>
+        <item name="colorAccent">@color/md_amber_A200</item>
+
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
         <item name="colorPrimary">?colorMainGradientStart</item>
-        <item name="colorAccent">@color/md_amber_A200</item>
 
 
         <item name="mainColorBackground">#43FF8E</item>
