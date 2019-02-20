@@ -9,6 +9,8 @@
 
     <!-- MAIN APP COLORS -->
     <color name="primaryColor">#3F51B5</color>
+    <color name="tabFadedDark">#B4FFFFFF</color>
+    <color name="tabFadedLight">#5C1A1A1A</color>
 
 
     <!-- CUBE COLORS -->

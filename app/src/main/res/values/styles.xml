@@ -49,7 +49,7 @@
 
         <item name="colorTabBar">#2E0CD3</item>
         <item name="colorTabIconSelected">?colorTimerText</item>
-        <item name="colorTabIconFaded">#B4FFFFFF</item>
+        <item name="colorTabIconFaded">@color/tabFadedDark</item>
 
         <item name="colorActionBar">?colorMainGradientEnd</item>
         <item name="colorAccent">@color/md_amber_A200</item>
@@ -162,65 +162,37 @@
         <item name="colorMainGradientStart">@color/md_deep_purple_700</item>
     </style>
 
-    <style name="BaseLightBlueTheme" parent="DefaultTheme">
+    <style name="BaseLightBlueTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#3AFAFA</item>
         <item name="colorMainGradientEnd">#42F7CD</item>
 
 
         <item name="colorAccent">@color/md_amber_A200</item>
-        <item name="colorTimerText">@color/black_text_lighter</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
     </style>
 
-    <style name="BaseLightGreenTheme" parent="DefaultTheme">
+    <style name="BaseLightGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#a8ff78</item>
         <item name="colorMainGradientEnd">#78ffd6</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
 
-    <style name="BaseCyanTheme" parent="DefaultTheme">
+    <style name="BaseCyanTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#00FFA1</item>
         <item name="colorMainGradientEnd">#00FFFF</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_amber_A400</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
 
-    <style name="BaseTealTheme" parent="DefaultTheme">
+    <style name="BaseTealTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#18ff97</item>
         <item name="colorMainGradientEnd">#24f594</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_purple_A100</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -266,18 +238,11 @@
         <item name="android:textColorPrimaryInverse">@color/white_text</item>
     </style>
 
-    <style name="BaseGreenTheme" parent="DefaultTheme">
+    <style name="BaseGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#6cf63e</item>
         <item name="colorMainGradientEnd">#15ff8e</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_deep_purple_A200</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -295,80 +260,45 @@
         <item name="colorMainGradientStart">#ED1E79</item>
     </style>
 
-    <style name="BaseBlueGrayTheme" parent="DefaultTheme">
+    <style name="BaseBlueGrayTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#FFFEFF</item>
         <item name="colorMainGradientEnd">#D7FFFE</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_red_A100</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
     </style>
 
-    <style name="BaseWhiteTheme" parent="DefaultTheme">
+    <style name="BaseWhiteTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#fff</item>
         <item name="colorMainGradientEnd">#fff</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_red_A100</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
     </style>
 
-    <style name="BaseWhiteGreenTheme" parent="DefaultTheme">
+    <style name="BaseWhiteGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#c6ffbd</item>
         <item name="colorMainGradientEnd">#fff</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_red_A100</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
     </style>
 
 
-    <style name="BaseYellowTheme" parent="DefaultTheme">
+    <style name="BaseYellowTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#FFEB7E</item>
         <item name="colorMainGradientEnd">#FFFD69</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_deep_purple_A200</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
     </style>
 
-    <style name="BaseDawnTheme" parent="DefaultTheme">
+    <style name="BaseDawnTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#ffd342</item>
         <item name="colorMainGradientEnd">#bf54fe</item>
 
-        <item name="colorTimerText">@color/black_text_lighter</item>
         <item name="colorAccent">@color/md_red_A400</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-
-        <item name="colorChartAllTimes">@color/black_light_100</item>
-        <item name="colorChartGrid">@color/black_light_50</item>
-        <item name="colorChartAxis">@color/black_light_50</item>
-        <item name="colorChartText">@color/black_light_100</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
@@ -381,6 +311,20 @@
         <item name="colorAccent">@color/md_amber_A200</item>
     </style>
 
+
+    <!--
+    Base light timer icon/text color schemes
+    -->
+    <style name="DefaultTheme.Light" parent="DefaultTheme">
+        <item name="colorTimerText">@color/black_text_lighter</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="colorTabIconFaded">@color/tabFadedLight</item>
+
+        <item name="colorChartAllTimes">@color/black_light_100</item>
+        <item name="colorChartGrid">@color/black_light_50</item>
+        <item name="colorChartAxis">@color/black_light_50</item>
+        <item name="colorChartText">@color/black_light_100</item>
+    </style>
 
     <!--
     Custom text styles
