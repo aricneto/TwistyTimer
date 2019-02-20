@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?actionBarPadding"
+    android:paddingBottom="?tabBarSize"
     tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -16,16 +17,16 @@
         android:drawSelectorOnTop="true"
         android:paddingLeft="4dp"
         android:paddingTop="8dp"
-        android:paddingBottom="56dp"
-        android:paddingRight="4dp" />
+        android:paddingRight="4dp"
+        android:paddingBottom="8dp" />
 
     <ImageView
         android:id="@+id/warn_empty_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/buttons_layout"
         android:layout_above="@id/nothing_text"
+        android:layout_below="@id/buttons_layout"
+        android:layout_centerInParent="true"
         android:scaleType="fitCenter"
         android:src="@drawable/warn_empty_list"
         android:visibility="gone"
@@ -36,10 +37,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="?tabBarSize"
         android:alpha="0.80"
         android:gravity="center"
         android:padding="16dp"
-        android:layout_marginBottom="?tabBarSize"
         android:text="@string/list_empty_state_message"
         android:textColor="?colorTimerText"
         android:textSize="16sp"
@@ -47,100 +48,104 @@
         tools:textColor="#000"
         tools:visibility="visible" />
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/buttons_layout"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/outline_background_card"
+        android:layout_marginBottom="8dp"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:paddingRight="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp">
 
-        <ImageView
-            android:id="@+id/add_time_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/action_add"
-            android:textColor="?graph_stats_card_text_color"
-            app:srcCompat="@drawable/ic_outline_add_18px" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <View
-            android:layout_width="1dp"
-            android:background="@color/black_divider"
-            android:layout_toRightOf="@id/add_time_button"
-            android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/add_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="@color/md_grey_100"
+                android:paddingLeft="14dp"
+                android:paddingTop="6dp"
+                android:paddingRight="14dp"
+                android:paddingBottom="6dp"
+                app:srcCompat="@drawable/ic_outline_add_18px" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/search_box"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="16dp"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="42dp"
-            android:hint="@string/timelist_searchbox_hint"
-            android:maxLines="1"
-            android:inputType="text"
-            android:textSize="14sp"
-            android:layout_toRightOf="@id/add_time_button"
-            android:layout_toLeftOf="@id/archive_button"
-            />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/add_time_button"
+                android:background="@color/black_divider" />
 
-        <ImageView
-            android:id="@+id/clear_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/archive_button"
-            android:padding="6dp"
-            android:text="@string/action_add"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:background="?attr/selectableItemBackground"
-            android:textColor="?graph_stats_card_text_color"
-            app:srcCompat="@drawable/ic_outline_delete_sweep_18px" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_box"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="42dp"
+                android:layout_toLeftOf="@id/archive_button"
+                android:layout_toRightOf="@id/add_time_button"
+                android:background="@android:color/transparent"
+                android:hint="@string/timelist_searchbox_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/archive_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/more_button"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="4dp"
-            android:padding="6dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/action_add"
-            android:textColor="?graph_stats_card_text_color"
-            app:srcCompat="@drawable/ic_history_18" />
+            <ImageView
+                android:id="@+id/clear_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/archive_button"
+                android:background="?attr/selectableItemBackground"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="@string/action_add"
+                android:textColor="?graph_stats_card_text_color"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_outline_delete_sweep_18px"
+                tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/more_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="4dp"
-            android:padding="6dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/action_add"
-            android:textColor="?graph_stats_card_text_color"
-            app:srcCompat="@drawable/ic_outline_share_24px" />
+            <ImageView
+                android:id="@+id/archive_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/more_button"
+                android:background="?attr/selectableItemBackground"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginRight="4dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="@string/action_add"
+                android:textColor="?graph_stats_card_text_color"
+                app:srcCompat="@drawable/ic_history_18" />
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/more_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="?attr/selectableItemBackground"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="12dp"
+                android:text="@string/action_add"
+                android:textColor="?graph_stats_card_text_color"
+                app:srcCompat="@drawable/ic_outline_share_24px" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

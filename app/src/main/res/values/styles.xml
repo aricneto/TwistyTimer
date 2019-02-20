@@ -42,6 +42,7 @@
         <item name="actionBarSize">54dp</item>
         <item name="actionBarPadding">70dp</item>
         <item name="tabBarSize">40dp</item>
+        <item name="tabBarPadding">48dp</item>
         <item name="colorTabBar">@color/md_white_1000</item>
 
         <item name="android:fontFamily">@font/quicksand_medium</item>
@@ -49,6 +50,7 @@
         <!-- These items are those most commonly overridden for the color themes. -->
         <item name="colorMainGradientStart">#084dff</item>
         <item name="colorMainGradientEnd">#3b12ff</item>
+        <item name="colorActionBar">?colorMainGradientEnd</item>
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
         <item name="colorPrimary">?colorMainGradientStart</item>
         <item name="colorAccent">@color/md_amber_A200</item>
@@ -147,15 +149,15 @@
     <!--
     The "Base<Color>Theme" styles in extend "DefaultTheme", which may be defined differently in
     "values-v21/styles.xml".
-    -->
+    -->#A00CE0
     <style name="BasePinkTheme" parent="DefaultTheme">
         <item name="colorMainGradientStart">#FF577E</item>
         <item name="colorMainGradientEnd">#FD61C0</item>
     </style>
 
     <style name="BasePurpleTheme" parent="DefaultTheme">
-        <item name="colorMainGradientEnd">#8C0EE6</item>
-        <item name="colorMainGradientStart">#A00CE0</item>
+        <item name="colorMainGradientEnd">@color/md_deep_purple_500</item>
+        <item name="colorMainGradientStart">@color/md_deep_purple_700</item>
     </style>
 
     <style name="BaseLightBlueTheme" parent="DefaultTheme">

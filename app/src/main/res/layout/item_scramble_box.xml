@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="14dp"
     app:cardBackgroundColor="?colorItemListBackground"
     tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
@@ -48,41 +48,44 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_reset"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_below="@id/scramble_text"
+            android:background="?selectableItemBackgroundBorderless"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="4dp"
             android:alpha=".85"
-            android:padding="4dp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_edit"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_below="@id/scramble_text"
-            android:layout_margin="4dp"
+            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/scramble_button_reset"
+            android:background="?selectableItemBackgroundBorderless"
             android:alpha=".85"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_hint"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_below="@id/scramble_text"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
             android:alpha=".85"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px"
-            android:padding="4dp"
+            android:padding="8dp"
             android:visibility="gone"
             tools:visibility="visible" />
 

@@ -108,10 +108,10 @@
     <include
         layout="@layout/item_qa_buttons"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="34dp"
         android:layout_below="@id/chronometer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -121,7 +121,7 @@
         android:layout_height="68dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="?tabBarPadding"
         android:scaleType="fitCenter"
         tools:background="@color/red_material" />
 
@@ -134,28 +134,36 @@
         android:layout_centerHorizontal="true"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="?tabBarPadding"
         android:indeterminate="true"
         android:visibility="invisible"
         tools:visibility="visible" />
 
-    <TextView
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="#FFEF8F"
         android:id="@+id/detail_average_record_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/chronometer"
+        android:layout_alignBottom="@id/scramble_box"
         android:layout_centerHorizontal="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:background="@drawable/outline_background_card_warn_stroke"
-        android:paddingLeft="8dp"
-        android:paddingTop="4dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="4dp"
-        android:text="@string/timer_detail_average_record_message"
-        android:textColor="#000"
-        android:textSize="12sp"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="14dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:text="@string/timer_detail_average_record_message"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/sessionDetailTextAverage"
@@ -165,10 +173,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="?tabBarPadding"
         android:alpha=".85"
         android:textColor="?colorTimerText"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:gravity="right"
         tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
@@ -180,11 +188,11 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="?tabBarPadding"
         android:alpha=".85"
         android:gravity="left"
         android:textColor="?colorTimerText"
-        android:textSize="12sp"
+        android:textSize="10sp"
         tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
 
     <ImageView

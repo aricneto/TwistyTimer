@@ -125,7 +125,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private Unbinder mUnbinder;
 
     @BindView(R.id.root)          RelativeLayout  rootLayout;
-    @BindView(R.id.toolbar)       RelativeLayout  mToolbar;
+    @BindView(R.id.toolbar)       View  mToolbar;
     @BindView(R.id.pager)         LockedViewPager viewPager;
     @BindView(R.id.main_tabs)     TabLayout       tabLayout;
     @BindView(R.id.puzzleSpinner) View            puzzleSpinnerLayout;

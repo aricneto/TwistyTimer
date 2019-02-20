@@ -19,8 +19,10 @@
     <attr format="color" name="textColorContrastBackground"/>
 
     <attr format="dimension" name="tabBarSize"/>
+    <attr format="dimension" name="tabBarPadding"/>
     <attr format="dimension" name="actionBarPadding"/>
     <attr format="color" name="colorTabBar"/>
+    <attr format="color" name="colorActionBar"/>
 
     <attr format="color" name="colorTabIconSelected"/>
     <attr format="color" name="colorTabIconFaded"/>

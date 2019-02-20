@@ -202,7 +202,7 @@ public class                                                                    
 
     @BindView(R.id.sessionDetailTextOther) TextView detailTextOther;
 
-    @BindView(R.id.detail_average_record_message) TextView detailAverageRecordMesssage;
+    @BindView(R.id.detail_average_record_message) View detailAverageRecordMesssage;
 
     @BindView(R.id.chronometer)      ChronometerMilli    chronometer;
     @BindView(R.id.scramble_box)     CardView                scrambleBox;
@@ -1519,7 +1519,7 @@ public class                                                                    
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
                         scrambleText.setText(R.string.scramble_text_tap_hint);
                     }
-                    scrambleBox.setOnClickListener(new View.OnClickListener() {
+                    scrambleButtonHint.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             scrambleDialog = new BottomSheetDetailDialog();

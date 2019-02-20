@@ -1,117 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    android:layout_marginTop="8dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginRight="8dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
     android:clickable="true"
     android:focusable="true"
-    android:layout_marginRight="8dp"
-    android:background="@drawable/transparent_card_black">
+    app:cardBackgroundColor="?colorActionBar">
 
     <RelativeLayout
-        android:id="@+id/puzzleSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
 
-        <TextView
-            android:id="@+id/puzzleName"
+        <RelativeLayout
+            android:id="@+id/puzzleSpinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:alpha="1"
-            android:text="Puzzle"
-            android:textColor="?colorTimerText"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-        <TextView
-            android:id="@+id/puzzleCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/puzzleName"
-            android:layout_centerHorizontal="true"
-            android:alpha=".85"
-            android:fontFamily="@font/quicksand"
-            android:text="Category"
-            android:textColor="?colorTimerText"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/puzzleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:alpha="1"
+                android:text="Puzzle"
+                android:textColor="?colorTimerText"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/puzzleCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/puzzleName"
+                android:layout_centerHorizontal="true"
+                android:alpha=".85"
+                android:fontFamily="@font/quicksand"
+                android:text="Category"
+                android:textColor="?colorTimerText"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/spinnerIcon"
+                android:layout_width="42dp"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/puzzleName"
+                android:layout_alignBottom="@id/puzzleCategory"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/puzzleName"
+                android:alpha="0.90"
+                android:tint="?colorTimerText"
+                app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
+
+        </RelativeLayout>
+
 
         <ImageView
-            android:id="@+id/spinnerIcon"
-            android:layout_width="42dp"
-            android:layout_height="0dp"
-            android:layout_alignTop="@id/puzzleName"
-            android:layout_alignBottom="@id/puzzleCategory"
+            android:id="@+id/nav_button_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@id/puzzleName"
-            android:alpha="0.90"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
             android:tint="?colorTimerText"
-            app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
+            app:srcCompat="@drawable/ic_outline_category_24" />
+
+        <ImageView
+            android:id="@+id/nav_button_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/nav_button_category"
+            android:alpha="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:tint="?colorTimerText"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_history_off"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/nav_button_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:alpha="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:tint="?colorTimerText"
+            app:srcCompat="@drawable/ic_outline_settings_24px" />
 
     </RelativeLayout>
-
-
-    <ImageView
-        android:id="@+id/nav_button_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:alpha="0.90"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_outline_category_24" />
-
-    <ImageView
-        android:id="@+id/nav_button_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@id/nav_button_category"
-        android:alpha="0.90"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:tint="?colorTimerText"
-        android:visibility="gone"
-        android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_history_off"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/nav_button_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:alpha="0.90"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_outline_settings_24px" />
-
-</RelativeLayout>
+</androidx.cardview.widget.CardView>
