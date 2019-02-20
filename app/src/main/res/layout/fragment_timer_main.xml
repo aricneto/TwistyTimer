@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/root"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
@@ -23,17 +22,29 @@
 
     </LinearLayout>
 
-    <com.aricneto.twistytimer.layout.TimerTabLayout
-        android:id="@+id/main_tabs"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?tabBarSize"
-        android:layout_alignParentBottom="true"
-        android:alpha="1"
-        android:background="@drawable/outline_background_card_top_tab"
-        android:isScrollContainer="false"
-        app:tabGravity="fill"
-        app:tabMaxWidth="0dp"
-        app:tabMode="fixed" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@drawable/transparent_card_black"
+            android:layout_alignParentBottom="true"
+            android:layout_height="42dp"/>
+
+        <com.aricneto.twistytimer.layout.TimerTabLayout
+            android:id="@+id/main_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?tabBarSize"
+            android:alpha="1"
+            android:background="@drawable/outline_background_card_top_tab"
+            android:isScrollContainer="false"
+            app:tabGravity="fill"
+            android:layout_alignParentBottom="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

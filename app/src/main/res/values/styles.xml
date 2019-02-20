@@ -57,7 +57,6 @@
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
         <item name="colorPrimary">?colorMainGradientStart</item>
 
-
         <item name="mainColorBackground">#43FF8E</item>
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>
@@ -155,17 +154,24 @@
     <style name="BasePinkTheme" parent="DefaultTheme">
         <item name="colorMainGradientStart">#FF577E</item>
         <item name="colorMainGradientEnd">#FD61C0</item>
+
+        <item name="colorActionBar">#FF678A</item>
+        <item name="colorTabBar">#FF3EB3</item>
     </style>
 
     <style name="BasePurpleTheme" parent="DefaultTheme">
         <item name="colorMainGradientEnd">@color/md_deep_purple_500</item>
         <item name="colorMainGradientStart">@color/md_deep_purple_700</item>
+
+        <item name="colorTabBar">?colorMainGradientStart</item>
     </style>
 
     <style name="BaseLightBlueTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#3AFAFA</item>
         <item name="colorMainGradientEnd">#42F7CD</item>
 
+        <item name="colorActionBar">#60FFFF</item>
+        <item name="colorTabBar">#b4fceb</item>
 
         <item name="colorAccent">@color/md_amber_A200</item>
     </style>
@@ -173,6 +179,9 @@
     <style name="BaseLightGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#a8ff78</item>
         <item name="colorMainGradientEnd">#78ffd6</item>
+
+        <item name="colorActionBar">#BBFF96</item>
+        <item name="colorTabBar">#93FFB9</item>
 
         <item name="colorAccent">@color/md_amber_A400</item>
 
@@ -183,6 +192,9 @@
         <item name="colorMainGradientStart">#00FFA1</item>
         <item name="colorMainGradientEnd">#00FFFF</item>
 
+        <item name="colorActionBar">#55ffc0</item>
+        <item name="colorTabBar">#ccffec</item>
+
         <item name="colorAccent">@color/md_amber_A400</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
@@ -191,6 +203,9 @@
     <style name="BaseTealTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#18ff97</item>
         <item name="colorMainGradientEnd">#24f594</item>
+
+        <item name="colorActionBar">#29ff9f</item>
+        <item name="colorTabBar">#0bec84</item>
 
         <item name="colorAccent">@color/md_purple_A100</item>
 
@@ -201,6 +216,9 @@
         <item name="colorMainGradientStart">#FBB03B</item>
         <item name="colorMainGradientEnd">#D4145A</item>
 
+        <item name="colorActionBar">#fba92a</item>
+        <item name="colorTabBar">#b5114d</item>
+
         <item name="colorAccent">@color/md_deep_purple_A700</item>
     </style>
 
@@ -208,12 +226,18 @@
         <item name="colorMainGradientStart">#5C3C30</item>
         <item name="colorMainGradientEnd">#422A24</item>
 
+        <item name="colorActionBar">#724b3c</item>
+        <item name="colorTabBar">#37231e</item>
+
         <item name="colorAccent">@color/md_amber_A100</item>
     </style>
 
     <style name="BaseBlueTheme" parent="DefaultTheme">
         <item name="colorMainGradientStart">#920EE6</item>
         <item name="colorMainGradientEnd">#6304E9</item>
+
+        <item name="colorActionBar">#9b14f1</item>
+        <item name="colorTabBar">#5503c8</item>
 
         <item name="colorAccent">@color/md_amber_500</item>
     </style>
@@ -241,6 +265,9 @@
     <style name="BaseGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#6cf63e</item>
         <item name="colorMainGradientEnd">#15ff8e</item>
+
+        <item name="colorActionBar">#78f74e</item>
+        <item name="colorTabBar">#9df97f</item>
 
         <item name="colorAccent">@color/md_deep_purple_A200</item>
 
