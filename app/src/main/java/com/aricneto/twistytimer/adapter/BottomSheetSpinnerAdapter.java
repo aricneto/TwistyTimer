@@ -68,6 +68,8 @@ public class BottomSheetSpinnerAdapter extends BaseAdapter {
             }
         } else {
             icon = VectorDrawableCompat.create(mContext.getResources(), R.drawable.ic_label, null);
+            if (icon != null)
+                icon.setAlpha(90);
             titleView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         }
 
