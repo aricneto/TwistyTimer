@@ -16,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.Loader;
@@ -114,12 +115,13 @@ public class TimerListFragment extends BaseFragment
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            final DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.add_time_button:
                     AddTimeDialog addTimeDialog = AddTimeDialog.newInstance(currentPuzzle, currentPuzzleSubtype, currentScramble);
-                    addTimeDialog.show(getFragmentManager(), "dialog_add_time");
+                    FragmentManager manager = getFragmentManager();
+                    if (manager != null)
+                        addTimeDialog.show(manager, "dialog_add_time");
                     break;
                 case R.id.archive_button:
                     final Spannable text = new SpannableString(getString(R.string.move_solves_to_history_content) + "  ");
@@ -138,7 +140,6 @@ public class TimerListFragment extends BaseFragment
                                     TwistyTimer.getDBHandler().moveAllSolvesToHistory(
                                             currentPuzzle, currentPuzzleSubtype);
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
-                                    reloadList();
                                 }
                             })
                             .show();
@@ -155,7 +156,6 @@ public class TimerListFragment extends BaseFragment
                                     TwistyTimer.getDBHandler().deleteAllFromSession(
                                             currentPuzzle, currentPuzzleSubtype);
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
-                                    reloadList();
                                 }
                             })
                             .show();
@@ -226,6 +226,7 @@ public class TimerListFragment extends BaseFragment
                     }
                     break;
 
+                case ACTION_TIMES_MOVED_TO_HISTORY:
                 case ACTION_TIMES_MODIFIED:
                     reloadList();
                     break;
@@ -257,6 +258,8 @@ public class TimerListFragment extends BaseFragment
                     // A new scramble was generated
                     currentScramble = TTIntent.getScramble(intent);
                     break;
+                    default:
+                        break;
             }
         }
     };
