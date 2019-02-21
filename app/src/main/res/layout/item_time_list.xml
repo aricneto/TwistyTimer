@@ -11,6 +11,7 @@
     android:layout_marginRight="6dp"
     android:layout_marginTop="0dp"
     app:cardCornerRadius="8dp"
+    app:cardPreventCornerOverlap="false"
     app:cardBackgroundColor="?colorItemListBackground">
 
     <RelativeLayout

@@ -59,6 +59,7 @@
         android:layout_marginBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
+        app:cardPreventCornerOverlap="false"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp">
 
@@ -71,7 +72,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:background="@color/md_grey_100"
                 android:paddingLeft="14dp"
                 android:paddingTop="6dp"
                 android:paddingRight="14dp"

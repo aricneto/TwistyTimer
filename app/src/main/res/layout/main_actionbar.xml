@@ -13,6 +13,7 @@
     app:cardElevation="3dp"
     android:clickable="true"
     android:focusable="true"
+    app:cardPreventCornerOverlap="false"
     app:cardBackgroundColor="?colorActionBar">
 
     <RelativeLayout
