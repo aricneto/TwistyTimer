@@ -344,7 +344,8 @@ public class                                                                    
                                 public void onClick(@NonNull MaterialDialog dialog,
                                                     @NonNull DialogAction which) {
                                     dbHandler.deleteSolve(currentSolve);
-                                    chronometer.reset(); // Reset to "0.00".
+                                    if (!isRunning)
+                                        chronometer.reset(); // Reset to "0.00".
                                     congratsText.setVisibility(View.GONE);
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                                     hideButtons(true, true);
@@ -1111,7 +1112,7 @@ public class                                                                    
                 stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
 
                 // Show record message, if it was not shown before
-                if (!hasShownRecordMessage) {
+                if (!hasShownRecordMessage && !isRunning && !countingDown) {
                     detailAverageRecordMesssage.setVisibility(View.VISIBLE);
                     detailAverageRecordMesssage
                             .animate()
@@ -1134,7 +1135,7 @@ public class                                                                    
             detailTextAvg.setText(Html.fromHtml(stringDetailAvg.toString()));
         }
 
-        if (!isRunning)
+        if (!isRunning && !countingDown)
             showDetailStats();
 
     }
