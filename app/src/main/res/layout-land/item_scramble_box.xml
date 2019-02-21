@@ -20,10 +20,9 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="4dp"
-            android:layout_marginLeft="44dp"
+            android:layout_marginLeft="80dp"
             android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/scramble_button_edit"
-            android:layout_toRightOf="@id/scramble_button_hint"
             android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L' U2 F2 D2 U2 U2 F2 D2 U2 L2 B "
@@ -49,32 +48,38 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_reset"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentRight="true"
-            android:layout_margin="4dp"
             android:alpha=".85"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_edit"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="4dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_toLeftOf="@id/scramble_button_reset"
             android:alpha=".85"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scramble_button_hint"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentLeft="true"
-            android:layout_margin="4dp"
             android:alpha=".85"
-            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
 
 
