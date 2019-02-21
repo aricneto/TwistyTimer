@@ -273,4 +273,8 @@ public final class ThemeUtils {
 
         return new ImageSpan(drawable);
     }
+
+    public static int spToPx(float sp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
 }

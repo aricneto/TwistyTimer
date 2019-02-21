@@ -57,16 +57,21 @@
 
     <com.aricneto.twistytimer.layout.ChronometerMilli
         android:id="@+id/chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
         android:layout_centerInParent="true"
         android:alpha=".95"
+        android:gravity="center"
         android:fontFamily="@font/lato_bold"
         android:text="42.35"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="100sp"
+        android:textSize="76sp"
         android:textColor="?colorTimerText"
         android:textColorHighlight="?colorAccent"
-        android:textIsSelectable="false"
-        android:textSize="76sp" />
+        android:textIsSelectable="false" />
 
     <TextView
         android:id="@+id/inspection_text"
@@ -111,7 +116,6 @@
         android:layout_height="34dp"
         android:layout_below="@id/chronometer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -162,7 +166,7 @@
             android:paddingBottom="2dp"
             android:text="@string/timer_detail_average_record_message"
             android:textColor="#000"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -177,7 +181,7 @@
         android:layout_marginBottom="?tabBarPadding"
         android:alpha=".85"
         android:textColor="?colorTimerText"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:gravity="right"
         tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
@@ -193,7 +197,7 @@
         android:alpha=".85"
         android:gravity="left"
         android:textColor="?colorTimerText"
-        android:textSize="10sp"
+        android:textSize="12sp"
         tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
 
     <ImageView

@@ -491,7 +491,7 @@ public class                                                                    
         registerReceiver(mUIInteractionReceiver);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "RestrictedApi"})
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -543,7 +543,11 @@ public class                                                                    
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
 
         if (advancedEnabled) {
-            chronometer.setTextSize(TypedValue.COMPLEX_UNIT_PX, chronometer.getTextSize() * timerTextSize);
+            chronometer.setAutoSizeTextTypeUniformWithConfiguration(
+                    42,
+                    (int) (70 * timerTextSize),
+                    2,
+                    TypedValue.COMPLEX_UNIT_SP);
 
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(scrambleImageSize);
@@ -1147,7 +1151,8 @@ public class                                                                    
 
         // reset chronometer position
         chronometer.animate()
-                .translationY(0)
+                .scaleX(1f)
+                .scaleY(1f)
                 .setDuration(300);
         inspectionText.animate()
                 .translationY(0)
@@ -1222,7 +1227,8 @@ public class                                                                    
 
         // bring chronometer up a bit
         chronometer.animate()
-                .translationY(-getActionBarSize())
+                .scaleX(1.15f)
+                .scaleY(1.15f)
                 .setDuration(300);
         inspectionText.animate()
                 .translationY(-getActionBarSize())
