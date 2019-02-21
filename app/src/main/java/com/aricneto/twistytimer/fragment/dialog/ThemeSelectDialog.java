@@ -2,12 +2,14 @@ package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
@@ -15,9 +17,10 @@ import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.StyleRes;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,9 +34,10 @@ import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 /**
  * Created by Ari on 09/02/2016.
  */
-public class ThemeSelectDialog extends BottomSheetDialogFragment {
+public class ThemeSelectDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
+    private Context mContext;
 
     @BindView(R.id.list)
     RecyclerView themeRecycler;
@@ -50,21 +54,35 @@ public class ThemeSelectDialog extends BottomSheetDialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_bottomsheet_theme_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
+        mContext = getContext();
+
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         themeRecycler.setHasFixedSize(true);
         textStyleRecycler.setHasFixedSize(true);
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(null);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
 
         themeRecycler.setLayoutManager(gridLayoutManager);
         textStyleRecycler.setLayoutManager(layoutManager);
 
-        ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), getContext());
-        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(getContext()), getContext());
+        ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), mContext);
+        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(mContext), mContext);
         themeRecycler.setAdapter(themeListAdapter);
         textStyleRecycler.setAdapter(textStyleListAdapter);
+
+        int cornerRadius = ThemeUtils.dpToPix(mContext, 20);
+
+        // Set Text Style selector background
+        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, ThemeUtils.getPreferredTheme());
+        gradientDrawable.setCornerRadii(new float[] {0, 0, 0, 0, cornerRadius, cornerRadius, cornerRadius, cornerRadius});
+        gradientDrawable.setStroke(ThemeUtils.dpToPix(mContext, 1), Color.BLACK);
+
+        textStyleRecycler.setBackground(gradientDrawable);
 
         return dialogView;
     }
@@ -122,9 +140,9 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
         holder.themeCard.setBackground(gradientDrawable);
 
         if (themeSet[position].getPrefName().equals(currentTheme)) {
-            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
+            holder.themeTitle.setBackgroundResource(R.drawable.outline_background_card_warn);
         } else {
-            holder.view.setBackground(null);
+            holder.themeTitle.setBackground(null);
         }
 
         // Create onClickListener
@@ -157,8 +175,9 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
     private Theme[] themeSet;
     private Context mContext;
 
-    String currentTextStyle = Prefs.getString(R.string.pk_text_style, "default");
-    @StyleRes int currentTheme = ThemeUtils.getPreferredTheme();
+    private String currentTextStyle = Prefs.getString(R.string.pk_text_style, "default");
+    private @StyleRes int currentTheme = ThemeUtils.getPreferredTheme();
+    int colorTimerText;
 
     static class CardViewHolder extends RecyclerView.ViewHolder {
         View view;
@@ -176,6 +195,7 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
     TextStyleListAdapter(Theme[] themeSet, Context context) {
         this.themeSet = themeSet;
         this.mContext = context;
+        colorTimerText = ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText);
     }
 
     @Override
@@ -190,9 +210,10 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         // Create gradient drawable
-        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, currentTheme);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setColor(Color.TRANSPARENT);
         gradientDrawable.setCornerRadius(18f);
-        gradientDrawable.setStroke(4, Color.BLACK);
+        gradientDrawable.setStroke(4, colorTimerText);
 
         // Set card title and background
         holder.themeTitle.setText(themeSet[position].getName());
@@ -203,9 +224,11 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
                                                                     R.attr.colorTimerText));
 
         if (themeSet[position].getPrefName().equals(currentTextStyle)) {
-            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
+            holder.themeTitle.setBackgroundResource(R.drawable.outline_background_card_warn);
+            holder.themeTitle.setTextColor(Color.BLACK);
         } else {
-            holder.view.setBackground(null);
+            holder.themeTitle.setBackground(null);
+            holder.themeTitle.setTextColor(colorTimerText);
         }
 
         // Create onClickListener

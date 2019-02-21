@@ -8,9 +8,9 @@
 
     <TextView
         android:id="@+id/card"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="6dp"
         android:paddingTop="4dp"
         android:background="@drawable/outline_background_card_theme_select_gradient"
         android:gravity="center"
@@ -18,7 +18,7 @@
         android:paddingBottom="8dp"
         android:text="Aa"
         android:textColor="@color/md_white_1000"
-        android:textSize="24sp">
+        android:textSize="22sp">
 
     </TextView>
 
@@ -30,7 +30,9 @@
         android:gravity="center_horizontal"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
+        android:paddingBottom="2dp"
         android:lines="1"
+        android:textSize="11sp"
         android:text="Indigo" />
 
 </LinearLayout>

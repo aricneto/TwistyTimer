@@ -139,26 +139,26 @@ public final class ThemeUtils {
      */
     public static Theme[] getAllThemes() {
         Theme[] themes = {
-                new Theme(THEME_INDIGO, "Hazy\nBlues"),
-                new Theme(THEME_GREEN, "Surprisingly\nGreen"),
-                new Theme(THEME_YELLOW, "Notably\nYellow"),
-                new Theme(THEME_WHITE, "Simply\nWhite"),
-                new Theme(THEME_BLACK, "Simply\nBlack"),
-                new Theme(THEME_BLUY_GRAY, "Bluy\nGray"),
-                new Theme(THEME_DEEPPURPLE, "Quite\nPurply"),
-                new Theme(THEME_BLUE, "Even\nPurplier"),
-                new Theme(THEME_PURPLE, "Definitely\nPurple"),
-                new Theme(THEME_ORANGE, "Tantalizing\nTorange"),
-                new Theme(THEME_DAWN, "Relaxing\nDawn"),
-                new Theme(THEME_RED, "Oof\nHot"),
-                new Theme(THEME_PINK, "Pinky\nPromises"),
-                new Theme(THEME_BROWN, "Delicious\nBrownie"),
-                new Theme(THEME_TEAL, "Earthy\nTeal"),
-                new Theme(THEME_LIGHT_GREEN, "Greeny\nGorilla"),
-                new Theme(THEME_LIGHT_BLUE, "Lightly\nSkyish"),
-                new Theme(THEME_CYAN, "Cyanic\nTeal"),
-                new Theme(THEME_BLUEGRAY, "Icy\nHills"),
-                new Theme(THEME_WHITE_GREEN, "Greeny\nEverest")
+                new Theme(THEME_INDIGO, "Hazy Blues"),
+                new Theme(THEME_GREEN, "What... Green?"),
+                new Theme(THEME_YELLOW, "Notably Yellow"),
+                new Theme(THEME_WHITE, "Simply White"),
+                new Theme(THEME_BLACK, "Simply Black"),
+                new Theme(THEME_BLUY_GRAY, "Bluy Gray"),
+                new Theme(THEME_DEEPPURPLE, "Quite Purply"),
+                new Theme(THEME_BLUE, "Even Purplier"),
+                new Theme(THEME_PURPLE, "Definitely Purple"),
+                new Theme(THEME_ORANGE, "Tantalizing Torange"),
+                new Theme(THEME_DAWN, "Relaxing Dawn"),
+                new Theme(THEME_RED, "Oof Hot"),
+                new Theme(THEME_PINK, "Pinky Promises"),
+                new Theme(THEME_BROWN, "Delicious Brownie"),
+                new Theme(THEME_TEAL, "Earthy Teal"),
+                new Theme(THEME_LIGHT_GREEN, "Greeny Gorilla"),
+                new Theme(THEME_LIGHT_BLUE, "Lightly Skyish"),
+                new Theme(THEME_CYAN, "Cyanic Teal"),
+                new Theme(THEME_BLUEGRAY, "Icy Hills"),
+                new Theme(THEME_WHITE_GREEN, "Greeny Everest")
         };
         return themes;
     }
@@ -224,7 +224,7 @@ public final class ThemeUtils {
         return value.data;
     }
 
-    public static int convertDoToPixels(Context context, int dp) {
+    public static int dpToPix(Context context, int dp) {
         return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }

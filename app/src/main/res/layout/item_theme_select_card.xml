@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="80dp"
+    android:layout_width="60dp"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
     android:gravity="center"
@@ -8,9 +8,9 @@
 
     <View
         android:id="@+id/card"
-        android:layout_width="50dp"
-        android:layout_height="85dp"
-        android:layout_margin="8dp"
+        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:layout_margin="4dp"
         android:background="@drawable/outline_background_card_theme_select_gradient"
         android:orientation="vertical">
 
@@ -24,6 +24,9 @@
         android:lines="2"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textSize="11sp"
         android:fontFamily="@font/quicksand_medium"
         android:layout_height="wrap_content" />
 

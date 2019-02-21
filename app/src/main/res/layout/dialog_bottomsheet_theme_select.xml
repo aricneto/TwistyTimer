@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/title"
-        android:layout_marginBottom="8dp"
         android:background="@color/black_divider" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -64,7 +63,9 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="1dp"
+            android:paddingTop="8dp"
             android:paddingBottom="8dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -99,11 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_divider"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:background="?colorCardBackgroundFaded"
-            android:paddingLeft="8dp"
-            android:paddingBottom="8dp" />
+            android:background="@drawable/outline_background_card"
+            android:paddingTop="8dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="8dp"/>
 
     </RelativeLayout>
 
