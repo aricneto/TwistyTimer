@@ -169,8 +169,15 @@ public class MainActivity extends AppCompatActivity
                 + savedInstanceState + "): " + this);
 
         setTheme(ThemeUtils.getPreferredTheme());
+
+        // Set text styling
         if (!Prefs.getString(R.string.pk_text_style, "default").equals("default")) {
             getTheme().applyStyle(ThemeUtils.getPreferredTextStyle(), true);
+        }
+
+        // Set navigation bar tint
+        if (Prefs.getBoolean(R.string.pk_tint_navigation_bar, false)) {
+            getTheme().applyStyle(R.style.TintedNavigationBar, true);
         }
 
         super.onCreate(savedInstanceState);

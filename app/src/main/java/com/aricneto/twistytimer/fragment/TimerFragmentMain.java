@@ -16,10 +16,12 @@ import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -124,11 +126,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.root)          RelativeLayout  rootLayout;
-    @BindView(R.id.toolbar)       View  mToolbar;
-    @BindView(R.id.pager)         LockedViewPager viewPager;
-    @BindView(R.id.main_tabs)     TabLayout       tabLayout;
-    @BindView(R.id.puzzleSpinner) View            puzzleSpinnerLayout;
+    @BindView(R.id.root)         RelativeLayout  rootLayout;
+    @BindView(R.id.toolbar)      CardView        mToolbar;
+    @BindView(R.id.pager)        LockedViewPager viewPager;
+    @BindView(R.id.main_tabs)    TabLayout       tabLayout;
+    @BindView(R.id.puzzleSpinner)View            puzzleSpinnerLayout;
 
     @BindView(R.id.nav_button_settings) View      navButtonSettings;
     @BindView(R.id.nav_button_category) View      navButtonCategory;
@@ -404,6 +406,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             viewPager.setPagingEnabled(true);
         else
             viewPager.setPagingEnabled(false);
+
+        // Menu bar background
+        if (Prefs.getBoolean(R.string.pk_menu_background, false)) {
+            mToolbar.setCardBackgroundColor(Color.TRANSPARENT);
+            mToolbar.setCardElevation(0);
+        }
 
         viewPagerAdapter = new NavigationAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);

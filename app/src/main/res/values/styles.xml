@@ -18,6 +18,7 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
         <item name="colorTimerText">@color/white_text</item>
+        <item name="colorActionBarText">?colorTimerText</item>
 
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
 
@@ -156,24 +157,25 @@
         <item name="colorMainGradientEnd">#FD61C0</item>
 
         <item name="colorActionBar">#FF678A</item>
-        <item name="colorTabBar">#FF3EB3</item>
+        <item name="colorTabBar">#fd50b9</item>
     </style>
 
     <style name="BasePurpleTheme" parent="DefaultTheme">
-        <item name="colorMainGradientEnd">@color/md_deep_purple_500</item>
-        <item name="colorMainGradientStart">@color/md_deep_purple_700</item>
+        <item name="colorMainGradientStart">@color/md_deep_purple_500</item>
+        <item name="colorMainGradientEnd">@color/md_deep_purple_700</item>
 
-        <item name="colorTabBar">?colorMainGradientStart</item>
+        <item name="colorActionBar">#6e40c2</item>
+        <item name="colorTabBar">#4b299b</item>
     </style>
 
     <style name="BaseLightBlueTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#3AFAFA</item>
         <item name="colorMainGradientEnd">#42F7CD</item>
 
-        <item name="colorActionBar">#60FFFF</item>
-        <item name="colorTabBar">#b4fceb</item>
+        <item name="colorActionBar">#5bfbfb</item>
+        <item name="colorTabBar">#31F7C9</item>
 
-        <item name="colorAccent">@color/md_amber_A200</item>
+        <item name="colorAccent">@color/md_purple_A200</item>
     </style>
 
     <style name="BaseLightGreenTheme" parent="DefaultTheme.Light">
@@ -193,7 +195,7 @@
         <item name="colorMainGradientEnd">#00FFFF</item>
 
         <item name="colorActionBar">#55ffc0</item>
-        <item name="colorTabBar">#ccffec</item>
+        <item name="colorTabBar">#6ff</item>
 
         <item name="colorAccent">@color/md_amber_A400</item>
 
@@ -216,7 +218,7 @@
         <item name="colorMainGradientStart">#FBB03B</item>
         <item name="colorMainGradientEnd">#D4145A</item>
 
-        <item name="colorActionBar">#fba92a</item>
+        <item name="colorActionBar">#F08640</item>
         <item name="colorTabBar">#b5114d</item>
 
         <item name="colorAccent">@color/md_deep_purple_A700</item>
@@ -254,9 +256,7 @@
         <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
 
         <item name="colorTimerText">@color/md_white_1000</item>
-        <item name="colorTabBar">#161616</item>
-        <item name="colorTabIconSelected">?colorTimerText</item>
-        <item name="colorTabIconFaded">#D3FFFFFF</item>
+        <item name="colorTabBar">#090909</item>
 
         <item name="colorBackgroundList">@color/md_black_1000</item>
         <item name="android:textColorPrimaryInverse">@color/white_text</item>
@@ -267,7 +267,7 @@
         <item name="colorMainGradientEnd">#15ff8e</item>
 
         <item name="colorActionBar">#78f74e</item>
-        <item name="colorTabBar">#9df97f</item>
+        <item name="colorTabBar">#00f27d</item>
 
         <item name="colorAccent">@color/md_deep_purple_A200</item>
 
@@ -278,18 +278,27 @@
         <item name="colorMainGradientStart">#ED1C24</item>
         <item name="colorMainGradientEnd">#FF6219</item>
 
+        <item name="colorActionBar">#d61119</item>
+        <item name="colorTabBar">#e54900</item>
+
         <item name="colorChartExtra1">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_deep_purple_A200</item>
     </style>
 
     <style name="BaseDeepPurpleTheme" parent="DefaultTheme">
-        <item name="colorMainGradientEnd">#662D8C</item>
         <item name="colorMainGradientStart">#ED1E79</item>
+        <item name="colorMainGradientEnd">#662D8C</item>
+
+        <item name="colorActionBar">#d81169</item>
+        <item name="colorTabBar">#5d297f</item>
     </style>
 
     <style name="BaseBlueGrayTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#FFFEFF</item>
         <item name="colorMainGradientEnd">#D7FFFE</item>
+
+        <item name="colorActionBar">#FFFEFF</item>
+        <item name="colorTabBar">#e8fffe</item>
 
         <item name="colorAccent">@color/md_red_A100</item>
     </style>
@@ -298,12 +307,18 @@
         <item name="colorMainGradientStart">#fff</item>
         <item name="colorMainGradientEnd">#fff</item>
 
+        <item name="colorActionBar">#FFFEFF</item>
+        <item name="colorTabBar">#fff</item>
+
         <item name="colorAccent">@color/md_red_A100</item>
     </style>
 
     <style name="BaseWhiteGreenTheme" parent="DefaultTheme.Light">
         <item name="colorMainGradientStart">#c6ffbd</item>
         <item name="colorMainGradientEnd">#fff</item>
+
+        <item name="colorActionBar">#d5ffce</item>
+        <item name="colorTabBar">#f2fff0</item>
 
         <item name="colorAccent">@color/md_red_A100</item>
 
@@ -315,6 +330,9 @@
         <item name="colorMainGradientStart">#FFEB7E</item>
         <item name="colorMainGradientEnd">#FFFD69</item>
 
+        <item name="colorActionBar">#ffee8f</item>
+        <item name="colorTabBar">#fffd7a</item>
+
         <item name="colorAccent">@color/md_deep_purple_A200</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
@@ -325,6 +343,9 @@
         <item name="colorMainGradientStart">#ffd342</item>
         <item name="colorMainGradientEnd">#bf54fe</item>
 
+        <item name="colorActionBar">#ffd753</item>
+        <item name="colorTabBar">#b943fe</item>
+
         <item name="colorAccent">@color/md_red_A400</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
@@ -334,6 +355,9 @@
     <style name="BaseBluyGray" parent="DefaultTheme">
         <item name="colorMainGradientStart">@color/md_blue_grey_500</item>
         <item name="colorMainGradientEnd">@color/md_blue_grey_700</item>
+
+        <item name="colorActionBar">#678695</item>
+        <item name="colorTabBar">#3e515a</item>
 
         <item name="colorAccent">@color/md_amber_A200</item>
     </style>
@@ -372,6 +396,8 @@
         <item name="colorTimerText">@color/md_red_A400</item>
     </style>
 
+    <!-- Style is declared in styles (v21) -->
+    <style name="TintedNavigationBar"></style>
 
     <!--
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.

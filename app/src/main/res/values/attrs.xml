@@ -23,6 +23,7 @@
     <attr format="dimension" name="actionBarPadding"/>
     <attr format="color" name="colorTabBar"/>
     <attr format="color" name="colorActionBar"/>
+    <attr format="color" name="colorActionBarText"/>
 
     <attr format="color" name="colorTabIconSelected"/>
     <attr format="color" name="colorTabIconFaded"/>

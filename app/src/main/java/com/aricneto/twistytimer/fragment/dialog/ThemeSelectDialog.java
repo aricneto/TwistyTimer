@@ -122,7 +122,7 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
         holder.themeCard.setBackground(gradientDrawable);
 
         if (themeSet[position].getPrefName().equals(currentTheme)) {
-            holder.view.setBackgroundResource(R.drawable.transparent_card_black);
+            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
         } else {
             holder.view.setBackground(null);
         }
@@ -203,7 +203,7 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
                                                                     R.attr.colorTimerText));
 
         if (themeSet[position].getPrefName().equals(currentTextStyle)) {
-            holder.view.setBackgroundResource(R.drawable.transparent_card_black);
+            holder.view.setBackgroundResource(R.drawable.outline_background_card_smoother);
         } else {
             holder.view.setBackground(null);
         }

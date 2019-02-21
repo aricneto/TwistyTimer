@@ -1,5 +1,9 @@
 <resources>
 
+    <style name="TintedNavigationBar">
+        <item name="android:navigationBarColor">?colorTabBar</item>
+    </style>
+
     <!--
     Other miscellaneous styles.
     -->

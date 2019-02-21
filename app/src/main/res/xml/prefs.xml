@@ -180,7 +180,7 @@
 
                 <SwitchPreferenceCompat
                     android:defaultValue="false"
-                    android:icon="@drawable/ic_outline_star_border_18px"
+                    android:icon="@drawable/ic_outline_fiber_new_16px"
                     android:key="@string/pk_show_scramble_background"
                     android:title="@string/pref_scramble_box_title"
                     android:summary="@string/pref_scramble_box_description"/>
@@ -236,21 +236,6 @@
 
     <Preference android:layout="@layout/divider_preference_category" />
 
-    <PreferenceCategory
-        android:title="@string/w_new_subtype"
-        android:summary="@string/pref_summary_new">
-
-        <SwitchPreferenceCompat
-            android:icon="@drawable/ic_outline_star_border_18px"
-            android:defaultValue="false"
-            android:key="@string/pk_show_scramble_background"
-            android:title="@string/pref_scramble_box_title"
-            android:summary="@string/pref_scramble_box_description"/>
-
-    </PreferenceCategory>
-
-    <Preference android:layout="@layout/divider_preference_category" />
-
     <PreferenceCategory android:title="@string/pref_category_title_other">
 
         <SwitchPreferenceCompat
@@ -258,6 +243,20 @@
             android:key="@string/pk_tab_swiping_enabled"
             android:summary="@string/pagerEnabledSummary"
             android:title="@string/pagerEnabledTitle" />
+
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_outline_fiber_new_16px"
+            android:defaultValue="false"
+            android:key="@string/pk_tint_navigation_bar"
+            android:summary="@string/pref_summary_tint_navigation"
+            android:title="@string/pref_title_tint_navigation" />
+
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_outline_fiber_new_16px"
+            android:defaultValue="false"
+            android:key="@string/pk_menu_background"
+            android:summary="@string/pref_summary_menu_background"
+            android:title="@string/pref_title_menu_background" />
 
         <SwitchPreferenceCompat
             android:defaultValue="@bool/default_clearEnabled"

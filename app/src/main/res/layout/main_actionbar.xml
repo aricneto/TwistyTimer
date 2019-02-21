@@ -38,7 +38,7 @@
                 android:layout_centerHorizontal="true"
                 android:alpha="1"
                 android:text="Puzzle"
-                android:textColor="?colorTimerText"
+                android:textColor="?colorActionBarText"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
                 android:alpha=".85"
                 android:fontFamily="@font/quicksand"
                 android:text="Category"
-                android:textColor="?colorTimerText"
+                android:textColor="?colorActionBarText"
                 android:textSize="12sp" />
 
             <ImageView
@@ -64,7 +64,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/puzzleName"
                 android:alpha="0.90"
-                android:tint="?colorTimerText"
+                android:tint="?colorActionBarText"
                 app:srcCompat="@drawable/ic_outline_arrow_drop_down_24px" />
 
         </RelativeLayout>
@@ -84,7 +84,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="8dp"
-            android:tint="?colorTimerText"
+            android:tint="?colorActionBarText"
             app:srcCompat="@drawable/ic_outline_category_24" />
 
         <ImageView
@@ -99,7 +99,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="8dp"
-            android:tint="?colorTimerText"
+            android:tint="?colorActionBarText"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_history_off"
             tools:visibility="visible" />
@@ -118,7 +118,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="8dp"
-            android:tint="?colorTimerText"
+            android:tint="?colorActionBarText"
             app:srcCompat="@drawable/ic_outline_settings_24px" />
 
     </RelativeLayout>
