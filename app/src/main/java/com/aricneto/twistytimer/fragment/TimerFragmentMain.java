@@ -130,6 +130,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @BindView(R.id.toolbar)      CardView        mToolbar;
     @BindView(R.id.pager)        LockedViewPager viewPager;
     @BindView(R.id.main_tabs)    TabLayout       tabLayout;
+    @BindView(R.id.tab_view)    View            tabView;
     @BindView(R.id.puzzleSpinner)View            puzzleSpinnerLayout;
 
     @BindView(R.id.nav_button_settings) View      navButtonSettings;
@@ -258,8 +259,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                             .alpha(0)
                             .setDuration(300);
 
-                    tabLayout.animate()
-                             .translationY(tabLayout.getHeight())
+                    tabView.animate()
+                             .translationY(tabView.getHeight())
                              .alpha(0)
                              .setDuration(300);
                     break;
@@ -270,7 +271,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                             .alpha(1)
                             .setDuration(300);
 
-                    tabLayout.animate()
+                    tabView.animate()
                             .translationY(0)
                             .alpha(1)
                             .setDuration(300)
