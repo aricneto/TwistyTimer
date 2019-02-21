@@ -196,7 +196,7 @@ public class                                                                    
     private Unbinder mUnbinder;
 
     // Holds the localized strings related to each detail statistic, in order:
-    // Ao5, Ao12, Ao50, Ao100, Deviation, Best, Worst, Count
+    // Ao5, Ao12, Ao50, Ao100, Deviation, Best, Mean, Count
     private String detailTextNamesArray[] = new String[8];
 
     @BindView(R.id.sessionDetailTextAverage) TextView detailTextAvg;
@@ -1070,7 +1070,7 @@ public class                                                                    
                 .FORMAT_DEFAULT);
         String sessionCount = String.format(Locale.getDefault(), "%,d", stats.getSessionNumSolves());
         String sessionBestTime = convertTimeToString(tr(stats.getSessionBestTime()), PuzzleUtils.FORMAT_DEFAULT);
-        String sessionWorstTime = convertTimeToString(tr(stats.getSessionWorstTime()), PuzzleUtils.FORMAT_DEFAULT);
+        String sessionMean = convertTimeToString(tr(stats.getSessionMeanTime()), PuzzleUtils.FORMAT_DEFAULT);
 
         long allTimeBestAvg[] = new long[4];
         long sessionCurrentAvg[] = new long[4];
@@ -1089,8 +1089,8 @@ public class                                                                    
         // (keep R.arrays.timer_detail_stats in sync with the order!)
         StringBuilder stringDetailOther = new StringBuilder();
         stringDetailOther.append(detailTextNamesArray[4]).append(": ").append(sessionDeviation).append("\n");
+        stringDetailOther.append(detailTextNamesArray[6]).append(": ").append(sessionMean).append("\n");
         stringDetailOther.append(detailTextNamesArray[5]).append(": ").append(sessionBestTime).append("\n");
-        stringDetailOther.append(detailTextNamesArray[6]).append(": ").append(sessionWorstTime).append("\n");
         stringDetailOther.append(detailTextNamesArray[7]).append(": ").append(sessionCount);
 
         detailTextOther.setText(stringDetailOther.toString());
