@@ -88,10 +88,11 @@
     <string name="dialog_revert_title_confirmation">Reset algorithms</string>
     <string name="dialog_set_progress">Set progress</string>
 
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
+    <string translatable="false" name="donation_tier1">1 USD</string>
+    <string translatable="false" name="donation_tier2">2 USD</string>
+    <string translatable="false" name="donation_tier3">3 USD</string>
+    <string translatable="false" name="donation_tier4">5 USD</string>
+    <string translatable="false" name="donation_tier5">10 USD</string>
 
     <string name="drawer_about">About and feedback</string>
     <string name="drawer_close" translatable="false">Menu closed</string>

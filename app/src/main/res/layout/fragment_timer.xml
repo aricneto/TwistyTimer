@@ -67,7 +67,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         app:autoSizeTextType="uniform"
-        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMaxTextSize="90sp"
         android:textSize="76sp"
         android:textColor="?colorTimerText"
         android:textColorHighlight="?colorAccent"

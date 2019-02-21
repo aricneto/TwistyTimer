@@ -5,6 +5,7 @@
         <item>@string/donation_tier2</item>
         <item>@string/donation_tier3</item>
         <item>@string/donation_tier4</item>
+        <item>@string/donation_tier5</item>
     </string-array>
 
     <string-array name="puzzles">

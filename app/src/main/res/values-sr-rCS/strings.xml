@@ -149,6 +149,7 @@
     <string name="pref_scramble_box_title">Pozadina scramble-ova</string>
     <string name="pref_scramble_box_description">Prikaži belu pozadinu iza scramble-a</string>
     <string name="preference_application_language_title">Jezik</string>
+    <string name="rate_app">Oceni ovu aplikaciju na Play Prodavnici</string>
     <string name="remove_session_confirmation_content">Nećete moći da opozovete ovu radnju.</string>
     <string name="remove_session_title">Ukloni sva slaganja iz ove sesije?</string>
     <string name="remove_subtype_confirmation">Ukloni kategoriju?</string>
@@ -239,4 +240,12 @@
     <string name="trainer_help_message">Da biste započeli obuku, izaberite slučajeve koje želite da vežbate tako što ćete tapnuti na naslov iznad\nMožete takodje kreirati kategorije sa različitim grupama slučajeva</string>
     <string name="trainer_spinner_title">Odaberite slučajeve da biste vežbali</string>
     <string name="trainer_select_all">Izaberi sve</string>
+    <string name="about_translate_title">Pomozi u prevodu Twisty Timer-a!</string>
+    <string name="dialog_add_time_use_scramble">Sačuvaj trenutni scramble</string>
+    <string name="pref_summary_new">Nedavno dodate preference</string>
+    <string name="pref_summary_tint_navigation">Eksperimentalno. Oboji traku za navigaciju sa bojama.\nRadi samo na Android Lollipop i naviše!</string>
+    <string name="pref_title_tint_navigation">Oboji traku za navigaciju</string>
+    <string name="pref_title_menu_background">Onemogući pozadinu menija</string>
+    <string name="pref_summary_menu_background">Onemogućuje obojenu pozadinu iza gornjeg meni bara</string>
+    <string name="dialog_theme_text_style">Stil teksta</string>
 </resources>

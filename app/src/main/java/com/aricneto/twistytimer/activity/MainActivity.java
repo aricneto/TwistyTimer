@@ -494,6 +494,9 @@ public class MainActivity extends AppCompatActivity
                                                 case 3:
                                                     bp.purchase(MainActivity.this, "donation_tier4");
                                                     break;
+                                                case 4:
+                                                    bp.purchase(MainActivity.this, "donation_tier5");
+                                                    break;
                                             }
                                         }
                                     })

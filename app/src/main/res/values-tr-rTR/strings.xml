@@ -139,6 +139,8 @@
     <string name="pref_category_title_other">Diğer</string>
     <string name="pref_category_title_scramble">Karıştırmalar</string>
     <string name="pref_category_title_timer">Zamanlayıcı</string>
+    <string name="pref_screen_title_inspection_behavior">İnceleme ayarları</string>
+    <string name="pref_screen_title_timer_behavior">Zamanlayıcı ayarları</string>
     <string name="pref_screen_title_timer_appearance">Zamanlayıcı görünümü</string>
     <string name="pref_scramble_box_title">Karıştırma arka planı</string>
     <string name="pref_scramble_box_description">Karıştırmanın arkasında beyaz bir arkaplan göster</string>
@@ -210,4 +212,26 @@
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>
     <string name="timer_detail_average_record_message">Yeni en iyi ortalama!</string>
+    <string name="pref_inspection_alert_type_title">Uyarı çeşidi</string>
+    <string name="pref_inspection_alert_type_summary">Zamanlayıcının seni nasıl uyarıcağını seç</string>
+    <string name="pref_inspection_alert_vibration">Titreşim</string>
+    <string name="pref_inspection_alert_sound">Ses</string>
+    <string name="pref_inspection_alert_both">Her ikisi de</string>
+    <string name="pref_inspection_alert_title">Kalan süre için uyar</string>
+    <string name="pref_inspection_alert_summary">İnceleme süresi %1$d ve %2$d saniye kaldığında seni uyarır</string>
+    <string name="dialog_scramble_details">Karıştırma ayrıntıları</string>
+    <string name="dialog_select_puzzle">Puzzle seç</string>
+    <string name="dialog_hint_title">İpucu</string>
+    <string name="category_select_dialog_title">Bir kategori seç</string>
+    <string name="category_select_dialog_hint_edit">Bir girdi yazmak için basılı tutun</string>
+    <string name="action_search">Ara</string>
+    <string name="timelist_searchbox_hint">Yorum ara</string>
+    <string name="title_algorithms">Algoritmalar</string>
+    <string name="edit_scramble">Özel bir karıştırma gir</string>
+    <string name="drawer_title_trainer">Çalıştırıcı</string>
+    <string name="title_trainer">Çalışılıyor %1$s</string>
+    <string name="trainer_help_message">Çalışmaya başlamak için çalışmak istediğiniz  durumları  üstlerine basarak seçin\nAynı zamanda farklı durumlar ile kategoriler de yaratabilirsin</string>
+    <string name="trainer_spinner_title">Çalışmak istedğiniz durumları seçin</string>
+    <string name="trainer_select_all">Tümünü seç</string>
+    <string name="about_translate_title">Twisty Timer\'ın çevrilmesine yardımcı ol!</string>
 </resources>

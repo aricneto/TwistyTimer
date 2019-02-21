@@ -544,8 +544,8 @@ public class                                                                    
 
         if (advancedEnabled) {
             chronometer.setAutoSizeTextTypeUniformWithConfiguration(
-                    42,
-                    (int) (70 * timerTextSize),
+                    (int) (90 * timerTextSize) / 2,
+                    (int) (90 * timerTextSize),
                     2,
                     TypedValue.COMPLEX_UNIT_SP);
 
