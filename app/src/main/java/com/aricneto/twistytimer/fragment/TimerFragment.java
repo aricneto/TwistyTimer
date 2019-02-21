@@ -1134,7 +1134,8 @@ public class                                                                    
             detailTextAvg.setText(Html.fromHtml(stringDetailAvg.toString()));
         }
 
-        showDetailStats();
+        if (!isRunning)
+            showDetailStats();
 
     }
 
