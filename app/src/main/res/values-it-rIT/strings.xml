@@ -145,6 +145,7 @@
     <string name="pref_scramble_box_title">Sfondo dello scramble</string>
     <string name="pref_scramble_box_description">Mostra uno sfondo bianco dietro allo scramble</string>
     <string name="preference_application_language_title">Lingua</string>
+    <string name="rate_app">Valuta questa app su Google Play</string>
     <string name="remove_session_confirmation_content">Non potrai annullare questa azione.</string>
     <string name="remove_session_title">Rimuovere tutte le solve di questa sessione?</string>
     <string name="remove_subtype_confirmation">Rimuovere la categoria?</string>
@@ -234,4 +235,7 @@
     <string name="trainer_help_message">Per iniziare l\'allenamento, seleziona i casi che vuoi allenare toccando il titolo sopra\nPuoi anche creare categorie con altri casi</string>
     <string name="trainer_spinner_title">Seleziona i casi da allenare</string>
     <string name="trainer_select_all">Seleziona tutto</string>
+    <string name="about_translate_title">Aiuta a tradurre Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Salva scramble corrente</string>
+    <string name="pref_summary_new">Preferenze aggiunte di recente</string>
 </resources>

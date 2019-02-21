@@ -148,6 +148,7 @@
     <string name="pref_scramble_box_title">Pozadina scramblea</string>
     <string name="pref_scramble_box_description">Pokaži bijelu pozadinu iza scramblea</string>
     <string name="preference_application_language_title">Jezik</string>
+    <string name="rate_app">Ocijeni ovu aplikaciju na Trgovini Play</string>
     <string name="remove_session_confirmation_content">Nećeš moći vratiti ovu akciju.</string>
     <string name="remove_session_title">Obrisati sva slaganja iz ove sesije?</string>
     <string name="remove_subtype_confirmation">Obriši kategoriju?</string>
@@ -238,4 +239,7 @@
     <string name="trainer_help_message">Za početak treninga, odaberi slučajeve za treniranje pritiskom na naslov iznad\nMože se kreirati i kategorije s dodatnim slučajevima</string>
     <string name="trainer_spinner_title">Odaberi slučajeve za trening</string>
     <string name="trainer_select_all">Odaberi sve</string>
+    <string name="about_translate_title">Pomozi prevesti Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Spremi trenutni scramble</string>
+    <string name="pref_summary_new">Nedavno dodane preference</string>
 </resources>

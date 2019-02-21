@@ -121,12 +121,6 @@
             android:text="@string/language_valencian"/>
 
         <TextView
-            android:id="@+id/eo"
-            style="@style/DialogItem"
-            android:drawableLeft="@drawable/flag_esperanto"
-            android:text="@string/language_esperanto"/>
-
-        <TextView
             android:id="@+id/it"
             style="@style/DialogItem"
             android:drawableLeft="@drawable/flag_italy"
@@ -145,6 +139,17 @@
             android:drawableLeft="@drawable/flag_croatia"
             android:text="@string/language_croatian"/>
 
+        <TextView
+            android:id="@+id/tr"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_turkey"
+            android:text="@string/language_turkish"/>
+
+        <TextView
+            android:id="@+id/eo"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_esperanto"
+            android:text="@string/language_esperanto"/>
 
     </LinearLayout>
 

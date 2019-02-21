@@ -42,6 +42,7 @@ public class LocaleUtils {
     public static final String POLISH            = "pl_PL";
     public static final String SERBIAN_LATIN     = "sr_CS";
     public static final String CROATIAN          = "hr_HR";
+    public static final String TURKISH           = "tr_TR";
 
 
 

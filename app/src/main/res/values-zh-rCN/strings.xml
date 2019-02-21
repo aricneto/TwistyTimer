@@ -141,7 +141,11 @@
     <string name="pref_category_title_timer">计时器</string>
     <string name="pref_screen_title_inspection_behavior">观察设置</string>
     <string name="pref_screen_title_timer_behavior">计时设置</string>
+    <string name="pref_screen_title_timer_appearance">计时器外观</string>
+    <string name="pref_scramble_box_title">打乱背景</string>
+    <string name="pref_scramble_box_description">显示打乱公式的白色背景</string>
     <string name="preference_application_language_title">语言</string>
+    <string name="rate_app">在谷歌Play上给我们评分</string>
     <string name="remove_session_confirmation_content">您将无法撤消此操作。</string>
     <string name="remove_session_title">删除本组中的所有成绩？</string>
     <string name="remove_subtype_confirmation">确定删除分组？</string>
@@ -200,7 +204,7 @@
     <string name="graph_stats_label_deviation">标准差</string>
     <string name="graph_stats_label_mean">平均</string>
     <string name="graph_stats_label_best">最好成绩</string>
-    <string name="graph_stats_label_worst">最差</string>
+    <string name="graph_stats_label_worst">最差成绩</string>
     <string name="graph_stats_label_total_time">总时长</string>
     <string name="graph_stats_label_solve_count">次数</string>
     <!-- Full names for Average of... -->
@@ -216,4 +220,21 @@
     <string name="pref_inspection_alert_both">振动并发声</string>
     <string name="pref_inspection_alert_title">提醒剩余观察时间</string>
     <string name="pref_inspection_alert_summary">计时器将在观察%1$d秒及%2$d秒时进行提醒</string>
+    <string name="dialog_scramble_details">打乱详情</string>
+    <string name="dialog_select_puzzle">选择一种魔方</string>
+    <string name="dialog_hint_title">提示</string>
+    <string name="category_select_dialog_title">选择一个分组</string>
+    <string name="category_select_dialog_hint_edit">长按开始编辑</string>
+    <string name="action_search">搜索</string>
+    <string name="timelist_searchbox_hint">搜索备注</string>
+    <string name="title_algorithms">公式</string>
+    <string name="edit_scramble">输入自定义打乱</string>
+    <string name="drawer_title_trainer">公式训练器</string>
+    <string name="title_trainer">训练%1$s</string>
+    <string name="trainer_help_message">开始训练前，请点击顶部按钮选定你想要练习的情况</string>
+    <string name="trainer_spinner_title">选择情况开始练习</string>
+    <string name="trainer_select_all">全选</string>
+    <string name="about_translate_title">帮助翻译Twisty Timer</string>
+    <string name="dialog_add_time_use_scramble">保存当前打乱</string>
+    <string name="pref_summary_new">最近添加的首选项</string>
 </resources>

@@ -139,12 +139,13 @@
     <string name="pref_category_title_other">Otros</string>
     <string name="pref_category_title_scramble">Mezcla</string>
     <string name="pref_category_title_timer">Cronómetro</string>
-    <string name="pref_screen_title_inspection_behavior">Comportamiento de inspección</string>
-    <string name="pref_screen_title_timer_behavior">Comportamiento del cronómetro</string>
+    <string name="pref_screen_title_inspection_behavior">Configurar inspección</string>
+    <string name="pref_screen_title_timer_behavior">Configurar cronómetro</string>
     <string name="pref_screen_title_timer_appearance">Apariencia del cronómetro</string>
     <string name="pref_scramble_box_title">Fondo</string>
     <string name="pref_scramble_box_description">Mostrar fondo blanco detrás de la mezcla</string>
     <string name="preference_application_language_title">Idioma</string>
+    <string name="rate_app">Consigue esta app en Google Play</string>
     <string name="remove_session_confirmation_content">No podrás deshacer esta acción.</string>
     <string name="remove_session_title">¿Quitar todas las resoluciones de esta sesión?</string>
     <string name="remove_subtype_confirmation">¿Eliminar categoría?</string>
@@ -234,4 +235,7 @@
     <string name="trainer_help_message">Para empezar a entrenar, seleccione los casos que desea entrenar pulsando el título arriba\nTambién puede crear categorías con diferentes casos</string>
     <string name="trainer_spinner_title">Seleccione los casos para entrenar</string>
     <string name="trainer_select_all">Seleccionar todo</string>
+    <string name="about_translate_title">¡Ayuda a traducir Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Guardar la mezcla actual</string>
+    <string name="pref_summary_new">Preferencias añadidas recientemente</string>
 </resources>

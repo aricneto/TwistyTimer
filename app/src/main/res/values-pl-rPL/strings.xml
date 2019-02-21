@@ -228,5 +228,9 @@
     <string name="edit_scramble">Wprowadź własny scramble</string>
     <string name="drawer_title_trainer">Trener</string>
     <string name="title_trainer">Trening OLL</string>
+    <string name="trainer_spinner_title">Wybierz przypadki do przećwiczenia</string>
     <string name="trainer_select_all">Zaznacz wszystko</string>
+    <string name="about_translate_title">Pomóż tłumaczyć Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Zapisz ten scramble</string>
+    <string name="pref_summary_new">Niedawno dodane ustawienia</string>
 </resources>

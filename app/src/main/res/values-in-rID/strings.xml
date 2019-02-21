@@ -23,9 +23,13 @@
     <string name="add_time">Tambah waktu</string>
     <string name="added_comment">Komentar ditambahkan</string>
     <string name="advanced_pref_summary">Mengubah pengaturan ini dapat mengakibakan masalah pemotongan</string>
+    <string name="backCancelEnabledSummary">Menekan tombol kembali ketika menyelesaikan akan membatalkannya</string>
+    <string name="backCancelEnabledTitle">Tombol kembali membatalkan penyelesaian</string>
+    <string name="backgroundEnabledSummary">Sesuaikan warna latar belakang dengan warna tema</string>
     <string name="backgroundEnabledTitle">Latar belakang berwarna</string>
     <string name="bestSolveEnabledSummary">Tandai saat Anda mendapatkan waktu terbaik</string>
     <string name="bestSolveEnabledTitle">Penanda waktu terbaik</string>
+    <string name="averageRecordsEnabledTitle">Peringatan rata-rata terbaik</string>
     <string name="buttonsEnabledSummary">Tampilkan tombol-tombol yang muncul di bawah penghitung waktu setelah penyelesaian</string>
     <string name="buttonsEnabledTitle">Tombol aksi cepat</string>
     <string name="choose_donation_amount">Pilih jumlah untuk didonasikan</string>

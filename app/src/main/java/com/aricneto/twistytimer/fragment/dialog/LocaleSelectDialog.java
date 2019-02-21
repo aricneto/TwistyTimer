@@ -47,6 +47,7 @@ public class LocaleSelectDialog extends DialogFragment {
     @BindView(R.id.it)    TextView it;
     @BindView(R.id.sr)    TextView sr;
     @BindView(R.id.hr)    TextView hr;
+    @BindView(R.id.tr)    TextView tr;
 
     private Unbinder mUnbinder;
 
@@ -78,6 +79,7 @@ public class LocaleSelectDialog extends DialogFragment {
                 case R.id.it:     newLocale = LocaleUtils.ITALIAN; break;
                 case R.id.hr:     newLocale = LocaleUtils.CROATIAN; break;
                 case R.id.sr:     newLocale = LocaleUtils.SERBIAN_LATIN; break;
+                case R.id.tr:     newLocale = LocaleUtils.TURKISH; break;
                 default:          newLocale = oldLocale;
             }
 
@@ -134,6 +136,7 @@ public class LocaleSelectDialog extends DialogFragment {
         it.setOnClickListener(clickListener);
         sr.setOnClickListener(clickListener);
         hr.setOnClickListener(clickListener);
+        tr.setOnClickListener(clickListener);
 
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
