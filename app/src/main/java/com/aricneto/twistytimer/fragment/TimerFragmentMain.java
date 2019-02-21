@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
-import com.aricneto.twistytimer.fragment.dialog.BottomSheetCategoryDialog;
+import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
@@ -167,14 +166,14 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private int originalContentHeight;
     private int selectCount = 0;
 
-    private BottomSheetCategoryDialog categoryDialog;
+    private CategorySelectDialog categoryDialog;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.nav_button_category:
-                    categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
+                    categoryDialog = CategorySelectDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
                     categoryDialog.setDialogListener(categoryDialogListener);
                     categoryDialog.show(getFragmentManager(), TAG_CATEGORY_DIALOG);
                     break;
@@ -392,7 +391,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             history = savedInstanceState.getBoolean("history");
 
             // Set the dialog listeners again, in case the dialogs are open.
-            categoryDialog = (BottomSheetCategoryDialog) getFragmentManager()
+            categoryDialog = (CategorySelectDialog) getFragmentManager()
                     .findFragmentByTag(TAG_CATEGORY_DIALOG);
             if (categoryDialog != null)
                 categoryDialog.setDialogListener(categoryDialogListener);

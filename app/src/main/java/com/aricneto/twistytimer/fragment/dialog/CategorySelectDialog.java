@@ -5,15 +5,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,7 +27,6 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.List;
 
@@ -44,11 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
-import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
-import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
-
-public class BottomSheetCategoryDialog extends DialogFragment {
+public class CategorySelectDialog extends DialogFragment {
 
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
@@ -76,8 +67,8 @@ public class BottomSheetCategoryDialog extends DialogFragment {
     private AdapterView.OnItemLongClickListener mItemLongClickListener;
     private View.OnClickListener mOnClickListener;
 
-    public static BottomSheetCategoryDialog newInstance(String currentPuzzle, String currentPuzzleSubtype, String currentTimerMode, TrainerScrambler.TrainerSubset currentSubset) {
-        BottomSheetCategoryDialog dialog = new BottomSheetCategoryDialog();
+    public static CategorySelectDialog newInstance(String currentPuzzle, String currentPuzzleSubtype, String currentTimerMode, TrainerScrambler.TrainerSubset currentSubset) {
+        CategorySelectDialog dialog = new CategorySelectDialog();
         Bundle args = new Bundle();
         args.putString("puzzle", currentPuzzle);
         args.putString("subtype", currentPuzzleSubtype);

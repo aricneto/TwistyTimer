@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/outline_background_card_top"
+    android:background="@drawable/outline_background_card"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView

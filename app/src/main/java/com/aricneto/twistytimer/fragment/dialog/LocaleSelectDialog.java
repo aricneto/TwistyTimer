@@ -108,6 +108,9 @@ public class LocaleSelectDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_settings_change_locale, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         return dialogView;
     }
 

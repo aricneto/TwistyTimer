@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="32dp"
-    android:paddingTop="32dp"
+    android:background="@drawable/outline_background_card_smoother"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp"
     android:scrollbars="vertical">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
         android:minWidth="170dp"
         android:orientation="vertical"
         android:padding="16dp">
