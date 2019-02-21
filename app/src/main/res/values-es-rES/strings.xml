@@ -238,4 +238,9 @@
     <string name="about_translate_title">¡Ayuda a traducir Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">Guardar la mezcla actual</string>
     <string name="pref_summary_new">Preferencias añadidas recientemente</string>
+    <string name="pref_summary_tint_navigation">Experimental. La barra de navegación va con el tema del cronómetro. \n ¡Solo funciona para Android Lollipop y superior!</string>
+    <string name="pref_title_tint_navigation">Barra de navegación de color</string>
+    <string name="pref_title_menu_background">Desactivar el fondo del menú</string>
+    <string name="pref_summary_menu_background">Desactiva el fondo de color detrás de la barra de menú superior</string>
+    <string name="dialog_theme_text_style">Estilo de texto</string>
 </resources>
