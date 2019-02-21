@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/outline_background_card_top"
-    android:orientation="vertical"
-    android:paddingBottom="8dp">
+    android:background="@drawable/outline_background_card"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
@@ -46,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/title"
-        android:layout_marginBottom="8dp"
         android:background="@color/black_divider" />
 
     <ListView
@@ -54,7 +54,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider_01"
-        android:layout_marginBottom="32dp"
         tools:layout_height="300dp">
 
     </ListView>
@@ -74,6 +73,7 @@
         android:fontFamily="@font/quicksand"
         android:gravity="center"
         android:textSize="12sp"
+        android:layout_marginBottom="6dp"
         android:text="@string/category_select_dialog_hint_edit"
         android:textColor="@color/md_light_primary_text" />
 

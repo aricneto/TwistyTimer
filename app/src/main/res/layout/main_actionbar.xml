@@ -45,13 +45,16 @@
 
             <TextView
                 android:id="@+id/puzzleCategory"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/puzzleName"
                 android:layout_centerHorizontal="true"
                 android:alpha=".85"
+                android:singleLine="true"
+                android:gravity="center"
+                android:ellipsize="marquee"
                 android:fontFamily="@font/quicksand"
-                android:text="Category"
+                android:text="Really Long Category Name"
                 android:textColor="?colorActionBarText"
                 android:textSize="12sp" />
 

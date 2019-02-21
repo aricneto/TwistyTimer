@@ -124,6 +124,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private static final String TIMER_MODE     = "timer_mode";
     private static final String TRAINER_SUBSET    = "trainer_subset";
 
+    private static final String TAG_CATEGORY_DIALOG = "select_category_dialog";
+
     private Unbinder mUnbinder;
 
     @BindView(R.id.root)         RelativeLayout  rootLayout;
@@ -165,20 +167,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private int originalContentHeight;
     private int selectCount = 0;
 
+    private BottomSheetCategoryDialog categoryDialog;
+
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.nav_button_category:
-                    BottomSheetCategoryDialog categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
-                    categoryDialog.setDialogListener(new DialogListenerMessage() {
-                        @Override
-                        public void onUpdateDialog(String text) {
-                            currentPuzzleCategory = text;
-                            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
-                        }
-                    });
-                    categoryDialog.show(getFragmentManager(), "bottom_sheet_category_dialog");
+                    categoryDialog = BottomSheetCategoryDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
+                    categoryDialog.setDialogListener(categoryDialogListener);
+                    categoryDialog.show(getFragmentManager(), TAG_CATEGORY_DIALOG);
                     break;
                 case R.id.nav_button_history:
                     history = !history;
@@ -192,6 +190,14 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     getMainActivity().openDrawer();
                     break;
             }
+        }
+    };
+
+    private DialogListenerMessage categoryDialogListener = new DialogListenerMessage() {
+        @Override
+        public void onUpdateDialog(String text) {
+            currentPuzzleCategory = text;
+            broadcast(CATEGORY_UI_INTERACTIONS, ACTION_CHANGED_CATEGORY);
         }
     };
 
@@ -325,6 +331,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         }
     };
     private BottomSheetTrainerDialog bottomSheetTrainerDialog;
+    private BottomSheetSpinnerDialog puzzleSelectDialog;
 
     private void updatePuzzleSpinnerHeader() {
         history = false;
@@ -368,6 +375,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
 
+        // Retrieve arguments
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleCategory = getArguments().getString(PUZZLE_SUBTYPE);
@@ -375,12 +383,19 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             currentPuzzleSubset = (TrainerScrambler.TrainerSubset) getArguments().getSerializable(TRAINER_SUBSET);
         }
 
+        // Retrieve instance state
         if (savedInstanceState != null) {
             currentPuzzle = savedInstanceState.getString("puzzle");
             currentPuzzleCategory = savedInstanceState.getString("subtype");
             currentTimerMode = savedInstanceState.getString("mode", TimerFragment.TIMER_MODE_TIMER);
             currentPuzzleSubset = (TrainerScrambler.TrainerSubset) savedInstanceState.getSerializable("subset");
             history = savedInstanceState.getBoolean("history");
+
+            // Set the dialog listeners again, in case the dialogs are open.
+            categoryDialog = (BottomSheetCategoryDialog) getFragmentManager()
+                    .findFragmentByTag(TAG_CATEGORY_DIALOG);
+            if (categoryDialog != null)
+                categoryDialog.setDialogListener(categoryDialogListener);
         }
     }
 
@@ -666,19 +681,19 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         };
 
         // Setup spinner dialog and adapter
-        BottomSheetSpinnerDialog bottomSheetSpinnerDialog = BottomSheetSpinnerDialog.newInstance();
+        puzzleSelectDialog = BottomSheetSpinnerDialog.newInstance();
         BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(getContext(), titles, icons);
 
-        bottomSheetSpinnerDialog.setTitle(getString(R.string.dialog_select_puzzle), R.drawable.ic_outline_casino_24px);
+        puzzleSelectDialog.setTitle(getString(R.string.dialog_select_puzzle), R.drawable.ic_outline_casino_24px);
 
-        bottomSheetSpinnerDialog.setListAdapter(bottomSheetSpinnerAdapter);
+        puzzleSelectDialog.setListAdapter(bottomSheetSpinnerAdapter);
 
-        bottomSheetSpinnerDialog.setListClickListener(new AdapterView.OnItemClickListener() {
+        puzzleSelectDialog.setListClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
 
-                bottomSheetSpinnerDialog.dismiss();
+                puzzleSelectDialog.dismiss();
 
                 currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
                 updateCurrentSubtype();
@@ -702,7 +717,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
                     bottomSheetTrainerDialog.show(getFragmentManager(), "trainer_dialog_fragment");
                 else
-                    bottomSheetSpinnerDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
+                    puzzleSelectDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
             }
         });
 

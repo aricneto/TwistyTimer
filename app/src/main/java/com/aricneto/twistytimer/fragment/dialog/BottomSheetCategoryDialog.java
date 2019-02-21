@@ -2,7 +2,11 @@ package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -12,6 +16,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -34,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -42,7 +48,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
-public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
+public class BottomSheetCategoryDialog extends DialogFragment {
 
     private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
@@ -95,6 +101,9 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         // retrieve arguments
         currentPuzzle = getArguments().getString("puzzle");
         currentSubtype = getArguments().getString("subtype");
@@ -120,7 +129,7 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
         // Create subtype
         MaterialDialog createSubtypeDialog = new MaterialDialog.Builder(getContext())
                 .title(R.string.enter_type_name)
-                .inputRange(2, 16)
+                .inputRange(2, 32)
                 .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence input) {
@@ -131,7 +140,8 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
 
                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
                         editor.apply();
-                        dialogListenerMessage.onUpdateDialog(currentSubtype);
+                        if (dialogListenerMessage != null)
+                            dialogListenerMessage.onUpdateDialog(currentSubtype);
                     }
                 })
                 .build();
@@ -188,7 +198,7 @@ public class BottomSheetCategoryDialog extends BottomSheetDialogFragment {
                                                 dialogListenerMessage.onUpdateDialog(currentSubtype);
                                             }
                                         })
-                                        .inputRange(2, 16)
+                                        .inputRange(2, 32)
                                         .positiveText(R.string.action_done)
                                         .negativeText(R.string.action_cancel)
                                         .show();
