@@ -343,11 +343,13 @@ public class                                                                    
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog,
                                                     @NonNull DialogAction which) {
-                                    dbHandler.deleteSolve(currentSolve);
-                                    if (!isRunning)
-                                        chronometer.reset(); // Reset to "0.00".
-                                    congratsText.setVisibility(View.GONE);
-                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
+                                    if (currentSolve != null) { // FIXME: if solve is null, it should just hide the buttons
+                                        dbHandler.deleteSolve(currentSolve);
+                                        if (!isRunning)
+                                            chronometer.reset(); // Reset to "0.00".
+                                        congratsText.setVisibility(View.GONE);
+                                        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
+                                    }
                                     hideButtons(true, true);
                                 }
                             })

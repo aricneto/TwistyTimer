@@ -220,7 +220,8 @@ public class TimerListFragment extends BaseFragment
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                reloadList();
+                                if (!getFragmentManager().isDestroyed())
+                                    reloadList();
                             }
                         }, 600);
                     }

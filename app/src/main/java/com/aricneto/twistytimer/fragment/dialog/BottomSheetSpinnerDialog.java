@@ -1,10 +1,12 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,7 +38,7 @@ import butterknife.Unbinder;
 public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
 
     @BindView(R.id.title) AppCompatTextView titleTextView;
-    @BindView(R.id.list)ListView          listView;
+    @BindView(R.id.list) ListView          listView;
 
     private Context mContext;
 
@@ -78,6 +80,7 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
         return view;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,6 +93,21 @@ public class BottomSheetSpinnerDialog extends BottomSheetDialogFragment {
             Drawable icon = VectorDrawableCompat.create(mContext.getResources(), titleIcon, null);
             titleTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
         }
+
+        listView.setOnTouchListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+
+            v.onTouchEvent(event);
+            return true;
+        });
     }
 
     public void setTitle(String title, @DrawableRes int iconRes) {
