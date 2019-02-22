@@ -14,6 +14,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:actionModeStyle">@style/ActionModeStyle</item>
 
+        <item name="isLightTheme">false</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/DefaultTheme.Overflow</item>
@@ -371,6 +372,8 @@
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="colorTabIconFaded">@color/tabFadedLight</item>
 
+        <item name="isLightTheme">true</item>
+
         <item name="colorChartAllTimes">@color/black_light_100</item>
         <item name="colorChartGrid">@color/black_light_50</item>
         <item name="colorChartAxis">@color/black_light_50</item>
@@ -398,6 +401,9 @@
 
     <!-- Style is declared in styles (v21) -->
     <style name="TintedNavigationBar"></style>
+
+    <!-- Style is declared in styles (v27) -->
+    <style name="LightNavBarIconStyle"></style>
 
     <!--
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.

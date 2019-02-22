@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -187,7 +188,13 @@ public class MainActivity extends AppCompatActivity
         // Set navigation bar tint
         if (Prefs.getBoolean(R.string.pk_tint_navigation_bar, false)) {
             getTheme().applyStyle(R.style.TintedNavigationBar, true);
+            // Set navigation bar icon tint
+            if (ThemeUtils.fetchAttrBool(this, ThemeUtils.getPreferredTheme(), R.styleable.BooleanStyles_isLightTheme)) {
+                getTheme().applyStyle(R.style.LightNavBarIconStyle, true);
+            }
         }
+
+
 
         super.onCreate(savedInstanceState);
 

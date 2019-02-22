@@ -25,6 +25,10 @@
     <attr format="color" name="colorActionBar"/>
     <attr format="color" name="colorActionBarText"/>
 
+    <declare-styleable name="BooleanStyles">
+        <attr format="boolean" name="isLightTheme"/>
+    </declare-styleable>
+
     <attr format="color" name="colorTabIconSelected"/>
     <attr format="color" name="colorTabIconFaded"/>
 

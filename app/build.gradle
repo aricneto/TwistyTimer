@@ -11,8 +11,8 @@ android {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 38
-        versionName "4.2.3"
+        versionCode 39
+        versionName "4.2.4"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

@@ -224,6 +224,22 @@ public final class ThemeUtils {
         return value.data;
     }
 
+    /**
+     * Gets a boolean from an attr resource value
+     *
+     * @param context Context
+     * @return @ColorRes
+     */
+    public static boolean fetchAttrBool(Context context, @StyleRes int style, @StyleableRes int boolRes) {
+        TypedArray bool = context.obtainStyledAttributes(style, R.styleable.BooleanStyles);
+
+        boolean finalBool = bool.getBoolean(boolRes, false);
+        bool.recycle();
+
+        return finalBool;
+    }
+
+
     public static int dpToPix(Context context, int dp) {
         return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
