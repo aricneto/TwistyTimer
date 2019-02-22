@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
@@ -506,17 +507,19 @@ public class                                                                    
 
         mContext = getContext();
 
+        return root;
+    }
+
+    @SuppressLint({"ClickableViewAccessibility", "RestrictedApi"})
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // Necessary for the scramble image to show
         scrambleImg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         expandedImageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         // Set the zoom click listener
-        scrambleImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                zoomImageFromThumb(scrambleImg);
-            }
-        });
+        scrambleImg.setOnClickListener(view1 -> zoomImageFromThumb(scrambleImg));
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(
@@ -540,9 +543,9 @@ public class                                                                    
                 = Prefs.getBoolean(R.string.pk_advanced_timer_settings_enabled, false);
 
         /*
-        *  Scramble text size preference. It doesn't need to be in the "advanced" settings since
-        *  it detects if it's clipping and automatically compensates for that by creating a button.
-        */
+         *  Scramble text size preference. It doesn't need to be in the "advanced" settings since
+         *  it detects if it's clipping and automatically compensates for that by creating a button.
+         */
         scrambleText.setTextSize(TypedValue.COMPLEX_UNIT_PX, scrambleText.getTextSize() * scrambleTextSize);
 
         if (advancedEnabled) {
@@ -613,13 +616,7 @@ public class                                                                    
             optimalXCross = new RubiksCubeOptimalXCross(getString(R.string.optimal_x_cross));
         }
 
-        if (scrambleEnabled) {
-            if (realScramble == null) {
-                generateNewScramble();
-            } else {
-                setScramble(realScramble);
-            }
-        } else {
+        if (!scrambleEnabled) {
             scrambleBox.setVisibility(View.GONE);
             scrambleImg.setVisibility(View.GONE);
             isLocked = false;
@@ -840,14 +837,19 @@ public class                                                                    
             }
         });
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
-
-        return root;
     }
 
     @Override
     public void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume()");
         super.onResume();
+        if (scrambleEnabled) {
+            if (realScramble == null) {
+                generateNewScramble();
+            } else {
+                setScramble(realScramble);
+            }
+        }
     }
 
     /**
@@ -1148,6 +1150,11 @@ public class                                                                    
 
     private void showToolbar() {
         unlockOrientation(getActivity());
+        // Resize startTimerLayout to have the little margin
+        // on the left that allows the user to open the side menu.
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) startTimerLayout.getLayoutParams();
+        params.leftMargin = ThemeUtils.dpToPix(mContext, 16);
+        startTimerLayout.requestLayout();
         broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIMER_STOPPED);
     }
 
@@ -1237,6 +1244,12 @@ public class                                                                    
         inspectionText.animate()
                 .translationY(-getActionBarSize())
                 .setDuration(300);
+
+        // Resize startTimerLayout to fill the entire screen. This removes the little margin
+        // on the left that allows the user to open the side menu.
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) startTimerLayout.getLayoutParams();
+        params.leftMargin = 0;
+        startTimerLayout.requestLayout();
 
         if (scrambleEnabled) {
             scrambleBox.setEnabled(false);
@@ -1520,35 +1533,29 @@ public class                                                                    
     private void setScramble(final String scramble) {
         realScramble = scramble;
         scrambleText.setText(scramble);
-        scrambleText.post(new Runnable() {
-            @Override
-            public void run() {
-                if (scrambleText != null) {
-                    // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
-                    // If it does, show only a "tap here to see more" hint instead of the scramble
-                    chronometer.post(() -> {
-                        Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
-                        Rect chronometerRect = new Rect(chronometer.getLeft(),
-                                                        (int) (chronometer.getTop() + chronometer.getBaseline() - chronometer.getTextSize()),
-                                                        chronometer.getRight(),
-                                                        chronometer.getBottom());
-                        Log.d(TAG, "baseline: " + chronometer.getTop() + " | textSize: " + chronometer.getBottom());
-                        Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
+        scrambleText.post(() -> {
+                        if (scrambleText != null) {
+                            // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
+                            // If it does, show only a "tap here to see more" hint instead of the scramble
+                                Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
+                                Rect chronometerRect = new Rect(chronometer.getLeft(),
+                                                                (int) (chronometer.getTop() + chronometer.getBaseline() - chronometer.getTextSize()),
+                                                                chronometer.getRight(),
+                                                                chronometer.getBottom());
+                                Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
 
-                        if ((Rect.intersects(scrambleRect, chronometerRect)) ||
-                            (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
-                            scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
-                            scrambleBox.setClickable(true);
-                            scrambleBox.setOnClickListener(scrambleDetailClickListener);
-                        } else {
-                            scrambleBox.setOnClickListener(null);
-                            scrambleBox.setClickable(false);
-                            scrambleBox.setFocusable(false);
-                        }
-                        scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
-                    });
+                                if ((Rect.intersects(scrambleRect, chronometerRect)) ||
+                                    (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
+                                    scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
+                                    scrambleBox.setClickable(true);
+                                    scrambleBox.setOnClickListener(scrambleDetailClickListener);
+                                } else {
+                                    scrambleBox.setOnClickListener(null);
+                                    scrambleBox.setClickable(false);
+                                    scrambleBox.setFocusable(false);
+                                }
+                                scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
                 }
-            }
         });
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))

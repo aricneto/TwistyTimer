@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
@@ -23,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
@@ -252,6 +254,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     } catch (Exception e) {}
                     break;
                 case ACTION_TIMER_STARTED:
+                    getMainActivity().setDrawerLock(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     viewPager.setPagingEnabled(false);
                     activateTabLayout(false);
                     mToolbar.animate()
@@ -266,6 +269,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     break;
 
                 case ACTION_TIMER_STOPPED:
+                    getMainActivity().setDrawerLock(DrawerLayout.LOCK_MODE_UNDEFINED);
                     mToolbar.animate()
                             .translationY(0)
                             .alpha(1)
@@ -401,6 +405,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         View root = inflater.inflate(R.layout.fragment_timer_main, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // setup background gradient
         rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(mContext, ThemeUtils.getPreferredTheme()));
 
@@ -455,13 +465,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         });
 
-        // Sets up the toolbar with the icons appropriate to the current page.
-        mToolbar.post(() -> setupPage(currentPage));
-
         // Register a receiver to update if something has changed
         registerReceiver(mUIInteractionReceiver);
-
-        return root;
     }
 
     @Override
@@ -523,6 +528,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     @Override
     public void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume() : currentPage=" + currentPage);
+        // Sets up the toolbar with the icons appropriate to the current page.
+        mToolbar.post(() -> setupPage(currentPage));
         super.onResume();
     }
 
@@ -587,62 +594,31 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             return;
         }
 
-        /**
-         * A bit of a backstory on the try-catch block
-         * There's an error being reported on devices with API 5.0 to 7.1 that points to this
-         * function. However, I've been unable to reproduce any of these crashes, and the crash
-         * analytics provided by google are quite useless (a jumbled mess of letters even with
-         * the deobfuscation file).
-         * I've put the try-catches since this error is appearing quite frequently, and I'd rather
-         * have it silently not show the button than just outright crash until I find the issue.
-         *
-         * The stack looks like this:
-         *   at com.aricneto.twistytimer.fragment.TimerFragmentMain.lambda$setupPage$1 (TimerFragmentMain.java)
-         *   at com.aricneto.twistytimer.fragment.TimerFragmentMain.lambda$S65-KNhyZlm6qyoDmKpXHpoQKnc (Unknown Source)
-         *   at com.aricneto.twistytimer.fragment.-$$Lambda$TimerFragmentMain$S65-KNhyZlm6qyoDmKpXHpoQKnc.run (lambda)
-         *   at android.view.ViewPropertyAnimator$AnimatorEventListener.onAnimationEnd (ViewPropertyAnimator.java:1126)
-         *   at android.animation.ValueAnimator.endAnimation (ValueAnimator.java:1149)
-         *   at android.animation.ValueAnimator.doAnimationFrame (ValueAnimator.java:1309)
-         *   at android.animation.AnimationHandler.doAnimationFrame (AnimationHandler.java:146)
-         *   at android.animation.AnimationHandler.-wrap2 (AnimationHandler.java)
-         *   at android.animation.AnimationHandler$1.doFrame (AnimationHandler.java:54)
-         *   at android.view.Choreographer$CallbackRecord.run (Choreographer.java:871)
-         *   at android.view.Choreographer.doCallbacks (Choreographer.java:685)
-         *   at android.view.Choreographer.doFrame (Choreographer.java:618)
-         *   at android.view.Choreographer$FrameDisplayEventReceiver.run (Choreographer.java:859)
-         *   at android.os.Handler.handleCallback (Handler.java:754)
-         *   at android.os.Handler.dispatchMessage (Handler.java:95)
-         *   at android.os.Looper.loop (Looper.java:163)
-         *   at android.app.ActivityThread.main (ActivityThread.java:6342)
-         *   at java.lang.reflect.Method.invoke (Method.java)
-         *   at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run (ZygoteInit.java:880)
-         *   at com.android.internal.os.ZygoteInit.main (ZygoteInit.java:770)
-         */
         switch (pageNum) {
             case TIMER_PAGE:
-                try {
+                if (navButtonHistory != null) {
                     navButtonHistory.animate()
                             .withStartAction(() -> navButtonHistory.setEnabled(false))
                             .alpha(0)
                             .setDuration(200)
-                            .withEndAction(() -> navButtonHistory.setVisibility(View.GONE))
+                            .withEndAction(() -> {
+                                // navButtonHistory may already be destroyed by the time we get
+                                // to the end action, so we have to check if it still exists
+                                if (navButtonHistory != null) navButtonHistory.setVisibility(View.GONE);
+                            })
                             .start();
-                } catch (Exception e) {
-                    Log.e(TAG, "Error animating history button:" + e);
                 }
                 break;
 
             case LIST_PAGE:
             case GRAPH_PAGE:
-                try {
+                if (navButtonHistory != null) {
                     navButtonHistory.setVisibility(View.VISIBLE);
                     navButtonHistory.animate()
                             .withStartAction(() -> navButtonHistory.setEnabled(true))
                             .alpha(1)
                             .setDuration(200)
                             .start();
-                } catch (Exception e) {
-                    Log.e(TAG, "Error animating history button:" + e);
                 }
                 break;
         }

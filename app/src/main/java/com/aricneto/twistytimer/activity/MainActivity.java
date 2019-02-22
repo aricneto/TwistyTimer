@@ -155,6 +155,15 @@ public class MainActivity extends AppCompatActivity
 
     private Drawer          mDrawer;
 
+    /**
+     * Sets drawer lock mode
+     * {@code DrawerLayout.LOCK_MODE_LOCKED_CLOSED} for force closed and
+     * {@code DrawerLayout.LOCK_MODE_LOCKED_UNDEFINED} for default behaviour
+     */
+    public void setDrawerLock(int lockMode) {
+        mDrawer.getDrawerLayout().setDrawerLockMode(lockMode);
+    }
+
     public void openDrawer() {
         mDrawer.openDrawer();
     }

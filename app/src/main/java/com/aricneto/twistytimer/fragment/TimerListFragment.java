@@ -220,8 +220,7 @@ public class TimerListFragment extends BaseFragment
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (!getFragmentManager().isDestroyed())
-                                    reloadList();
+                                reloadList();
                             }
                         }, 600);
                     }
@@ -403,7 +402,15 @@ public class TimerListFragment extends BaseFragment
     }
 
     public void reloadList() {
-        getLoaderManager().restartLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
+        // Sometimes reloadList is scheduled9 to be called after a set amount of time
+        // (like when a new time is added) so the app UI doesn't stutter. However, the fragment
+        // may not exist after that while, so we have to check if it still exists before
+        // restarting the loader. Otherwise, we'd get an IllegalStateException
+        // You can reproduce a crash by disabling this safety check, and then rotating the
+        // phone immediately after finishing a solve
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null && !fragmentManager.isDestroyed())
+            getLoaderManager().restartLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
     }
 
     @Override
