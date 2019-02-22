@@ -1534,6 +1534,7 @@ public class                                                                    
         realScramble = scramble;
         scrambleText.setText(scramble);
         scrambleText.post(() -> {
+            chronometer.post(() -> {
                         if (scrambleText != null) {
                             // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
                             // If it does, show only a "tap here to see more" hint instead of the scramble
@@ -1548,7 +1549,7 @@ public class                                                                    
                                                                 (int) (chronometer.getTop()
                                                                         + chronometer.getBaseline()
                                                                         - chronometer.getTextSize()
-                                                                        + ThemeUtils.dpToPix(mContext, 16)),
+                                                                        + ThemeUtils.dpToPix(mContext, 28)),
                                                                 chronometer.getRight(),
                                                                 chronometer.getBottom());
                                 Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
@@ -1565,6 +1566,7 @@ public class                                                                    
                                 }
                                 scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
                 }
+            });
         });
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))
