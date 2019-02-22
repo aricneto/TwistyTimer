@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -146,11 +147,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private LinearLayout      tabStrip;
     private NavigationAdapter viewPagerAdapter;
 
-    private MaterialDialog removeSubtypeDialog;
-    private MaterialDialog subtypeDialog;
-    private MaterialDialog createSubtypeDialog;
-    private MaterialDialog renameSubtypeDialog;
-
     // Stores the current puzzle being timed/shown
     private String                         currentPuzzle;
     private String                         currentPuzzleCategory;
@@ -163,7 +159,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     int currentPage = TIMER_PAGE;
     private boolean pagerEnabled;
 
-    private int originalContentHeight;
     private int selectCount = 0;
 
     private CategorySelectDialog categoryDialog;
@@ -175,7 +170,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 case R.id.nav_button_category:
                     categoryDialog = CategorySelectDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
                     categoryDialog.setDialogListener(categoryDialogListener);
-                    categoryDialog.show(getFragmentManager(), TAG_CATEGORY_DIALOG);
+                    categoryDialog.show(mFragmentManager, TAG_CATEGORY_DIALOG);
                     break;
                 case R.id.nav_button_history:
                     history = !history;
@@ -217,7 +212,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorPrimaryDark));
+                //getActivity().getWindow().setStatusBarColor(ThemeUtils.fetchAttrColor(mContext, R.attr.colorPrimaryDark));
             //}
             return true; // Return false if nothing is done
         }
@@ -280,12 +275,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                             .translationY(0)
                             .alpha(1)
                             .setDuration(300)
-                            .withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED);
-                                }
-                            });
+                            .withEndAction(() -> broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED));
 
                     activateTabLayout(true);
                     if (pagerEnabled)
@@ -331,7 +321,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     };
     private BottomSheetTrainerDialog bottomSheetTrainerDialog;
     private BottomSheetSpinnerDialog puzzleSelectDialog;
+    private Context mContext;
+    private FragmentManager mFragmentManager;
 
+    @SuppressLint("StringFormatInvalid")
     private void updatePuzzleSpinnerHeader() {
         history = false;
         updateHistorySwitchItem();
@@ -374,6 +367,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
 
+        mContext = getContext();
+        mFragmentManager = getFragmentManager();
+
         // Retrieve arguments
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
@@ -391,7 +387,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             history = savedInstanceState.getBoolean("history");
 
             // Set the dialog listeners again, in case the dialogs are open.
-            categoryDialog = (CategorySelectDialog) getFragmentManager()
+            categoryDialog = (CategorySelectDialog) mFragmentManager
                     .findFragmentByTag(TAG_CATEGORY_DIALOG);
             if (categoryDialog != null)
                 categoryDialog.setDialogListener(categoryDialogListener);
@@ -406,21 +402,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder = ButterKnife.bind(this, root);
 
         // setup background gradient
-        rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(getContext(), ThemeUtils.getPreferredTheme()));
-
-        setupHistorySwitchItem();
+        rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(mContext, ThemeUtils.getPreferredTheme()));
 
         navButtonCategory.setOnClickListener(clickListener);
         navButtonHistory.setOnClickListener(clickListener);
         navButtonSettings.setOnClickListener(clickListener);
 
-        pagerEnabled = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(
+        pagerEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(
                 getString(R.string.pk_tab_swiping_enabled), true);
 
-        if (pagerEnabled)
-            viewPager.setPagingEnabled(true);
-        else
-            viewPager.setPagingEnabled(false);
+        viewPager.setPagingEnabled(pagerEnabled);
 
         // Menu bar background
         if (Prefs.getBoolean(R.string.pk_menu_background, false)) {
@@ -433,10 +424,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         viewPager.setOffscreenPageLimit(NUM_PAGES - 1);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setSelectedTabIndicator(0);
-        tabLayout.setTabIconTint(AppCompatResources.getColorStateList(getContext(), R.color.tab_color));
+        tabLayout.setTabIconTint(AppCompatResources.getColorStateList(mContext, R.color.tab_color));
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
-        tabLayout.getBackground().setColorFilter(ThemeUtils.fetchAttrColor(getContext(), R.attr.colorTabBar), PorterDuff.Mode.SRC_IN);
+        tabLayout.getBackground().setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTabBar), PorterDuff.Mode.SRC_IN);
 
         if (savedInstanceState == null) {
             updateCurrentSubtype();
@@ -454,7 +445,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
             @Override
             public void onPageSelected(int position) {
-                setupPage(position, inflater);
+                setupPage(position);
                 currentPage = position;
             }
 
@@ -465,12 +456,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         });
 
         // Sets up the toolbar with the icons appropriate to the current page.
-        mToolbar.post(new Runnable() {
-            @Override
-            public void run() {
-                setupPage(currentPage, inflater);
-            }
-        });
+        mToolbar.post(() -> setupPage(currentPage));
 
         // Register a receiver to update if something has changed
         registerReceiver(mUIInteractionReceiver);
@@ -503,7 +489,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                                              public Loader<Wrapper<Statistics>> onCreateLoader(int id, Bundle args) {
                                                  if (DEBUG_ME)
                                                      Log.d(TAG, "onCreateLoader: STATISTICS_LOADER_ID");
-                                                 return new StatisticsLoader(getContext(), Statistics.newAllTimeStatistics(),
+                                                 return new StatisticsLoader(mContext, Statistics.newAllTimeStatistics(),
                                                                              currentPuzzle, currentPuzzleCategory);
                                              }
 
@@ -568,10 +554,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         mUnbinder.unbind();
     }
 
-    private void setupHistorySwitchItem() {
-        Context context = getContext();
-    }
-
     private void updateHistorySwitchItem() {
         if (history) {
             navButtonHistory.setImageResource(R.drawable.ic_history_on);
@@ -594,9 +576,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
      * Sets the page's toolbar buttons and other things
      *
      * @param pageNum
-     * @param inflater
      */
-    private void setupPage(int pageNum, LayoutInflater inflater) {
+    private void setupPage(int pageNum) {
         if (DEBUG_ME) Log.d(TAG, "setupPage(pageNum=" + pageNum + ")");
 
         if (actionMode != null)
@@ -606,26 +587,63 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             return;
         }
 
-        //mToolbar.getMenu().clear();
-
+        /**
+         * A bit of a backstory on the try-catch block
+         * There's an error being reported on devices with API 5.0 to 7.1 that points to this
+         * function. However, I've been unable to reproduce any of these crashes, and the crash
+         * analytics provided by google are quite useless (a jumbled mess of letters even with
+         * the deobfuscation file).
+         * I've put the try-catches since this error is appearing quite frequently, and I'd rather
+         * have it silently not show the button than just outright crash until I find the issue.
+         *
+         * The stack looks like this:
+         *   at com.aricneto.twistytimer.fragment.TimerFragmentMain.lambda$setupPage$1 (TimerFragmentMain.java)
+         *   at com.aricneto.twistytimer.fragment.TimerFragmentMain.lambda$S65-KNhyZlm6qyoDmKpXHpoQKnc (Unknown Source)
+         *   at com.aricneto.twistytimer.fragment.-$$Lambda$TimerFragmentMain$S65-KNhyZlm6qyoDmKpXHpoQKnc.run (lambda)
+         *   at android.view.ViewPropertyAnimator$AnimatorEventListener.onAnimationEnd (ViewPropertyAnimator.java:1126)
+         *   at android.animation.ValueAnimator.endAnimation (ValueAnimator.java:1149)
+         *   at android.animation.ValueAnimator.doAnimationFrame (ValueAnimator.java:1309)
+         *   at android.animation.AnimationHandler.doAnimationFrame (AnimationHandler.java:146)
+         *   at android.animation.AnimationHandler.-wrap2 (AnimationHandler.java)
+         *   at android.animation.AnimationHandler$1.doFrame (AnimationHandler.java:54)
+         *   at android.view.Choreographer$CallbackRecord.run (Choreographer.java:871)
+         *   at android.view.Choreographer.doCallbacks (Choreographer.java:685)
+         *   at android.view.Choreographer.doFrame (Choreographer.java:618)
+         *   at android.view.Choreographer$FrameDisplayEventReceiver.run (Choreographer.java:859)
+         *   at android.os.Handler.handleCallback (Handler.java:754)
+         *   at android.os.Handler.dispatchMessage (Handler.java:95)
+         *   at android.os.Looper.loop (Looper.java:163)
+         *   at android.app.ActivityThread.main (ActivityThread.java:6342)
+         *   at java.lang.reflect.Method.invoke (Method.java)
+         *   at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run (ZygoteInit.java:880)
+         *   at com.android.internal.os.ZygoteInit.main (ZygoteInit.java:770)
+         */
         switch (pageNum) {
             case TIMER_PAGE:
-                navButtonHistory.animate()
-                        .withStartAction(() -> navButtonHistory.setEnabled(false))
-                        .alpha(0)
-                        .setDuration(200)
-                        .withEndAction(() -> navButtonHistory.setVisibility(View.GONE))
-                        .start();
+                try {
+                    navButtonHistory.animate()
+                            .withStartAction(() -> navButtonHistory.setEnabled(false))
+                            .alpha(0)
+                            .setDuration(200)
+                            .withEndAction(() -> navButtonHistory.setVisibility(View.GONE))
+                            .start();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error animating history button:" + e);
+                }
                 break;
 
             case LIST_PAGE:
             case GRAPH_PAGE:
-                navButtonHistory.setVisibility(View.VISIBLE);
-                navButtonHistory.animate()
-                        .withStartAction(() -> navButtonHistory.setEnabled(true))
-                        .alpha(1)
-                        .setDuration(200)
-                        .start();
+                try {
+                    navButtonHistory.setVisibility(View.VISIBLE);
+                    navButtonHistory.animate()
+                            .withStartAction(() -> navButtonHistory.setEnabled(true))
+                            .alpha(1)
+                            .setDuration(200)
+                            .start();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error animating history button:" + e);
+                }
                 break;
         }
     }
@@ -681,43 +699,37 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         // Setup spinner dialog and adapter
         puzzleSelectDialog = BottomSheetSpinnerDialog.newInstance();
-        BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(getContext(), titles, icons);
+        BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(mContext, titles, icons);
 
         puzzleSelectDialog.setTitle(getString(R.string.dialog_select_puzzle), R.drawable.ic_outline_casino_24px);
 
         puzzleSelectDialog.setListAdapter(bottomSheetSpinnerAdapter);
 
-        puzzleSelectDialog.setListClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
+        puzzleSelectDialog.setListClickListener((parent, view, position, id) -> {
+            if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
 
-                puzzleSelectDialog.dismiss();
+            puzzleSelectDialog.dismiss();
 
-                currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
-                updateCurrentSubtype();
-                viewPager.setAdapter(viewPagerAdapter);
-                viewPager.setCurrentItem(currentPage);
+            currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
+            updateCurrentSubtype();
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setCurrentItem(currentPage);
 
-                // update titles
-                updatePuzzleSpinnerHeader();
+            // update titles
+            updatePuzzleSpinnerHeader();
 
-                handleStatisticsLoader();
-            }
+            handleStatisticsLoader();
         });
 
         bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
 
 
         // Setup action bar click listener
-        puzzleSpinnerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
-                    bottomSheetTrainerDialog.show(getFragmentManager(), "trainer_dialog_fragment");
-                else
-                    puzzleSelectDialog.show(getFragmentManager(), "puzzle_spinner_dialog_fragment");
-            }
+        puzzleSpinnerLayout.setOnClickListener(v -> {
+            if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
+                bottomSheetTrainerDialog.show(mFragmentManager, "trainer_dialog_fragment");
+            else
+                puzzleSelectDialog.show(mFragmentManager, "puzzle_spinner_dialog_fragment");
         });
 
         updatePuzzleSpinnerHeader();
@@ -736,7 +748,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
             switch (position) {
                 case TIMER_PAGE:
-                    return TimerFragment.newInstance(currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
+                    return TimerFragment.newInstance(
+                            currentPuzzle, currentPuzzleCategory, currentTimerMode, currentPuzzleSubset);
                 case LIST_PAGE:
                     return TimerListFragment.newInstance(
                             currentPuzzle, currentPuzzleCategory, history);
