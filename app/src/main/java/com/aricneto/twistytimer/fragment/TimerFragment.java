@@ -1524,25 +1524,27 @@ public class                                                                    
                 if (scrambleText != null) {
                     // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
                     // If it does, show only a "tap here to see more" hint instead of the scramble
-                    Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
-                    Rect chronometerRect = new Rect(chronometer.getLeft(),
-                                                    (int) (chronometer.getTop() + ThemeUtils.dpToPix(mContext, 32)),
-                                                    chronometer.getRight(),
-                                                    chronometer.getBottom());
-                    Log.d(TAG, "baseline: " + chronometer.getTop() + " | textSize: " + chronometer.getTextSize());
-                    Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
+                    chronometer.post(() -> {
+                        Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
+                        Rect chronometerRect = new Rect(chronometer.getLeft(),
+                                                        (int) (chronometer.getTop() + chronometer.getBaseline() - chronometer.getTextSize()),
+                                                        chronometer.getRight(),
+                                                        chronometer.getBottom());
+                        Log.d(TAG, "baseline: " + chronometer.getTop() + " | textSize: " + chronometer.getBottom());
+                        Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
 
-                    if ((Rect.intersects(scrambleRect, chronometerRect)) ||
+                        if ((Rect.intersects(scrambleRect, chronometerRect)) ||
                             (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
-                        scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
-                        scrambleBox.setClickable(true);
-                        scrambleBox.setOnClickListener(scrambleDetailClickListener);
-                    } else {
-                        scrambleBox.setOnClickListener(null);
-                        scrambleBox.setClickable(false);
-                        scrambleBox.setFocusable(false);
-                    }
-                    scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
+                            scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
+                            scrambleBox.setClickable(true);
+                            scrambleBox.setOnClickListener(scrambleDetailClickListener);
+                        } else {
+                            scrambleBox.setOnClickListener(null);
+                            scrambleBox.setClickable(false);
+                            scrambleBox.setFocusable(false);
+                        }
+                        scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
+                    });
                 }
             }
         });
