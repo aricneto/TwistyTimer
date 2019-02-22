@@ -1,6 +1,8 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -40,6 +43,22 @@ public class BottomSheetDetailDialog extends BottomSheetDialogFragment {
 
     public static BottomSheetDetailDialog newInstance() {
         return new BottomSheetDetailDialog();
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+
+        // This makes the bottomSheet dialog start in the expanded state
+        dialog.setOnShowListener(dia -> {
+            BottomSheetDialog bottomDialog = (BottomSheetDialog) dia;
+            FrameLayout bottomSheet =  bottomDialog .findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            BottomSheetBehavior.from(bottomSheet).setSkipCollapsed(true);
+            BottomSheetBehavior.from(bottomSheet).setHideable(true);
+        });
+
+        return dialog;
     }
 
     @Nullable
