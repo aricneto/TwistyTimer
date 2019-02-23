@@ -90,7 +90,4 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_last_used_category">savedSubtype</string>
     <string translatable="false" name="pk_last_used_puzzle">lastUsedPuzzle</string>
 
-
-    <string translatable="false" name="file_provider_authority">com.aricneto.twistytimer.fileprovider</string>
-
 </resources>

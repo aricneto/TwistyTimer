@@ -21,10 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
             resValue "string", "app_name", "Twisty Timer"
+            resValue "string", "file_provider_authority", "com.aricneto.twistytimer.fileprovider"
         }
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "app_name", "Twisty Timer (Debug)"
+            resValue "string", "file_provider_authority", "com.aricneto.twistytimer.debug.fileprovider"
         }
     }
     productFlavors {
