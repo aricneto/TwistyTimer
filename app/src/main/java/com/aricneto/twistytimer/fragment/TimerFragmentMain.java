@@ -40,13 +40,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
@@ -118,8 +116,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
      * The total number of pages.
      */
     private static final int NUM_PAGES = 3;
-
-    private static final String KEY_SAVEDSUBTYPE = "savedSubtype";
 
     private static final String PUZZLE         = "puzzle";
     private static final String PUZZLE_SUBTYPE = "puzzle_type";
@@ -440,7 +436,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         tabLayout.getBackground().setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTabBar), PorterDuff.Mode.SRC_IN);
 
         if (savedInstanceState == null) {
-            updateCurrentSubtype();
+            // Remember last used puzzle
+            currentPuzzle = Prefs.getString(R.string.pk_last_used_puzzle, PuzzleUtils.TYPE_333);
+            updateCurrentCategory();
         }
 
         // Handle spinner AFTER reading from savedInstanceState, so we can correctly
@@ -628,17 +626,17 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
      * The app saves the last subtype used for each puzzle. This function is called to both update
      * the last subtype when it's changed, and to set the subtipe.
      */
-    private void updateCurrentSubtype() {
+    private void updateCurrentCategory() {
         SharedPreferences        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext());
         SharedPreferences.Editor editor            = sharedPreferences.edit();
         final List<String> subtypeList
                 = TwistyTimer.getDBHandler().getAllSubtypesFromType(currentPuzzle);
         if (subtypeList.size() == 0) {
             currentPuzzleCategory = "Normal";
-            editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
+            editor.putString(getString(R.string.pk_last_used_category) + currentPuzzle, "Normal");
             editor.apply();
         } else {
-            currentPuzzleCategory = sharedPreferences.getString(KEY_SAVEDSUBTYPE + currentPuzzle, "Normal");
+            currentPuzzleCategory = sharedPreferences.getString(getString(R.string.pk_last_used_category) + currentPuzzle, "Normal");
         }
     }
 
@@ -687,7 +685,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             puzzleSelectDialog.dismiss();
 
             currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
-            updateCurrentSubtype();
+            Prefs.edit().putString(R.string.pk_last_used_puzzle, currentPuzzle).apply();
+            updateCurrentCategory();
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(currentPage);
 
