@@ -88,4 +88,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_text_style">pk_text_style</string>
     <string translatable="false" name="pk_locale">locale</string>
 
+
+    <string translatable="false" name="file_provider_authority">com.aricneto.twistytimer.fileprovider</string>
+
 </resources>

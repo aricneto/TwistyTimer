@@ -2,16 +2,20 @@ package com.aricneto.twistytimer.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
@@ -785,7 +789,7 @@ public class MainActivity extends AppCompatActivity
 
     private static class ExportSolves extends AsyncTask<Void, Integer, Boolean> {
 
-        private final Context  mContext;
+        private final Activity  mContext;
         private final String   mPuzzleType;
         private final String   mPuzzleCategory;
         private final File     mFile;
@@ -812,7 +816,7 @@ public class MainActivity extends AppCompatActivity
          *     {@code fileFormat} is {@code EXIM_FORMAT_EXTERNAL}. For {@code EXIM_FORMAT_BACKUP},
          *     it may be {@code null}, as it will not be used.
          */
-        public ExportSolves(Context context, File file, int fileFormat,
+        public ExportSolves(Activity context, File file, int fileFormat,
                             String puzzleType, String puzzleCategory) {
             mContext = context;
             mPuzzleType = puzzleType;
@@ -924,13 +928,36 @@ public class MainActivity extends AppCompatActivity
             if (mProgressDialog.isShowing()) {
                 mProgressDialog.setActionButton(DialogAction.POSITIVE, R.string.action_done);
 
-                if (isExported)
+                if (isExported) {
                     mProgressDialog.setContent(
                             Html.fromHtml(mContext.getString(R.string.export_progress_complete)
-                                    + "<br><br>" + "<small><tt>" + mFile.getAbsolutePath()
-                                    + "</tt></small>"));
-                else
+                                          + "<br><br>" + "<small><tt>" + mFile.getAbsolutePath()
+                                          + "</tt></small>"));
+                    // Optional share action
+                    mProgressDialog.setActionButton(DialogAction.NEUTRAL, R.string.list_options_item_share);
+                    mProgressDialog.getBuilder().onNeutral((dialog, which) -> {
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+                        Uri fileUri = FileProvider.getUriForFile(mContext,
+                                mContext.getString(R.string.file_provider_authority), mFile);
+
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        shareIntent.setType("application/octet-stream");
+
+                        // FileProvider can sometimes crash devices lower than Lollipop
+                        // due to permission issues, so we have to do some magic to the intent
+                        // This is explained in a Medium post by @quiro91
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                            shareIntent.setClipData(ClipData.newRawUri("", fileUri));
+                            shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        }
+
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share"));
+                    });
+                } else {
                     mProgressDialog.setContent(R.string.export_progress_error);
+                }
             }
         }
     }

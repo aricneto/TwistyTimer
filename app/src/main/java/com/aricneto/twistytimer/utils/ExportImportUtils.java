@@ -147,7 +147,7 @@ public final class ExportImportUtils {
      * @return The time-stamp.
      */
     private static String getFileTimeStamp() {
-        return DateTime.now().toString("dd-MMM-y'_'kk-mm");
+        return DateTime.now().toString("y-MM-dd'_'kk-mm");
     }
 
     /**

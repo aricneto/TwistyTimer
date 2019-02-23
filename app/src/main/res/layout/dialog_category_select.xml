@@ -63,7 +63,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/list"
-        android:layout_marginBottom="4dp"
         android:background="@color/black_divider" />
 
     <TextView
@@ -73,7 +72,8 @@
         android:fontFamily="@font/quicksand"
         android:gravity="center"
         android:textSize="12sp"
-        android:layout_marginBottom="6dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:text="@string/category_select_dialog_hint_edit"
         android:textColor="@color/md_light_primary_text" />
 

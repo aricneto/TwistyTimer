@@ -77,7 +77,7 @@
     <string name="export_progress_error">Infelizmente, ocorreu um erro na exportação.\nCheque suas permissões</string>
     <string name="export_progress_title">Exportando…</string>
     <string name="fab_add_time">Adicionar tempo</string>
-    <string name="fab_share_ao12">Média de 12</string>
+    <string name="fab_share_ao12">Md12</string>
     <string name="fab_share_ao5">Md5</string>
     <string name="fab_share_distribution">Distribuição</string>
     <string name="fab_share_error">Não foi possível compartilhar. Certifique-se de que você fez resoluções o suficiente nesta sessão.</string>

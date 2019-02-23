@@ -235,4 +235,10 @@
     <string name="trainer_help_message">Um das Training zu beginnen, wähle die Fälle, die du üben möchtest aus, indem du das Feld oben antippst. \nDu kannst auch verschiedene Kategorien mit anderen Gruppen von Fällen erstellen</string>
     <string name="trainer_spinner_title">Wähle zu übende Fälle</string>
     <string name="trainer_select_all">Alle auswählen</string>
+    <string name="about_translate_title">Hilf beim Übersetzen von Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Aktuelles Schema speichern</string>
+    <string name="pref_summary_new">Kürzlich hinzugefügte Einstellungen</string>
+    <string name="pref_summary_tint_navigation">Experimentelle. Färbt die Navigationsleiste in den Designfarben.\nFunktioniert nur auf Android Lollipop und besser!</string>
+    <string name="pref_title_tint_navigation">Farbige Navigationsleiste</string>
+    <string name="pref_title_menu_background">Menü-Hintergrund deaktivieren</string>
 </resources>

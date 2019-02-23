@@ -64,6 +64,7 @@
         <item name="colorTextContrastAccent">@color/white_text</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="md_positive_color">@color/md_red_A400</item>
+        <item name="md_neutral_color">@color/md_purple_A400</item>
 
         <item name="md_negative_color">@color/black_secondary_icon</item>
         <item name="md_widget_color">@color/accentDarkColor</item>
@@ -253,7 +254,6 @@
 
         <item name="mainColorBackground">@color/md_black_1000</item>
         <item name="colorPrimary">@color/md_black_1000</item>
-        <item name="md_positive_color">@color/md_amber_A400</item>
         <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
 
         <item name="colorTimerText">@color/md_white_1000</item>
