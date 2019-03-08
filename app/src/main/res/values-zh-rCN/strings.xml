@@ -122,7 +122,7 @@
     <string name="no_penalty">无惩罚</string>
     <string name="optimal_cross">最优十字解-</string>
     <string name="optimal_x_cross">最优扩展十字解-</string>
-    <string name="option_show_scramble_hints">十字提示的地面</string>
+    <string name="option_show_scramble_hints">十字提示的底面</string>
     <string name="option_show_scramble_hints_summary">选择你想查看提示的底面</string>
     <string name="pagerEnabledSummary">如果禁用这个设置，需要点击标签来切换。</string>
     <string name="pagerEnabledTitle">允许标签页之间的滑动</string>
@@ -229,12 +229,17 @@
     <string name="timelist_searchbox_hint">搜索备注</string>
     <string name="title_algorithms">公式</string>
     <string name="edit_scramble">输入自定义打乱</string>
-    <string name="drawer_title_trainer">公式训练器</string>
-    <string name="title_trainer">训练%1$s</string>
+    <string name="drawer_title_trainer">训练器</string>
+    <string name="title_trainer">%1$s训练</string>
     <string name="trainer_help_message">开始训练前，请点击顶部按钮选定你想要练习的情况</string>
-    <string name="trainer_spinner_title">选择情况开始练习</string>
+    <string name="trainer_spinner_title">选择你想练习的情况</string>
     <string name="trainer_select_all">全选</string>
     <string name="about_translate_title">帮助翻译Twisty Timer</string>
     <string name="dialog_add_time_use_scramble">保存当前打乱</string>
     <string name="pref_summary_new">最近添加的首选项</string>
+    <string name="pref_summary_tint_navigation">测试中！导航栏显示主题颜色，仅支持安卓5.0以上版本！</string>
+    <string name="pref_title_tint_navigation">显示导航栏颜色</string>
+    <string name="pref_title_menu_background">关闭菜单背景</string>
+    <string name="pref_summary_menu_background">不显示顶部菜单栏的背景颜色</string>
+    <string name="dialog_theme_text_style">文字样式</string>
 </resources>

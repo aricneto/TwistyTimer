@@ -26,7 +26,7 @@
     <string name="backCancelEnabledSummary">Bir çözüm sırasında geri düğmesine basmak o çözümü iptal eder</string>
     <string name="backCancelEnabledTitle">Geri tuşuna basmak çözümü iptal eder</string>
     <string name="backgroundEnabledSummary">Zamanlayıcı arka planını birincil renkle tonla</string>
-    <string name="backgroundEnabledTitle">Renkli arkaplan</string>
+    <string name="backgroundEnabledTitle">Renkli arka plan</string>
     <string name="bestSolveEnabledSummary">Kendi rekorunu kırdığın zaman uyarı al</string>
     <string name="bestSolveEnabledTitle">En iyi süre uyarısı</string>
     <string name="averageRecordsEnabledSummary">Yeni bir en iyi ortalama yaptığın zaman uyarı al ve istatistikleri vurgula</string>
@@ -122,6 +122,9 @@
     <string name="move_solves_to_history_content">Çözümlerine geçmiş düğmesine basarak ulaşabileceksin</string>
     <string name="name_category">Kategori</string>
     <string name="name_puzzle">Puzzle</string>
+    <string name="no_penalty">Ceza yok</string>
+    <string name="optimal_cross">Şu yüzde en uygun artı</string>
+    <string name="optimal_x_cross">Şu yüzde en uygun genişletilmiş artı</string>
     <string name="option_show_scramble_hints">İpucunda gösterilen yüz</string>
     <string name="option_show_scramble_hints_summary">İpuçlarını görüntülemek istediğiniz yüzleri seçin</string>
     <string name="pagerEnabledSummary">Eğer bu ayar devre dışı bırakılırsa, sekmeler arasında dokunarak geçiş yapmak zorunda kalırsın.</string>
@@ -143,7 +146,7 @@
     <string name="pref_screen_title_timer_behavior">Zamanlayıcı ayarları</string>
     <string name="pref_screen_title_timer_appearance">Zamanlayıcı görünümü</string>
     <string name="pref_scramble_box_title">Karıştırma arka planı</string>
-    <string name="pref_scramble_box_description">Karıştırmanın arkasında beyaz bir arkaplan göster</string>
+    <string name="pref_scramble_box_description">Karıştırmanın arkasında beyaz bir arka plan göster</string>
     <string name="preference_application_language_title">Dil</string>
     <string name="rate_app">Bu uygulamayı Google Play\'de değerlendir</string>
     <string name="remove_session_confirmation_content">Bu işlemi geri alamayacaksın.</string>
@@ -160,9 +163,10 @@
     <string name="scrambleImageEnabledTitle">Karıştırma resmi</string>
     <string name="scrambleImageSize_summary">Karıştırma resminin boyutunu değiştir</string>
     <string name="scrambleImageSize_text">Karıştırma resmi boyutu</string>
-    <string name="scramble_text_size">Karıştırma yazısı boyutu</string>
+    <string name="scramble_text_size">Karıştırma metni boyutu</string>
     <string name="scramble_text_size_summary">Ekranda gösterilen karıştırmaların boyutunu değiştirir</string>
     <string name="scramble_text_tap_hint">Karıştırmayı görmek için buraya dokun</string>
+    <string name="select_penalty">Ceza seçin</string>
     <string name="select_solve_type">Kategori seç</string>
     <plurals name="selected_list">
         <item quantity="one">%d seçili çözüm</item>
@@ -201,6 +205,7 @@
     <string name="graph_stats_title_best_all_time">Tüm zamanların en iyisi</string>
     <string name="graph_stats_title_session_best">Oturumun En İyisi</string>
     <string name="graph_stats_title_current">Geçerli</string>
+    <string name="graph_stats_label_deviation">Sapma</string>
     <string name="graph_stats_label_mean">Ortalama</string>
     <string name="graph_stats_label_best">En iyi</string>
     <string name="graph_stats_label_worst">En kötü</string>
@@ -234,4 +239,11 @@
     <string name="trainer_spinner_title">Çalışmak istedğiniz durumları seçin</string>
     <string name="trainer_select_all">Tümünü seç</string>
     <string name="about_translate_title">Twisty Timer\'ın çevrilmesine yardımcı ol!</string>
+    <string name="dialog_add_time_use_scramble">Geçerli karıştırmayı kaydet</string>
+    <string name="pref_summary_new">Yeni eklenmiş tercihler</string>
+    <string name="pref_summary_tint_navigation">Deneysel. Navigasyon çubuğunun rengini tema rengiyle tonlar.\nSadece Android Lollipop ve üstü sürümlerde çalışır!</string>
+    <string name="pref_title_tint_navigation">Navigasyon çubuğunu tonla</string>
+    <string name="pref_title_menu_background">Menü arka planını devre dışı bırak</string>
+    <string name="pref_summary_menu_background">Üst menü çubuğunun arkasındaki tonlanmış arka planı devre dışı bırakır</string>
+    <string name="dialog_theme_text_style">Metin stili</string>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Default short date format (no year) used by most countries. This is used to format the
+    day and month labels for the chart X-axis and the solve list.
+    -->
+    <string name="shortDateFormat">dd\'/\'MM</string>
+</resources>

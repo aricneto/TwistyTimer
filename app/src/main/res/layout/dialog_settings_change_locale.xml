@@ -85,6 +85,12 @@
             android:text="@string/language_chinese"/>
 
         <TextView
+            android:id="@+id/ja"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_japan"
+            android:text="@string/language_japanese"/>
+
+        <TextView
             android:id="@+id/ca"
             style="@style/DialogItem"
             android:drawableLeft="@drawable/flag_spain"
@@ -138,6 +144,12 @@
             style="@style/DialogItem"
             android:drawableLeft="@drawable/flag_croatia"
             android:text="@string/language_croatian"/>
+
+        <TextView
+            android:id="@+id/sk"
+            style="@style/DialogItem"
+            android:drawableLeft="@drawable/flag_slovakia"
+            android:text="@string/language_slovak"/>
 
         <TextView
             android:id="@+id/tr"

@@ -180,7 +180,6 @@
 
                 <SwitchPreferenceCompat
                     android:defaultValue="false"
-                    android:icon="@drawable/ic_outline_fiber_new_16px"
                     android:key="@string/pk_show_scramble_background"
                     android:title="@string/pref_scramble_box_title"
                     android:summary="@string/pref_scramble_box_description"/>
@@ -245,14 +244,12 @@
             android:title="@string/pagerEnabledTitle" />
 
         <SwitchPreferenceCompat
-            android:icon="@drawable/ic_outline_fiber_new_16px"
             android:defaultValue="false"
             android:key="@string/pk_tint_navigation_bar"
             android:summary="@string/pref_summary_tint_navigation"
             android:title="@string/pref_title_tint_navigation" />
 
         <SwitchPreferenceCompat
-            android:icon="@drawable/ic_outline_fiber_new_16px"
             android:defaultValue="false"
             android:key="@string/pk_menu_background"
             android:summary="@string/pref_summary_menu_background"

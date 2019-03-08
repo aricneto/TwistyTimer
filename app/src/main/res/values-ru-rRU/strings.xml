@@ -141,7 +141,9 @@
     <string name="pref_category_title_timer">Таймер</string>
     <string name="pref_screen_title_inspection_behavior">Поведение инспекции</string>
     <string name="pref_screen_title_timer_behavior">Поведение таймера</string>
+    <string name="pref_screen_title_timer_appearance">Внешний вид таймера</string>
     <string name="pref_scramble_box_title">Фон скрамбла</string>
+    <string name="pref_scramble_box_description">Показывать белый фон за скрамблом</string>
     <string name="preference_application_language_title">Язык</string>
     <string name="rate_app">Оценить это приложение в Google Play</string>
     <string name="remove_session_confirmation_content">Вы не сможете отменить это действие.</string>
@@ -217,4 +219,22 @@
     <string name="pref_inspection_alert_summary">Таймер оповестит вас, когда пройдут %1$d и %2$d секунд инспекции</string>
     <string name="dialog_scramble_details">Детали скрамбла</string>
     <string name="dialog_select_puzzle">Выбрать пазл</string>
+    <string name="dialog_hint_title">Подсказка</string>
+    <string name="category_select_dialog_title">Выберите категорию</string>
+    <string name="category_select_dialog_hint_edit">Долгое нажатие на запись чтобы редактировать</string>
+    <string name="action_search">Искать</string>
+    <string name="timelist_searchbox_hint">Поиск комментариев</string>
+    <string name="title_algorithms">Алгоритмы</string>
+    <string name="edit_scramble">Введите свой скрамбл</string>
+    <string name="drawer_title_trainer">Тренировка</string>
+    <string name="title_trainer">Обучение</string>
+    <string name="trainer_help_message">Чтобы начать тренировку, выберите ситуации, нажав на их название\nВы так же можете создавать сессии с разрыми наборами ситуаций</string>
+    <string name="trainer_spinner_title">Выюкрите случаи для тренировки</string>
+    <string name="trainer_select_all">Выбрать все</string>
+    <string name="about_translate_title">Помогите перевести Twisty Timer!</string>
+    <string name="dialog_add_time_use_scramble">Сохранить текущий скрамбл</string>
+    <string name="pref_summary_new">Недавно добавленные настройки</string>
+    <string name="pref_summary_tint_navigation">Экспериментально. Нарисует панель навигации с цветом темы.\nРаботает только на Android Lollipop и новее!</string>
+    <string name="pref_title_tint_navigation">Окрашивать панель навигации</string>
+    <string name="pref_title_menu_background">Отключить фон</string>
 </resources>

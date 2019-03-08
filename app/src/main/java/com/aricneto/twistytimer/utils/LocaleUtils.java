@@ -31,7 +31,7 @@ public class LocaleUtils {
     public static final String VALENCIAN         = "val_ES";
     public static final String ITALIAN           = "it_IT";
     public static final String ESPERANTO         = "eo_UY";
-    public static final String ENGLISH           = "en_UK";
+    public static final String ENGLISH           = "en_GB";
     public static final String ENGLISH_USA       = "en_US";
     public static final String SPANISH           = "es_ES";
     public static final String GERMAN            = "de_DE";
@@ -43,6 +43,8 @@ public class LocaleUtils {
     public static final String SERBIAN_LATIN     = "sr_CS";
     public static final String CROATIAN          = "hr_HR";
     public static final String TURKISH           = "tr_TR";
+    public static final String SLOVAK            = "sk_SK";
+    public static final String JAPANESE          = "ja_JP";
 
 
 
