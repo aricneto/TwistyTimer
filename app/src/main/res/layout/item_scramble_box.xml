@@ -23,7 +23,6 @@
             android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="2dp"
-            android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L'F' U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"

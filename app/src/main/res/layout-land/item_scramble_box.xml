@@ -24,7 +24,6 @@
             android:layout_marginRight="8dp"
             android:paddingBottom="4dp"
             android:layout_toLeftOf="@id/scramble_button_edit"
-            android:fontFamily="@font/quicksand_medium"
             android:gravity="center"
             android:text="F' U2 F2 D2 U2 L2 B R2 U2 B L' U2 F2 D2 U2 U2 F2 D2 U2 L2 B "
             android:textColor="?colorItemListText"

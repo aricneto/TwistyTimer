@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:text="@string/category_select_dialog_title" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -34,7 +34,6 @@
         app:drawableLeftCompat="@drawable/ic_category_add"
         android:drawablePadding="8dp"
         android:focusable="true"
-        android:fontFamily="@font/quicksand_medium"
         android:paddingLeft="12dp"
         android:paddingTop="0dp"
         android:paddingRight="16dp"
@@ -69,7 +68,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider_02"
-        android:fontFamily="@font/quicksand"
         android:gravity="center"
         android:textSize="12sp"
         android:paddingTop="6dp"

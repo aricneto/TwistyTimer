@@ -10,7 +10,7 @@
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
         android:background="?colorPrimary"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:gravity="center"
         android:text="@string/title_activity_settings"
         android:textSize="20sp" />

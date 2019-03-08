@@ -11,7 +11,7 @@
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:text="@string/dialog_scramble_details"
         app:drawableRightCompat="@drawable/ic_outline_casino_24px" />
 
@@ -62,7 +62,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:background="?colorCardBackgroundWarn"
-                android:fontFamily="@font/quicksand_bold"
+                android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/dialog_hint_title"
@@ -105,7 +105,7 @@
                 android:layout_marginRight="1dp"
                 android:alpha=".7"
                 android:background="?colorCardBackgroundWarn"
-                android:fontFamily="@font/quicksand_bold"
+                android:textStyle="bold"
                 android:visibility="gone"
                 tools:text="Cross on U:\nF U F B U'\nF U F B2 F'"
                 tools:visibility="visible" />

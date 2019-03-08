@@ -54,7 +54,6 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
-            android:fontFamily="@font/quicksand_medium"
             android:gravity="center_vertical"
             android:text="sex, 15 jun"
             android:textColor="?colorItemListText"

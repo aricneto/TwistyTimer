@@ -11,7 +11,7 @@
         android:id="@+id/title"
         style="@style/BottomPanelListTitleTextStyle"
         android:layout_width="match_parent"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:text="Select a puzzle" />
 

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:text="@string/drawer_title_changeTheme"
         app:drawableRightCompat="@drawable/ic_outline_palette_24px" />
 
@@ -38,7 +38,6 @@
         android:clickable="true"
         android:drawablePadding="8dp"
         android:focusable="true"
-        android:fontFamily="@font/quicksand_medium"
         android:gravity="center"
         android:paddingLeft="12dp"
         android:paddingTop="0dp"
@@ -77,7 +76,7 @@
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
             android:background="?colorCardBackgroundFaded"
-            android:fontFamily="@font/quicksand_bold"
+            android:textStyle="bold"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@string/dialog_theme_text_style"

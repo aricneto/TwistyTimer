@@ -27,7 +27,6 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textSize="11sp"
-        android:fontFamily="@font/quicksand_medium"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

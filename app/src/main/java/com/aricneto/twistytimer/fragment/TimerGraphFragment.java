@@ -294,9 +294,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                             lineChartView.requestLayout();
                             statsContainerPager.requestLayout();
                         } else {
-                            // On portrait mode, the graph should occupy about 65% of the view (arbitrarily chosen for aesthetic reasons)
+                            // On portrait mode, the graph should occupy about 50% of the view (arbitrarily chosen for aesthetic reasons)
                             // leaving the rest for the stats card.
-                            params.height = (int) (container.getHeight() * 0.65f);
+                            params.height = (int) (container.getHeight() * 0.50f);
                             lineChartView.setLayoutParams(params);
                             lineChartView.requestLayout();
                             statsContainerPager.requestLayout();

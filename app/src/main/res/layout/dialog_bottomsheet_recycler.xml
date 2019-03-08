@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         app:drawableRightCompat="@drawable/ic_outline_palette_24px"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:text="@string/drawer_title_changeTheme" />
 
     <View
@@ -41,7 +41,6 @@
         app:drawableLeftCompat="@drawable/ic_category_add"
         android:drawablePadding="8dp"
         android:focusable="true"
-        android:fontFamily="@font/quicksand_medium"
         android:paddingLeft="12dp"
         android:paddingTop="0dp"
         android:paddingRight="16dp"

@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/chronometer"
         android:layout_centerHorizontal="true"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:text="Inspection"
         android:textAllCaps="true"
         android:textColor="?colorTimerText"

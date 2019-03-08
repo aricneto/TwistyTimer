@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
-        android:fontFamily="@font/quicksand_bold"
+        android:textStyle="bold"
         android:gravity="center"
         android:text="@string/title_activity_about"
         android:textColor="?colorTimerText"
