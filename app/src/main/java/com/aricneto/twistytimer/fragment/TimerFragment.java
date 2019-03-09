@@ -600,6 +600,14 @@ public class                                                                    
                 inspectionSoundAlertEnabled = true;
             }
         }
+        
+        if (!scrambleEnabled) {
+            // CongratsText is by default aligned to below the scramble box. If it's missing, we have
+            // to add an extra margin to account for the title header
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
+            params.topMargin = ThemeUtils.dpToPix(mContext, 70); // WARNING: this has to be the same as attr/actionBarPadding
+            congratsText.requestLayout();
+        }
 
         if (!scrambleBackgroundEnabled) {
             scrambleBox.setBackgroundColor(Color.TRANSPARENT);
