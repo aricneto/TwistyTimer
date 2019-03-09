@@ -57,6 +57,7 @@ public class StatGridAdapter extends BaseAdapter {
             textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
 
 
+        textView.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_text_color));
         textView.setGravity(Gravity.RIGHT);
         textView.setSingleLine(true);
         textView.setMaxLines(1);

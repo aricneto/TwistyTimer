@@ -48,6 +48,10 @@ public final class ThemeUtils {
     public static final String THEME_WHITE_GREEN = "white_green";
     public static final String THEME_DAWN        = "dawn";
     public static final String THEME_BLUY_GRAY   = "bluy_gray";
+    public static final String THEME_TURTLY_SEA  = "turtly_sea";
+    public static final String THEME_PIXIE_FALLS = "pixie_falls";
+    public static final String THEME_WANDERING_DUSK = "wandering_dusk";
+    public static final String THEME_SPOTTY_GUY = "spotty_guy";
 
 
     public static final String TEXT_DEFAULT   = "default";
@@ -120,6 +124,14 @@ public final class ThemeUtils {
                 return R.style.DawnTheme;
             case THEME_BLUY_GRAY:
                 return R.style.BluyGray;
+            case THEME_TURTLY_SEA:
+                return R.style.TurtlySea;
+            case THEME_PIXIE_FALLS:
+                return R.style.PixieFalls;
+            case THEME_WANDERING_DUSK:
+                return R.style.WanderingDusk;
+            case THEME_SPOTTY_GUY:
+                return R.style.SpottyGuy;
             case TEXT_DEFAULT:
                 return getPreferredTheme();
             case TEXT_TARKOVSKY:
@@ -142,15 +154,19 @@ public final class ThemeUtils {
         Theme[] themes = {
                 new Theme(THEME_INDIGO, "Hazy Blues"),
                 new Theme(THEME_GREEN, "What... Green?"),
-                new Theme(THEME_YELLOW, "Notably Yellow"),
-                new Theme(THEME_WHITE, "Simply White"),
+                new Theme(THEME_SPOTTY_GUY, "Spotty Guy"),
                 new Theme(THEME_BLACK, "Simply Black"),
+                new Theme(THEME_WHITE, "Simply White"),
+                new Theme(THEME_YELLOW, "Notably Yellow"),
                 new Theme(THEME_BLUY_GRAY, "Bluy Gray"),
+                new Theme(THEME_TURTLY_SEA, "Turtly Sea"),
+                new Theme(THEME_PIXIE_FALLS, "Pixie Falls"),
+                new Theme(THEME_WANDERING_DUSK, "Wandy Dusk"),
+                new Theme(THEME_DAWN, "Relaxing Dawn"),
                 new Theme(THEME_DEEPPURPLE, "Quite Purply"),
                 new Theme(THEME_BLUE, "Even Purplier"),
                 new Theme(THEME_PURPLE, "Definitely Purple"),
                 new Theme(THEME_ORANGE, "Tantalizing Torange"),
-                new Theme(THEME_DAWN, "Relaxing Dawn"),
                 new Theme(THEME_RED, "Oof Hot"),
                 new Theme(THEME_PINK, "Pinky Promises"),
                 new Theme(THEME_BROWN, "Delicious Brownie"),

@@ -65,6 +65,7 @@
     <attr format="color" name="graph_stats_card_background"/>
     <attr format="color" name="graph_stats_card_background_alt"/>
     <attr format="color" name="graph_stats_card_background_faded"/>
+    <attr format="color" name="graph_stats_card_divider"/>
     <attr format="color" name="graph_stats_card_text_color_faded"/>
     <attr format="color" name="graph_stats_card_text_color"/>
 

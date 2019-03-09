@@ -27,7 +27,7 @@
 
         <item name="colorBackgroundList">@color/materialGray</item>
         <item name="colorItemListText">@color/black_text</item>
-        <item name="colorItemListTextAction">#D9000000</item>
+        <item name="colorItemListTextAction">@color/md_blue_A700</item>
         <item name="colorItemListBackground">@color/white_text</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
 
@@ -93,6 +93,7 @@
         <item name="graph_stats_card_background">@color/md_white_1000</item>
         <item name="graph_stats_card_background_alt">@color/md_grey_100</item>
         <item name="graph_stats_card_background_faded">#F0F0F0</item>
+        <item name="graph_stats_card_divider">#E6E6E6</item>
         <item name="graph_stats_card_text_color_faded">#74000000</item>
         <item name="graph_stats_card_text_color">#b2000000</item>
 
@@ -227,12 +228,12 @@
 
     <style name="BaseRedTheme" parent="DefaultTheme">
         <item name="colorMainGradientStart">#FBB03B</item>
-        <item name="colorMainGradientEnd">#D4145A</item>
+        <item name="colorMainGradientEnd">#E4305A</item>
 
-        <item name="colorActionBar">#F08640</item>
-        <item name="colorTabBar">#b5114d</item>
+        <item name="colorActionBar">#FF8958</item>
+        <item name="colorTabBar">#d61c47</item>
 
-        <item name="colorAccent">@color/md_deep_purple_A700</item>
+        <item name="colorAccent">@color/md_green_A400</item>
     </style>
 
     <style name="BaseBrownTheme" parent="DefaultTheme">
@@ -255,7 +256,7 @@
         <item name="colorAccent">@color/md_amber_500</item>
     </style>
 
-    <style name="BaseBlackTheme" parent="DefaultTheme">
+    <style name="BaseBlackTheme" parent="DefaultTheme.Darker">
         <item name="colorMainGradientStart">#000000</item>
         <item name="colorMainGradientEnd">#000000</item>
 
@@ -350,13 +351,13 @@
     </style>
 
     <style name="BaseDawnTheme" parent="DefaultTheme.Light">
-        <item name="colorMainGradientStart">#ffd342</item>
-        <item name="colorMainGradientEnd">#bf54fe</item>
+        <item name="colorMainGradientStart">#fccb90</item>
+        <item name="colorMainGradientEnd">#d57eeb</item>
 
-        <item name="colorActionBar">#ffd753</item>
-        <item name="colorTabBar">#b943fe</item>
+        <item name="colorActionBar">#fddab1</item>
+        <item name="colorTabBar">#d06fe9</item>
 
-        <item name="colorAccent">@color/md_red_A400</item>
+        <item name="colorAccent">@color/md_red_A100</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
@@ -370,6 +371,49 @@
         <item name="colorTabBar">#3e515a</item>
 
         <item name="colorAccent">@color/md_amber_A200</item>
+    </style>
+
+    <style name="TurtlySea" parent="DefaultTheme.Light">
+        <item name="colorMainGradientStart">#b2f9ff</item>
+        <item name="colorMainGradientEnd">#efebbe</item>
+
+        <item name="colorActionBar">#90f6ff</item>
+        <item name="colorTabBar">#e8e3a3</item>
+
+        <item name="colorAccent">@color/md_red_A100</item>
+    </style>
+
+    <style name="PixieFalls" parent="DefaultTheme.Light">
+        <item name="colorMainGradientStart">#fcd6e3</item>
+        <item name="colorMainGradientEnd">#aaf0ed</item>
+
+        <item name="colorActionBar">#fde6ee</item>
+        <item name="colorTabBar">#8debe7</item>
+
+        <item name="colorAccent">@color/md_red_A100</item>
+    </style>
+
+    <style name="WanderingDusk" parent="DefaultTheme">
+        <item name="colorMainGradientStart">#8e78ff</item>
+        <item name="colorMainGradientEnd">#fc7d7b</item>
+
+        <item name="colorActionBar">#8067ff</item>
+        <item name="colorTabBar">#fb5c5a</item>
+
+        <item name="colorAccent">@color/md_amber_A200</item>
+    </style>
+
+    <style name="SpottyGuy" parent="DefaultTheme.Darker">
+        <item name="colorMainGradientStart">#0D0D0D</item>
+        <item name="colorMainGradientEnd">#0D0D0D</item>
+
+        <item name="colorAccent">#1DB954</item>
+        <item name="colorItemListTextAction">?colorAccent</item>
+        <item name="colorTabIconSelected">?colorAccent</item>
+
+        <item name="colorActionBar">#171717</item>
+        <item name="colorTabBar">#171717</item>
+
     </style>
 
 
@@ -387,6 +431,19 @@
         <item name="colorChartGrid">@color/black_light_50</item>
         <item name="colorChartAxis">@color/black_light_50</item>
         <item name="colorChartText">@color/black_light_100</item>
+    </style>
+
+    <!-- Base Darker theme for dark list items -->
+    <style name="DefaultTheme.Darker" parent="DefaultTheme">
+        <item name="colorItemListBackground">#1F1F1F</item>
+        <item name="colorItemListText">#E6FFFFFF</item>
+        <item name="colorItemListTextAction">@color/md_amber_A100</item>
+        <item name="graph_stats_card_text_color">#B3FFFFFF</item>
+        <item name="graph_stats_card_text_color_faded">#99FFFFFF</item>
+        <item name="graph_stats_card_background">#1F1F1F</item>
+        <item name="graph_stats_card_background_alt">#171717</item>
+        <item name="graph_stats_card_background_faded">#171717</item>
+        <item name="graph_stats_card_divider">#0D0D0D</item>
     </style>
 
     <!--

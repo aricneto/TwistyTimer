@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.IdRes;
@@ -107,6 +108,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     GridView statsAverageLabelGridView;
     GridView statsOtherLabelGridView;
 
+    Drawable buttonDrawable;
+    Drawable buttonDrawableFaded;
+
 
     @BindView(R.id.stats_table_viewflipper)
         ViewFlipper statsTableViewFlipper;
@@ -185,6 +189,10 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         if (DEBUG_ME) Log.d(TAG, "onCreateView(savedInstanceState=" + savedInstanceState + ")");
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         mUnbinder = ButterKnife.bind(this, root);
+
+        // Drawables for the stats cards buttons
+        buttonDrawable = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background);
+        buttonDrawableFaded = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background_faded);
 
         // The color for the text in the legend and for the values along the chart's axes.
         final int chartTextColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartText);
@@ -275,6 +283,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsTabAverage.setOnClickListener(statTabClickListener);
         statsTabOther.setOnClickListener(statTabClickListener);
 
+        highlightStatTab(statsTabFavorite);
+        fadeStatTab(statsTabOther);
+        fadeStatTab(statsTabAverage);
 
         // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
         // statistics table will likely almost fill the screen. The automatic layout causes the
@@ -282,25 +293,22 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        root.post(new Runnable() {
-            @Override
-            public void run() {
-                if (container != null && lineChartView != null) {
-                    final LineChart.LayoutParams params = lineChartView.getLayoutParams();
-                    if (params != null) {
-                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            params.height = container.getHeight();
-                            lineChartView.setLayoutParams(params);
-                            lineChartView.requestLayout();
-                            statsContainerPager.requestLayout();
-                        } else {
-                            // On portrait mode, the graph should occupy about 50% of the view (arbitrarily chosen for aesthetic reasons)
-                            // leaving the rest for the stats card.
-                            params.height = (int) (container.getHeight() * 0.50f);
-                            lineChartView.setLayoutParams(params);
-                            lineChartView.requestLayout();
-                            statsContainerPager.requestLayout();
-                        }
+        root.post(() -> {
+            if (container != null && lineChartView != null) {
+                final LineChart.LayoutParams params = lineChartView.getLayoutParams();
+                if (params != null) {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        params.height = container.getHeight();
+                        lineChartView.setLayoutParams(params);
+                        lineChartView.requestLayout();
+                        statsContainerPager.requestLayout();
+                    } else {
+                        // On portrait mode, the graph should occupy about 50% of the view (arbitrarily chosen for aesthetic reasons)
+                        // leaving the rest for the stats card.
+                        params.height = (int) (container.getHeight() * 0.50f);
+                        lineChartView.setLayoutParams(params);
+                        lineChartView.requestLayout();
+                        statsContainerPager.requestLayout();
                     }
                 }
             }
@@ -407,13 +415,13 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
 
     private void highlightStatTab(TextView tab) {
         tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_text_color));
-        tab.setBackgroundResource(R.drawable.outline_background_card_button);
+        tab.setBackground(buttonDrawable);
     }
 
     private void fadeStatTab(TextView tab) {
         tab.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr
                 .graph_stats_card_text_color_faded));
-        tab.setBackgroundResource(R.drawable.outline_background_card_button_faded);
+        tab.setBackground(buttonDrawableFaded);
     }
 
     private View.OnClickListener statTabClickListener = new View.OnClickListener() {

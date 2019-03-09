@@ -57,8 +57,8 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         super(cursor);
         this.mContext = context;
         this.mFragmentManager = listFragment.getFragmentManager();
-        cardBackground = ContextCompat.getDrawable(mContext, R.drawable.no_stroke_card_smoother);
-        selectedCardBackground = ContextCompat.getDrawable(mContext, R.drawable.stroke_card_smoother);
+        cardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.no_stroke_card_smoother, R.attr.colorItemListBackground);
+        selectedCardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.stroke_card_smoother, R.attr.colorItemListBackground);
         mDateFormatSpec = context.getString(R.string.shortDateFormat);
     }
 
