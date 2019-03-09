@@ -9,13 +9,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
-        style="@style/BottomPanelListTitleTextStyle"
-        android:layout_width="match_parent"
+        style="@style/DialogTitleTextStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:text="@string/drawer_title_changeTheme"
-        app:drawableRightCompat="@drawable/ic_outline_palette_24px" />
+        android:text="@string/drawer_title_changeTheme" />
 
     <View
         android:id="@+id/divider01"
@@ -23,31 +21,6 @@
         android:layout_height="1dp"
         android:layout_below="@id/title"
         android:background="@color/black_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/divider01"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/outline_background_card_button"
-        android:clickable="true"
-        android:drawablePadding="8dp"
-        android:focusable="true"
-        android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingTop="0dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="0dp"
-        android:text="Button"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:drawableLeftCompat="@drawable/ic_category_add"
-        tools:visibility="visible" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"

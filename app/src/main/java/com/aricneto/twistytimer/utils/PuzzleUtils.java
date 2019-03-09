@@ -66,8 +66,8 @@ public class PuzzleUtils {
         // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
         switch (position) {
             default:
-            case  0: return TYPE_333;
-            case  1: return TYPE_222;
+            case  0: return TYPE_222;
+            case  1: return TYPE_333;
             case  2: return TYPE_444;
             case  3: return TYPE_555;
             case  4: return TYPE_666;
@@ -92,8 +92,8 @@ public class PuzzleUtils {
         // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
         switch (puzzleType) {
             default:
-            case TYPE_333:     return  0;
-            case TYPE_222:     return  1;
+            case TYPE_222:     return  0;
+            case TYPE_333:     return  1;
             case TYPE_444:     return  2;
             case TYPE_555:     return  3;
             case TYPE_666:     return  4;

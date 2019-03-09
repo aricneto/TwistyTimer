@@ -9,14 +9,12 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        style="@style/DialogTitleTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:gravity="center"
         android:text="@string/action_donate"
-        android:textColor="@color/black_text"
-        android:textSize="20sp" />
+        android:textColor="@color/black_text"/>
 
     <ImageView
         android:id="@+id/donation_guy"
@@ -36,8 +34,8 @@
         android:layout_margin="16dp"
         android:gravity="center"
         android:text="@string/donation_message"
-        android:background="@drawable/outline_background_card_warn_stroke"
-        android:textColor="@color/black_light_100"
+        android:background="@drawable/card_button_accent"
+        android:textColor="@color/md_blue_A700"
         android:padding="8dp"
         android:textSize="14sp"/>
 

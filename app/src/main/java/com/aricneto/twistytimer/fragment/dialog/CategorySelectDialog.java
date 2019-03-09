@@ -27,6 +27,7 @@ import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -66,6 +67,7 @@ public class CategorySelectDialog extends DialogFragment {
     private AdapterView.OnItemClickListener mItemClickListener;
     private AdapterView.OnItemLongClickListener mItemLongClickListener;
     private View.OnClickListener mOnClickListener;
+    private Context mContext;
 
     public static CategorySelectDialog newInstance(String currentPuzzle, String currentPuzzleSubtype, String currentTimerMode, TrainerScrambler.TrainerSubset currentSubset) {
         CategorySelectDialog dialog = new CategorySelectDialog();
@@ -83,6 +85,7 @@ public class CategorySelectDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_category_select, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        mContext = getContext();
 
         return view;
     }
@@ -118,129 +121,109 @@ public class CategorySelectDialog extends DialogFragment {
         updateList(dbHandler);
 
         // Create subtype
-        MaterialDialog createSubtypeDialog = new MaterialDialog.Builder(getContext())
+        MaterialDialog createSubtypeDialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                 .title(R.string.enter_type_name)
                 .inputRange(2, 32)
-                .input(R.string.enter_type_name, 0, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence input) {
-                        // add a single hidden solve with that category name to save it
-                        dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
-                        currentSubtype = input.toString();
-                        updateList(dbHandler);
+                .input(R.string.enter_type_name, 0, false, (materialDialog, input) -> {
+                    // add a single hidden solve with that category name to save it
+                    dbHandler.addSolve(new Solve(1, currentPuzzle, input.toString(), 0L, "", PuzzleUtils.PENALTY_HIDETIME, "", true));
+                    currentSubtype = input.toString();
+                    updateList(dbHandler);
 
-                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
-                        editor.apply();
-                        if (dialogListenerMessage != null)
-                            dialogListenerMessage.onUpdateDialog(currentSubtype);
-                    }
+                    editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
+                    editor.apply();
+                    if (dialogListenerMessage != null)
+                        dialogListenerMessage.onUpdateDialog(currentSubtype);
                 })
-                .build();
+                .build());
 
         Context context = getContext();
 
         // click listeners
         // select a subtype
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // A subtype was selected
-                currentSubtype = subtypeList.get(position);
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            // A subtype was selected
+            currentSubtype = subtypeList.get(position);
 
-                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
-                editor.apply();
-                dialogListenerMessage.onUpdateDialog(currentSubtype);
-                dismiss();
-            }
+            editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
+            editor.apply();
+            dialogListenerMessage.onUpdateDialog(currentSubtype);
+            dismiss();
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Create a popup menu for each entry
-                MenuBuilder menuBuilder = new MenuBuilder(context);
-                MenuInflater inflater = new MenuInflater(context);
+        listView.setOnItemLongClickListener((parent, view12, position, id) -> {
+            // Create a popup menu for each entry
+            MenuBuilder menuBuilder = new MenuBuilder(context);
+            MenuInflater inflater = new MenuInflater(context);
 
-                inflater.inflate(R.menu.menu_category_options, menuBuilder);
-                MenuPopupHelper popupHelper = new MenuPopupHelper(context, menuBuilder, view);
-                popupHelper.setForceShowIcon(true);
-                popupHelper.setGravity(Gravity.RIGHT);
+            inflater.inflate(R.menu.menu_category_options, menuBuilder);
+            MenuPopupHelper popupHelper = new MenuPopupHelper(context, menuBuilder, view12);
+            popupHelper.setForceShowIcon(true);
+            popupHelper.setGravity(Gravity.RIGHT);
 
-                menuBuilder.setCallback(new MenuBuilder.Callback() {
-                    @Override
-                    public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.rename:
-                                currentEditSubtype = subtypeList.get(position);
-                                //Rename subtype
-                                new MaterialDialog.Builder(getContext())
-                                        .title(R.string.enter_new_name_dialog)
-                                        .input("", "", false, new MaterialDialog.InputCallback() {
-                                            @Override
-                                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                                dbHandler.renameSubtype(currentPuzzle, currentEditSubtype, input.toString());
-                                                currentSubtype = input.toString();
-                                                updateList(dbHandler);
+            menuBuilder.setCallback(new MenuBuilder.Callback() {
+                @Override
+                public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.rename:
+                            currentEditSubtype = subtypeList.get(position);
+                            //Rename subtype
+                            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                                    .title(R.string.enter_new_name_dialog)
+                                    .input("", "", false, (dialog, input) -> {
+                                        dbHandler.renameSubtype(currentPuzzle, currentEditSubtype, input.toString());
+                                        currentSubtype = input.toString();
+                                        updateList(dbHandler);
 
-                                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
-                                                if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
-                                                    TrainerScrambler.renameCategory(currentSubset, currentEditSubtype, currentSubtype);
-                                                editor.apply();
-                                                dialogListenerMessage.onUpdateDialog(currentSubtype);
-                                            }
-                                        })
-                                        .inputRange(2, 32)
-                                        .positiveText(R.string.action_done)
-                                        .negativeText(R.string.action_cancel)
-                                        .show();
-                                break;
-                            case R.id.remove:
-                                currentEditSubtype = subtypeList.get(position);
-                                // Remove Subtype dialog
-                                new MaterialDialog.Builder(getContext())
-                                        .title(R.string.remove_subtype_confirmation)
-                                        .content(getString(R.string.remove_subtype_confirmation_content) + " \"" + currentEditSubtype + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
-                                        .positiveText(R.string.action_remove)
-                                        .negativeText(R.string.action_cancel)
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                                dbHandler.deleteSubtype(currentPuzzle, currentEditSubtype);
-                                                // After removing, change current subtype to first of list, if none exist, create "Normal" subtype
-                                                if (subtypeList.size() > 1) {
-                                                    currentSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
-                                                } else {
-                                                    currentSubtype = "Normal";
-                                                }
-                                                updateList(dbHandler);
+                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
+                                        if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
+                                            TrainerScrambler.renameCategory(currentSubset, currentEditSubtype, currentSubtype);
+                                        editor.apply();
+                                        dialogListenerMessage.onUpdateDialog(currentSubtype);
+                                    })
+                                    .inputRange(2, 32)
+                                    .positiveText(R.string.action_done)
+                                    .negativeText(R.string.action_cancel)
+                                    .build());
+                            break;
+                        case R.id.remove:
+                            currentEditSubtype = subtypeList.get(position);
+                            // Remove Subtype dialog
+                            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                                    .title(R.string.remove_subtype_confirmation)
+                                    .content(getString(R.string.remove_subtype_confirmation_content) + " \"" + currentEditSubtype + "\"?\n" + getString(R.string.remove_subtype_confirmation_content_continuation))
+                                    .positiveText(R.string.action_remove)
+                                    .negativeText(R.string.action_cancel)
+                                    .onPositive((dialog, which) -> {
+                                        dbHandler.deleteSubtype(currentPuzzle, currentEditSubtype);
+                                        // After removing, change current subtype to first of list, if none exist, create "Normal" subtype
+                                        if (subtypeList.size() > 1) {
+                                            currentSubtype = dbHandler.getAllSubtypesFromType(currentPuzzle).get(0);
+                                        } else {
+                                            currentSubtype = "Normal";
+                                        }
+                                        updateList(dbHandler);
 
-                                                editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
-                                                editor.apply();
-                                                dialogListenerMessage.onUpdateDialog(currentSubtype);
-                                            }
-                                        })
-                                        .show();
-                                break;
-                        }
-                        return false;
+                                        editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
+                                        editor.apply();
+                                        dialogListenerMessage.onUpdateDialog(currentSubtype);
+                                    })
+                                    .build());
+                            break;
                     }
+                    return false;
+                }
 
-                    @Override
-                    public void onMenuModeChange(MenuBuilder menu) {
+                @Override
+                public void onMenuModeChange(MenuBuilder menu) {
 
-                    }
-                });
+                }
+            });
 
-                popupHelper.show();
-                return true;
-            }
+            popupHelper.show();
+            return true;
         });
-        addCategoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createSubtypeDialog.show();
-            }
-        });
+        addCategoryButton.setOnClickListener(v -> createSubtypeDialog.show());
     }
 
     private void updateList(DatabaseHandler dbHandler) {

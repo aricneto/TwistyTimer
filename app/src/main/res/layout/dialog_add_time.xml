@@ -12,25 +12,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nameText"
+            style="@style/DialogTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:drawablePadding="16dp"
-            android:text="@string/add_time"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:drawableLeftCompat="@drawable/ic_outline_add_18px" />
-
-        <include
-            android:id="@+id/divider01"
-            layout="@layout/view_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/nameText"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp" />
+            android:text="@string/add_time" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/check_scramble"
@@ -49,7 +35,7 @@
             android:id="@+id/edit_text_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider01"
+            android:layout_below="@id/nameText"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:inputType="number"
@@ -74,12 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:alpha="0.70"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
             app:srcCompat="@drawable/ic_outline_done_outline_16px" />

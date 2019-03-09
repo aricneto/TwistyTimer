@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.util.HashMap;
 
@@ -43,6 +45,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class AlgDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
+    private Context mContext;
 
     @BindView(R.id.editButton)     ImageView           editButton;
     @BindView(R.id.progressButton) ImageView           progressButton;
@@ -64,21 +67,18 @@ public class AlgDialog extends DialogFragment {
 
             switch (view.getId()) {
                 case R.id.editButton:
-                    MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                    MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.edit_algorithm)
-                            .input("", algorithm.getAlgs(), new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
-                                    algorithm.setAlgs(input.toString());
-                                    dbHandler.updateAlgorithmAlg(mId, input.toString());
-                                    algText.setText(input.toString());
-                                    updateList();
-                                }
+                            .input("", algorithm.getAlgs(), (dialog1, input) -> {
+                                algorithm.setAlgs(input.toString());
+                                dbHandler.updateAlgorithmAlg(mId, input.toString());
+                                algText.setText(input.toString());
+                                updateList();
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                             .positiveText(R.string.action_done)
                             .negativeText(R.string.action_cancel)
-                            .build();
+                            .build());
                     EditText editText = dialog.getInputEditText();
                     if (editText != null) {
                         editText.setSingleLine(false);
@@ -90,41 +90,35 @@ public class AlgDialog extends DialogFragment {
                     break;
 
                 case R.id.progressButton:
-                    final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(getContext()).inflate(R.layout.dialog_progress, null);
+                    final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(mContext).inflate(R.layout.dialog_progress, null);
                     seekBar.setProgress(algorithm.getProgress());
-                    new MaterialDialog.Builder(getContext())
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.dialog_set_progress)
                             .customView(seekBar, false)
                             .positiveText(R.string.action_update)
                             .negativeText(R.string.action_cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    int seekProgress = seekBar.getProgress();
-                                    algorithm.setProgress(seekProgress);
-                                    dbHandler.updateAlgorithmProgress(mId, seekProgress);
-                                    progressBar.setProgress(seekProgress);
-                                    updateList();
-                                }
+                            .onPositive((dialog12, which) -> {
+                                int seekProgress = seekBar.getProgress();
+                                algorithm.setProgress(seekProgress);
+                                dbHandler.updateAlgorithmProgress(mId, seekProgress);
+                                progressBar.setProgress(seekProgress);
+                                updateList();
                             })
-                            .show();
+                            .build());
                     break;
 
                 case R.id.revertButton:
-                    new MaterialDialog.Builder(getContext())
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.dialog_revert_title_confirmation)
                             .content(R.string.dialog_revert_content_confirmation)
                             .positiveText(R.string.action_reset)
                             .negativeText(R.string.action_cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    algorithm.setAlgs(AlgUtils.getDefaultAlgs(algorithm.getSubset(), algorithm.getName()));
-                                    dbHandler.updateAlgorithmAlg(mId, algorithm.getAlgs());
-                                    algText.setText(algorithm.getAlgs());
-                                }
+                            .onPositive((dialog13, which) -> {
+                                algorithm.setAlgs(AlgUtils.getDefaultAlgs(algorithm.getSubset(), algorithm.getName()));
+                                dbHandler.updateAlgorithmAlg(mId, algorithm.getAlgs());
+                                algText.setText(algorithm.getAlgs());
                             })
-                            .show();
+                            .build());
                     break;
             }
         }
@@ -143,6 +137,7 @@ public class AlgDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_alg_details, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
+        mContext = getContext();
         mId = getArguments().getLong("id");
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

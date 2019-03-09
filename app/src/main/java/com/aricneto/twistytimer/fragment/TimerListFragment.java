@@ -6,16 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
@@ -28,10 +24,8 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,11 +37,8 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
-import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
-import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
@@ -55,8 +46,6 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
-
-import org.joda.time.DateTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,7 +117,7 @@ public class TimerListFragment extends BaseFragment
                     final Spannable text = new SpannableString(getString(R.string.move_solves_to_history_content) + "  ");
                     text.setSpan(ThemeUtils.getIconSpan(mContext, 0.6f), text.length() - 1, text.length(), 0);
 
-                    new MaterialDialog.Builder(mContext)
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.move_solves_to_history)
                             .content(text)
                             .positiveText(R.string.action_move)
@@ -143,10 +132,10 @@ public class TimerListFragment extends BaseFragment
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
                                 }
                             })
-                            .show();
+                            .build());
                     break;
                 case R.id.clear_button:
-                    new MaterialDialog.Builder(mContext)
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.remove_session_title)
                             .content(R.string.remove_session_confirmation_content)
                             .positiveText(R.string.action_remove)
@@ -159,7 +148,7 @@ public class TimerListFragment extends BaseFragment
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                                 }
                             })
-                            .show();
+                            .build());
                     break;
                 case R.id.more_button:
                     PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
@@ -186,7 +175,7 @@ public class TimerListFragment extends BaseFragment
                     popupMenu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
                             case R.id.unarchive:
-                                new MaterialDialog.Builder(mContext)
+                                ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                                         .title(R.string.list_options_item_from_history)
                                         .content(getString(R.string.unarchive_dialog_summary,
                                                            TwistyTimer.getDBHandler()
@@ -199,7 +188,7 @@ public class TimerListFragment extends BaseFragment
                                         })
                                         .positiveText(R.string.list_options_item_from_history)
                                         .negativeText(R.string.action_cancel)
-                                        .show();
+                                        .build());
                                 break;
                             case R.id.share:
                                 shareMenu.show();

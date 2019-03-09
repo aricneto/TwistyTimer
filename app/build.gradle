@@ -12,7 +12,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 41
-        versionName "4.2.6"
+        versionName "4.3.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -82,7 +82,7 @@ dependencies {
     // LicensesDialog
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     // Inapp Billing
-    implementation 'com.anjlab.android.iab.v3:library:1.0.36'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
     // Material color picker
     implementation 'com.pavelsikun:vintage-chroma:1.5'
 

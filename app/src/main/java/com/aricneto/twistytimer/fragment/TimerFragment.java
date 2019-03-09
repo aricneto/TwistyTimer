@@ -58,6 +58,7 @@ import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetDetailDialog;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
@@ -336,25 +337,21 @@ public class                                                                    
 
             switch (view.getId()) {
                 case R.id.qa_remove:
-                    new MaterialDialog.Builder(getContext())
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .content(R.string.delete_dialog_confirmation_title)
                             .positiveText(R.string.delete_dialog_confirmation_button)
                             .negativeText(R.string.delete_dialog_cancel_button)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                                    @NonNull DialogAction which) {
-                                    if (currentSolve != null) { // FIXME: if solve is null, it should just hide the buttons
-                                        dbHandler.deleteSolve(currentSolve);
-                                        if (!isRunning)
-                                            chronometer.reset(); // Reset to "0.00".
-                                        congratsText.setVisibility(View.GONE);
-                                        broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
-                                    }
-                                    hideButtons(true, true);
+                            .onPositive((dialog, which) -> {
+                                if (currentSolve != null) { // FIXME: if solve is null, it should just hide the buttons
+                                    dbHandler.deleteSolve(currentSolve);
+                                    if (!isRunning)
+                                        chronometer.reset(); // Reset to "0.00".
+                                    congratsText.setVisibility(View.GONE);
+                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                                 }
+                                hideButtons(true, true);
                             })
-                            .show();
+                            .build());
                     break;
                 case R.id.qa_dnf:
                     currentSolve = PuzzleUtils.applyPenalty(currentSolve, PENALTY_DNF);
@@ -373,24 +370,20 @@ public class                                                                    
                     hideButtons(true, false);
                     break;
                 case R.id.qa_comment:
-                    MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                    MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.add_comment)
-                            .input("", "", new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(@NonNull MaterialDialog dialog,
-                                                    CharSequence input) {
-                                    currentSolve.setComment(input.toString());
-                                    dbHandler.updateSolve(currentSolve);
+                            .input("", "", (dialog12, input) -> {
+                                currentSolve.setComment(input.toString());
+                                dbHandler.updateSolve(currentSolve);
 
-                                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_COMMENT_ADDED);
-                                    Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
-                                    hideButtons(false, true);
-                                }
+                                broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_COMMENT_ADDED);
+                                Toast.makeText(mContext, getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
+                                hideButtons(false, true);
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                             .positiveText(R.string.action_done)
                             .negativeText(R.string.action_cancel)
-                            .build();
+                            .build());
                     EditText editText = dialog.getInputEditText();
                     if (editText != null) {
                         editText.setSingleLine(false);
@@ -412,26 +405,22 @@ public class                                                                    
                     broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
                     break;
                 case R.id.scramble_button_edit:
-                    MaterialDialog editScrambleDialog = new MaterialDialog.Builder(getContext())
+                    MaterialDialog editScrambleDialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(getContext())
                             .title(R.string.edit_scramble)
-                            .input("", "", new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(@NonNull MaterialDialog dialog,
-                                                    CharSequence input) {
+                            .input("", "", (dialog1, input) -> {
 
-                                    setScramble(input.toString());
+                                setScramble(input.toString());
 
-                                    // The hint solver will crash if you give it invalid scrambles,
-                                    // so we shouldn't calculate hints for custom scrambles.
-                                    // TODO: We can use the scramble image generator (which has a scramble validity checker) to check a scramble before calling a hint
-                                    canShowHint = false;
-                                    hideButtons(true, true);
-                                }
+                                // The hint solver will crash if you give it invalid scrambles,
+                                // so we shouldn't calculate hints for custom scrambles.
+                                // TODO: We can use the scramble image generator (which has a scramble validity checker) to check a scramble before calling a hint
+                                canShowHint = false;
+                                hideButtons(true, true);
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                             .positiveText(R.string.action_done)
                             .negativeText(R.string.action_cancel)
-                            .build();
+                            .build());
                     EditText scrambleEditText = editScrambleDialog.getInputEditText();
                     if (scrambleEditText != null) {
                         scrambleEditText.setLines(3);
@@ -599,6 +588,14 @@ public class                                                                    
                 inspectionVibrationAlertEnabled = true;
                 inspectionSoundAlertEnabled = true;
             }
+        }
+
+        if (!scrambleEnabled) {
+            // CongratsText is by default aligned to below the scramble box. If it's missing, we have
+            // to add an extra margin to account for the title header
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
+            params.topMargin = ThemeUtils.dpToPix(mContext, 70); // WARNING: this has to be the same as attr/actionBarPadding
+            congratsText.requestLayout();
         }
 
         if (!scrambleBackgroundEnabled) {

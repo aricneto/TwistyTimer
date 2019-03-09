@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +30,7 @@ import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.TTIntent;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import org.joda.time.DateTime;
 
@@ -104,48 +106,42 @@ public class TimeDialog extends DialogFragment {
                     popupMenu.show();
                     break;
                 case R.id.editButton:
-                    new MaterialDialog.Builder(getContext())
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.select_penalty)
                             .items(R.array.array_penalties)
-                            .itemsCallbackSingleChoice(solve.getPenalty(), new MaterialDialog.ListCallbackSingleChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                    switch (which) {
-                                        case 0: // No penalty
-                                            solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.NO_PENALTY);
-                                            break;
-                                        case 1: // +2
-                                            solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_PLUSTWO);
-                                            break;
-                                        case 2: // DNF
-                                            solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
-                                            break;
-                                    }
-                                    dbHandler.updateSolve(solve);
-                                    // dismiss dialog
-                                    updateList();
-                                    return true;
+                            .itemsCallbackSingleChoice(solve.getPenalty(), (dialog, itemView, which, text) -> {
+                                switch (which) {
+                                    case 0: // No penalty
+                                        solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.NO_PENALTY);
+                                        break;
+                                    case 1: // +2
+                                        solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_PLUSTWO);
+                                        break;
+                                    case 2: // DNF
+                                        solve = PuzzleUtils.applyPenalty(solve, PuzzleUtils.PENALTY_DNF);
+                                        break;
                                 }
+                                dbHandler.updateSolve(solve);
+                                // dismiss dialog
+                                updateList();
+                                return true;
                             })
                             .negativeText(R.string.action_cancel)
-                            .show();
+                            .build());
                     break;
                 case R.id.commentButton:
-                    MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                    MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.edit_comment)
-                            .input("", solve.getComment(), new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
-                                    solve.setComment(input.toString());
-                                    dbHandler.updateSolve(solve);
-                                    Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
-                                    updateList();
-                                }
+                            .input("", solve.getComment(), (dialog1, input) -> {
+                                solve.setComment(input.toString());
+                                dbHandler.updateSolve(solve);
+                                Toast.makeText(getContext(), getString(R.string.added_comment), Toast.LENGTH_SHORT).show();
+                                updateList();
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                             .positiveText(R.string.action_done)
                             .negativeText(R.string.action_cancel)
-                            .build();
+                            .build());
                     EditText editText = dialog.getInputEditText();
                     if (editText != null) {
                         editText.setSingleLine(false);
@@ -157,16 +153,18 @@ public class TimeDialog extends DialogFragment {
                     break;
                 case R.id.scrambleText:
                     ScrambleGenerator generator = new ScrambleGenerator(solve.getPuzzle());
-                    MaterialDialog scrambleDialog = new MaterialDialog.Builder(getContext())
+                    MaterialDialog scrambleDialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .customView(R.layout.item_scramble_img, false)
-                            .show();
+                            .build());
+                    scrambleDialog.show();
 
-                    ImageView imageView = (ImageView) scrambleDialog.getView().findViewById(R.id.scramble_img);
+                    ImageView imageView = scrambleDialog.getView().findViewById(R.id.scramble_img);
                     imageView.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
                     break;
             }
         }
     };
+    private Context mContext;
 
     public static TimeDialog newInstance(long id) {
         TimeDialog timeDialog = new TimeDialog();
@@ -181,6 +179,7 @@ public class TimeDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_time_details, container);
         //this.setEnterTransition(R.anim.activity_slide_in);
         mUnbinder = ButterKnife.bind(this, dialogView);
+        mContext = getContext();
 
         mId = getArguments().getLong("id");
 

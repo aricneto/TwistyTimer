@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.utils.AnimUtils;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.io.File;
 
@@ -59,6 +61,7 @@ public class ExportImportDialog extends DialogFragment
      * The tag for the {@code FileChooserDialog} called by this fragment
      */
     public static final String FRAG_TAG_EXIM_FILECHOOSER = "exim_file_chooser";
+    private Context mContext;
 
 
     @Override
@@ -182,21 +185,15 @@ public class ExportImportDialog extends DialogFragment
                     // from that puzzle chooser is received ("onPuzzleTypeSelected"), this dialog
                     // will exit and hand control back to the activity to perform the import.
                     mFileFormat = EXIM_FORMAT_EXTERNAL;
-                    new MaterialDialog.Builder(getContext())
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.import_external_title)
                             .content(R.string.import_external_content_first)
                             .positiveText(R.string.action_ok)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                                    @NonNull DialogAction which) {
-                                    new FileChooserDialog.Builder(getExImActivity())
-                                            .tag(FRAG_TAG_EXIM_FILECHOOSER)
-                                            .extensionsFilter(".txt")
-                                            .build().show(getFragmentManager());
-                                }
-                            })
-                            .show();
+                            .onPositive((dialog, which) -> new FileChooserDialog.Builder(getExImActivity())
+                                    .tag(FRAG_TAG_EXIM_FILECHOOSER)
+                                    .extensionsFilter(".txt")
+                                    .build().show(getFragmentManager()))
+                            .build());
                     break;
 
                 case R.id.export_button:
@@ -217,6 +214,7 @@ public class ExportImportDialog extends DialogFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View dialogView = inflater.inflate(R.layout.dialog_export_import, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
+        mContext = getContext();
 
         exportBackup.setOnClickListener(clickListener);
         exportExternal.setOnClickListener(clickListener);
@@ -292,11 +290,11 @@ public class ExportImportDialog extends DialogFragment
             }
         } else {
             // TODO: ADD HELP
-            new MaterialDialog.Builder(getActivity())
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(getActivity())
                 .title(R.string.file_selection_error_title)
                 .content(R.string.file_selection_error_content, ".txt")
                 .positiveText(R.string.action_ok)
-                .show();
+                .build());
             dismiss();
         }
     }

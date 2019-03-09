@@ -16,6 +16,7 @@ import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
+import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.Prefs;
@@ -86,7 +87,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
-public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFragmentListener {
+public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFragmentListener, DialogListenerMessage {
     /**
      * Flag to enable debug logging for this class.
      */
@@ -320,7 +321,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         }
     };
     private BottomSheetTrainerDialog bottomSheetTrainerDialog;
-    private BottomSheetSpinnerDialog puzzleSelectDialog;
+    private PuzzleSelectDialog puzzleSelectDialog;
     private Context mContext;
     private FragmentManager mFragmentManager;
 
@@ -642,62 +643,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private void handleHeaderSpinner() {
 
-        // Create item arrays
-        String[] titles = {
-                getString(R.string.cube_333),
-                getString(R.string.cube_222),
-                getString(R.string.cube_444),
-                getString(R.string.cube_555),
-                getString(R.string.cube_666),
-                getString(R.string.cube_777),
-                getString(R.string.cube_clock),
-                getString(R.string.cube_mega),
-                getString(R.string.cube_pyra),
-                getString(R.string.cube_skewb),
-                getString(R.string.cube_sq1)
-        };
-
-        int[] icons = {
-                R.drawable.ic_outline_grid_on_24px,
-                R.drawable.ic_outline_grid_on_2_24px,
-                R.drawable.ic_outline_looks_4_24px,
-                R.drawable.ic_outline_looks_5_24px,
-                R.drawable.ic_outline_filter_6_24px,
-                R.drawable.ic_outline_filter_7_24px,
-                R.drawable.ic_outline_radio_button_unchecked_24px,
-                R.drawable.ic_outline_megaminx,
-                R.drawable.ic_pyra,
-                R.drawable.ic_outline_crop_free_24px,
-                R.drawable.ic_outline_looks_one_24px,
-        };
-
         // Setup spinner dialog and adapter
-        puzzleSelectDialog = BottomSheetSpinnerDialog.newInstance();
-        BottomSheetSpinnerAdapter bottomSheetSpinnerAdapter = new BottomSheetSpinnerAdapter(mContext, titles, icons);
-
-        puzzleSelectDialog.setTitle(getString(R.string.dialog_select_puzzle), R.drawable.ic_outline_casino_24px);
-
-        puzzleSelectDialog.setListAdapter(bottomSheetSpinnerAdapter);
-
-        puzzleSelectDialog.setListClickListener((parent, view, position, id) -> {
-            if (DEBUG_ME) Log.d(TAG, "onItemSelected(position=" + position + ")");
-
-            puzzleSelectDialog.dismiss();
-
-            currentPuzzle = PuzzleUtils.getPuzzleInPosition(position);
-            Prefs.edit().putString(R.string.pk_last_used_puzzle, currentPuzzle).apply();
-            updateCurrentCategory();
-            viewPager.setAdapter(viewPagerAdapter);
-            viewPager.setCurrentItem(currentPage);
-
-            // update titles
-            updatePuzzleSpinnerHeader();
-
-            handleStatisticsLoader();
-        });
+        puzzleSelectDialog = PuzzleSelectDialog.newInstance();
+        puzzleSelectDialog.setDialogListener(this);
 
         bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
-
 
         // Setup action bar click listener
         puzzleSpinnerLayout.setOnClickListener(v -> {
@@ -709,6 +659,20 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
         updatePuzzleSpinnerHeader();
 
+    }
+
+    // A new puzzle has been selected
+    @Override
+    public void onUpdateDialog(String text) {
+        currentPuzzle = text;
+        Prefs.edit().putString(R.string.pk_last_used_puzzle, currentPuzzle).apply();
+        updateCurrentCategory();
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setCurrentItem(currentPage);
+
+        //// update titles
+        updatePuzzleSpinnerHeader();
+        handleStatisticsLoader();
     }
 
     protected class NavigationAdapter extends CacheFragmentStatePagerAdapter {

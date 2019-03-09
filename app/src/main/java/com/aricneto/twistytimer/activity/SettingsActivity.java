@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.aricneto.twistytimer.fragment.dialog.LocaleSelectDialog;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import butterknife.BindView;
@@ -119,6 +121,8 @@ public class SettingsActivity extends AppCompatActivity {
         // Stores the main PreferenceScreen
         private PreferenceScreen mainScreen;
 
+        Context mContext;
+
         private int inspectionDuration;
 
         private final androidx.preference.Preference.OnPreferenceClickListener clickListener
@@ -143,11 +147,11 @@ public class SettingsActivity extends AppCompatActivity {
 
                     case R.string.pk_show_scramble_x_cross_hints:
                         if (Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false)) {
-                            new MaterialDialog.Builder(getActivity())
+                            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                                     .title(R.string.warning)
                                     .content(R.string.showHintsXCrossSummary)
                                     .positiveText(R.string.action_ok)
-                                    .show();
+                                    .build());
                         }
                         break;
 
@@ -181,11 +185,11 @@ public class SettingsActivity extends AppCompatActivity {
 
                     case R.string.pk_advanced_timer_settings_enabled:
                         if (Prefs.getBoolean(R.string.pk_advanced_timer_settings_enabled, false)) {
-                            new MaterialDialog.Builder(getActivity())
+                            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                                     .title(R.string.warning)
                                     .content(R.string.advanced_pref_summary)
                                     .positiveText(R.string.action_ok)
-                                    .show();
+                                    .build());
                         }
                         break;
                 }
@@ -198,6 +202,8 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
             super.onCreate(savedInstanceState);
+
+            mContext = getContext();
         }
 
         @Override
@@ -227,6 +233,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
+        @SuppressLint("StringFormatInvalid")
         private void updateInspectionAlertText() {
             inspectionDuration = Prefs.getInt(R.string.pk_inspection_time, 15);
             findPreference(getString(R.string.pk_inspection_alert_enabled))
@@ -260,7 +267,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void createNumberDialog(@StringRes int title, final int prefKeyResID) {
-            new MaterialDialog.Builder(getActivity())
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                     .title(title)
                     .input("", String.valueOf(Prefs.getInt(prefKeyResID, 15)),
                             new MaterialDialog.InputCallback() {
@@ -295,7 +302,7 @@ public class SettingsActivity extends AppCompatActivity {
                             updateInspectionAlertText();
                         }
                     })
-                    .show();
+                    .build());
         }
 
         private void createSeekTextSizeDialog(
@@ -331,7 +338,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            new MaterialDialog.Builder(getActivity())
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                     .customView(dialogView, true)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
@@ -354,7 +361,7 @@ public class SettingsActivity extends AppCompatActivity {
                             Prefs.edit().putInt(prefKeyResID, 100).apply();
                         }
                     })
-                    .show();
+                    .build());
         }
 
         private void createImageSeekDialog(final int prefKeyResID, @StringRes int title) {
@@ -392,7 +399,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            new MaterialDialog.Builder(getActivity())
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                     .customView(dialogView, true)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
@@ -415,7 +422,7 @@ public class SettingsActivity extends AppCompatActivity {
                             Prefs.edit().putInt(prefKeyResID, 100).apply();
                         }
                     })
-                    .show();
+                    .build());
         }
     }
 }

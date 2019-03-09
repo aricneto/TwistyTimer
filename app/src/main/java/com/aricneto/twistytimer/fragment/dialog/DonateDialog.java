@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
+import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 
@@ -87,19 +88,19 @@ public class DonateDialog extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> donationTiers = new ArrayList<>(
-                Arrays.asList("donation_tier1", "donation_tier2", "donation_tier3", "donation_tier4", "donation_tier5"));
-        List<SkuDetails> tiers = bp.getPurchaseListingDetails(donationTiers);
-        //SkuDetails tier = bp.getPurchaseListingDetails("donation_tier5");
+        // App billing is only able to fetch these details on a signed release version,
+        // so ignore it on debug versions
+        if (!BuildConfig.DEBUG) {
+            ArrayList<String> donationTiers = new ArrayList<>(
+                    Arrays.asList("donation_tier1", "donation_tier2", "donation_tier3", "donation_tier4", "donation_tier5"));
+            List<SkuDetails> tiers = bp.getPurchaseListingDetails(donationTiers);
 
-        //new Handler().postDelayed(() -> tier5.setText(tier.currency + " " + String.valueOf(tier.priceValue)), 1000);
-
-
-        tier5.setText(tiers.get(4).currency + " " + String.valueOf(tiers.get(4).priceValue));
-        tier4.setText(tiers.get(3).currency + " " + String.valueOf(tiers.get(3).priceValue));
-        tier3.setText(tiers.get(2).currency + " " + String.valueOf(tiers.get(2).priceValue));
-        tier2.setText(tiers.get(1).currency + " " + String.valueOf(tiers.get(1).priceValue));
-        tier1.setText(tiers.get(0).currency + " " + String.valueOf(tiers.get(0).priceValue));
+            tier5.setText(tiers.get(4).currency + " " + String.valueOf(tiers.get(4).priceValue));
+            tier4.setText(tiers.get(3).currency + " " + String.valueOf(tiers.get(3).priceValue));
+            tier3.setText(tiers.get(2).currency + " " + String.valueOf(tiers.get(2).priceValue));
+            tier2.setText(tiers.get(1).currency + " " + String.valueOf(tiers.get(1).priceValue));
+            tier1.setText(tiers.get(0).currency + " " + String.valueOf(tiers.get(0).priceValue));
+        }
     }
 
     @Override

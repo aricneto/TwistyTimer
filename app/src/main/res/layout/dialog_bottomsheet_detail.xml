@@ -15,12 +15,6 @@
         android:text="@string/dialog_scramble_details"
         app:drawableRightCompat="@drawable/ic_outline_casino_24px" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/black_divider" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -47,12 +41,6 @@
                 android:textColor="#000"
                 android:textSize="20sp"
                 tools:text="F' U2 F2 D2 U2 L2 B R2 U2 B L B' U' L' F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B F' U2 F2 D2 U2 L2 B " />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="0dp"
-                android:background="@color/black_divider" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/hint_title"

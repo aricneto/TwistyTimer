@@ -19,6 +19,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Theme;
 
@@ -292,5 +293,34 @@ public final class ThemeUtils {
 
     public static int spToPx(float sp, Context context) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * afollestad's MaterialDialog library only allows corner round on versions >2.0.0
+     * However, it's only available in Kotlin, and rewriting the app to use Kotlin would be a major
+     * task, so this function does a workaround to get dialog corner rounding working.
+     *
+     * Rounds and returns the dialog.
+     *
+     * @param context The dialog context
+     * @param dialog The dialog to be rounded
+     */
+    public static MaterialDialog roundDialog(Context context, MaterialDialog dialog) {
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.outline_background_card_smoother));
+        return dialog;
+    }
+
+    /**
+     * afollestad's MaterialDialog library only allows corner round on versions >2.0.0
+     * However, it's only available in Kotlin, and rewriting the app to use Kotlin would be a major
+     * task, so this function does a workaround to get dialog corner rounding working.
+     *
+     * Rounds and shows the dialog.
+     *
+     * @param context The dialog context
+     * @param dialog The dialog to be rounded
+     */
+    public static void roundAndShowDialog(Context context, MaterialDialog dialog) {
+        roundDialog(context, dialog).show();
     }
 }

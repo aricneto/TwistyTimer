@@ -161,6 +161,9 @@ public class MainActivity extends AppCompatActivity
 
     private Drawer          mDrawer;
 
+    // True if billing is initialized
+    private boolean readyToPurchase = false;
+
     /**
      * Sets drawer lock mode
      * {@code DrawerLayout.LOCK_MODE_LOCKED_CLOSED} for force closed and
@@ -454,7 +457,7 @@ public class MainActivity extends AppCompatActivity
                                         MainActivity.this,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                                    new MaterialDialog.Builder(MainActivity.this)
+                                    ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
                                         .content(R.string.permission_denied_explanation)
                                         .positiveText(R.string.action_ok)
                                         .negativeText(R.string.action_cancel)
@@ -468,7 +471,7 @@ public class MainActivity extends AppCompatActivity
                                                     STORAGE_PERMISSION_CODE);
                                             }
                                         })
-                                        .show();
+                                        .build());
 
                                 } else {
                                     ActivityCompat.requestPermissions(MainActivity.this,
@@ -503,7 +506,7 @@ public class MainActivity extends AppCompatActivity
                             break;
 
                         case DONATE_ID:
-                            if (BillingProcessor.isIabServiceAvailable(MainActivity.this))
+                            if (readyToPurchase && BillingProcessor.isIabServiceAvailable(MainActivity.this))
                                 DonateDialog.newInstance()
                                         .show(fragmentManager, "donate_dialog");
                             else
@@ -549,6 +552,7 @@ public class MainActivity extends AppCompatActivity
         /*
          * Called when BillingProcessor was initialized and it's ready to purchase
          */
+        readyToPurchase = true;
     }
 
     @Override
@@ -812,11 +816,12 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new MaterialDialog.Builder(mContext)
+            mProgressDialog = ThemeUtils.roundDialog(mContext, new  MaterialDialog.Builder(mContext)
                 .content(R.string.export_progress_title)
                 .progress(false, 0, true)
                 .cancelable(false)
-                .show();
+                .build());
+            mProgressDialog.show();
             super.onPreExecute();
         }
 
@@ -990,11 +995,12 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new MaterialDialog.Builder(mContext)
+            mProgressDialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                 .content(R.string.import_progress_title)
                 .progress(false, 0, true)
                 .cancelable(false)
-                .show();
+                .build());
+            mProgressDialog.show();
         }
 
         @Override

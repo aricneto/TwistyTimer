@@ -63,11 +63,6 @@
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
-        <item name="md_positive_color">@color/md_red_A400</item>
-        <item name="md_neutral_color">@color/md_purple_A400</item>
-
-        <item name="md_negative_color">@color/black_secondary_icon</item>
-        <item name="md_widget_color">@color/accentDarkColor</item>
 
         <!--
         The colors used for the lines on the graph. These are drawn against a background that is
@@ -98,6 +93,18 @@
         <item name="graph_stats_card_background_faded">#F0F0F0</item>
         <item name="graph_stats_card_text_color_faded">#74000000</item>
         <item name="graph_stats_card_text_color">#b2000000</item>
+
+
+        <!-- Material dialog theming -->
+        <item name="md_title_gravity">center</item>
+        <item name="md_medium_font">Quicksand_Bold.ttf</item>
+        <item name="md_regular_font">Quicksand_Medium.ttf</item>
+
+        <item name="md_positive_color">@color/md_blue_A700</item>
+        <item name="md_neutral_color">@color/md_red_A200</item>
+        <item name="md_negative_color">@color/black_secondary_icon</item>
+        <item name="md_widget_color">@color/accentDarkColor</item>
+
     </style>
 
     <style name="BaseDefaultTheme.Launcher">
@@ -111,7 +118,7 @@
         <item name="colorAccent">@color/md_blue_A700</item>
         <item name="android:fontFamily">@font/quicksand_medium</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
-        <item name="md_positive_color">@color/md_teal_A400</item>
+        <item name="md_positive_color">@color/md_blue_A700</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="android:navigationBarColor" tools:targetApi="21">@color/md_white_1000</item>
@@ -461,6 +468,16 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#000</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DialogTitleTextStyle">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="BottomPanelListTitleTextStyle">

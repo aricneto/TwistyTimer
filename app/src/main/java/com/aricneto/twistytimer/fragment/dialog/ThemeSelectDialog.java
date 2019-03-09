@@ -18,7 +18,6 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
-import androidx.annotation.AttrRes;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -51,7 +50,7 @@ public class ThemeSelectDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View dialogView = inflater.inflate(R.layout.dialog_bottomsheet_theme_select, container);
+        View dialogView = inflater.inflate(R.layout.dialog_theme_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
         mContext = getContext();

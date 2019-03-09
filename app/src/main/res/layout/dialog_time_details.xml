@@ -87,7 +87,6 @@
             app:drawableLeftCompat="@drawable/ic_outline_casino_18px"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
-            android:textColor="@color/md_blue_500"
             android:textSize="14sp"
             tools:text="D2 U' R2 U2 R2 F2 U' B2 U' F2 U' R' B L D B' U' R U' R2 F U'" />
 
@@ -105,13 +104,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
+
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_flag_18px" />
 
         <ImageView
@@ -119,12 +115,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/editButton"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="8dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_insert_comment_18px" />
 
         <ImageView
@@ -133,12 +127,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="8dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_more_horiz_18px" />
 
 

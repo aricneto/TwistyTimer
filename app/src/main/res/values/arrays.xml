@@ -9,8 +9,8 @@
     </string-array>
 
     <string-array name="puzzles">
-        <item>@string/cube_333</item>
         <item>@string/cube_222</item>
+        <item>@string/cube_333</item>
         <item>@string/cube_444</item>
         <item>@string/cube_555</item>
         <item>@string/cube_666</item>

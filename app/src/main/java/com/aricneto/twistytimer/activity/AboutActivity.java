@@ -60,25 +60,25 @@ public class AboutActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.testersButton:
-                    new MaterialDialog.Builder(AboutActivity.this)
+                    ThemeUtils.roundAndShowDialog(AboutActivity.this, new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.testers)
                         .content(R.string.testers_content)
                         .positiveText(R.string.action_ok)
-                        .show();
+                        .build());
                     break;
                 case R.id.translatorsButton:
-                    new MaterialDialog.Builder(AboutActivity.this)
+                    ThemeUtils.roundAndShowDialog(AboutActivity.this, new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.translators)
                         .content(getString(R.string.translators_content, getString(R.string.translators_names)))
                         .positiveText(R.string.action_ok)
-                        .show();
+                        .build());
                     break;
                 case R.id.contributorsButton:
-                    new MaterialDialog.Builder(AboutActivity.this)
+                    ThemeUtils.roundAndShowDialog(AboutActivity.this, new MaterialDialog.Builder(AboutActivity.this)
                             .title(R.string.contributors)
                             .content(getString(R.string.contributors_content, getString(R.string.contributors_names)))
                             .positiveText(R.string.action_ok)
-                            .show();
+                            .build());
                     break;
                 case R.id.sourceButton:
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/aricneto/TwistyTimer"));

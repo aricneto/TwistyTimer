@@ -17,7 +17,7 @@
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_below="@id/divider01"
+            android:layout_below="@id/nameText"
             android:indeterminate="false"
             android:progress="50"
             android:visibility="visible"
@@ -26,28 +26,17 @@
 
         <TextView
             android:id="@+id/nameText"
+            style="@style/DialogTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
             tools:text="OLL 21" />
-
-        <include
-            android:id="@+id/divider01"
-            layout="@layout/view_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/nameText"
-            android:layout_marginTop="8dp" />
 
         <com.aricneto.twistytimer.layout.Cube
             android:id="@+id/cube"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_below="@id/divider01"
+            android:layout_below="@id/nameText"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -59,7 +48,7 @@
             android:id="@+id/pll_arrows"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider01"
+            android:layout_below="@id/nameText"
             android:layout_centerHorizontal="true"
             android:layout_margin="14dp"
             android:layout_alignTop="@id/cube"
@@ -100,14 +89,10 @@ R' U2 R2 U R' U R U2 y R' F' R" />
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/divider02"
-            android:layout_marginTop="8dp"
             android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:paddingBottom="16dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_edit_18px" />
 
         <ImageView
@@ -115,13 +100,11 @@ R' U2 R2 U R' U R U2 y R' F' R" />
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider02"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:layout_toLeftOf="@id/editButton"
             android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="8dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_timeline_18px" />
 
         <ImageView
@@ -130,12 +113,10 @@ R' U2 R2 U R' U R U2 y R' F' R" />
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/divider02"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:alpha="0.70"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:padding="8dp"
+            android:padding="16dp"
             app:srcCompat="@drawable/ic_outline_cached_18px" />
 
     </RelativeLayout>
