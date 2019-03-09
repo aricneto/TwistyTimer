@@ -162,8 +162,9 @@
             android:paddingTop="2dp"
             android:paddingRight="4dp"
             android:paddingBottom="2dp"
+            android:textStyle="bold"
             android:text="@string/timer_detail_average_record_message"
-            android:textColor="#000"
+            android:textColor="@color/black_light_100"
             android:textSize="12sp" />
 
     </androidx.cardview.widget.CardView>

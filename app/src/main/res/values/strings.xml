@@ -394,8 +394,8 @@
     <string name="dialog_theme_text_style">Text style</string>
     <string name="pref_screen_title_general">General</string>
     <string name="pref_screen_title_list">List</string>
-    <string name="unarchive_dialog_summary">You currently have %1$d solves archived.\nHow many solves do you wish to unarchive?</string>
-    <string name="title_activity_donate">DonateActivity</string>
+    <string name="unarchive_dialog_summary">You currently have %1$d solves archived.\n\nHow many solves do you wish to unarchive? This will unarchive the most recent solves first.</string>
+    <string translatable="false" name="title_activity_donate">DonateActivity</string>
     <string name="donation_message">Your donation helps me make Twisty Timer even better for everyone :)</string>
 
 </resources>

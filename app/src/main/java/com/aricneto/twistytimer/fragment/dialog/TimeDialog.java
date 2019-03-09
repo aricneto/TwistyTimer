@@ -27,6 +27,7 @@ import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
+import com.aricneto.twistytimer.utils.AnimUtils;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -53,6 +54,7 @@ public class TimeDialog extends DialogFragment {
     @BindView(R.id.commentButton)     ImageView commentButton;
     @BindView(R.id.commentText)       TextView  commentText;
     @BindView(R.id.overflowButton)    ImageView overflowButton;
+    @BindView(R.id.scramble_image)    ImageView scrambleImage;
 
     private long            mId;
     private Solve           solve;
@@ -153,13 +155,8 @@ public class TimeDialog extends DialogFragment {
                     break;
                 case R.id.scrambleText:
                     ScrambleGenerator generator = new ScrambleGenerator(solve.getPuzzle());
-                    MaterialDialog scrambleDialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
-                            .customView(R.layout.item_scramble_img, false)
-                            .build());
-                    scrambleDialog.show();
-
-                    ImageView imageView = scrambleDialog.getView().findViewById(R.id.scramble_img);
-                    imageView.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
+                    scrambleImage.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
+                    AnimUtils.toggleContentVisibility(scrambleImage);
                     break;
             }
         }

@@ -62,7 +62,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/commentText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider01"
             android:layout_marginLeft="16dp"
@@ -78,25 +78,38 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/scrambleText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/commentText"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:paddingTop="16dp"
             android:layout_marginRight="16dp"
             app:drawableLeftCompat="@drawable/ic_outline_casino_18px"
+            app:drawableRightCompat="@drawable/ic_keyboard_arrow_down_black_18dp"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:textSize="14sp"
             tools:text="D2 U' R2 U2 R2 F2 U' B2 U' F2 U' R' B L D B' U' R U' R2 F U'" />
+
+        <ImageView
+            android:id="@+id/scramble_image"
+            android:layout_below="@id/scrambleText"
+            tools:background="@drawable/card_button_accent"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
         <include
             android:id="@+id/divider02"
             layout="@layout/view_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/scrambleText"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/scramble_image" />
 
         <ImageView
             android:id="@+id/editButton"

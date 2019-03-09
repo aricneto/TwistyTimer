@@ -15,16 +15,9 @@
         android:layout_alignParentTop="true"
         android:text="@string/drawer_title_changeTheme" />
 
-    <View
-        android:id="@+id/divider01"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/title"
-        android:background="@color/black_divider" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"
-        android:layout_below="@id/divider01"
+        android:layout_below="@id/title"
         android:layout_height="wrap_content">
 
     <RelativeLayout

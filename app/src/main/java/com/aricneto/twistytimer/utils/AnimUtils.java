@@ -18,12 +18,7 @@ public class AnimUtils {
                 v.animate()
                         .alpha(0)
                         .setDuration(100)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                v.setVisibility(View.GONE);
-                            }
-                        })
+                        .withEndAction(() -> v.setVisibility(View.GONE))
                         .start();
             }
         }

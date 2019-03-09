@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity
                                     .withIdentifier(TRAINER_PLL_ID)),
 
                 new ExpandableDrawerItem()
-                        .withName(R.string.drawer_title_reference)
+                        .withName(R.string.title_algorithms)
                         .withIcon(R.drawable.ic_outline_library_books_24px)
                         .withSelectable(false)
                         .withIconTintingEnabled(true)
