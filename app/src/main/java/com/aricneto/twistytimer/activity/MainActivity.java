@@ -41,6 +41,7 @@ import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
+import com.aricneto.twistytimer.fragment.dialog.DonateDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
@@ -175,6 +176,14 @@ public class MainActivity extends AppCompatActivity
 
     public void closeDrawer() {
         mDrawer.closeDrawer();
+    }
+
+    public BillingProcessor getBp () {
+        return bp;
+    }
+
+    public void purchase(String productId) {
+        bp.purchase(MainActivity.this, productId);;
     }
 
     @Override
@@ -495,32 +504,8 @@ public class MainActivity extends AppCompatActivity
 
                         case DONATE_ID:
                             if (BillingProcessor.isIabServiceAvailable(MainActivity.this))
-                                new MaterialDialog.Builder(MainActivity.this)
-                                    .title(R.string.choose_donation_amount)
-                                    .items(R.array.donation_tiers)
-                                    .itemsCallback(new MaterialDialog.ListCallback() {
-                                        @Override
-                                        public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                            switch (which) {
-                                                case 0:
-                                                    bp.purchase(MainActivity.this, "donation_tier1");
-                                                    break;
-                                                case 1:
-                                                    bp.purchase(MainActivity.this, "donation_tier2");
-                                                    break;
-                                                case 2:
-                                                    bp.purchase(MainActivity.this, "donation_tier3");
-                                                    break;
-                                                case 3:
-                                                    bp.purchase(MainActivity.this, "donation_tier4");
-                                                    break;
-                                                case 4:
-                                                    bp.purchase(MainActivity.this, "donation_tier5");
-                                                    break;
-                                            }
-                                        }
-                                    })
-                                    .show();
+                                DonateDialog.newInstance()
+                                        .show(fragmentManager, "donate_dialog");
                             else
                                 Toast.makeText(MainActivity.this, "Google Play not available",
                                         Toast.LENGTH_LONG).show();

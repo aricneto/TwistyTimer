@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.aricneto.twistify"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.aricneto.twistify"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
-        tools:ignore="GoogleAppIndexingWarning"
         android:name="com.aricneto.twistytimer.TwistyTimer"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/DefaultTheme">
+        android:theme="@style/DefaultTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name="com.aricneto.twistytimer.debug.DonateActivity"
+            android:label="@string/title_activity_donate"
+            android:theme="@style/DefaultTheme.NoActionBar"></activity>
         <activity
             android:name="com.aricneto.twistytimer.activity.MainActivity"
-            android:windowSoftInputMode="adjustNothing"
+            android:label="@string/app_name"
             android:theme="@style/BaseDefaultTheme.Launcher"
-            android:label="@string/app_name">
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -31,17 +35,15 @@
         </activity>
         <activity
             android:name="com.aricneto.twistytimer.activity.SettingsActivity"
-            android:label="@string/title_activity_settings">
-        </activity>
-        <activity android:name="com.aricneto.twistytimer.activity.AboutActivity">
-        </activity>
+            android:label="@string/title_activity_settings"></activity>
+        <activity android:name="com.aricneto.twistytimer.activity.AboutActivity"></activity>
 
-        <receiver
-            android:name="com.aricneto.twistytimer.OnUpgradeReceiver">
+        <receiver android:name="com.aricneto.twistytimer.OnUpgradeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -53,9 +55,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_path"/>
+                android:resource="@xml/file_provider_path" />
         </provider>
-
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="action_button_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
 

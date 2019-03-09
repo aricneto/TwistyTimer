@@ -88,11 +88,11 @@
     <string name="dialog_revert_title_confirmation">Reset algorithms</string>
     <string name="dialog_set_progress">Set progress</string>
 
-    <string translatable="false" name="donation_tier1">1 USD</string>
-    <string translatable="false" name="donation_tier2">2 USD</string>
-    <string translatable="false" name="donation_tier3">3 USD</string>
-    <string translatable="false" name="donation_tier4">5 USD</string>
-    <string translatable="false" name="donation_tier5">10 USD</string>
+    <string name="donation_tier1" translatable="false">1 USD</string>
+    <string name="donation_tier2" translatable="false">2 USD</string>
+    <string name="donation_tier3" translatable="false">3 USD</string>
+    <string name="donation_tier4" translatable="false">5 USD</string>
+    <string name="donation_tier5" translatable="false">10 USD</string>
 
     <string name="drawer_about">About and feedback</string>
     <string name="drawer_close" translatable="false">Menu closed</string>
@@ -223,8 +223,8 @@
     <string name="pref_screen_title_timer_behavior">Timer behavior</string>
     <string name="pref_screen_title_timer_appearance">Timer appearance</string>
 
-	<string name="pref_scramble_box_title">Scramble background</string>
-	<string name="pref_scramble_box_description">Show a white background behind the scramble</string>
+    <string name="pref_scramble_box_title">Scramble background</string>
+    <string name="pref_scramble_box_description">Show a white background behind the scramble</string>
 
     <string name="preference_application_language_title">Language</string>
 
@@ -395,5 +395,7 @@
     <string name="pref_screen_title_general">General</string>
     <string name="pref_screen_title_list">List</string>
     <string name="unarchive_dialog_summary">You currently have %1$d solves archived.\nHow many solves do you wish to unarchive?</string>
+    <string name="title_activity_donate">DonateActivity</string>
+    <string name="donation_message">Your donation helps me make Twisty Timer even better for everyone :)</string>
 
 </resources>

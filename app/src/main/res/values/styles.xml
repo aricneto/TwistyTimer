@@ -123,9 +123,9 @@
     "DefaultTheme" may be defined differently in "values-v21/styles.xml" before being inherited
     by the "Base<Color>Theme" styles, which extend "DefaultTheme", not "BaseDefaultTheme".
     -->
-    <style name="DefaultTheme" parent="BaseDefaultTheme"/>
+    <style name="DefaultTheme" parent="BaseDefaultTheme" />
 
-    <style name="OverlayTheme"/>
+    <style name="OverlayTheme" />
 
     <!--
      A overlay that disables the timer colored background
@@ -409,43 +409,43 @@
     Extensions to the "Base<Color>Theme" styles for the pre-v21 styles. These are all trivial.
     They are defined differently in "values-v21/styles.xml".
     -->
-    <style name="PinkTheme" parent="BasePinkTheme"/>
+    <style name="PinkTheme" parent="BasePinkTheme" />
 
-    <style name="PurpleTheme" parent="BasePurpleTheme"/>
+    <style name="PurpleTheme" parent="BasePurpleTheme" />
 
-    <style name="LightBlueTheme" parent="BaseLightBlueTheme"/>
+    <style name="LightBlueTheme" parent="BaseLightBlueTheme" />
 
-    <style name="LightGreenTheme" parent="BaseLightGreenTheme"/>
+    <style name="LightGreenTheme" parent="BaseLightGreenTheme" />
 
-    <style name="CyanTheme" parent="BaseCyanTheme"/>
+    <style name="CyanTheme" parent="BaseCyanTheme" />
 
-    <style name="TealTheme" parent="BaseTealTheme"/>
+    <style name="TealTheme" parent="BaseTealTheme" />
 
-    <style name="RedTheme" parent="BaseRedTheme"/>
+    <style name="RedTheme" parent="BaseRedTheme" />
 
-    <style name="BrownTheme" parent="BaseBrownTheme"/>
+    <style name="BrownTheme" parent="BaseBrownTheme" />
 
-    <style name="BlueTheme" parent="BaseBlueTheme"/>
+    <style name="BlueTheme" parent="BaseBlueTheme" />
 
-    <style name="BlackTheme" parent="BaseBlackTheme"/>
+    <style name="BlackTheme" parent="BaseBlackTheme" />
 
-    <style name="GreenTheme" parent="BaseGreenTheme"/>
+    <style name="GreenTheme" parent="BaseGreenTheme" />
 
-    <style name="OrangeTheme" parent="BaseOrangeTheme"/>
+    <style name="OrangeTheme" parent="BaseOrangeTheme" />
 
-    <style name="DeepPurpleTheme" parent="BaseDeepPurpleTheme"/>
+    <style name="DeepPurpleTheme" parent="BaseDeepPurpleTheme" />
 
-    <style name="BlueGrayTheme" parent="BaseBlueGrayTheme"/>
+    <style name="BlueGrayTheme" parent="BaseBlueGrayTheme" />
 
-    <style name="WhiteTheme" parent="BaseWhiteTheme"/>
+    <style name="WhiteTheme" parent="BaseWhiteTheme" />
 
-    <style name="YellowTheme" parent="BaseYellowTheme"/>
+    <style name="YellowTheme" parent="BaseYellowTheme" />
 
-    <style name="WhiteGreenTheme" parent="BaseWhiteGreenTheme"/>
+    <style name="WhiteGreenTheme" parent="BaseWhiteGreenTheme" />
 
-    <style name="DawnTheme" parent="BaseDawnTheme"/>
+    <style name="DawnTheme" parent="BaseDawnTheme" />
 
-    <style name="BluyGray" parent="BaseBluyGray"/>
+    <style name="BluyGray" parent="BaseBluyGray" />
     <!--
     Other miscellaneous styles.
     -->
@@ -476,13 +476,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/outline_background_card_top</item>
     </style>
 
@@ -572,7 +570,7 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
-    <style name="ToolBarStyle" parent="BaseToolBarStyle"/>
+    <style name="ToolBarStyle" parent="BaseToolBarStyle" />
 
     <!-- "Widget.Tarefa.Header.Spinner" is defined differently for v21. -->
     <style name="Base.Widget.Tarefa.Header.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
@@ -581,7 +579,7 @@
         <item name="android:divider">@null</item>
     </style>
 
-    <style name="Widget.Tarefa.Header.Spinner" parent="Base.Widget.Tarefa.Header.Spinner"/>
+    <style name="Widget.Tarefa.Header.Spinner" parent="Base.Widget.Tarefa.Header.Spinner" />
 
     <style name="HeaderSwitch">
         <!-- Active thumb color & Active track color(30% transparency) -->
@@ -591,5 +589,14 @@
         <!-- Inactive track color(30% transparency) -->
         <item name="android:colorForeground">@color/black_text</item>
     </style>
+
+    <style name="DefaultTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DefaultTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="DefaultTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

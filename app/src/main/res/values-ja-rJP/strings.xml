@@ -38,7 +38,7 @@
     <string name="clearEnabledTitle">消去ボタンの表示</string>
     <string name="contact">お問い合わせ</string>
     <string name="contributors">開発援助者</string>
-    <string name="contributors_content">アプリの開発に多大なるご支援をいただき、ありがとうございます</string>
+    <string name="contributors_content">アプリの開発に多大なるご支援をいただき、ありがとうございます:%1$s</string>
     <string name="cube_222">2×2×2</string>
     <string name="cube_333">3×3×3</string>
     <string name="cube_444">4×4×4</string>
@@ -185,7 +185,7 @@
     <string name="startCueTitle">スタートの動作</string>
     <string name="task_remove">削除</string>
     <string name="testers">ベータ版のテスター</string>
-    <string name="testers_content">アプリの開発版にて、フィードバックを提供してくださり、ありがとうございました。</string>
+    <string name="testers_content">アプリの開発版にて、フィードバックを提供してくださり、ありがとうございました。:%1$s</string>
     <string name="timer_text_offset">タイマーの表示位置</string>
     <string name="timer_text_offset_summary">タイマーの表示位置を調整する</string>
     <string name="timer_text_size">タイマーのテキストサイズ</string>
@@ -193,7 +193,7 @@
     <string name="title_activity_about">サポートとフィードバック</string>
     <string name="title_activity_settings">設定</string>
     <string name="translators">翻訳者</string>
-    <string name="translators_content">翻訳に協力してくださった方々、ありがとうございました。</string>
+    <string name="translators_content">翻訳に協力してくださった方々、ありがとうございました。:%1$s</string>
     <string name="w_new_subtype">新規</string>
     <string name="warning">警告</string>
     <string name="worstSolveEnabledSummary">自己ワーストを記録したときにアラートする</string>
