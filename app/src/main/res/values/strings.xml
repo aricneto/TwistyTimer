@@ -72,11 +72,11 @@
     <string name="cube_666_informal" translatable="false">6x6</string>
     <string name="cube_777">7x7 Cube</string>
     <string name="cube_777_informal" translatable="false">7x7</string>
-    <string name="cube_clock" translatable="false">Clock</string>
-    <string name="cube_mega" translatable="false">Megaminx</string>
-    <string name="cube_pyra" translatable="false">Pyraminx</string>
-    <string name="cube_skewb" translatable="false">Skewb</string>
-    <string name="cube_sq1" translatable="false">Square-1</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
 
     <string name="delete_dialog_cancel_button">Cancel</string>
     <string name="delete_dialog_confirmation_button">Remove</string>
