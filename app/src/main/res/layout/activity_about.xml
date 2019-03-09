@@ -214,13 +214,13 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
-        android:text="Created by:\naricneto"
+        android:text="Created by aricneto"
         android:gravity="center"
         android:textColor="?colorTimerText"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:padding="16dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_height="wrap_content" />
 
 

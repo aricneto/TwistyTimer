@@ -57,17 +57,17 @@ public class PuzzleSelectDialog extends DialogFragment {
         puzzleRecycler.setLayoutManager(layoutManager);
 
         PuzzleSelectAdapter puzzleAdapter = new PuzzleSelectAdapter(dialogListener,
-                Pair.create(getString(R.string.cube_222), R.drawable.ic_outline_grid_on_2_24px),
-                Pair.create(getString(R.string.cube_333), R.drawable.ic_outline_grid_on_24px),
-                Pair.create(getString(R.string.cube_444), R.drawable.ic_outline_looks_4_24px),
-                Pair.create(getString(R.string.cube_555), R.drawable.ic_outline_looks_5_24px),
-                Pair.create(getString(R.string.cube_666), R.drawable.ic_outline_filter_6_24px),
-                Pair.create(getString(R.string.cube_777), R.drawable.ic_outline_filter_7_24px),
-                Pair.create(getString(R.string.cube_clock), R.drawable.ic_outline_radio_button_unchecked_24px),
-                Pair.create(getString(R.string.cube_mega), R.drawable.ic_outline_megaminx),
+                Pair.create(getString(R.string.cube_222), R.drawable.ic_2x2),
+                Pair.create(getString(R.string.cube_333), R.drawable.ic_3x3),
+                Pair.create(getString(R.string.cube_444), R.drawable.ic_4x4),
+                Pair.create(getString(R.string.cube_555), R.drawable.ic_5x5),
+                Pair.create(getString(R.string.cube_666), R.drawable.ic_6x6),
+                Pair.create(getString(R.string.cube_777), R.drawable.ic_7x7),
+                Pair.create(getString(R.string.cube_clock), R.drawable.ic_clock),
+                Pair.create(getString(R.string.cube_mega), R.drawable.ic_mega),
                 Pair.create(getString(R.string.cube_pyra), R.drawable.ic_pyra),
-                Pair.create(getString(R.string.cube_skewb), R.drawable.ic_outline_crop_free_24px),
-                Pair.create(getString(R.string.cube_sq1), R.drawable.ic_outline_looks_one_24px)
+                Pair.create(getString(R.string.cube_skewb), R.drawable.ic_skewb),
+                Pair.create(getString(R.string.cube_sq1), R.drawable.ic_sq1)
         );
 
         puzzleRecycler.setAdapter(puzzleAdapter);

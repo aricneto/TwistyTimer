@@ -1,158 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="wrap_content"
-    android:background="@drawable/outline_background_card_smoother"
-    tools:context="com.aricneto.twistytimer.activity.AboutActivity">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/outline_background_card_smoother">
 
-    <TextView
-        android:id="@+id/title"
-        style="@style/DialogTitleTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/action_donate"
-        android:textColor="@color/black_text"/>
-
-    <ImageView
-        android:id="@+id/donation_guy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:scaleType="fitCenter"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/donation_guy" />
-
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/donation_guy"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:text="@string/donation_message"
-        android:background="@drawable/card_button_accent"
-        android:textColor="@color/md_blue_A700"
-        android:padding="8dp"
-        android:textSize="14sp"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:background="@drawable/outline_background_card_button_faded"
-        android:orientation="vertical"
-        android:layout_below="@id/message"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/title"
+            style="@style/DialogTitleTextStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/message"
+            android:layout_alignParentTop="true"
+            android:text="@string/action_donate"
+            android:textColor="@color/black_text" />
+
+        <ImageView
+            android:id="@+id/donation_guy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/outline_background_card_button"
-            android:drawablePadding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/donation_guy" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/donation_guy"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/card_button_accent"
             android:gravity="center"
             android:padding="8dp"
-            android:text="@string/choose_donation_amount"
-            android:textColor="#000"
+            android:text="@string/donation_message"
+            android:textColor="@color/md_blue_A700"
             android:textSize="14sp" />
 
-        <TableLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/button_tier5"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:stretchColumns="*">
+            android:layout_below="@id/message"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/outline_background_card_button_faded"
+            android:orientation="vertical">
 
-            <TableRow
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/message"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/outline_background_card_button"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/choose_donation_amount"
+                android:textColor="#000"
+                android:textSize="14sp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tier5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/outline_background_card"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/donation_tier5"
-                    android:textColor="@color/black_light_100"
-                    android:textSize="14sp"
-                    />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tier4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginLeft="32dp"
-                    android:background="@drawable/outline_background_card"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/donation_tier4"
-                    android:textColor="@color/black_light_100"
-                    android:textSize="14sp"
-                    />
-
-            </TableRow>
-
-            <TableRow
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_tier5"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:stretchColumns="*">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tier3"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/outline_background_card"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/donation_tier3"
-                    android:textColor="@color/black_light_100"
-                    android:textSize="14sp"
-                    />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tier2"
-                    android:layout_column="0"
-                    android:layout_margin="8dp"
-                    android:layout_marginLeft="32dp"
-                    android:background="@drawable/outline_background_card"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/donation_tier2"
-                    android:textColor="@color/black_light_100"
-                    android:textSize="14sp"
-                    />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tier5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/outline_background_card"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/donation_tier5"
+                        android:textColor="@color/black_light_100"
+                        android:textSize="14sp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tier1"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/outline_background_card"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/donation_tier1"
-                    android:textColor="@color/black_light_100"
-                    android:textSize="14sp" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tier4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginLeft="32dp"
+                        android:background="@drawable/outline_background_card"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/donation_tier4"
+                        android:textColor="@color/black_light_100"
+                        android:textSize="14sp" />
 
-            </TableRow>
+                </TableRow>
 
-        </TableLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-    </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tier3"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/outline_background_card"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/donation_tier3"
+                        android:textColor="@color/black_light_100"
+                        android:textSize="14sp" />
 
-</RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tier2"
+                        android:layout_column="0"
+                        android:layout_margin="8dp"
+                        android:layout_marginLeft="32dp"
+                        android:background="@drawable/outline_background_card"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/donation_tier2"
+                        android:textColor="@color/black_light_100"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tier1"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/outline_background_card"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/donation_tier1"
+                        android:textColor="@color/black_light_100"
+                        android:textSize="14sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

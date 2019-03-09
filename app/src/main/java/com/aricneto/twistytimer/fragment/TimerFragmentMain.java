@@ -670,6 +670,10 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(currentPage);
 
+        if (puzzleSelectDialog != null && puzzleSelectDialog.isVisible()) {
+            puzzleSelectDialog.dismiss();
+        }
+
         //// update titles
         updatePuzzleSpinnerHeader();
         handleStatisticsLoader();
