@@ -76,7 +76,8 @@
                 android:paddingTop="6dp"
                 android:paddingRight="14dp"
                 android:paddingBottom="6dp"
-                app:srcCompat="@drawable/ic_outline_add_18px" />
+                android:tint="@color/md_blue_A700"
+                app:srcCompat="@drawable/ic_outline_add_circle_outline_18px" />
 
             <View
                 android:layout_width="1dp"
@@ -142,7 +143,7 @@
                 android:paddingRight="12dp"
                 android:text="@string/action_add"
                 android:textColor="?graph_stats_card_text_color"
-                app:srcCompat="@drawable/ic_outline_share_24px" />
+                app:srcCompat="@drawable/ic_outline_more_vert_18px" />
 
         </RelativeLayout>
 

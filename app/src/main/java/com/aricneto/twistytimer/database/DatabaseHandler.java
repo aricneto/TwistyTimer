@@ -249,6 +249,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Unarchives a select number of the most recent solves
+     *
+     * @param type
+     * @param subtype
+     * @param solves number of solves to be unarchived
+     *
+     * @return
+     */
+    public int unarchiveSolves(String type, String subtype, int solves) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_HISTORY, false);
+
+        // Updating row
+        return db.update(TABLE_TIMES, values,
+                         KEY_ID + " IN (SELECT " + KEY_ID + " FROM " + TABLE_TIMES + " WHERE " +
+                         KEY_PENALTY + " != " + PuzzleUtils.PENALTY_HIDETIME + " AND " +
+                         KEY_HISTORY + " =1 AND " + KEY_TYPE + " =? AND " + KEY_SUBTYPE + " =? ORDER BY " + KEY_DATE + " DESC LIMIT ?)" ,
+                         new String[] { type, subtype, String.valueOf(solves) });
+    }
+
+    /**
+     * Gets the number of archived solves in the given puzzle and category
+     * @param type
+     * @param subtype
+     * @return
+     */
+    public long getNumArchivedSolves(String type, String subtype) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        long count = DatabaseUtils.
+                queryNumEntries(db, TABLE_TIMES,
+                                KEY_PENALTY + " != " + PuzzleUtils.PENALTY_HIDETIME + " AND " +
+                                KEY_TYPE + " =? AND " + KEY_SUBTYPE + " =? AND " + KEY_HISTORY + " =1",
+                                new String[] { type, subtype });
+        db.close();
+        return count;
+    }
+
+    /**
      * Adds a new solve to the database.
      *
      * @param solve The solve to be added to the database.

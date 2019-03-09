@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -164,22 +165,47 @@ public class TimerListFragment extends BaseFragment
                     PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
                     popupMenu.getMenuInflater().inflate(R.menu.menu_list_more, popupMenu.getMenu());
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.share_ao5:
-                                    PuzzleUtils.shareAverageOf(5, currentPuzzle, mRecentStatistics, getActivity());
-                                    break;
-                                case R.id.share_ao12:
-                                    PuzzleUtils.shareAverageOf(12, currentPuzzle, mRecentStatistics, getActivity());
-                                    break;
-                                case R.id.share_histogram:
-                                    PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
-                                    break;
-                            }
-                            return true;
+                    PopupMenu shareMenu = new PopupMenu(getContext(), moreButton);
+                    shareMenu.getMenuInflater().inflate(R.menu.menu_list_share, shareMenu.getMenu());
+
+                    shareMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.share_ao5:
+                                PuzzleUtils.shareAverageOf(5, currentPuzzle, mRecentStatistics, getActivity());
+                                break;
+                            case R.id.share_ao12:
+                                PuzzleUtils.shareAverageOf(12, currentPuzzle, mRecentStatistics, getActivity());
+                                break;
+                            case R.id.share_histogram:
+                                PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
+                                break;
                         }
+                        return true;
+                    });
+
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.unarchive:
+                                new MaterialDialog.Builder(mContext)
+                                        .title(R.string.list_options_item_from_history)
+                                        .content(getString(R.string.unarchive_dialog_summary,
+                                                           TwistyTimer.getDBHandler()
+                                                                   .getNumArchivedSolves(currentPuzzle, currentPuzzleSubtype)))
+                                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                                        .input(null, null, false, (dialog, input) -> {
+                                            TwistyTimer.getDBHandler().unarchiveSolves(
+                                                    currentPuzzle, currentPuzzleSubtype, Integer.parseInt(input.toString()));
+                                            reloadList();
+                                        })
+                                        .positiveText(R.string.list_options_item_from_history)
+                                        .negativeText(R.string.action_cancel)
+                                        .show();
+                                break;
+                            case R.id.share:
+                                shareMenu.show();
+                                break;
+                        }
+                        return true;
                     });
 
                     popupMenu.show();

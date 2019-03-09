@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             .addDrawerItems(
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_title_timer)
-                        .withIcon(R.drawable.ic_timer_black_24dp)
+                        .withIcon(R.drawable.ic_outline_timer_24px)
                         .withIconTintingEnabled(true)
                         .withIdentifier(TIMER_ID),
 
@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity
 
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_title_export_import)
-                        .withIcon(R.drawable.ic_folder_open_black_24dp)
+                        .withIcon(R.drawable.ic_outline_folder_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(EXPORT_IMPORT_ID),
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity
 
                 new PrimaryDrawerItem()
                         .withName(R.string.drawer_title_changeColorScheme)
-                        .withIcon(R.drawable.ic_scheme_black_24dp)
+                        .withIcon(R.drawable.ic_outline_format_paint_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
                         .withIdentifier(SCHEME_ID),

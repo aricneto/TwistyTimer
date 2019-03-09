@@ -1,15 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/share_ao5"
-        android:title="@string/fab_share_ao5"/>
+        android:id="@+id/unarchive"
+        android:title="@string/list_options_item_from_history"/>
 
     <item
-        android:id="@+id/share_ao12"
-        android:title="@string/fab_share_ao12"/>
-
-    <item
-        android:id="@+id/share_histogram"
-        android:title="@string/fab_share_distribution"/>
+        android:id="@+id/share"
+        android:title="@string/fab_share_title"/>
 
 </menu>

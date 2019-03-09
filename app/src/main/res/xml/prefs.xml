@@ -237,30 +237,51 @@
 
     <PreferenceCategory android:title="@string/pref_category_title_other">
 
-        <SwitchPreferenceCompat
-            android:defaultValue="@bool/default_pagerEnabled"
-            android:key="@string/pk_tab_swiping_enabled"
-            android:summary="@string/pagerEnabledSummary"
-            android:title="@string/pagerEnabledTitle" />
+        <PreferenceScreen
+            android:icon="@drawable/ic_outline_settings_pref"
+            android:key="@string/pref_screen_title_timer_appearance_settings"
+            android:title="@string/pref_screen_title_general">
 
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="@string/pk_tint_navigation_bar"
-            android:summary="@string/pref_summary_tint_navigation"
-            android:title="@string/pref_title_tint_navigation" />
+            <PreferenceCategory android:title="@string/pref_screen_title_general">
 
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="@string/pk_menu_background"
-            android:summary="@string/pref_summary_menu_background"
-            android:title="@string/pref_title_menu_background" />
+                <SwitchPreferenceCompat
+                    android:defaultValue="@bool/default_pagerEnabled"
+                    android:key="@string/pk_tab_swiping_enabled"
+                    android:summary="@string/pagerEnabledSummary"
+                    android:title="@string/pagerEnabledTitle" />
 
-        <SwitchPreferenceCompat
-            android:defaultValue="@bool/default_clearEnabled"
-            android:key="@string/pk_show_clear_button"
-            android:summary="@string/clearEnabledSummary"
-            android:title="@string/clearEnabledTitle" />
+                <SwitchPreferenceCompat
+                    android:defaultValue="false"
+                    android:key="@string/pk_tint_navigation_bar"
+                    android:summary="@string/pref_summary_tint_navigation"
+                    android:title="@string/pref_title_tint_navigation" />
 
+                <SwitchPreferenceCompat
+                    android:defaultValue="false"
+                    android:key="@string/pk_menu_background"
+                    android:summary="@string/pref_summary_menu_background"
+                    android:title="@string/pref_title_menu_background" />
+
+            </PreferenceCategory>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:icon="@drawable/ic_outline_list_alt_pref"
+            android:key="@string/pref_screen_title_timer_appearance_settings"
+            android:title="@string/pref_screen_title_list">
+
+            <PreferenceCategory android:title="@string/pref_screen_title_list">
+
+            <SwitchPreferenceCompat
+                android:defaultValue="@bool/default_clearEnabled"
+                android:key="@string/pk_show_clear_button"
+                android:summary="@string/clearEnabledSummary"
+                android:title="@string/clearEnabledTitle" />
+
+            </PreferenceCategory>
+
+        </PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>
