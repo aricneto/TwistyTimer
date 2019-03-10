@@ -272,11 +272,10 @@ public final class ThemeUtils {
      * @return a tinted drawable
      */
     public static Drawable fetchTintedDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
-        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes);
-        Drawable wrap = DrawableCompat.wrap(drawable);
+        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes).mutate();
+        Drawable wrap = DrawableCompat.wrap(drawable).mutate();
         DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
         DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
-        wrap = wrap.mutate();
 
         return wrap;
     }
@@ -305,11 +304,10 @@ public final class ThemeUtils {
      * @return a tinted drawable
      */
     public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @ColorInt int colorRes) {
-        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes);
-        Drawable wrap = DrawableCompat.wrap(drawable);
+        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes).mutate();
+        Drawable wrap = DrawableCompat.wrap(drawable).mutate();
         DrawableCompat.setTint(wrap, colorRes);
         DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
-        wrap = wrap.mutate();
 
         return wrap;
     }

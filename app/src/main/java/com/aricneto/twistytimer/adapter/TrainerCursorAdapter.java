@@ -41,7 +41,7 @@ public class TrainerCursorAdapter extends AlgCursorAdapter {
         this.fragmentManager = listFragment.getFragmentManager();
 
         cardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.no_stroke_card, R.attr.colorItemListBackground);
-        selectedCardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.stroke_card, R.attr.colorItemListBackground);
+        selectedCardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.stroke_card, R.attr.colorItemListBackgroundSelected);
 
         selectedItems = new ArrayList<>();
         selectedItems.addAll(TrainerScrambler.fetchSelectedItems(subset, category));

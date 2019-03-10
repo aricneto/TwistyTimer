@@ -29,6 +29,7 @@
         <item name="colorItemListText">@color/black_text</item>
         <item name="colorItemListTextAction">@color/md_blue_A700</item>
         <item name="colorItemListBackground">@color/white_text</item>
+        <item name="colorItemListBackgroundSelected">@color/md_grey_200</item>
         <item name="colorTimerDetailText">@color/white_secondary_icon</item>
 
         <item name="textColorContrastBackground">@android:color/white</item>
@@ -64,7 +65,6 @@
         <item name="mainColorBackground">#43FF8E</item>
         <item name="colorAccentWhiteContrast">@color/md_amber_A700</item>
         <item name="colorTextContrastAccent">@color/white_text</item>
-        <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
 
         <!--
         The colors used for the lines on the graph. These are drawn against a background that is
@@ -264,7 +264,6 @@
 
         <item name="mainColorBackground">@color/md_black_1000</item>
         <item name="colorPrimary">@color/md_black_1000</item>
-        <item name="colorItemListBackgroundSelected">@color/md_grey_500</item>
 
         <item name="colorTimerText">@color/md_white_1000</item>
         <item name="colorTabBar">#090909</item>
@@ -436,6 +435,7 @@
     <!-- Base Darker theme for dark list items -->
     <style name="DefaultTheme.Darker" parent="DefaultTheme">
         <item name="colorItemListBackground">#1F1F1F</item>
+        <item name="colorItemListBackgroundSelected">#4D4D4D</item>
         <item name="colorItemListText">#E6FFFFFF</item>
         <item name="colorItemListTextAction">@color/md_amber_A100</item>
         <item name="graph_stats_card_text_color">#B3FFFFFF</item>
