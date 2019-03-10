@@ -238,4 +238,8 @@
     <string name="pref_title_menu_background">关闭菜单背景</string>
     <string name="pref_summary_menu_background">不显示顶部菜单栏的背景颜色</string>
     <string name="dialog_theme_text_style">文字样式</string>
+    <string name="pref_screen_title_general">通用</string>
+    <string name="pref_screen_title_list">列表</string>
+    <string name="unarchive_dialog_summary">你已经归档了 %1$d 次还原。\n\n你想要取消多少次归档？（会优先取消最近的归档成绩）</string>
+    <string name="donation_message">感谢你的慷慨捐助让Twisty Timer变得更好！</string>
 </resources>

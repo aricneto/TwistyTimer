@@ -45,6 +45,11 @@
     <string name="cube_555">קובייה 5x5</string>
     <string name="cube_666">קובייה 6x6</string>
     <string name="cube_777">קובייה 7x7</string>
+    <string name="cube_clock">שעון</string>
+    <string name="cube_mega">מגמינקס</string>
+    <string name="cube_pyra">פיראמינקס</string>
+    <string name="cube_skewb">סקיוב</string>
+    <string name="cube_sq1">סקוואן</string>
     <string name="delete_dialog_cancel_button">בטל</string>
     <string name="delete_dialog_confirmation_button">מחק</string>
     <string name="delete_dialog_confirmation_title">למחוק פתירה?</string>
@@ -238,4 +243,7 @@
     <string name="about_translate_title">עזור לתרגם את Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">שמור בלגון נוכחי</string>
     <string name="pref_summary_new">העדפות שנוספו לאחרונה</string>
+    <string name="pref_title_menu_background">בטל את רקע התפריט</string>
+    <string name="dialog_theme_text_style">סגנון טקסט</string>
+    <string name="pref_screen_title_general">כללי</string>
 </resources>

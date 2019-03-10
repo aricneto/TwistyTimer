@@ -45,6 +45,11 @@
     <string name="cube_555">5x5 Würfel</string>
     <string name="cube_666">6x6 Würfel</string>
     <string name="cube_777">7x7 Würfel</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Abbrechen</string>
     <string name="delete_dialog_confirmation_button">Entfernen</string>
     <string name="delete_dialog_confirmation_title">Solve löschen?</string>
@@ -239,4 +244,8 @@
     <string name="pref_title_menu_background">Menü-Hintergrund deaktivieren</string>
     <string name="pref_summary_menu_background">Deaktiviert den getönten Hintergrund der oberen Menüleiste</string>
     <string name="dialog_theme_text_style">Textstil</string>
+    <string name="pref_screen_title_general">Allgemeines</string>
+    <string name="pref_screen_title_list">Liste</string>
+    <string name="unarchive_dialog_summary">Aktuell hast Du %1$d Solves archiviert.\n\nWieviele Solves möchtest Du wiederherstellen? Es werden zuerst die neuesten Solves wiederhergestellt.</string>
+    <string name="donation_message">Deine Spende hilft mir, Twisty Timer für alle besser zu machen :)</string>
 </resources>

@@ -45,6 +45,11 @@
     <string name="cube_555">5x5 kocka</string>
     <string name="cube_666">6x6 kocka</string>
     <string name="cube_777">7x7 kocka</string>
+    <string name="cube_clock">Sat</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Sq-1</string>
     <string name="delete_dialog_cancel_button">Poništi</string>
     <string name="delete_dialog_confirmation_button">Izbriši</string>
     <string name="delete_dialog_confirmation_title">Obriši slaganje?</string>
@@ -238,4 +243,13 @@
     <string name="about_translate_title">Pomozi prevesti Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">Spremi trenutni scramble</string>
     <string name="pref_summary_new">Nedavno dodane preference</string>
+    <string name="pref_summary_tint_navigation">Eksperimentalno. Nijansira navigacijsku traku s bojama teme.\nSamo radi na Androidu Lollipop i novijem!</string>
+    <string name="pref_title_tint_navigation">Boja navigacijske trake</string>
+    <string name="pref_title_menu_background">Onemogući pozadinu izbornika</string>
+    <string name="pref_summary_menu_background">Onemogući nijansiranu pozadinu na vrhu ekrana izbornika</string>
+    <string name="dialog_theme_text_style">Stil teksta</string>
+    <string name="pref_screen_title_general">Generalno</string>
+    <string name="pref_screen_title_list">Lista</string>
+    <string name="unarchive_dialog_summary">Trenutno imate %1$d slaganja arhiviranih.\n\nKoliko slaganja želite vratiti iz arhive? Ovo će vratiti iz arhive slaganja koja su bila nedavno.</string>
+    <string name="donation_message">Vaša donacija mi pomaže u razvoju Twisty Timera boljim za sve :)</string>
 </resources>

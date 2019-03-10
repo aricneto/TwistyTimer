@@ -34,7 +34,7 @@
     <string name="buttonsEnabledSummary">Zobraziť tlačidla, ktoré sa objavia pod časovačom po zložení</string>
     <string name="buttonsEnabledTitle">Tlačidlá rýchlej akcie</string>
     <string name="choose_donation_amount">Vyberte čiastku na prispenie</string>
-    <string name="clearEnabledSummary">Tlačidlo \"Vyčistiť\" sa je zobrazené v zozname časov a umožňuje odstrániť všetky zloženia z aktuálnej relácie</string>
+    <string name="clearEnabledSummary">Tlačidlo \"Vyčistiť\" je zobrazené v zozname časov a umožňuje odstrániť všetky zloženia z aktuálnej relácie</string>
     <string name="clearEnabledTitle">Zobraziť tlačidlo \"Vyčistiť\"</string>
     <string name="contact">Kontaktovať</string>
     <string name="contributors">Prispievatelia</string>
@@ -45,6 +45,11 @@
     <string name="cube_555">5x5 Kocka</string>
     <string name="cube_666">6x6 Kocka</string>
     <string name="cube_777">7x7 Kocka</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Zrušiť</string>
     <string name="delete_dialog_confirmation_button">Odstrániť</string>
     <string name="delete_dialog_confirmation_title">Odstrániť zloženie?</string>
@@ -115,7 +120,7 @@
     <string name="millisecondsEnabledSummary">Zobraziť desatinné miesta pri časovaní zloženia</string>
     <string name="millisecondsEnabledTitle">Zobraziť desatinné miesta</string>
     <string name="move_solves_to_history">Presunúť zloženia do histórie?</string>
-    <string name="move_solves_to_history_content">Budete mať k nim prístup pomocou prepínača histórie</string>
+    <string name="move_solves_to_history_content">Budete k nim mať prístup pomocou prepínača histórie</string>
     <string name="name_category">Kategória</string>
     <string name="name_puzzle">Hlavolam</string>
     <string name="no_penalty">Žiadna penalizácia</string>
@@ -244,4 +249,8 @@
     <string name="pref_title_menu_background">Deaktivuje pozadie menu</string>
     <string name="pref_summary_menu_background">Deaktivuje sfarbené pozadie za horným panelom menu</string>
     <string name="dialog_theme_text_style">Štýl textu</string>
+    <string name="pref_screen_title_general">Všeobecné</string>
+    <string name="pref_screen_title_list">Zoznam</string>
+    <string name="unarchive_dialog_summary">Aktuálne máte %1$d archivovaných zložení.\n\nKoľkým zloženiam chcete zrušiť archiváciu? Táto operácia zruší archiváciu posledným zloženiam.</string>
+    <string name="donation_message">Vaše príspevky mi pomáhajú robiť Twisty Timer pre každého ešte lepší :)</string>
 </resources>

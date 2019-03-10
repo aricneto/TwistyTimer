@@ -376,7 +376,7 @@
         <item name="colorMainGradientStart">#b2f9ff</item>
         <item name="colorMainGradientEnd">#efebbe</item>
 
-        <item name="colorActionBar">#90f6ff</item>
+        <item name="colorActionBar">#d4fcff</item>
         <item name="colorTabBar">#e8e3a3</item>
 
         <item name="colorAccent">@color/md_red_A100</item>

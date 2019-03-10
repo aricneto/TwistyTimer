@@ -77,7 +77,7 @@
                 android:paddingTop="6dp"
                 android:paddingRight="14dp"
                 android:paddingBottom="6dp"
-                android:tint="?colorItemListTextAction"
+                android:tint="?colorItemListText"
                 app:srcCompat="@drawable/ic_outline_add_circle_outline_18px" />
 
             <View
