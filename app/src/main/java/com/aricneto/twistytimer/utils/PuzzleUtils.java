@@ -72,11 +72,11 @@ public class PuzzleUtils {
             case  3: return TYPE_555;
             case  4: return TYPE_666;
             case  5: return TYPE_777;
-            case  6: return TYPE_CLOCK;
+            case  6: return TYPE_SKEWB;
             case  7: return TYPE_MEGA;
             case  8: return TYPE_PYRA;
-            case  9: return TYPE_SKEWB;
-            case 10: return TYPE_SQUARE1;
+            case  9: return TYPE_SQUARE1;
+            case 10: return TYPE_CLOCK;
         }
     }
 
@@ -98,11 +98,11 @@ public class PuzzleUtils {
             case TYPE_555:     return  3;
             case TYPE_666:     return  4;
             case TYPE_777:     return  5;
-            case TYPE_CLOCK:   return  6;
+            case TYPE_SKEWB:   return  6;
             case TYPE_MEGA:    return  7;
             case TYPE_PYRA:    return  8;
-            case TYPE_SKEWB:   return  9;
-            case TYPE_SQUARE1: return 10;
+            case TYPE_SQUARE1: return  9;
+            case TYPE_CLOCK:   return 10;
         }
     }
 

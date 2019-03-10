@@ -15,11 +15,11 @@
         <item>@string/cube_555</item>
         <item>@string/cube_666</item>
         <item>@string/cube_777</item>
-        <item>@string/cube_clock</item>
+        <item>@string/cube_skewb</item>
         <item>@string/cube_mega</item>
         <item>@string/cube_pyra</item>
-        <item>@string/cube_skewb</item>
         <item>@string/cube_sq1</item>
+        <item>@string/cube_clock</item>
     </string-array>
 
     <string-array name="stats_column_average">

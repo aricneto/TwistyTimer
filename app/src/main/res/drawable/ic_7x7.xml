@@ -7,12 +7,12 @@
       android:pathData="M1.7837,0.53769L6.68297,0.53769A1.22965,1.22965 0,0 1,7.91261 1.76734L7.91261,6.69933A1.22965,1.22965 0,0 1,6.68297 7.92897L1.7837,7.92897A1.22965,1.22965 0,0 1,0.55406 6.69933L0.55406,1.76734A1.22965,1.22965 0,0 1,1.7837 0.53769z"
       android:strokeAlpha="0.984314"
       android:strokeWidth="1.65701"
-      android:fillColor="#ffe680"
+      android:fillColor="#aaccff"
       android:fillAlpha="1"/>
   <path
       android:pathData="M4.79861,2.72184H2.86931V2.0214H5.59736V2.72184L4.07973,6.44527H3.28097Z"
       android:strokeWidth="0.147462"
-      android:fillColor="#eabb00"
+      android:fillColor="#5599ff"
       android:strokeColor="#00000000"
       android:fillAlpha="1"/>
 </vector>

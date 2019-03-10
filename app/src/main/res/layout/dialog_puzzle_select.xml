@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
-        android:paddingBottom="6dp"
+        android:paddingBottom="24dp"
         android:layout_below="@id/title"
         tools:layout_height="300dp">
 

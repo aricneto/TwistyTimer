@@ -1,7 +1,9 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -19,8 +21,10 @@ import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,12 +67,12 @@ public class PuzzleSelectDialog extends DialogFragment {
                 Pair.create(getString(R.string.cube_555), R.drawable.ic_5x5),
                 Pair.create(getString(R.string.cube_666), R.drawable.ic_6x6),
                 Pair.create(getString(R.string.cube_777), R.drawable.ic_7x7),
-                Pair.create(getString(R.string.cube_clock), R.drawable.ic_clock),
+                Pair.create(getString(R.string.cube_skewb), R.drawable.ic_skewb),
                 Pair.create(getString(R.string.cube_mega), R.drawable.ic_mega),
                 Pair.create(getString(R.string.cube_pyra), R.drawable.ic_pyra),
-                Pair.create(getString(R.string.cube_skewb), R.drawable.ic_skewb),
-                Pair.create(getString(R.string.cube_sq1), R.drawable.ic_sq1)
-        );
+                Pair.create(getString(R.string.cube_sq1), R.drawable.ic_sq1),
+                Pair.create(getString(R.string.cube_clock), R.drawable.ic_clock)
+                );
 
         puzzleRecycler.setAdapter(puzzleAdapter);
 
