@@ -226,14 +226,14 @@
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
 
-    <style name="BaseRedTheme" parent="DefaultTheme">
-        <item name="colorMainGradientStart">#FBB03B</item>
-        <item name="colorMainGradientEnd">#E4305A</item>
+    <style name="BaseRedTheme" parent="DefaultTheme.Light">
+        <item name="colorMainGradientStart">#fbb74c</item>
+        <item name="colorMainGradientEnd">#FF5656</item>
 
-        <item name="colorActionBar">#FF8958</item>
-        <item name="colorTabBar">#d61c47</item>
+        <item name="colorActionBar">#fcc46d</item>
+        <item name="colorTabBar">#FF5656</item>
 
-        <item name="colorAccent">@color/md_green_A400</item>
+        <item name="colorAccent">@color/md_blue_A100</item>
     </style>
 
     <style name="BaseBrownTheme" parent="DefaultTheme">
@@ -408,7 +408,7 @@
 
         <item name="colorAccent">#1DB954</item>
         <item name="colorItemListTextAction">?colorAccent</item>
-        <item name="colorTabIconSelected">?colorAccent</item>
+        <item name="colorChartGrid">#4EE784</item>
 
         <item name="colorActionBar">#171717</item>
         <item name="colorTabBar">#171717</item>
