@@ -31,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -127,7 +128,8 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
         mUnbinder = ButterKnife.bind(this, dialogView);
 
         titleView.setText(R.string.trainer_spinner_title);
-        Drawable icon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_outline_control_camera_24px, null);
+        Drawable icon = ThemeUtils.tintDrawable(getContext(), R.drawable.ic_outline_control_camera_24px,
+                                                ContextCompat.getColor(getContext(), R.color.md_blue_A700));
         titleView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         button.setVisibility(View.VISIBLE);

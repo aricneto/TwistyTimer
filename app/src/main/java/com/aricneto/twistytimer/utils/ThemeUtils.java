@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 
 import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
@@ -296,6 +297,22 @@ public final class ThemeUtils {
         return wrap;
     }
 
+    /**
+     * Tints a drawable with {@param colorRes} and returns it.
+     * @param context {@link Context}
+     * @param drawableRes drawableres to be tinted
+     * @param colorRes color res id for the tint
+     * @return a tinted drawable
+     */
+    public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @ColorInt int colorRes) {
+        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes);
+        Drawable wrap = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(wrap, colorRes);
+        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
+        wrap = wrap.mutate();
+
+        return wrap;
+    }
 
     /**
      * @return A ImageSpan with the given size multiplier. Supports vector drawables
