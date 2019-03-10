@@ -229,12 +229,13 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                     } else {
                         // On portrait mode, if the stats card occupies less than 40% of the view,
                         // the graph should fill all remaining space.
-                        // If the stats card is bigger than 40%, the graph should occupy 60% of the view,
+                        // If the stats card is bigger than 40%, the graph should occupy 70% of the view,
                         // and the user will have to scroll down to see the card
-                        if (cardHeight / viewHeight <= 0.4f)
+                        Log.d(TAG, "card: " + cardHeight + " | view: " + viewHeight + " | div: " + ((float) cardHeight / (float) viewHeight));
+                        if (((float) cardHeight / (float) viewHeight) <= 0.4f)
                             chartParams.height = viewHeight - cardHeight;
                         else
-                            chartParams.height = (int) (viewHeight * 0.6f);
+                            chartParams.height = (int) (viewHeight * 0.7f);
 
                         lineChartView.setLayoutParams(chartParams);
                         lineChartView.requestLayout();

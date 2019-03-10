@@ -97,6 +97,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
     private Theme[] themeSet;
     private Context mContext;
+    private int cornerRadius;
+    private int strokeWidth;
 
     String currentTheme = Prefs.getString(R.string.pk_theme, "indigo");
 
@@ -116,6 +118,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
     ThemeListAdapter(Theme[] themeSet, Context context) {
         this.themeSet = themeSet;
         this.mContext = context;
+        this.cornerRadius = ThemeUtils.dpToPix(context, 8);
+        this.strokeWidth = ThemeUtils.dpToPix(context, 1);
     }
 
     @Override
@@ -131,8 +135,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
     public void onBindViewHolder(CardViewHolder holder, int position) {
         // Create gradient drawable
         GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, themeSet[position].getResId());
-        gradientDrawable.setCornerRadius(18f);
-        gradientDrawable.setStroke(4, Color.BLACK);
+        gradientDrawable.setCornerRadius(cornerRadius);
+        gradientDrawable.setStroke(strokeWidth, Color.BLACK);
 
         // Set card title and background
         holder.themeTitle.setText(themeSet[position].getName());
@@ -171,6 +175,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
 class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.CardViewHolder> {
 
+    private final int cornerRadius;
+    private final int strokeWidth;
     private Theme[] themeSet;
     private Context mContext;
 
@@ -195,6 +201,8 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         this.themeSet = themeSet;
         this.mContext = context;
         colorTimerText = ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText);
+        this.cornerRadius = ThemeUtils.dpToPix(context, 8);
+        this.strokeWidth = ThemeUtils.dpToPix(context, 1);
     }
 
     @Override
@@ -211,8 +219,8 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         // Create gradient drawable
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setColor(Color.TRANSPARENT);
-        gradientDrawable.setCornerRadius(18f);
-        gradientDrawable.setStroke(4, colorTimerText);
+        gradientDrawable.setCornerRadius(cornerRadius);
+        gradientDrawable.setStroke(strokeWidth, colorTimerText);
 
         // Set card title and background
         holder.themeTitle.setText(themeSet[position].getName());

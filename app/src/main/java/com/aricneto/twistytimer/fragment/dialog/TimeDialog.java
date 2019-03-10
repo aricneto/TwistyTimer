@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.PopupMenu;
 import android.text.Html;
@@ -154,8 +159,6 @@ public class TimeDialog extends DialogFragment {
                     dialog.show();
                     break;
                 case R.id.scrambleText:
-                    ScrambleGenerator generator = new ScrambleGenerator(solve.getPuzzle());
-                    scrambleImage.setImageDrawable(generator.generateImageFromScramble(PreferenceManager.getDefaultSharedPreferences(getContext()), solve.getScramble()));
                     AnimUtils.toggleContentVisibility(scrambleImage);
                     break;
             }
@@ -225,6 +228,12 @@ public class TimeDialog extends DialogFragment {
         return dialogView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        new GenerateScrambleImage().execute();
+    }
+
     public void setDialogListener(DialogListener listener) {
         dialogListener = listener;
     }
@@ -245,4 +254,23 @@ public class TimeDialog extends DialogFragment {
             dialogListener.onDismissDialog();
         super.onDestroyView();
     }
+
+    private class GenerateScrambleImage extends AsyncTask<Void, Void, Drawable> {
+
+        @Override
+        protected Drawable doInBackground(Void... voids) {
+            ScrambleGenerator generator = new ScrambleGenerator(solve.getPuzzle());
+            return generator.generateImageFromScramble(
+                    PreferenceManager.getDefaultSharedPreferences(TwistyTimer.getAppContext()),
+                    solve.getScramble());
+        }
+
+        @Override
+        protected void onPostExecute(Drawable drawable) {
+            super.onPostExecute(drawable);
+            if (scrambleImage != null)
+                scrambleImage.setImageDrawable(drawable);
+        }
+    }
+
 }
