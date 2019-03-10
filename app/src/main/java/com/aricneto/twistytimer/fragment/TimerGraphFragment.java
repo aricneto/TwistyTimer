@@ -8,8 +8,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.core.content.ContextCompat;
@@ -118,6 +120,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     @BindView(R.id.stats_container_pager)
         View statsContainerPager;
 
+    @BindView(R.id.stats_card)
+        CardView statsCard;
+
 
 
     /*
@@ -193,6 +198,52 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // Drawables for the stats cards buttons
         buttonDrawable = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background);
         buttonDrawableFaded = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background_faded);
+
+        // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
+        // statistics table will likely almost fill the screen. The automatic layout causes the
+        // chart to use only the remaining space after the statistics table takes its space.
+        // However, this may lead to the whole chart being squeezed into a few vertical pixels.
+        // Therefore, set a fixed height for the chart that will force the statistics table to be
+        // scrolled down to allow the chart to fit.
+        root.post(() -> statsCard.post(() -> {
+            if (lineChartView != null) {
+                final ViewGroup.LayoutParams chartParams = lineChartView.getLayoutParams();
+                final int cardHeight = statsCard.getHeight();
+                // ATTENTION: 134dp is the sum of the actionBarPadding and tabBarPadding attributes,
+                // plus 16 dp for the view padding! Keep these in sync.
+                final int viewHeight = container.getHeight()
+                                       - ThemeUtils.dpToPix(mContext, 134);
+                if (chartParams != null) {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        chartParams.height = viewHeight;
+                        lineChartView.setLayoutParams(chartParams);
+                        lineChartView.requestLayout();
+                        statsContainerPager.requestLayout();
+                    } else {
+                        // On portrait mode, if the stats card occupies less than 40% of the view,
+                        // the graph should fill all remaining space.
+                        // If the stats card is bigger than 40%, the graph should occupy 60% of the view,
+                        // and the user will have to scroll down to see the card
+                        if (cardHeight / viewHeight <= 0.4f)
+                            chartParams.height = viewHeight - cardHeight;
+                        else
+                            chartParams.height = (int) (viewHeight * 0.6f);
+
+                        lineChartView.setLayoutParams(chartParams);
+                        lineChartView.requestLayout();
+                        statsContainerPager.requestLayout();
+                    }
+                }
+            }
+        }));
+
+        return root;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // The color for the text in the legend and for the values along the chart's axes.
         final int chartTextColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartText);
@@ -287,50 +338,13 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         fadeStatTab(statsTabOther);
         fadeStatTab(statsTabAverage);
 
-        // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
-        // statistics table will likely almost fill the screen. The automatic layout causes the
-        // chart to use only the remaining space after the statistics table takes its space.
-        // However, this may lead to the whole chart being squeezed into a few vertical pixels.
-        // Therefore, set a fixed height for the chart that will force the statistics table to be
-        // scrolled down to allow the chart to fit.
-        root.post(() -> {
-            if (container != null && lineChartView != null) {
-                final LineChart.LayoutParams params = lineChartView.getLayoutParams();
-                if (params != null) {
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                        params.height = container.getHeight();
-                        lineChartView.setLayoutParams(params);
-                        lineChartView.requestLayout();
-                        statsContainerPager.requestLayout();
-                    } else {
-                        // On portrait mode, the graph should occupy about 50% of the view (arbitrarily chosen for aesthetic reasons)
-                        // leaving the rest for the stats card.
-                        params.height = (int) (container.getHeight() * 0.50f);
-                        lineChartView.setLayoutParams(params);
-                        lineChartView.requestLayout();
-                        statsContainerPager.requestLayout();
-                    }
-                }
-            }
-        });
-
-
-
-
         // If the statistics are already loaded, the update notification will have been missed,
         // so fire that notification now. If the statistics are non-null, they will be displayed.
         // If they are null (i.e., not yet loaded), the progress bar will be displayed until this
         // fragment, as a registered observer, is notified when loading is complete. Post the
         // firing of the event, so that it is received after "onCreateView" returns.
-        root.post(new Runnable() {
-            @Override
-            public void run() {
-                onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
-            }
-        });
+        view.post(() -> onStatisticsUpdated(StatisticsCache.getInstance().getStatistics()));
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
-
-        return root;
     }
 
     @Override
