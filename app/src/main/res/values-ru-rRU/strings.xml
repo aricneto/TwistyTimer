@@ -45,6 +45,11 @@
     <string name="cube_555">Куб 5х5</string>
     <string name="cube_666">Куб 6х6</string>
     <string name="cube_777">Куб 7х7</string>
+    <string name="cube_clock">Часы Рубика</string>
+    <string name="cube_mega">Мегаминкс</string>
+    <string name="cube_pyra">Пираминкс</string>
+    <string name="cube_skewb">Скьюб</string>
+    <string name="cube_sq1">Скваер-1</string>
     <string name="delete_dialog_cancel_button">Отменить</string>
     <string name="delete_dialog_confirmation_button">Удалить</string>
     <string name="delete_dialog_confirmation_title">Удалить результат?</string>
@@ -194,7 +199,7 @@
     <string name="graph_stats_title_best_all_time">Лучшее за все время</string>
     <string name="graph_stats_title_session_best">Лучшее за сеанс</string>
     <string name="graph_stats_title_current">Текущее</string>
-    <string name="graph_stats_label_deviation">Отклонение</string>
+    <string name="graph_stats_label_deviation">Разброс</string>
     <string name="graph_stats_label_mean">Среднее</string>
     <string name="graph_stats_label_best">Лучшее</string>
     <string name="graph_stats_label_worst">Худшее</string>
@@ -233,4 +238,10 @@
     <string name="pref_summary_tint_navigation">Экспериментально. Нарисует панель навигации с цветом темы.\nРаботает только на Android Lollipop и новее!</string>
     <string name="pref_title_tint_navigation">Окрашивать панель навигации</string>
     <string name="pref_title_menu_background">Отключить фон</string>
+    <string name="pref_summary_menu_background">Отключить оттенонный фон за верхней панели меню</string>
+    <string name="dialog_theme_text_style">Стиль текста</string>
+    <string name="pref_screen_title_general">Общее</string>
+    <string name="pref_screen_title_list">Список</string>
+    <string name="unarchive_dialog_summary">У вас в настоящее время архивировано %1$d сборок.\n\nСколько разрешений вы хотите разархивировать? Это приведет к отсрочке последних сборок.</string>
+    <string name="donation_message">Ваше пожертвование помогает мне сделать Twisty Timer еще лучше для всех :)</string>
 </resources>

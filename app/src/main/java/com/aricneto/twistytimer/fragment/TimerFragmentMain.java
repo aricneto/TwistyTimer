@@ -415,6 +415,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         navButtonHistory.setOnClickListener(clickListener);
         navButtonSettings.setOnClickListener(clickListener);
 
+        if (savedInstanceState == null) {
+            // Remember last used puzzle
+            currentPuzzle = Prefs.getString(R.string.pk_last_used_puzzle, PuzzleUtils.TYPE_333);
+            updateCurrentCategory();
+        }
+
         pagerEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(
                 getString(R.string.pk_tab_swiping_enabled), true);
 
@@ -435,12 +441,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
 
         tabLayout.getBackground().setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTabBar), PorterDuff.Mode.SRC_IN);
-
-        if (savedInstanceState == null) {
-            // Remember last used puzzle
-            currentPuzzle = Prefs.getString(R.string.pk_last_used_puzzle, PuzzleUtils.TYPE_333);
-            updateCurrentCategory();
-        }
 
         // Handle spinner AFTER reading from savedInstanceState, so we can correctly
         // fill the category field in the spinner
