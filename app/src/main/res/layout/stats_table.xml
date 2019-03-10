@@ -55,7 +55,6 @@
         android:id="@+id/stats_table_viewflipper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?graph_stats_card_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

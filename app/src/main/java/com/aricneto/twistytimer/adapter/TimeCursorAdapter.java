@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +58,17 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
         super(cursor);
         this.mContext = context;
         this.mFragmentManager = listFragment.getFragmentManager();
-        cardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.no_stroke_card_smoother, R.attr.colorItemListBackground);
-        selectedCardBackground = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.stroke_card_smoother, R.attr.colorItemListBackground);
+
+        // Drawables for the cards
+        cardBackground = ThemeUtils.createSquareDrawable(
+                mContext,
+                ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackground),
+                0, 10, 0);
+        selectedCardBackground = ThemeUtils.createSquareDrawable(
+                mContext,
+                ThemeUtils.fetchAttrColor(mContext, R.attr.colorItemListBackgroundSelected),
+                Color.BLACK, 10, 2);
+
         mDateFormatSpec = context.getString(R.string.shortDateFormat);
     }
 

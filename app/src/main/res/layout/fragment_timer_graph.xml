@@ -20,10 +20,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/stats_card"
+            app:cardBackgroundColor="?graph_stats_card_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:paddingTop="8dp"
+            app:cardUseCompatPadding="false"
             app:cardCornerRadius="14dp">
 
             <include

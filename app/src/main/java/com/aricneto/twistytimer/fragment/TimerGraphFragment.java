@@ -30,6 +30,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.StatGridAdapter;
 import com.aricneto.twistytimer.items.Stat;
+import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
@@ -196,8 +197,14 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         mUnbinder = ButterKnife.bind(this, root);
 
         // Drawables for the stats cards buttons
-        buttonDrawable = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background);
-        buttonDrawableFaded = ThemeUtils.fetchTintedDrawable(mContext, R.drawable.outline_background_card_button, R.attr.graph_stats_card_background_faded);
+        buttonDrawable = ThemeUtils.createSquareDrawable(
+                mContext,
+                ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background),
+                0, 20, 0);
+        buttonDrawableFaded = ThemeUtils.createSquareDrawable(
+                mContext,
+                ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background_faded),
+                0, 20, 0);
 
         // Setting for landscape mode. The chart and statistics table need to be scrolled, as the
         // statistics table will likely almost fill the screen. The automatic layout causes the

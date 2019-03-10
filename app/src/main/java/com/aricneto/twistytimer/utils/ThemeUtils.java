@@ -272,12 +272,41 @@ public final class ThemeUtils {
      * @return a tinted drawable
      */
     public static Drawable fetchTintedDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
-        Drawable drawable = AppCompatResources.getDrawable(context, drawableRes).mutate();
-        Drawable wrap = DrawableCompat.wrap(drawable).mutate();
-        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
-        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
+        Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, drawableRes)).mutate();
+        DrawableCompat.setTint(drawable, ThemeUtils.fetchAttrColor(context, colorAttrRes));
+        drawable.invalidateSelf();
+        return drawable;
+    }
 
-        return wrap;
+    /**
+     * Creates and returns a {@link GradientDrawable} shape with custom radius and colors.
+     * @param context Current context
+     * @param backgroundColors 2 or 3 int array with the shape background colors
+     * @param strokeColor Color of the shape stroke
+     * @param cornerRadius Radius of the shape in dp
+     * @param strokeWidth Stroke width in dp
+     * @return A {@link GradientDrawable} with the set arguments
+     */
+    public static GradientDrawable createSquareDrawable(Context context, int[] backgroundColors, int strokeColor, int cornerRadius, int strokeWidth) {
+        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, backgroundColors);
+        gradientDrawable.setStroke(ThemeUtils.dpToPix(context, strokeWidth), strokeColor);
+        gradientDrawable.setCornerRadius(ThemeUtils.dpToPix(context, cornerRadius));
+
+        return gradientDrawable;
+    }
+
+    /**
+     * Creates and returns a {@link GradientDrawable} shape with custom radius and colors.
+     * @param context Current context
+     * @param backgroundColor Shape background color
+     * @param strokeColor Color of the shape stroke
+     * @param cornerRadius Radius of the shape in dp
+     * @param strokeWidth Stroke width in dp
+     * @return A {@link GradientDrawable} with the set arguments
+     */
+    public static GradientDrawable createSquareDrawable(Context context, int backgroundColor, int strokeColor, int cornerRadius, int strokeWidth) {
+        int[] colors = {backgroundColor, backgroundColor};
+        return createSquareDrawable(context, colors, strokeColor, cornerRadius, strokeWidth);
     }
 
     /**
