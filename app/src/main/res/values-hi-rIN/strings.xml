@@ -49,10 +49,6 @@
     <string name="dialog_export_import_export">निर्यात…</string>
     <string name="dialog_export_import_import">आयात…</string>
     <string name="dialog_revert_content_confirmation">इस केस के लिए एल्गोरिथ्म को वापस डिफ़ॉल्ट पर रीसेट करें?</string>
-    <string name="donation_tier1">१ अमेरिकी डॉलर</string>
-    <string name="donation_tier2">२ अमेरिकी डॉलर</string>
-    <string name="donation_tier3">३ अमेरिकी डॉलर</string>
-    <string name="donation_tier4">५ अमेरिकी डॉलर</string>
     <string name="drawer_title_changeColorScheme">रंग योजना</string>
     <string name="drawer_title_changeTheme">एप्लिकेशन थीम</string>
     <string name="drawer_title_other">अन्य</string>

@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">לאפס את האלגוריתם למקרה הזה בחזרה לברירת המחדל?</string>
     <string name="dialog_revert_title_confirmation">איפוס אלגוריתמים </string>
     <string name="dialog_set_progress">קבע התקדמות</string>
-    <string name="donation_tier1">דולר אחד</string>
-    <string name="donation_tier2">2 דולרים</string>
-    <string name="donation_tier3">3 דולרים</string>
-    <string name="donation_tier4">5 דולרים</string>
     <string name="drawer_about">עלינו ומשוב</string>
     <string name="drawer_title_changeColorScheme">מערך צבעים</string>
     <string name="drawer_title_changeTheme">נושא יישומון</string>

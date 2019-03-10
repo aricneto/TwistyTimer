@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">Die Algorithmen für diesen Fall zu den Voreinstellungen zurücksetzen?</string>
     <string name="dialog_revert_title_confirmation">Algorithmen zurücksetzen</string>
     <string name="dialog_set_progress">Fortschritt einstellen</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Über uns und Feedback</string>
     <string name="drawer_title_changeColorScheme">Farbschema</string>
     <string name="drawer_title_changeTheme">Erscheinungsbild</string>

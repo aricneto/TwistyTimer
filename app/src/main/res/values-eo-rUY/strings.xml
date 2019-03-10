@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">Reagordi al la defaŭlto la algoritmojn por tiu ĉi kazo?</string>
     <string name="dialog_revert_title_confirmation">Restarti algoritmojn</string>
     <string name="dialog_set_progress">Agordi progreson</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Doni retrokuplon</string>
     <string name="drawer_title_changeColorScheme">Koloraro</string>
     <string name="drawer_title_changeTheme">Temo de la apo</string>

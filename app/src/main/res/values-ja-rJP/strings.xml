@@ -45,6 +45,11 @@
     <string name="cube_555">5×5×5</string>
     <string name="cube_666">6×6×6</string>
     <string name="cube_777">7×7×7</string>
+    <string name="cube_clock">クロック</string>
+    <string name="cube_mega">メガミンクス</string>
+    <string name="cube_pyra">ピラミンクス</string>
+    <string name="cube_skewb">スキューブ</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">キャンセル</string>
     <string name="delete_dialog_confirmation_button">削除</string>
     <string name="delete_dialog_confirmation_title">ソルブを消去しますか？</string>
@@ -53,10 +58,6 @@
     <string name="dialog_revert_content_confirmation">この手順をリセットしデフォルトに戻しますか？</string>
     <string name="dialog_revert_title_confirmation">手順をリセットする</string>
     <string name="dialog_set_progress">進捗の設定</string>
-    <string name="donation_tier1">1米ドル</string>
-    <string name="donation_tier2">2米ドル</string>
-    <string name="donation_tier3">3米ドル</string>
-    <string name="donation_tier4">5米ドル</string>
     <string name="drawer_about">サポートとフィードバック</string>
     <string name="drawer_title_changeColorScheme">キューブカラー</string>
     <string name="drawer_title_changeTheme">カラーテーマ</string>
@@ -245,4 +246,8 @@
     <string name="pref_title_menu_background">背景のメニューを隠す</string>
     <string name="pref_summary_menu_background">トップメニューバーを隠す</string>
     <string name="dialog_theme_text_style">テキストカラー</string>
+    <string name="pref_screen_title_general">基本設定</string>
+    <string name="pref_screen_title_list">一覧</string>
+    <string name="unarchive_dialog_summary">%1$d 件アーカイブされています。\n もとに戻したい個数を入力してください。\n ただし、一番最新のものから処理されます。</string>
+    <string name="donation_message">あなたの支援によってTwisty Timer は使用者皆様により質の高いサービスを提供できます。</string>
 </resources>

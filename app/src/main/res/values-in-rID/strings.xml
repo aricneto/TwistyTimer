@@ -52,10 +52,6 @@
     <string name="dialog_revert_content_confirmation">Atur ulang algoritma untuk kasus ini kembali pada awal?</string>
     <string name="dialog_revert_title_confirmation">Atur ulang algoritma</string>
     <string name="dialog_set_progress">Tetapkan perkembangan</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Tentang dan masukan</string>
     <string name="drawer_title_changeColorScheme">Skema warna</string>
     <string name="drawer_title_changeTheme">Tema aplikasi</string>

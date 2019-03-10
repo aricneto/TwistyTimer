@@ -45,6 +45,11 @@
     <string name="cube_555">5x5 Kocka</string>
     <string name="cube_666">6x6 Kocka</string>
     <string name="cube_777">7x7 Kocka</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Otkaži</string>
     <string name="delete_dialog_confirmation_button">Ukloni</string>
     <string name="delete_dialog_confirmation_title">Ukloni slaganje?</string>
@@ -53,10 +58,6 @@
     <string name="dialog_revert_content_confirmation">Resetuj algoritme za ovaj slučaj, nazad na podrazumevano?</string>
     <string name="dialog_revert_title_confirmation">Resetuj algoritme</string>
     <string name="dialog_set_progress">Postavi napredak</string>
-    <string name="donation_tier1">1 Dolar</string>
-    <string name="donation_tier2">2 Dolara</string>
-    <string name="donation_tier3">3 Dolara</string>
-    <string name="donation_tier4">5 Dolara</string>
     <string name="drawer_about">O tajmeru i povratne informacije</string>
     <string name="drawer_title_changeColorScheme">Šema boja</string>
     <string name="drawer_title_changeTheme">Tema aplikazije</string>
@@ -248,4 +249,8 @@
     <string name="pref_title_menu_background">Onemogući pozadinu menija</string>
     <string name="pref_summary_menu_background">Onemogućuje obojenu pozadinu iza gornjeg meni bara</string>
     <string name="dialog_theme_text_style">Stil teksta</string>
+    <string name="pref_screen_title_general">Opšte</string>
+    <string name="pref_screen_title_list">Lista</string>
+    <string name="unarchive_dialog_summary">Trenutno imate %1$d slaganja arhivirano.\n\n Koliko slaganja želite li da unarhivirate? Ovo će unarhivirati najskorija slaganja prvo.</string>
+    <string name="donation_message">Vaša donacija mi pomaze da učinim Twisty Timer jos bolji za sve :)</string>
 </resources>

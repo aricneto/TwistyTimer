@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">Atsatyti šito atvejo algoritmus į numatytus?</string>
     <string name="dialog_revert_title_confirmation">Atstatyti algoritmus</string>
     <string name="dialog_set_progress">Nustatyti progresą</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Apie ir atsiliepimai</string>
     <string name="drawer_title_changeColorScheme">Spalvų schema</string>
     <string name="drawer_title_changeTheme">Programėlės tema</string>

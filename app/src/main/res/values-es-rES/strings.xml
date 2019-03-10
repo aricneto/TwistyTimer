@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">¿Restablecer los algoritmos para este caso a los valores predeterminados?</string>
     <string name="dialog_revert_title_confirmation">Restablecer algoritmos</string>
     <string name="dialog_set_progress">Establecer progreso</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Acerca de y comentarios</string>
     <string name="drawer_title_changeColorScheme">Esquema de colores</string>
     <string name="drawer_title_changeTheme">Tema de la aplicación</string>

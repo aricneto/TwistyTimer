@@ -45,6 +45,11 @@
     <string name="cube_555">Cubo 5x5</string>
     <string name="cube_666">Cubo 6x6</string>
     <string name="cube_777">Cubo 7x7</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Cancelar</string>
     <string name="delete_dialog_confirmation_button">Remover</string>
     <string name="delete_dialog_confirmation_title">Remover tempo?</string>
@@ -53,10 +58,6 @@
     <string name="dialog_revert_content_confirmation">Restaurar os algoritmos deste caso de volta para o padrão?</string>
     <string name="dialog_revert_title_confirmation">Restaurar algoritmos</string>
     <string name="dialog_set_progress">Atualizar progresso</string>
-    <string name="donation_tier1">4 reais</string>
-    <string name="donation_tier2">8 reais</string>
-    <string name="donation_tier3">12 reais</string>
-    <string name="donation_tier4">20 reais</string>
     <string name="drawer_about">Sobre e feedback</string>
     <string name="drawer_title_changeColorScheme">Cores do cubo</string>
     <string name="drawer_title_changeTheme">Tema do app</string>
@@ -243,4 +244,8 @@
     <string name="pref_title_menu_background">Desativar fundo do menu</string>
     <string name="pref_summary_menu_background">Desativa o fundo colorido atrás da barra de menu superior</string>
     <string name="dialog_theme_text_style">Estilo do texto</string>
+    <string name="pref_screen_title_general">Geral</string>
+    <string name="pref_screen_title_list">Lista</string>
+    <string name="unarchive_dialog_summary">Você tem %1$d resoluções arquivadas no momento\n\nQuantas resoluções você deseja desarquivar? Isso irá desarquivar as resoluções mais recentes primeiro.</string>
+    <string name="donation_message">Sua doação me ajuda a tornar o Twisty Timer ainda melhor para todos :)</string>
 </resources>

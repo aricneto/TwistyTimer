@@ -25,9 +25,6 @@
     <string name="delete_dialog_cancel_button">Відмінити</string>
     <string name="dialog_export_import_export">Експорт...</string>
     <string name="dialog_export_import_import">Імпорт...</string>
-    <string name="donation_tier2">2 ДОЛЛ</string>
-    <string name="donation_tier3">3 ДОЛЛ</string>
-    <string name="donation_tier4">5 ДОЛЛ</string>
     <string name="drawer_about">Підтримка та зворотній зв\'язок</string>
     <string name="drawer_title_changeColorScheme">Кольорова схема</string>
     <string name="drawer_title_changeTheme">Тема додатка</string>

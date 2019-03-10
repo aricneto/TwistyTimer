@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">Réinitialisez les algorithmes pour revenir à ceux par défaut ?</string>
     <string name="dialog_revert_title_confirmation">Réinitialiser les algorithmes</string>
     <string name="dialog_set_progress">Actualiser la progression</string>
-    <string name="donation_tier1">1€</string>
-    <string name="donation_tier2">2€</string>
-    <string name="donation_tier3">3€</string>
-    <string name="donation_tier4">5€</string>
     <string name="drawer_about">À propos et commentaires</string>
     <string name="drawer_title_changeColorScheme">Couleurs du schéma</string>
     <string name="drawer_title_changeTheme">Thème de l\'application</string>

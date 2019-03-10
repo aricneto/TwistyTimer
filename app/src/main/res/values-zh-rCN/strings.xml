@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">重置这个情况的公式为默认？</string>
     <string name="dialog_revert_title_confirmation">重置公式</string>
     <string name="dialog_set_progress">设置进度</string>
-    <string name="donation_tier1">1 美元</string>
-    <string name="donation_tier2">2 美元</string>
-    <string name="donation_tier3">3 美元</string>
-    <string name="donation_tier4">5 美元</string>
     <string name="drawer_about">关于和反馈</string>
     <string name="drawer_title_changeColorScheme">配色设置</string>
     <string name="drawer_title_changeTheme">主题</string>

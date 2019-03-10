@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">Resetiraj algoritme za ovaj slučaj na zadano?</string>
     <string name="dialog_revert_title_confirmation">Resetiraj algoritme</string>
     <string name="dialog_set_progress">Postavi napredak</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">O aplikaciji i povratne informacije</string>
     <string name="drawer_title_changeColorScheme">Shema boja</string>
     <string name="drawer_title_changeTheme">Tema aplikacije</string>

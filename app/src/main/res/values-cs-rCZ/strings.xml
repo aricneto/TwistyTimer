@@ -45,10 +45,6 @@
     <string name="dialog_revert_content_confirmation">Resetovat algoritmy pro tento případ zpět na výchozí?</string>
     <string name="dialog_revert_title_confirmation">Resetovat algoritmy</string>
     <string name="dialog_set_progress">Nastavit průběh</string>
-    <string name="donation_tier1">25 Kč</string>
-    <string name="donation_tier2">50 Kč</string>
-    <string name="donation_tier3">75 Kč</string>
-    <string name="donation_tier4">125 Kč</string>
     <string name="drawer_about">O aplikaci a zpětná vazba</string>
     <string name="drawer_title_changeColorScheme">Barevné schéma kostky</string>
     <string name="drawer_title_changeTheme">Barevné téma aplikace</string>

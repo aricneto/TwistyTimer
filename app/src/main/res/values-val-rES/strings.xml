@@ -53,10 +53,6 @@
     <string name="dialog_revert_content_confirmation">¿Restablir els algoritmes per ad este cas als valors per defecte?</string>
     <string name="dialog_revert_title_confirmation">Restablir algoritmes</string>
     <string name="dialog_set_progress">Establir progrés</string>
-    <string name="donation_tier1">1 USD</string>
-    <string name="donation_tier2">2 USD</string>
-    <string name="donation_tier3">3 USD</string>
-    <string name="donation_tier4">5 USD</string>
     <string name="drawer_about">Sobre y retroalimentació</string>
     <string name="drawer_title_changeColorScheme">Combinació de colors</string>
     <string name="drawer_title_changeTheme">Tema de l\'aplicació</string>
