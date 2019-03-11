@@ -86,6 +86,7 @@ dependencies {
     // Material color picker
     implementation 'com.pavelsikun:vintage-chroma:1.5'
 
+    api 'com.google.guava:guava:27.1-android'
     testImplementation 'junit:junit:4.12'
 }
 
