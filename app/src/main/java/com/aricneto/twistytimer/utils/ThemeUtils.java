@@ -11,6 +11,7 @@ import android.graphics.drawable.LayerDrawable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -258,7 +259,7 @@ public final class ThemeUtils {
     }
 
 
-    public static int dpToPix(Context context, int dp) {
+    public static int dpToPix(Context context, float dp) {
         return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
@@ -287,7 +288,7 @@ public final class ThemeUtils {
      * @param strokeWidth Stroke width in dp
      * @return A {@link GradientDrawable} with the set arguments
      */
-    public static GradientDrawable createSquareDrawable(Context context, int[] backgroundColors, int strokeColor, int cornerRadius, int strokeWidth) {
+    public static GradientDrawable createSquareDrawable(Context context, int[] backgroundColors, int strokeColor, int cornerRadius, float strokeWidth) {
         GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, backgroundColors);
         gradientDrawable.setStroke(ThemeUtils.dpToPix(context, strokeWidth), strokeColor);
         gradientDrawable.setCornerRadius(ThemeUtils.dpToPix(context, cornerRadius));
@@ -304,9 +305,27 @@ public final class ThemeUtils {
      * @param strokeWidth Stroke width in dp
      * @return A {@link GradientDrawable} with the set arguments
      */
-    public static GradientDrawable createSquareDrawable(Context context, int backgroundColor, int strokeColor, int cornerRadius, int strokeWidth) {
+    public static GradientDrawable createSquareDrawable(Context context, int backgroundColor, int strokeColor, int cornerRadius, float strokeWidth) {
         int[] colors = {backgroundColor, backgroundColor};
         return createSquareDrawable(context, colors, strokeColor, cornerRadius, strokeWidth);
+    }
+
+    /**
+     * Creates and returns a {@link GradientDrawable} shape with custom radius and colors.
+     * Pass 0 to either of the color arguments to make it transparent
+     * @param context Current context
+     * @param backgroundColor Shape background color
+     * @param strokeColor Color of the shape stroke
+     * @param cornerRadius Radius of the shape in dp
+     * @param strokeWidth Stroke width in dp
+     * @return A {@link GradientDrawable} with the set arguments
+     */
+    public static GradientDrawable createSquareDrawableAttr(Context context, int backgroundColor, int strokeColor, int cornerRadius, float strokeWidth) {
+        int color = backgroundColor == 0 ? Color.TRANSPARENT : ThemeUtils.fetchAttrColor(context, backgroundColor);
+        int[] colors = {color, color};
+        return createSquareDrawable(context, colors,
+                                    strokeColor == 0 ? Color.TRANSPARENT : ThemeUtils.fetchAttrColor(context, strokeColor),
+                                    cornerRadius, strokeWidth);
     }
 
     /**

@@ -1,66 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/qa_layout"
     android:layout_width="wrap_content"
-    android:layout_height="36dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:background="?colorMainGradientStart">
 
     <ImageView
         android:id="@+id/qa_remove"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_weight="1"
-        android:background="@drawable/outline_background_card_error"
+        android:layout_width="?qaButtonSize"
+        android:layout_height="?qaButtonSize"
+        android:layout_marginRight="18dp"
+        android:background="?selectableItemBackgroundBorderless"
         android:padding="8dp"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_clear_black_24dp" />
 
-    <LinearLayout
-        android:layout_width="94dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/outline_background_card">
 
-        <ImageView
-            android:id="@+id/qa_dnf"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:alpha=".85"
-            android:padding="8dp"
-            app:srcCompat="@drawable/ic_outline_block_24px" />
+    <ImageView
+        android:id="@+id/qa_dnf"
+        android:layout_width="?qaButtonSize"
+        android:layout_height="?qaButtonSize"
+        android:layout_marginRight="18dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:tint="?colorTimerText"
+        app:srcCompat="@drawable/ic_outline_block_24px" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/black_divider" />
+    <!--View
+        android:layout_width="1.6dp"
+        android:layout_height="match_parent"
+        android:background="?colorTimerText" /-->
 
-        <ImageView
-            android:id="@+id/qa_plustwo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:alpha=".85"
-            android:padding="8dp"
-            app:srcCompat="@drawable/ic_outline_flag_24px" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/qa_plustwo"
+        android:layout_width="?qaButtonSize"
+        android:layout_height="?qaButtonSize"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:tint="?colorTimerText"
+        app:srcCompat="@drawable/ic_outline_flag_24px" />
 
     <ImageView
         android:id="@+id/qa_comment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_weight="1"
-        android:background="@drawable/outline_background_card"
-        android:paddingLeft="8dp"
-        android:paddingTop="9dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="7dp"
+        android:layout_width="?qaButtonSize"
+        android:layout_height="?qaButtonSize"
+        android:layout_marginLeft="18dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_outline_add_comment_24px" />
 
 </LinearLayout>

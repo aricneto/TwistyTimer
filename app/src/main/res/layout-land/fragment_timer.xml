@@ -87,27 +87,6 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/qa_undo"
-        app:cardCornerRadius="20dp"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_below="@id/chronometer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:background="@color/md_white_1000"
-        android:visibility="gone">
-
-        <ImageView
-            app:srcCompat="@drawable/ic_outline_undo_24px"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:alpha=".85"
-            android:padding="8dp" />
-
-    </androidx.cardview.widget.CardView>
-
     <include
         layout="@layout/item_qa_buttons"
         android:layout_width="wrap_content"
@@ -116,6 +95,19 @@
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/qa_undo"
+        app:srcCompat="@drawable/ic_outline_undo_24px"
+        android:layout_width="?qaButtonSize"
+        android:layout_height="?qaButtonSize"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/chronometer"
+        android:layout_weight="1"
+        android:tint="?colorTimerText"
+        android:padding="8dp"
+        tools:visibility="visible"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/scramble_img"
@@ -141,33 +133,23 @@
         android:visibility="invisible"
         tools:visibility="visible" />
 
-    <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="#FFEF8F"
+    <TextView
         android:id="@+id/detail_average_record_message"
         android:layout_above="@id/sessionDetailTextAverage"
+        android:layout_alignRight="@id/sessionDetailTextAverage"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:cardElevation="2dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="4dp"
-        app:cardCornerRadius="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="2dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:textStyle="bold"
-            android:text="@string/timer_detail_average_record_message"
-            android:textColor="@color/black_light_100"
-            android:textSize="12sp" />
-
-    </androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingTop="2dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp"
+        android:gravity="center"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/timer_detail_average_record_message"
+        android:textColor="?colorTimerText"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/sessionDetailTextAverage"

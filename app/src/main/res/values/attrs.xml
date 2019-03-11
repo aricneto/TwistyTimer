@@ -21,6 +21,7 @@
     <attr format="dimension" name="tabBarSize"/>
     <attr format="dimension" name="tabBarPadding"/>
     <attr format="dimension" name="actionBarPadding"/>
+    <attr format="dimension" name="qaButtonSize"/>
     <attr format="color" name="colorTabBar"/>
     <attr format="color" name="colorActionBar"/>
     <attr format="color" name="colorActionBarText"/>
