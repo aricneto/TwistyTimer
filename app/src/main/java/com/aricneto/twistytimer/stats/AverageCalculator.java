@@ -2,9 +2,21 @@ package com.aricneto.twistytimer.stats;
 
 import android.util.Log;
 
+import com.aricneto.twistytimer.items.AverageComponent;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.StatUtils;
+import com.google.common.collect.BoundType;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.TreeMultiset;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
+
+import androidx.recyclerview.widget.SortedList;
 
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated
@@ -80,6 +92,16 @@ public final class AverageCalculator {
      * overwritten when the next new time is added.
      */
     private final long[] mTimes;
+
+    /**
+     * A TreeMultiset holding the most recently added solve times, sorted by lowest to highest
+     * The TreeMultiset structure automatically sorts its elements.
+     */
+    private TreeMultiset<Long> mSortedTimes;
+
+    private AverageComponent mUpperTrim;
+    private AverageComponent mLowerTrim;
+    private long mTrimSize;
 
     /**
      * The index in {@link #mTimes} at which to add the next time. If this is equal to the length
@@ -276,7 +298,9 @@ public final class AverageCalculator {
 
             final long ejectedTime;
 
+            // If the array has just been filled, store a sorted version of it
             // If the array is full, "mNext" points to the oldest result that needs to be ejected first.
+            //      We also need to remove the oldest solve from the sorted array and insert the new solve
             // If the array is not full, then "mNext" points to an empty entry, so no special handling
             // is needed.
             if (mNumSolves >= mN) {
@@ -285,6 +309,16 @@ public final class AverageCalculator {
                     mNext = 0;
                 }
                 ejectedTime = mTimes[mNext]; // May be DNF.
+
+                // Create the sorted list as soon as numSolves reaches N
+                if (mNumSolves == mN)
+                    mSortedTimes = TreeMultiset.create(StatUtils.asList(mTimes));
+
+                // Remove the oldest time from mSortedTimes
+                mSortedTimes.remove(ejectedTime);
+                // Add the new solve to mSortedTimes
+                mSortedTimes.add(time);
+
             } else {
                 // "mNext" must be less than "mN" if "mNumSolves" is less than "mN".
                 ejectedTime = UNKNOWN; // Nothing ejected.
@@ -293,11 +327,14 @@ public final class AverageCalculator {
             mTimes[mNext] = time;
             mNext++;
 
+            Log.d("AverageCalculator", "N: " + mN + " | Set: " + mSortedTimes);
+
             // Order is important here, as these methods change fields and some methods depend on the
             // fields being updated by other methods before they are called. All depend on the new
             // time being stored already (see above) and any ejected time being known (also above).
             updateDNFCounts(time, ejectedTime);
             updateCurrentBestAndWorstTimes(time, ejectedTime);
+            updateCurrentTrims(time, ejectedTime);
             updateSums(time, ejectedTime);
             updateVariance(time);
             updateCurrentAverage();
@@ -413,6 +450,18 @@ public final class AverageCalculator {
                     mCurrentBestTime = Math.min(mCurrentBestTime, time);
                     mCurrentWorstTime = Math.max(mCurrentWorstTime, time);
                 }
+            }
+        }
+    }
+
+    private void updateCurrentTrims(long addedTime, long ejectedTime) {
+        if (mNumSolves >= mN) {
+            if (mNumSolves == mN) {
+                // FIXME: iterate until mTrimSize and sum these values, save in mXTrim.sum
+                // the following is incorrect:
+                //long lowerBound = mSortedTimes.iterator().
+                //mUpperTrim.tree = mSortedTimes.tailMultiset(mTrimSize, BoundType.CLOSED);
+                //mLowerTrim.tree = mSortedTimes.headMultiset(mTrimSize, BoundType.CLOSED);
             }
         }
     }
