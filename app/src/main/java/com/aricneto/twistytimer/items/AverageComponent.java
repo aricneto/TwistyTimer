@@ -8,12 +8,12 @@ import com.google.common.collect.TreeMultiset;
  * Stores a sum, best and worst times
  */
 public class AverageComponent {
-    public int sum;
-    public int best;
-    public int worst;
+    public long sum;
+    public long best;
+    public long worst;
     public SortedMultiset<Long> tree;
 
-    public AverageComponent(int sum, int best, int worst, SortedMultiset<Long> tree) {
+    public AverageComponent(long sum, long best, long worst, SortedMultiset<Long> tree) {
         this.sum = sum;
         this.best = best;
         this.worst = worst;
