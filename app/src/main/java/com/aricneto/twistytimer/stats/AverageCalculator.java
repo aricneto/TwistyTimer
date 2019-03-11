@@ -6,17 +6,9 @@ import com.aricneto.twistytimer.items.AverageComponent;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StatUtils;
 import com.google.common.collect.BoundType;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeSet;
-
-import androidx.recyclerview.widget.SortedList;
 
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated
@@ -101,7 +93,8 @@ public final class AverageCalculator {
 
     private AverageComponent mUpperTrim;
     private AverageComponent mLowerTrim;
-    private long mTrimSize;
+    private long mLowerTrimBound;
+    private long mUpperTrimBound;
 
     /**
      * The index in {@link #mTimes} at which to add the next time. If this is equal to the length
@@ -223,6 +216,9 @@ public final class AverageCalculator {
         mTimes = new long[n];
         mDisqualifyDNFs = disqualifyDNFs;
 
+        mLowerTrimBound = n / 10;
+        mUpperTrimBound = mN - mLowerTrimBound;
+
         // As "reset()" needs to be supported to ensure a sane state can be guaranteed before
         // populating statistics from the database, it makes sense to use it to initialise the
         // fields in one place.
@@ -245,6 +241,8 @@ public final class AverageCalculator {
         mVarianceDelta2 = 0;
         mVarianceM2 = 0;
 
+        mLowerTrim.sum = UNKNOWN;
+        mUpperTrim.sum = UNKNOWN;
         mCurrentSum = UNKNOWN;
         mAllTimeSum = UNKNOWN;
         mCurrentBestTime = UNKNOWN;
@@ -457,12 +455,25 @@ public final class AverageCalculator {
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
         if (mNumSolves >= mN) {
             if (mNumSolves == mN) {
-                // FIXME: iterate until mTrimSize and sum these values, save in mXTrim.sum
-                // the following is incorrect:
-                //long lowerBound = mSortedTimes.iterator().
-                //mUpperTrim.tree = mSortedTimes.tailMultiset(mTrimSize, BoundType.CLOSED);
-                //mLowerTrim.tree = mSortedTimes.headMultiset(mTrimSize, BoundType.CLOSED);
+                int count = 1;
+                for (Long time : mSortedTimes) {
+                    if (count <= mLowerTrimBound) {
+                        mLowerTrim.sum = time + (mLowerTrim.sum == UNKNOWN ? 0L : mLowerTrim.sum);
+                        if (count == mLowerTrimBound)
+                            mLowerTrim.best = time;
+                    } else if (count >= (mN - mLowerTrimBound)) {
+                        mUpperTrim.sum = time + (mUpperTrim.sum == UNKNOWN ? 0L : mUpperTrim.sum);
+                        if (count == mUpperTrimBound)
+                            mUpperTrim.worst = time;
+                    } else {
+                        mCurrentSum = time + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
+                    }
+                    count++;
+                }
+                mUpperTrim.tree = mSortedTimes.tailMultiset(mUpperTrim.worst, BoundType.CLOSED);
+                mLowerTrim.tree = mSortedTimes.headMultiset(mLowerTrim.best, BoundType.CLOSED);
             }
+            if (addedTime < mLowerTrim.best);
         }
     }
 
@@ -480,7 +491,7 @@ public final class AverageCalculator {
     private void updateSums(long addedTime, long ejectedTime) {
         if (addedTime != DNF) {
             mCurrentSum = addedTime + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
-            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);;
+            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);
         }
         if (ejectedTime != DNF && ejectedTime != UNKNOWN) {
             mCurrentSum -= ejectedTime;
