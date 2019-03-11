@@ -226,8 +226,8 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         holder.themeTitle.setText(themeSet[position].getName());
         holder.themeCard.setBackground(gradientDrawable);
         holder.themeCard.setTextColor(ThemeUtils.fetchStyleableAttr(mContext, themeSet[position].getResId(),
-                                                                    R.styleable.TextThemeStyle,
-                                                                    R.styleable.TextThemeStyle_colorTimerText,
+                                                                    R.styleable.BaseTwistyTheme,
+                                                                    R.styleable.BaseTwistyTheme_colorTimerText,
                                                                     R.attr.colorTimerText));
 
         if (themeSet[position].getPrefName().equals(currentTextStyle)) {

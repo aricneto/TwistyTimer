@@ -27,11 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:ellipsize="end"
-            android:fontFamily="@font/lato_bold"
             android:maxLines="1"
             android:padding="16dp"
+            android:fontFamily="@font/lato_bold"
             android:textColor="?colorItemListText"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="1:26.95" />
 

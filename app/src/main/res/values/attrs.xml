@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BackgroundGradientStyle">
+    <declare-styleable name="BaseTwistyTheme">
         <attr format="color" name="colorMainGradientStart"/>
         <attr format="color" name="colorMainGradientEnd"/>
-    </declare-styleable>
-
-    <declare-styleable name="TextThemeStyle">
         <attr format="color" name="colorTimerText"/>
-    </declare-styleable>
+        
+        <attr format="reference" name="statTextStyle"/>
+        <attr format="reference" name="defaultFontFamily"/>
 
-    <attr format="color" name="colorBackgroundList"/>
-    <attr format="color" name="colorTimerDetailText"/>
-    <attr format="color" name="colorItemListText"/>
-    <attr format="color" name="colorItemListTextAction"/>
-    <attr format="color" name="colorItemListBackgroundSelected"/>
-    <attr format="color" name="colorItemListBackground"/>
-    <attr format="color" name="mainColorBackground"/>
-    <attr format="color" name="textColorContrastBackground"/>
-
-    <attr format="dimension" name="tabBarSize"/>
-    <attr format="dimension" name="tabBarPadding"/>
-    <attr format="dimension" name="actionBarPadding"/>
-    <attr format="dimension" name="qaButtonSize"/>
-    <attr format="color" name="colorTabBar"/>
-    <attr format="color" name="colorActionBar"/>
-    <attr format="color" name="colorActionBarText"/>
-
-    <declare-styleable name="BooleanStyles">
+        <attr format="color" name="colorBackgroundList"/>
+        <attr format="color" name="colorTimerDetailText"/>
+        <attr format="color" name="colorItemListText"/>
+        <attr format="color" name="colorItemListTextAction"/>
+        <attr format="color" name="colorItemListBackgroundSelected"/>
+        <attr format="color" name="colorItemListBackground"/>
+        <attr format="color" name="mainColorBackground"/>
+        <attr format="color" name="textColorContrastBackground"/>
+    
+        <attr format="dimension" name="tabBarSize"/>
+        <attr format="dimension" name="tabBarPadding"/>
+        <attr format="dimension" name="actionBarPadding"/>
+        <attr format="dimension" name="qaButtonSize"/>
+        <attr format="color" name="colorTabBar"/>
+        <attr format="color" name="colorActionBar"/>
+        <attr format="color" name="colorActionBarText"/>
+    
         <attr format="boolean" name="isLightTheme"/>
     </declare-styleable>
 

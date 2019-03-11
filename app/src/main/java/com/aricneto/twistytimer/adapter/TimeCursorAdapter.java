@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,7 +180,7 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
             }
         });
 
-        holder.timeText.setText(PuzzleUtils.convertTimeToString(pTime, PuzzleUtils.FORMAT_DEFAULT));
+        holder.timeText.setText(Html.fromHtml(PuzzleUtils.convertTimeToString(pTime, PuzzleUtils.FORMAT_SMALL_MILLI)));
         holder.penaltyText.setTextColor(ContextCompat.getColor(mContext, R.color.red_material));
 
         switch (pPenalty) {

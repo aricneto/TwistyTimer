@@ -6,7 +6,6 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -76,7 +75,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -205,7 +203,7 @@ public class MainActivity extends AppCompatActivity
         if (Prefs.getBoolean(R.string.pk_tint_navigation_bar, false)) {
             getTheme().applyStyle(R.style.TintedNavigationBar, true);
             // Set navigation bar icon tint
-            if (ThemeUtils.fetchAttrBool(this, ThemeUtils.getPreferredTheme(), R.styleable.BooleanStyles_isLightTheme)) {
+            if (ThemeUtils.fetchAttrBool(this, ThemeUtils.getPreferredTheme(), R.styleable.BaseTwistyTheme_isLightTheme)) {
                 getTheme().applyStyle(R.style.LightNavBarIconStyle, true);
             }
         }

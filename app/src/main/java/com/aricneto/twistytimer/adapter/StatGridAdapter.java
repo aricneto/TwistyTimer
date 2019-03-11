@@ -15,6 +15,8 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 
+import androidx.core.content.res.ResourcesCompat;
+
 /**
  * Created by Ari Neto on 19-Aug-17.
  *
@@ -48,7 +50,7 @@ public class StatGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = new TextView(mContext, null, R.style.StatTextStyle);
+        TextView textView = new TextView(mContext, null, R.attr.statTextStyle);
 
         // alternate colors between rows to make viewing easier
         if (getItemId(position) % 2 == 0)
@@ -56,14 +58,8 @@ public class StatGridAdapter extends BaseAdapter {
         else
             textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
 
+        textView.setTypeface(ResourcesCompat.getFont(mContext, R.font.quicksand_medium));
 
-        textView.setTextColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_text_color));
-        textView.setGravity(Gravity.RIGHT);
-        textView.setSingleLine(true);
-        textView.setMaxLines(1);
-
-        // IMPORTANT: keep padding in sync with StatTextStyle so layout doesn't get out of order
-        textView.setPadding(0, (int) Utils.convertDpToPixel(3f), (int) Utils.convertDpToPixel(8f), (int) Utils.convertDpToPixel(3f));
         textView.setText(mStats.get(position).getTime());
 
         return textView;

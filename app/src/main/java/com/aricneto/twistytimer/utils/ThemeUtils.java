@@ -6,12 +6,10 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -201,12 +199,12 @@ public final class ThemeUtils {
      * @return {@link GradientDrawable} containing a linear gradient with the given style's colors
      */
     public static GradientDrawable fetchBackgroundGradient(Context context, @StyleRes int style) {
-        TypedArray gradientColors = context.obtainStyledAttributes(style, R.styleable.BackgroundGradientStyle);
+        TypedArray gradientColors = context.obtainStyledAttributes(style, R.styleable.BaseTwistyTheme);
 
         GradientDrawable gradientDrawable = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientStart, Color.BLUE),
-                          gradientColors.getColor(R.styleable.BackgroundGradientStyle_colorMainGradientEnd, Color.BLUE)});
+                new int[]{gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientStart, Color.BLUE),
+                          gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientEnd, Color.BLUE)});
 
         gradientColors.recycle();
 
@@ -250,7 +248,7 @@ public final class ThemeUtils {
      * @return @ColorRes
      */
     public static boolean fetchAttrBool(Context context, @StyleRes int style, @StyleableRes int boolRes) {
-        TypedArray bool = context.obtainStyledAttributes(style, R.styleable.BooleanStyles);
+        TypedArray bool = context.obtainStyledAttributes(style, R.styleable.BaseTwistyTheme);
 
         boolean finalBool = bool.getBoolean(boolRes, false);
         bool.recycle();

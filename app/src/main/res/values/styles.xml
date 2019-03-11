@@ -45,10 +45,13 @@
         <item name="actionBarPadding">70dp</item>
         <item name="tabBarSize">40dp</item>
         <item name="tabBarPadding">48dp</item>
+        <item name="statTextStyle">@style/StatTextStyle</item>
 
         <item name="qaButtonSize">36dp</item>
 
-        <item name="android:fontFamily">@font/quicksand_medium</item>
+        <item name="defaultFontFamily">@font/quicksand_medium</item>
+
+        <item name="android:fontFamily">?defaultFontFamily</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
         <item name="colorMainGradientStart">#084dff</item>
@@ -97,7 +100,7 @@
         <item name="graph_stats_card_background_faded">#F0F0F0</item>
         <item name="graph_stats_card_divider">#E6E6E6</item>
         <item name="graph_stats_card_text_color_faded">#74000000</item>
-        <item name="graph_stats_card_text_color">#b2000000</item>
+        <item name="graph_stats_card_text_color">#D9000000</item>
 
 
         <!-- Material dialog theming -->
@@ -121,7 +124,7 @@
         <item name="colorPrimary">@color/md_white_1000</item>
         <item name="colorPrimaryDark">@color/md_white_1000</item>
         <item name="colorAccent">@color/md_blue_A700</item>
-        <item name="android:fontFamily">@font/quicksand_medium</item>
+        <item name="android:fontFamily">?defaultFontFamily</item>
         <item name="colorItemListBackgroundSelected">@color/md_indigo_200</item>
         <item name="md_positive_color">@color/md_blue_A700</item>
 
@@ -569,12 +572,13 @@
     <style name="StatTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingTop">4dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:gravity">right</item>
+        <item name="android:textSize">13.3sp</item>
         <item name="android:background">?graph_stats_card_background</item>
         <item name="android:textColor">?graph_stats_card_text_color</item>
     </style>
@@ -583,10 +587,10 @@
         <item name="android:paddingTop">3dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">?graph_stats_card_background</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textSize">13.3sp</item>
         <item name="android:textColor">?graph_stats_card_text_color</item>
     </style>
 
