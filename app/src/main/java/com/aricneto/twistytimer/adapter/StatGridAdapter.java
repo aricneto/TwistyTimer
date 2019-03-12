@@ -58,8 +58,7 @@ public class StatGridAdapter extends BaseAdapter {
         else
             textView.setBackgroundColor(ThemeUtils.fetchAttrColor(mContext, R.attr.graph_stats_card_background));
 
-        textView.setTypeface(ResourcesCompat.getFont(mContext, R.font.quicksand_medium));
-
+        //textView.setTypeface(ResourcesCompat.getFont(mContext, R.font.quicksand));
         textView.setText(mStats.get(position).getTime());
 
         return textView;

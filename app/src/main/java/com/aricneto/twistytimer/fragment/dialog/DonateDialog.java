@@ -88,13 +88,12 @@ public class DonateDialog extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // App billing is only able to fetch these details on a signed release version,
-        // so ignore it on debug versions
-        if (!BuildConfig.DEBUG) {
-            ArrayList<String> donationTiers = new ArrayList<>(
-                    Arrays.asList("donation_tier1", "donation_tier2", "donation_tier3", "donation_tier4", "donation_tier5"));
-            List<SkuDetails> tiers = bp.getPurchaseListingDetails(donationTiers);
+        ArrayList<String> donationTiers = new ArrayList<>(
+                Arrays.asList("donation_tier1", "donation_tier2", "donation_tier3", "donation_tier4", "donation_tier5"));
+        List<SkuDetails> tiers = bp.getPurchaseListingDetails(donationTiers);
 
+        // If size < 5, the app was not able to fetch all value info
+        if (tiers.size() == 5) {
             tier5.setText(tiers.get(4).currency + " " + String.valueOf(tiers.get(4).priceValue));
             tier4.setText(tiers.get(3).currency + " " + String.valueOf(tiers.get(3).priceValue));
             tier3.setText(tiers.get(2).currency + " " + String.valueOf(tiers.get(2).priceValue));
