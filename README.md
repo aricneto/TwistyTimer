@@ -13,9 +13,8 @@ If you would like to add a new feature or fix something, just send a pull reques
 
 Special thanks to Prisma Puzzle Timer, TNoodle and PlusTimer for being my inspirations to create this project :).
 
-# I want to translate this app!
-
-That's great! If you're interested in translating Twisty Timer, just go to <a href="https://crowdin.com/project/twisty-timer">this page</a> and select your language. If it's not on the list, just contact me and I'll add it.
+# I want to translate this app! [![Crowdin](https://d322cqt584bo4o.cloudfront.net/twisty-timer/localized.svg)](https://crowdin.com/project/twisty-timer)
+If you're interested in translating Twisty Timer, just go to <a href="https://crowdin.com/project/twisty-timer">this page</a> and select your language. If it's not on the list, just contact me and I'll add it.
 
 If you spot a problem in any of the translations, please correct it on the Crowdin page and send me a message, don't open a request here! This makes it easier to manage the localizations.
 
