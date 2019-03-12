@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -64,8 +64,7 @@ public class OffsetValuesLineChartRenderer extends LineChartRenderer {
      * slightly out-of-bounds.
      */
     @Override
-    public void drawValue(Canvas c, ValueFormatter formatter, float value, Entry entry,
-                          int dataSetIndex, float x, float y) {
+    public void drawValue(Canvas c, IValueFormatter formatter, float value, Entry entry, int dataSetIndex, float x, float y, int color) {
         // NOTE: The given value of "y" is calculated in "LineChartRenderer.drawValues". It is the
         // Y-coordinate for the *baseline* of the drawn text. By default, it is offset above the
         // data point based on the circle radius value (even if drawing of circles is disabled) and
@@ -88,6 +87,6 @@ public class OffsetValuesLineChartRenderer extends LineChartRenderer {
         // TODO: It might be worth considering if these should be painted in "reverse video" to
         // make them more readable, i.e., draw a rectangle in the "text color" and then draw the
         // text on top in a contrasting color (maybe just black or white).
-        super.drawValue(c, formatter, value, entry, dataSetIndex, x, y + mValueYOffsetPX);
+        super.drawValue(c, formatter, value, entry, dataSetIndex, x, y + mValueYOffsetPX, color);
     }
 }

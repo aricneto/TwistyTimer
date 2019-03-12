@@ -31,6 +31,7 @@ import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.StatGridAdapter;
 import com.aricneto.twistytimer.items.Stat;
 import com.aricneto.twistytimer.items.Theme;
+import com.aricneto.twistytimer.spans.RoundedAxisValueFormatter;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.stats.ChartStatisticsLoader;
@@ -42,8 +43,12 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -269,7 +274,8 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         lineChartView.setDrawGridBackground(false);
         lineChartView.getAxisLeft().setEnabled(false);
         lineChartView.getLegend().setTextColor(chartTextColor);
-        lineChartView.setDescription("");
+        lineChartView.setExtraBottomOffset(ThemeUtils.dpToPix(mContext, 4));
+        lineChartView.setDescription(null);
 
         // Set axis colors
         final YAxis axisLeft = lineChartView.getAxisRight();
@@ -283,6 +289,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(chartTextColor);
         xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setValueFormatter(new RoundedAxisValueFormatter(xAxis.mDecimals));
 
         axisLeft.setDrawGridLines(true);
         //axisLeft.setSpaceTop(30f);

@@ -4,15 +4,18 @@ import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.util.List;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
@@ -449,7 +452,7 @@ public class ChartStatistics {
         // their values shown without much visual overlap.
         chart.setMaxVisibleValueCount(2_000);
         // Use a custom renderer to draw the values of the best times *below* their data points.
-        chart.setRenderer(new OffsetValuesLineChartRenderer(chart, BEST_TIME_VALUES_Y_OFFSET_DP));
+        //chart.setRenderer(new OffsetValuesLineChartRenderer(chart, BEST_TIME_VALUES_Y_OFFSET_DP));
 
         chart.setData(mChartData);
     }
@@ -463,27 +466,32 @@ public class ChartStatistics {
         // NOTE: If "Legend" is allowed to configure itself automatically, it will add two entries
         // for each AoN/best-AoN pair of data sets, but only one should be shown. Go custom....
         final int numNs = mNsOfAverages.length;
-        final String[] labels = new String[DS_AVG_0 + numNs];
-        final int[] colors = new int[DS_AVG_0 + numNs];
+        final LegendEntry[] legendEntries = new LegendEntry[DS_AVG_0 + numNs];
 
         LineDataSet ds;
 
         ds = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
-        labels[DS_ALL] = ds.getLabel();
-        colors[DS_ALL] = ds.getColor();
+        legendEntries[DS_ALL] = new LegendEntry();
+        legendEntries[DS_ALL].form = Legend.LegendForm.CIRCLE;
+        legendEntries[DS_ALL].label = ds.getLabel();
+        legendEntries[DS_ALL].formColor = ds.getColor();
 
         ds = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
-        labels[DS_BEST] = ds.getLabel();
-        colors[DS_BEST] = ds.getColor();
+        legendEntries[DS_BEST] = new LegendEntry();
+        legendEntries[DS_BEST].form = Legend.LegendForm.CIRCLE;
+        legendEntries[DS_BEST].label = ds.getLabel();
+        legendEntries[DS_BEST].formColor = ds.getColor();
 
         for (int nIndex = 0; nIndex < numNs; nIndex++) {
             // A main AoN data set. The "best AoN" data sets are not represented in the legend.
             ds = (LineDataSet) mChartData.getDataSetByIndex(DS_AVG_0 + 2 * nIndex);
-            labels[DS_AVG_0 + nIndex] = ds.getLabel();
-            colors[DS_AVG_0 + nIndex] = ds.getColor();
+            legendEntries[DS_AVG_0 + nIndex] = new LegendEntry();
+            legendEntries[DS_AVG_0 + nIndex].form = Legend.LegendForm.CIRCLE;
+            legendEntries[DS_AVG_0 + nIndex].label = ds.getLabel();
+            legendEntries[DS_AVG_0 + nIndex].formColor = ds.getColor();
         }
 
-        legend.setCustom(colors, labels);
+        legend.setCustom(legendEntries);
     }
 
     /**
@@ -507,14 +515,14 @@ public class ChartStatistics {
         mStatistics.addTime(time, true); // May throw IAE.
 
         if (time != DNF) {
-            mChartData.addEntry(new Entry(time / 1_000f, mXIndex), DS_ALL);
+            mChartData.addEntry(new Entry(mXIndex, time / 1_000f), DS_ALL);
             isEntryAdded = true;
 
             // Only update the recorded best time if it changes. The result should be a line that
             // traces (if lucky) a staircase descending from left to right (never rising).
             if (time < mBestTime) {
                 mBestTime = time;
-                mChartData.addEntry(new Entry(mBestTime / 1_000f, mXIndex), DS_BEST);
+                mChartData.addEntry(new Entry(mXIndex, mBestTime / 1_000f), DS_BEST);
             }
         }
 
@@ -529,7 +537,7 @@ public class ChartStatistics {
                 final int aonDSIndex = DS_AVG_0 + 2 * nIndex;
                 final float aonYValue = averageTime / 1_000f;
 
-                mChartData.addEntry(new Entry(aonYValue, mXIndex), aonDSIndex);
+                mChartData.addEntry(new Entry(mXIndex, aonYValue), aonDSIndex);
                 isEntryAdded = true;
 
                 // Just keep a single entry in each data set for each best AoN; it will be rendered
@@ -541,14 +549,14 @@ public class ChartStatistics {
                 if (bestAoNDS.getEntryCount() > 0) { // Should be 0 or 1, nothing more.
                     final Entry oldEntry = bestAoNDS.getEntryForIndex(0); // Not an X-index.
 
-                    if (aonYValue < oldEntry.getVal()) {
+                    if (aonYValue < oldEntry.getY()) {
                         // A new best AoN time! Replace the old one with this new one.
                         bestAoNDS.removeEntry(oldEntry);
-                        bestAoNDS.addEntry(new Entry(aonYValue, mXIndex));
+                        bestAoNDS.addEntry(new Entry(mXIndex, aonYValue));
                     }
                 } else {
                     // This is the first AoN time, so just add it as the best (and only) AoN time.
-                    bestAoNDS.addEntry(new Entry(aonYValue, mXIndex));
+                    bestAoNDS.addEntry(new Entry(mXIndex, aonYValue));
                 }
             }
         }
@@ -559,24 +567,24 @@ public class ChartStatistics {
             // UTC time zone. When "LocalDate" trims off the time to represent only a day, that
             // day corresponds to a day in the system default (local) time zone that corresponds
             // to that instant in time.
-            final LocalDate day = new LocalDate(date);
+            //final LocalDate day = new LocalDate(date);
+//
+            //// The nature of the data means that sequential times will often be from the same
+            //// session performed on the same day. Therefore, it is easy to optimise this a bit by
+            //// not formatting the same day over-and-over. This may also save memory, as only a
+            //// single "String" instance is created for each day.
+            //final String xValue;
+//
+            //if (day.equals(mPrevEntryDay)) { // Also implies "mPrevEntryDay != null"
+            //    // Day has not changed, so re-use the previous X-value.
+            //    xValue = mPrevEntryXValue;
+            //} else {
+            //    // A new day (or the very first day), so format the day to a string and cache it.
+            //    xValue = mPrevEntryXValue = mXValueFormatter.print(day);
+            //    mPrevEntryDay = day;
+            //}
 
-            // The nature of the data means that sequential times will often be from the same
-            // session performed on the same day. Therefore, it is easy to optimise this a bit by
-            // not formatting the same day over-and-over. This may also save memory, as only a
-            // single "String" instance is created for each day.
-            final String xValue;
-
-            if (day.equals(mPrevEntryDay)) { // Also implies "mPrevEntryDay != null"
-                // Day has not changed, so re-use the previous X-value.
-                xValue = mPrevEntryXValue;
-            } else {
-                // A new day (or the very first day), so format the day to a string and cache it.
-                xValue = mPrevEntryXValue = mXValueFormatter.print(day);
-                mPrevEntryDay = day;
-            }
-
-            mChartData.addXValue(xValue);
+            //mChartData.addXValue(xValue);
             mXIndex++;
         }
         // If the new solve and all current averages were DNF or UNKNOWN, then no entry was added
@@ -624,7 +632,7 @@ public class ChartStatistics {
      * A formatter for time values displayed beside points in the chart. This converts the stored
      * values (in seconds) to the normal representation.
      */
-    private static class TimeChartValueFormatter implements ValueFormatter {
+    private static class TimeChartValueFormatter implements IValueFormatter {
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex,
                                         ViewPortHandler viewPortHandler) {

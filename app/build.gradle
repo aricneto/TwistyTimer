@@ -76,7 +76,7 @@ dependencies {
     // Android SVG
     implementation 'com.caverock:androidsvg:1.2.1'
     // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     // RippleBackground
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     // LicensesDialog
@@ -91,7 +91,6 @@ dependencies {
 
 repositories {
     jcenter()
-    maven {
-        url 'http://maven.google.com'
-    }
+    maven { url 'http://maven.google.com' }
+    maven { url 'https://jitpack.io' }
 }
