@@ -45,6 +45,11 @@
     <string name="cube_555">5x5x5</string>
     <string name="cube_666">6x6x6</string>
     <string name="cube_777">7x7x7</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Anuluj</string>
     <string name="delete_dialog_confirmation_button">Usuń</string>
     <string name="delete_dialog_confirmation_title">Usunąć ułożenie?</string>
@@ -242,4 +247,8 @@ Możesz również stworzyć własną kategorię z własnym zestawem sytuacji</st
     <string name="pref_title_menu_background">Wyłącz tło menu</string>
     <string name="pref_summary_menu_background">Wyłącz przyciemnienie tła pod górnym paskiem menu</string>
     <string name="dialog_theme_text_style">Styl tekstu</string>
+    <string name="pref_screen_title_general">Ogólne</string>
+    <string name="pref_screen_title_list">Lista wyjikow</string>
+    <string name="unarchive_dialog_summary">Aktualnie masz %1$d zarchiwizowanych ułożeń.\n\nIle ułożeń chcesz dearchiwizować? Najnowsze ułożenia zostaną przywrócone jako pierwsze.</string>
+    <string name="donation_message">Twoje wsparcie pomaga mi zmieniać Twisty Timer na jeszcze lepszy dla każdego :)</string>
 </resources>

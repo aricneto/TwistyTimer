@@ -45,6 +45,11 @@
     <string name="cube_555">五阶魔方</string>
     <string name="cube_666">六阶魔方</string>
     <string name="cube_777">七阶魔方</string>
+    <string name="cube_clock">魔表</string>
+    <string name="cube_mega">五魔方</string>
+    <string name="cube_pyra">金字塔</string>
+    <string name="cube_skewb">斜转</string>
+    <string name="cube_sq1">SQ1</string>
     <string name="delete_dialog_cancel_button">取消</string>
     <string name="delete_dialog_confirmation_button">删除</string>
     <string name="delete_dialog_confirmation_title">删除成绩？</string>
@@ -116,7 +121,7 @@
     <string name="name_category">分组</string>
     <string name="name_puzzle">魔方</string>
     <string name="no_penalty">无惩罚</string>
-    <string name="optimal_cross">最优十字解-</string>
+    <string name="optimal_cross">最优十字解在</string>
     <string name="optimal_x_cross">最优扩展十字解-</string>
     <string name="option_show_scramble_hints">十字提示的底面</string>
     <string name="option_show_scramble_hints_summary">选择你想查看提示的底面</string>
@@ -223,7 +228,7 @@
     <string name="category_select_dialog_hint_edit">长按开始编辑</string>
     <string name="action_search">搜索</string>
     <string name="timelist_searchbox_hint">搜索备注</string>
-    <string name="title_algorithms">公式</string>
+    <string name="title_algorithms">公式库</string>
     <string name="edit_scramble">输入自定义打乱</string>
     <string name="drawer_title_trainer">训练器</string>
     <string name="title_trainer">%1$s训练</string>

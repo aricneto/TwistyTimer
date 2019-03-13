@@ -3,7 +3,7 @@
 <resources>
     <string name="action_add">Добавить</string>
     <string name="action_archive">Архивировать</string>
-    <string name="action_cancel">Отменить</string>
+    <string name="action_cancel">Отмена</string>
     <string name="action_choose">Выбрать</string>
     <string name="action_clear">Очистить</string>
     <string name="action_default">По умолчанию</string>
@@ -29,7 +29,7 @@
     <string name="backgroundEnabledTitle">Подкрашенный фон</string>
     <string name="bestSolveEnabledSummary">Оповещать, когда вы ставите личный рекорд</string>
     <string name="bestSolveEnabledTitle">Оповещение о лучшем времени</string>
-    <string name="averageRecordsEnabledSummary">Оповестить и подсветить статистику когда вы получаете новое лучшее среднее</string>
+    <string name="averageRecordsEnabledSummary">Оповестить вас и подсветить статистику, когда вы устанавливаете рекорд по лучшему среднему времени</string>
     <string name="averageRecordsEnabledTitle">Оповещение о лучшем среднем</string>
     <string name="buttonsEnabledSummary">Показывать кнопки под таймером по окончании сборки</string>
     <string name="buttonsEnabledTitle">Кнопки быстрых действий</string>
@@ -50,7 +50,7 @@
     <string name="cube_pyra">Пираминкс</string>
     <string name="cube_skewb">Скьюб</string>
     <string name="cube_sq1">Скваер-1</string>
-    <string name="delete_dialog_cancel_button">Отменить</string>
+    <string name="delete_dialog_cancel_button">Отмена</string>
     <string name="delete_dialog_confirmation_button">Удалить</string>
     <string name="delete_dialog_confirmation_title">Удалить результат?</string>
     <string name="dialog_export_import_export">Экспорт...</string>
@@ -59,7 +59,7 @@
     <string name="dialog_revert_title_confirmation">Сбросить алгоритмы</string>
     <string name="dialog_set_progress">Установить прогресс</string>
     <string name="drawer_about">О приложении</string>
-    <string name="drawer_title_changeColorScheme">Цветовая схема</string>
+    <string name="drawer_title_changeColorScheme">Цветовая схема головоломки</string>
     <string name="drawer_title_changeTheme">Тема приложения</string>
     <string name="drawer_title_export_import">Экспорт/Импорт</string>
     <string name="drawer_title_other">Прочее</string>
@@ -140,8 +140,8 @@
     <string name="pref_category_title_other">Прочее</string>
     <string name="pref_category_title_scramble">Скрамбл</string>
     <string name="pref_category_title_timer">Таймер</string>
-    <string name="pref_screen_title_inspection_behavior">Поведение инспекции</string>
-    <string name="pref_screen_title_timer_behavior">Поведение таймера</string>
+    <string name="pref_screen_title_inspection_behavior">Настройки инспекции</string>
+    <string name="pref_screen_title_timer_behavior">Настройки таймера</string>
     <string name="pref_screen_title_timer_appearance">Внешний вид таймера</string>
     <string name="pref_scramble_box_title">Фон скрамбла</string>
     <string name="pref_scramble_box_description">Показывать белый фон за скрамблом</string>
@@ -154,15 +154,15 @@
     <string name="remove_subtype_confirmation_content_continuation">Это также удалит все результаты из данной категории</string>
     <string name="remove_subtype_title">Укажите категорию для удаления</string>
     <string name="rename_subtype_title">Укажите категорию для переименования</string>
-    <string name="reset_colorscheme">Восстановить стандартную тему?</string>
-    <string name="scrambleEnabledSummary">Генерировать последовательности для скраблов</string>
+    <string name="reset_colorscheme">Восстановить стандартную цветовую тему головоломки?</string>
+    <string name="scrambleEnabledSummary">Генерировать последовательности для скрамблов</string>
     <string name="scrambleEnabledTitle">Генерировать скрамблы</string>
     <string name="scrambleImageEnabledSummary">Показывать картинку скрамбла на таймере</string>
     <string name="scrambleImageEnabledTitle">Картинка скрамбла</string>
-    <string name="scrambleImageSize_summary">Управление размером картинки скрамбла</string>
+    <string name="scrambleImageSize_summary">Изменение размера картинки скрамбла</string>
     <string name="scrambleImageSize_text">Размер картинки скрамбла</string>
     <string name="scramble_text_size">Размер текста скрамбла</string>
-    <string name="scramble_text_size_summary">Управление размером текста скрамбла на таймере</string>
+    <string name="scramble_text_size_summary">Изменение размера текста скрамбла на таймере</string>
     <string name="scramble_text_tap_hint">Нажмите здесь, чтобы увидеть скрамбл</string>
     <string name="select_penalty">Выбрать штраф штраф</string>
     <string name="select_solve_type">Выбрать категорию</string>
@@ -184,7 +184,7 @@
     <string name="timer_text_offset">Смещение текста таймера</string>
     <string name="timer_text_offset_summary">Контролировать позицию текста таймера</string>
     <string name="timer_text_size">Размер текста таймера</string>
-    <string name="timer_text_size_summary">Контролировать размер текста таймера</string>
+    <string name="timer_text_size_summary">Изменить размер текста таймера</string>
     <string name="title_activity_about">О приложении</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="translators">Переводчики</string>
@@ -193,7 +193,7 @@
     <string name="warning">Предупреждение</string>
     <string name="worstSolveEnabledSummary">Предупреждать когда у вас худший личный результат</string>
     <string name="worstSolveEnabledTitle">Предупреждение о худшем результате</string>
-    <string name="graph_stats_tab_title_improvement">Улучшение</string>
+    <string name="graph_stats_tab_title_improvement">Прогресс</string>
     <string name="graph_stats_tab_title_average">Среднее</string>
     <string name="graph_stats_tab_title_other">Прочее</string>
     <string name="graph_stats_title_best_all_time">Лучшее за все время</string>
@@ -238,7 +238,7 @@
     <string name="pref_summary_tint_navigation">Экспериментально. Нарисует панель навигации с цветом темы.\nРаботает только на Android Lollipop и новее!</string>
     <string name="pref_title_tint_navigation">Окрашивать панель навигации</string>
     <string name="pref_title_menu_background">Отключить фон</string>
-    <string name="pref_summary_menu_background">Отключить оттенонный фон за верхней панели меню</string>
+    <string name="pref_summary_menu_background">Отключить фон за верхней панелью меню</string>
     <string name="dialog_theme_text_style">Стиль текста</string>
     <string name="pref_screen_title_general">Общее</string>
     <string name="pref_screen_title_list">Список</string>
