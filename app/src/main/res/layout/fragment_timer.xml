@@ -145,7 +145,6 @@
         android:layout_above="@id/sessionDetailTextAverage"
         android:layout_alignLeft="@id/sessionDetailTextOther"
         android:layout_alignRight="@id/sessionDetailTextAverage"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
@@ -156,7 +155,6 @@
         android:visibility="gone"
         tools:visibility="visible"
         android:layout_marginBottom="4dp"
-        android:layout_marginRight="16dp"
         android:text="@string/timer_detail_average_record_message"
         android:textColor="?colorTimerText"
         android:textStyle="bold"
@@ -174,6 +172,7 @@
         android:alpha=".85"
         android:textColor="?colorTimerText"
         android:textSize="12sp"
+        android:fontFamily="@font/lato"
         android:gravity="right"
         tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
@@ -189,6 +188,7 @@
         android:alpha=".85"
         android:gravity="right"
         android:textColor="?colorTimerText"
+        android:fontFamily="@font/lato"
         android:textSize="12sp"
         tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
 

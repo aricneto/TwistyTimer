@@ -54,6 +54,7 @@
             android:layout_alignParentRight="true"
             android:alpha=".85"
             android:padding="8dp"
+            android:tint="?colorItemListText"
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
@@ -68,6 +69,7 @@
             android:alpha=".85"
             android:clickable="true"
             android:focusable="true"
+            android:tint="?colorItemListText"
             android:padding="8dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
@@ -83,6 +85,7 @@
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px"
+            android:tint="?colorItemListText"
             android:padding="8dp"
             android:visibility="gone"
             tools:visibility="visible" />

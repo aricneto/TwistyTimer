@@ -170,6 +170,7 @@
         android:alpha=".85"
         android:textColor="?colorTimerText"
         android:textSize="12sp"
+        android:fontFamily="@font/lato"
         android:gravity="right"
         tools:text="Ao5: 12.2\nAo12: 12.2\nAo50: 12.2\nAo100: 23.21" />
 
@@ -184,6 +185,7 @@
         android:layout_marginBottom="?tabBarPadding"
         android:alpha=".85"
         android:gravity="left"
+        android:fontFamily="@font/lato"
         android:textColor="?colorTimerText"
         android:textSize="12sp"
         tools:text="Dev: 13.21\nBest: 12.14\nWorst: 45.21\nCount: 23.21" />
