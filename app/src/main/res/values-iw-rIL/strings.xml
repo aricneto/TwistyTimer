@@ -123,8 +123,8 @@
     <string name="name_category">קטגוריה</string>
     <string name="name_puzzle">קוביה</string>
     <string name="no_penalty">ללא עונש</string>
-    <string name="optimal_cross">צלב אופטימלי</string>
-    <string name="optimal_x_cross">צלב מורחב ב-</string>
+    <string name="optimal_cross">צלב אופטימלי %1$s:</string>
+    <string name="optimal_x_cross">צלב מורחב ב- %1$s:</string>
     <string name="option_show_scramble_hints">צדדים מוצגים ברמז</string>
     <string name="option_show_scramble_hints_summary">בחר את הצדדים שברצונך לראות בעבורו רמז</string>
     <string name="pagerEnabledSummary">אם האפשרות הזאת מושבתת, תצטרך להקיש על הטאבים בכדי לעבור ביניהם.</string>

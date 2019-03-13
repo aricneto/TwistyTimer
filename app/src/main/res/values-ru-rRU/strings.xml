@@ -121,8 +121,8 @@
     <string name="name_category">Категория</string>
     <string name="name_puzzle">Головоломка</string>
     <string name="no_penalty">Нет штрафа</string>
-    <string name="optimal_cross">Оптимальный крест на</string>
-    <string name="optimal_x_cross">Оптимальный улучшенный крест на</string>
+    <string name="optimal_cross">Оптимальный крест на %1$s:</string>
+    <string name="optimal_x_cross">Оптимальный улучшенный крест на %1$s:</string>
     <string name="option_show_scramble_hints">Грани на подсказке</string>
     <string name="option_show_scramble_hints_summary">Выберите грани, для которых хотите видеть подсказки</string>
     <string name="pagerEnabledSummary">Если этот параметр выключен, вам нужно будет нажимать на вкладки, чтобы переключаться между ними.</string>

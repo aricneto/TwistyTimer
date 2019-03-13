@@ -121,8 +121,8 @@
     <string name="name_category">分组</string>
     <string name="name_puzzle">魔方</string>
     <string name="no_penalty">无惩罚</string>
-    <string name="optimal_cross">最优十字解在</string>
-    <string name="optimal_x_cross">最优扩展十字解-</string>
+    <string name="optimal_cross">最优十字解在 %1$s:</string>
+    <string name="optimal_x_cross">最优扩展十字解- %1$s:</string>
     <string name="option_show_scramble_hints">十字提示的底面</string>
     <string name="option_show_scramble_hints_summary">选择你想查看提示的底面</string>
     <string name="pagerEnabledSummary">如果禁用这个设置，需要点击标签来切换。</string>

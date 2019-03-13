@@ -125,8 +125,8 @@
     <string name="name_category">Kategorija</string>
     <string name="name_puzzle">Slagalice</string>
     <string name="no_penalty">Nema kazne</string>
-    <string name="optimal_cross">Optimalan krstić na</string>
-    <string name="optimal_x_cross">Napredni krstić na</string>
+    <string name="optimal_cross">Optimalan krstić na %1$s:</string>
+    <string name="optimal_x_cross">Napredni krstić na %1$s:</string>
     <string name="option_show_scramble_hints">Strana kocke prikazana na predlogu</string>
     <string name="option_show_scramble_hints_summary">Odaberi stranu kocke za koju želiš da vidiš predloge</string>
     <string name="pagerEnabledSummary">Ako je ova opcija omogućena, moraćete da dodirnete tab kako biste ih menjali međusobno.</string>

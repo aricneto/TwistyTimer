@@ -116,8 +116,8 @@
     <string name="name_category">Categoria</string>
     <string name="name_puzzle">Cup</string>
     <string name="no_penalty">Cap penalisació</string>
-    <string name="optimal_cross">Creu òptima en</string>
-    <string name="optimal_x_cross">Creu estesa òptima en</string>
+    <string name="optimal_cross">Creu òptima en %1$s:</string>
+    <string name="optimal_x_cross">Creu estesa òptima en %1$s:</string>
     <string name="option_show_scramble_hints">Mostrar cares en sugerència</string>
     <string name="option_show_scramble_hints_summary">Selecciona les cares a mostrar sugerències</string>
     <string name="pagerEnabledSummary">Si esta opció està desactivada, deuràs esgolar les pàgines per a canviar entre elles.</string>

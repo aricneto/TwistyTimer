@@ -118,8 +118,8 @@
     <string name="name_category">Catégorie</string>
     <string name="name_puzzle">Cube</string>
     <string name="no_penalty">Pas de pénalité</string>
-    <string name="optimal_cross">Croix optimale sur la face</string>
-    <string name="optimal_x_cross">Croix optimale étendue sur la face</string>
+    <string name="optimal_cross">Croix optimale sur la face %1$s:</string>
+    <string name="optimal_x_cross">Croix optimale étendue sur la face %1$s:</string>
     <string name="option_show_scramble_hints">Faces affichées sur l\'astuce</string>
     <string name="option_show_scramble_hints_summary">Sélectionnez les faces dont vous souhaitez voir l\'astuce de résolution</string>
     <string name="pagerEnabledSummary">Si ce paramètre est désactivé, vous devrez cliquer sur les onglets pour naviguer entre eux.</string>

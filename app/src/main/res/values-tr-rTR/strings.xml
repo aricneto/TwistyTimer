@@ -124,8 +124,8 @@
     <string name="name_category">Kategori</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="no_penalty">Ceza yok</string>
-    <string name="optimal_cross">Şu yüzde en uygun artı</string>
-    <string name="optimal_x_cross">Şu yüzde en uygun genişletilmiş artı</string>
+    <string name="optimal_cross">Şu yüzde en uygun artı %1$s:</string>
+    <string name="optimal_x_cross">Şu yüzde en uygun genişletilmiş artı %1$s:</string>
     <string name="option_show_scramble_hints">İpucunda gösterilen yüz</string>
     <string name="option_show_scramble_hints_summary">İpuçlarını görüntülemek istediğiniz yüzleri seçin</string>
     <string name="pagerEnabledSummary">Eğer bu ayar devre dışı bırakılırsa, sekmeler arasında dokunarak geçiş yapmak zorunda kalırsın.</string>

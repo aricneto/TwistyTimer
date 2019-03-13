@@ -113,8 +113,8 @@
     <string name="name_category">Kategori</string>
     <string name="name_puzzle">Pussel</string>
     <string name="no_penalty">Inget straff</string>
-    <string name="optimal_cross">Optimalt kors på</string>
-    <string name="optimal_x_cross">Optimalt utökat kors på</string>
+    <string name="optimal_cross">Optimalt kors på %1$s:</string>
+    <string name="optimal_x_cross">Optimalt utökat kors på %1$s:</string>
     <string name="pagerEnabledSummary">Om denna inställning är inaktiverad, måste du trycka på flikarna för att växla mellan dem.</string>
     <string name="pagerEnabledTitle">Tillåt svepning mellan flikar</string>
     <string name="panel_swipe_down_to_hide">Svep ner för att dölja</string>

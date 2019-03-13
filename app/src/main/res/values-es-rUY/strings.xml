@@ -135,8 +135,8 @@
     <string name="name_category">Categoría</string>
     <string name="name_puzzle">Cubo</string>
     <string name="no_penalty">Ninguna penalización</string>
-    <string name="optimal_cross">Cruz óptima en</string>
-    <string name="optimal_x_cross">Cruz extendida óptima en</string>
+    <string name="optimal_cross">Cruz óptima en %1$s:</string>
+    <string name="optimal_x_cross">Cruz extendida óptima en %1$s:</string>
     <string name="option_show_scramble_hints">Caras vistas en sugerencias</string>
     <string name="option_show_scramble_hints_summary">Selecciona las caras de las que quieres ver consejos</string>
     <string name="pagerEnabledSummary">Si esta opción está desactivada, deberás tocar las páginas para cambiar entre ellas.</string>

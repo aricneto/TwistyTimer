@@ -124,8 +124,8 @@
     <string name="name_category">Kategória</string>
     <string name="name_puzzle">Hlavolam</string>
     <string name="no_penalty">Žiadna penalizácia</string>
-    <string name="optimal_cross">Optimálny kríž na</string>
-    <string name="optimal_x_cross">Optimálny rozšírený kríž na</string>
+    <string name="optimal_cross">Optimálny kríž na %1$s:</string>
+    <string name="optimal_x_cross">Optimálny rozšírený kríž na %1$s:</string>
     <string name="option_show_scramble_hints">Strany zobrazené v nápovede</string>
     <string name="option_show_scramble_hints_summary">Vyberte strany, pre ktoré chcete zobraziť nápovedu</string>
     <string name="pagerEnabledSummary">Ak je toto nastavenie vypnuté, musíte kliknúť na karty, aby ste sa medzi nimi prepli.</string>

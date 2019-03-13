@@ -124,8 +124,8 @@
     <string name="name_category">カテゴリ</string>
     <string name="name_puzzle">パズル</string>
     <string name="no_penalty">ペナルティなし</string>
-    <string name="optimal_cross">クロス</string>
-    <string name="optimal_x_cross">X-クロス</string>
+    <string name="optimal_cross">クロス %1$s:</string>
+    <string name="optimal_x_cross">X-クロス %1$s:</string>
     <string name="option_show_scramble_hints">ヒントを表示する面の選択</string>
     <string name="option_show_scramble_hints_summary">ヒントを表示したい面を選択してください</string>
     <string name="pagerEnabledSummary">この設定をオフにするとスワップでタブの切り替えができなくなります</string>

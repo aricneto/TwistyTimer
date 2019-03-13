@@ -115,8 +115,8 @@
     <string name="name_category">Kategori</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="no_penalty">Tidak ada penalti</string>
-    <string name="optimal_cross">Palang optimal pada</string>
-    <string name="optimal_x_cross">Palang ekstensi optimal pada</string>
+    <string name="optimal_cross">Palang optimal pada %1$s:</string>
+    <string name="optimal_x_cross">Palang ekstensi optimal pada %1$s:</string>
     <string name="pagerEnabledSummary">Jika pengaturan ini dimatikan, Anda harus mengetuk label untuk berpindah di antara mereka.</string>
     <string name="pagerEnabledTitle">Perbolehkan menggeser antara label</string>
     <string name="panel_swipe_down_to_hide">Geser ke bawah untuk menyembunyikan</string>

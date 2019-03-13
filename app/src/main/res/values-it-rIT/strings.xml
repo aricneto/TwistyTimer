@@ -116,8 +116,8 @@
     <string name="name_category">Categoria</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="no_penalty">Nessuna penalità</string>
-    <string name="optimal_cross">Croce ottimale sulla faccia</string>
-    <string name="optimal_x_cross">XCross ottimale sulla faccia</string>
+    <string name="optimal_cross">Croce ottimale sulla faccia %1$s:</string>
+    <string name="optimal_x_cross">XCross ottimale sulla faccia %1$s:</string>
     <string name="option_show_scramble_hints">Mostra Faccia quando suggerisce</string>
     <string name="option_show_scramble_hints_summary">Seleziona le facce da vedere quando suggerisce</string>
     <string name="pagerEnabledSummary">Se questa opzione è disattivata dovrai premere sulle tab per scorrere tra le schermate.</string>

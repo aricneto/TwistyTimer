@@ -121,8 +121,8 @@
     <string name="name_category">Kategoria</string>
     <string name="name_puzzle">Kostka</string>
     <string name="no_penalty">Bez kary</string>
-    <string name="optimal_cross">Optymalny krzyż na ścianie</string>
-    <string name="optimal_x_cross">Optymalny rozszerzony krzyż na ścianie</string>
+    <string name="optimal_cross">Optymalny krzyż na ścianie %1$s:</string>
+    <string name="optimal_x_cross">Optymalny rozszerzony krzyż na ścianie %1$s:</string>
     <string name="option_show_scramble_hints">Ściany ukazywane we wskazówkach</string>
     <string name="option_show_scramble_hints_summary">Zaznacz ściany, dla których chcesz otrzymywać wskazówki</string>
     <string name="pagerEnabledSummary">Jeśli to ustawienie jest wyłączone, będziesz musiał dotykać kart aby przełączać między nimi.</string>

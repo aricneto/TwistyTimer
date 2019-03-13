@@ -123,8 +123,8 @@
     <string name="name_category">Categorie</string>
     <string name="name_puzzle">Puzzel</string>
     <string name="no_penalty">Geen tijdstraf</string>
-    <string name="optimal_cross">Optimaal kruis op</string>
-    <string name="optimal_x_cross">Optimaal uitgebreid kruis op</string>
+    <string name="optimal_cross">Optimaal kruis op %1$s:</string>
+    <string name="optimal_x_cross">Optimaal uitgebreid kruis op %1$s:</string>
     <string name="option_show_scramble_hints">Zijden weergegeven bij hint</string>
     <string name="option_show_scramble_hints_summary">Selecteer de zijden waar je hints voor wilt zien</string>
     <string name="pagerEnabledSummary">Als deze instelling uitgeschakeld is, moet je op de tabbladen tikken om tussen deze te wisselen.</string>

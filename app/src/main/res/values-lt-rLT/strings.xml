@@ -116,8 +116,8 @@
     <string name="name_category">Kategorija</string>
     <string name="name_puzzle">Puzlė</string>
     <string name="no_penalty">Jokios nuobaudos</string>
-    <string name="optimal_cross">Optimalus pliusas ant</string>
-    <string name="optimal_x_cross">Optimalus išplėstas pliusas ant</string>
+    <string name="optimal_cross">Optimalus pliusas ant %1$s:</string>
+    <string name="optimal_x_cross">Optimalus išplėstas pliusas ant %1$s:</string>
     <string name="option_show_scramble_hints">Paviršiai rodomi užuomenoms</string>
     <string name="option_show_scramble_hints_summary">Pasirinkite paviršius kuriems norite rodyti užuomenas</string>
     <string name="pagerEnabledSummary">Jei šis nustatymas išjungtas, jūs turėsite paliesti kortėlę, kad ją perjungtūte.</string>

@@ -121,8 +121,8 @@
     <string name="name_category">Kategorie</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="no_penalty">Keine Strafe</string>
-    <string name="optimal_cross">Optimales Cross auf</string>
-    <string name="optimal_x_cross">Optimales XCross auf</string>
+    <string name="optimal_cross">Optimales Cross auf %1$s:</string>
+    <string name="optimal_x_cross">Optimales XCross auf %1$s:</string>
     <string name="option_show_scramble_hints">Seiten, die beim Hinweis angezeigt werden</string>
     <string name="option_show_scramble_hints_summary">Wähle die Seiten, für die du Hinweise anzeigen lassen möchtest</string>
     <string name="pagerEnabledSummary">Wenn diese Einstellung deaktiviert ist, müssen Sie auf die Registerkarten tippen, um zwischen ihnen zu wechseln.</string>

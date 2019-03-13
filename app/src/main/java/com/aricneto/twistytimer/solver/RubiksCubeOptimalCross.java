@@ -56,7 +56,7 @@ public class RubiksCubeOptimalCross implements Tip {
             count = 0; // limit number of algs
             State stateU =
                     x.multiply(x).multiply(state).multiply(x).multiply(x);
-            tip.append(String.format(description, "U:")).append("\n");
+            tip.append(String.format(description, "U")).append("\n");
             for (String[] solution : RubiksCubeCrossSolver.solve(stateU)) {
                 tip.append("  x2 ").append(StringUtils.join(" ", solution)).append('\n');
                 count++;

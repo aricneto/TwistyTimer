@@ -121,8 +121,8 @@
     <string name="name_category">Categoria</string>
     <string name="name_puzzle">Cubo</string>
     <string name="no_penalty">Nenhum penalty</string>
-    <string name="optimal_cross">Cruz ótima em</string>
-    <string name="optimal_x_cross">Cruz extendida ótima em</string>
+    <string name="optimal_cross">Cruz ótima em %1$s:</string>
+    <string name="optimal_x_cross">Cruz extendida ótima em %1$s:</string>
     <string name="option_show_scramble_hints">Faces mostradas na dica</string>
     <string name="option_show_scramble_hints_summary">Escolha as faces em que você que ver dicas</string>
     <string name="pagerEnabledSummary">Se esta preferência estiver desativada, você terá que tocar nas abas para navegar entre elas</string>
