@@ -92,7 +92,7 @@
     <include
         layout="@layout/item_qa_buttons"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_height="?qaButtonSize"
         android:layout_below="@id/chronometer"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
