@@ -5,4 +5,5 @@
     <integer name="defaultScrambleImageSize">100</integer>
     <integer name="defaultTimeTextOffset">0</integer>
     <integer name="defaultScrambleTextSize">100</integer>
+    <integer name="defaultAnimationDuration">250</integer>
 </resources>

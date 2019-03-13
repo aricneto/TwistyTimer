@@ -56,6 +56,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_timer_bg_enabled">backgroundEnabled</string>
     <string translatable="false" name="pk_show_hi_res_timer">millisecondsEnabled</string>
     <string translatable="false" name="pk_hide_time_while_running">hideTimeEnabled</string>
+    <string translatable="false" name="pk_timer_animation_duration">timerAnimationDuration</string>
 
     <string translatable="false" name="pk_show_session_stats">sessionStatsEnabled</string>
     <string translatable="false" name="pk_show_best_time">bestSolveEnabled</string>

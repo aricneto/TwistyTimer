@@ -180,6 +180,9 @@ public class                                                                    
     // True If the scrambler is done calculating and can calculate a new hint.
     private boolean canShowHint = false;
 
+    // Animation duration for all timer items
+    private int mAnimationDuration;
+
     private ScrambleGenerator generator;
 
     private GenerateScrambleSequence scrambleGeneratorAsync;
@@ -192,7 +195,6 @@ public class                                                                    
      */
     private String currentTimerMode;
 
-    private int      mShortAnimationDuration;
     private Animator mCurrentAnimator;
 
     private Unbinder mUnbinder;
@@ -301,7 +303,7 @@ public class                                                                    
                             // reset isCanceled state
                             isCanceled = false;
                         }
-                    }, 320);
+                    }, mAnimationDuration + 50);
                     break;
 
                 case ACTION_GENERATE_SCRAMBLE:
@@ -458,6 +460,7 @@ public class                                                                    
     public void onCreate(Bundle savedInstanceState) {
         if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState=" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
+        mContext = getContext();
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
             currentPuzzleCategory = getArguments().getString(PUZZLE_SUBTYPE);
@@ -479,6 +482,8 @@ public class                                                                    
 
         mFragManager = getFragmentManager();
 
+        mAnimationDuration = Prefs.getInt(R.string.pk_timer_animation_duration, mContext.getResources().getInteger(R.integer.defaultAnimationDuration));
+
         generator = new ScrambleGenerator(currentPuzzle);
         // Register a receiver to update if something has changed
         registerReceiver(mUIInteractionReceiver);
@@ -493,8 +498,6 @@ public class                                                                    
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
         mUnbinder = ButterKnife.bind(this, root);
-
-        mContext = getContext();
 
         return root;
     }
@@ -511,8 +514,7 @@ public class                                                                    
         scrambleImg.setOnClickListener(view1 -> zoomImageFromThumb(scrambleImg));
 
         // Retrieve and cache the system's default "short" animation time.
-        mShortAnimationDuration = getResources().getInteger(
-                android.R.integer.config_shortAnimTime);
+
 
         deleteButton.setOnClickListener(buttonClickListener);
         dnfButton.setOnClickListener(buttonClickListener);
@@ -1133,7 +1135,7 @@ public class                                                                    
                     detailAverageRecordMesssage
                             .animate()
                             .alpha(1)
-                            .setDuration(300);
+                            .setDuration(mAnimationDuration);
                     hasShownRecordMessage = true;
                 }
             } else if (sessionStatsEnabled) {
@@ -1176,17 +1178,17 @@ public class                                                                    
         chronometer.animate()
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
         inspectionText.animate()
                 .translationY(0)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
 
         if (scrambleEnabled) {
             scrambleBox.setVisibility(View.VISIBLE);
             scrambleBox.animate()
                     .alpha(1)
                     .translationY(0)
-                    .setDuration(300);
+                    .setDuration(mAnimationDuration);
             scrambleBox.setEnabled(true);
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(true);
@@ -1198,7 +1200,7 @@ public class                                                                    
             quickActionButtons.setVisibility(View.VISIBLE);
             quickActionButtons.animate()
                     .alpha(1)
-                    .setDuration(300);
+                    .setDuration(mAnimationDuration);
         }
     }
 
@@ -1207,13 +1209,13 @@ public class                                                                    
         detailTextAvg.animate()
                 .alpha(1)
                 .translationY(0)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
 
         detailTextOther.setVisibility(View.VISIBLE);
         detailTextOther.animate()
                 .alpha(1)
                 .translationY(0)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
     }
 
     private void showImage() {
@@ -1222,14 +1224,14 @@ public class                                                                    
         scrambleImg.animate()
                 .alpha(1)
                 .translationY(0)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
     }
 
     private void hideImage() {
         scrambleImg.animate()
                 .alpha(0)
                 .translationY(scrambleImg.getHeight())
-                .setDuration(300)
+                .setDuration(mAnimationDuration)
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
@@ -1252,10 +1254,10 @@ public class                                                                    
         chronometer.animate()
                 .scaleX(1.15f)
                 .scaleY(1.15f)
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
         inspectionText.animate()
                 .translationY(-getActionBarSize())
-                .setDuration(300);
+                .setDuration(mAnimationDuration);
 
         // Resize startTimerLayout to fill the entire screen. This removes the little margin
         // on the left that allows the user to open the side menu.
@@ -1268,7 +1270,7 @@ public class                                                                    
             scrambleBox.animate()
                     .alpha(0)
                     .translationY(-scrambleBox.getHeight())
-                    .setDuration(300)
+                    .setDuration(mAnimationDuration)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -1284,7 +1286,7 @@ public class                                                                    
             detailTextAvg.animate()
                     .alpha(0)
                     .translationY(detailTextAvg.getHeight())
-                    .setDuration(300)
+                    .setDuration(mAnimationDuration)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -1294,7 +1296,7 @@ public class                                                                    
             detailTextOther.animate()
                     .alpha(0)
                     .translationY(detailTextOther.getHeight())
-                    .setDuration(300)
+                    .setDuration(mAnimationDuration)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -1307,7 +1309,7 @@ public class                                                                    
             quickActionButtons.setEnabled(false);
             quickActionButtons.animate()
                     .alpha(0)
-                    .setDuration(300)
+                    .setDuration(mAnimationDuration)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -1319,7 +1321,7 @@ public class                                                                    
             detailAverageRecordMesssage
                     .animate()
                     .alpha(0)
-                    .setDuration(300)
+                    .setDuration(mAnimationDuration)
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
@@ -1711,7 +1713,7 @@ public class                                                                    
                 .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
                         startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
                 View.SCALE_Y, startScale, 1f));
-        set.setDuration(mShortAnimationDuration);
+        set.setDuration(mAnimationDuration);
         set.setInterpolator(new DecelerateInterpolator());
         set.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -1752,7 +1754,7 @@ public class                                                                    
                         .with(ObjectAnimator
                                 .ofFloat(expandedImageView,
                                         View.SCALE_Y, startScaleFinal));
-                set.setDuration(mShortAnimationDuration);
+                set.setDuration(mAnimationDuration);
                 set.setInterpolator(new DecelerateInterpolator());
                 set.addListener(new AnimatorListenerAdapter() {
                     @Override

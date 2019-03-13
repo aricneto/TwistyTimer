@@ -144,7 +144,7 @@
 
     <string name="hideTimeText" translatable="false">…</string>
 
-    <string name="hideTimeTitle">Hide time when solving</string>
+    <string name="hideTimeTitle">Hide time while solving</string>
 
     <string name="holdEnabledSummary">Hold the timer for 0.5 seconds to start</string>
 
@@ -397,5 +397,7 @@
     <string name="unarchive_dialog_summary">You currently have %1$d solves archived.\n\nHow many solves do you wish to unarchive? This will unarchive the most recent solves first.</string>
     <string translatable="false" name="title_activity_donate">DonateActivity</string>
     <string name="donation_message">Your donation helps me make Twisty Timer even better for everyone :)</string>
+    <string name="pref_animation_duration_title">Animation duration</string>
+    <string name="pref_animation_duration_summary">Controls the duration in milliseconds for all timer animations</string>
 
 </resources>

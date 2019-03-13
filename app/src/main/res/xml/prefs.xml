@@ -179,6 +179,12 @@
             <PreferenceCategory android:title="@string/pref_category_title_other">
 
                 <SwitchPreferenceCompat
+                    android:defaultValue="@bool/default_hideTime"
+                    android:key="@string/pk_hide_time_while_running"
+                    android:summary="@string/hideTimeSummary"
+                    android:title="@string/hideTimeTitle" />
+
+                <SwitchPreferenceCompat
                     android:defaultValue="false"
                     android:key="@string/pk_show_scramble_background"
                     android:title="@string/pref_scramble_box_title"
@@ -195,12 +201,6 @@
                     android:key="@string/pk_show_hi_res_timer"
                     android:summary="@string/millisecondsEnabledSummary"
                     android:title="@string/millisecondsEnabledTitle" />
-
-                <SwitchPreferenceCompat
-                    android:defaultValue="@bool/default_hideTime"
-                    android:key="@string/pk_hide_time_while_running"
-                    android:summary="@string/hideTimeSummary"
-                    android:title="@string/hideTimeTitle" />
 
             </PreferenceCategory>
 
@@ -282,6 +282,20 @@
             </PreferenceCategory>
 
         </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <Preference android:layout="@layout/divider_preference_category" />
+
+    <PreferenceCategory android:title="@string/w_new_subtype" android:summary="@string/pref_summary_new">
+
+        <Preference
+            android:icon="@drawable/ic_outline_fiber_new_16px"
+            android:defaultValue="@integer/defaultAnimationDuration"
+            android:key="@string/pk_timer_animation_duration"
+            android:summary="@string/pref_animation_duration_summary"
+            android:title="@string/pref_animation_duration_title" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

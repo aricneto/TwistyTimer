@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -139,7 +141,8 @@ public class SettingsActivity extends AppCompatActivity {
                         R.string.pk_timer_text_offset,
                         R.string.pk_scramble_image_size,
                         R.string.pk_scramble_text_size,
-                        R.string.pk_advanced_timer_settings_enabled)) {
+                        R.string.pk_advanced_timer_settings_enabled,
+                        R.string.pk_timer_animation_duration)) {
 
                     case R.string.pk_inspection_time:
                         createNumberDialog(R.string.inspection_time, R.string.pk_inspection_time);
@@ -192,6 +195,12 @@ public class SettingsActivity extends AppCompatActivity {
                                     .build());
                         }
                         break;
+                    case R.string.pk_timer_animation_duration:
+                        createSeekDialog(R.string.pk_timer_animation_duration,
+                                         0, 1000,
+                                         R.integer.defaultAnimationDuration,
+                                         "%d ms");
+                        break;
                 }
                 return false;
             }
@@ -218,7 +227,8 @@ public class SettingsActivity extends AppCompatActivity {
                     R.string.pk_timer_text_size,
                     R.string.pk_scramble_text_size,
                     R.string.pk_scramble_image_size,
-                    R.string.pk_advanced_timer_settings_enabled};
+                    R.string.pk_advanced_timer_settings_enabled,
+                    R.string.pk_timer_animation_duration};
 
             for (int prefId : listenerPrefIds) {
                 findPreference(getString(prefId))
@@ -302,6 +312,55 @@ public class SettingsActivity extends AppCompatActivity {
                             updateInspectionAlertText();
                         }
                     })
+                    .build());
+        }
+
+        private void createSeekDialog(@StringRes int prefKeyResID,
+                                      int minValue, int maxValue, @IntegerRes int defaultValueRes,
+                                      String formatText) {
+
+            final View dialogView = LayoutInflater.from(
+                    getActivity()).inflate(R.layout.dialog_settings_progress, null);
+            final AppCompatSeekBar seekBar = dialogView.findViewById(R.id.seekbar);
+            final TextView text = dialogView.findViewById(R.id.text);
+
+            int defaultValue = getContext().getResources().getInteger(defaultValueRes);
+
+            seekBar.setMax(maxValue);
+            seekBar.setProgress(Prefs.getInt(prefKeyResID, defaultValue));
+
+            text.setText(String.format(formatText, seekBar.getProgress()));
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    text.setText(String.format(formatText, seekBar.getProgress()));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                    .customView(dialogView, true)
+                    .positiveText(R.string.action_done)
+                    .negativeText(R.string.action_cancel)
+                    .onPositive((dialog, which) -> {
+                        final int seekProgress = seekBar.getProgress();
+
+                        Prefs.edit()
+                                .putInt(prefKeyResID, seekProgress > minValue ? seekProgress : minValue)
+                                .apply();
+                    })
+                    .neutralText(R.string.action_default)
+                    .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
                     .build());
         }
 

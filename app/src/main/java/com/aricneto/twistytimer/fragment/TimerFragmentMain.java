@@ -257,12 +257,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     mToolbar.animate()
                             .translationY(-mToolbar.getHeight())
                             .alpha(0)
-                            .setDuration(300);
+                            .setDuration(mAnimationDuration);
 
                     tabView.animate()
                              .translationY(tabView.getHeight())
                              .alpha(0)
-                             .setDuration(300);
+                             .setDuration(mAnimationDuration);
                     break;
 
                 case ACTION_TIMER_STOPPED:
@@ -270,12 +270,12 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     mToolbar.animate()
                             .translationY(0)
                             .alpha(1)
-                            .setDuration(300);
+                            .setDuration(mAnimationDuration);
 
                     tabView.animate()
                             .translationY(0)
                             .alpha(1)
-                            .setDuration(300)
+                            .setDuration(mAnimationDuration)
                             .withEndAction(() -> broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TOOLBAR_RESTORED));
 
                     activateTabLayout(true);
@@ -324,6 +324,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private PuzzleSelectDialog puzzleSelectDialog;
     private Context mContext;
     private FragmentManager mFragmentManager;
+
+    private int mAnimationDuration;
 
     @SuppressLint("StringFormatInvalid")
     private void updatePuzzleSpinnerHeader() {
@@ -393,6 +395,8 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             if (categoryDialog != null)
                 categoryDialog.setDialogListener(categoryDialogListener);
         }
+
+        mAnimationDuration = Prefs.getInt(R.string.pk_timer_animation_duration, mContext.getResources().getInteger(R.integer.defaultAnimationDuration));
     }
 
     @Override
