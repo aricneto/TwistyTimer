@@ -1039,7 +1039,7 @@ public class                                                                    
 
         if (worstSolveEnabled) {
             final long previousWorstTime = mRecentStatistics.getAllTimeWorstTime();
-
+            Drawable poopDrawable = ThemeUtils.tintDrawable(mContext, R.drawable.ic_emoticon_poop, R.attr.colorTimerText);
             // If "previousWorstTime" is a DNF or UNKNOWN, it will be less than zero. Therefore,
             // make sure it is at least greater than zero before testing against the new time.
             if (previousWorstTime > 0 && newTime > previousWorstTime) {
@@ -1047,8 +1047,8 @@ public class                                                                    
                         PuzzleUtils.convertTimeToString(newTime - previousWorstTime, PuzzleUtils.FORMAT_DEFAULT)));
 
                 congratsText.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.ic_emoticon_poop_black_18dp, 0,
-                            R.drawable.ic_emoticon_poop_black_18dp, 0);
+                            poopDrawable, null,
+                            poopDrawable, null);
 
                 congratsText.setVisibility(View.VISIBLE);
             }
@@ -1194,7 +1194,7 @@ public class                                                                    
             quickActionButtons.setEnabled(true);
             quickActionButtons.setVisibility(View.VISIBLE);
             quickActionButtons.animate()
-                    .alpha(.8f)
+                    .alpha(.9f)
                     .setDuration(mAnimationDuration);
         }
     }

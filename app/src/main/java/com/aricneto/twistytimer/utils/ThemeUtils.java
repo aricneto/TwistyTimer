@@ -329,31 +329,15 @@ public final class ThemeUtils {
     /**
      * Tints a drawable with {@param colorAttrRes} and returns it.
      * @param context {@link Context}
-     * @param drawable drawable to be tinted
+     * @param drawableRes drawableRes to be tinted
      * @param colorAttrRes attr res id for the tint
      * @return a tinted drawable
      */
-    public static Drawable tintDrawable(Context context, Drawable drawable, @AttrRes int colorAttrRes) {
-        Drawable wrap = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
-        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.SRC_IN);
-        wrap = wrap.mutate();
-
-        return wrap;
-    }
-
-    /**
-     * Tints a drawable with {@param colorRes} and returns it.
-     * @param context {@link Context}
-     * @param drawableRes drawableres to be tinted
-     * @param colorRes color res id for the tint
-     * @return a tinted drawable
-     */
-    public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @ColorInt int colorRes) {
+    public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @AttrRes int colorAttrRes) {
         Drawable drawable = AppCompatResources.getDrawable(context, drawableRes).mutate();
         Drawable wrap = DrawableCompat.wrap(drawable).mutate();
-        DrawableCompat.setTint(wrap, colorRes);
-        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.MULTIPLY);
+        DrawableCompat.setTint(wrap, ThemeUtils.fetchAttrColor(context, colorAttrRes));
+        DrawableCompat.setTintMode(wrap, PorterDuff.Mode.SRC_IN);
 
         return wrap;
     }
