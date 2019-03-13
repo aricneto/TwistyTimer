@@ -63,14 +63,14 @@ public class RubiksCubeOptimalXCross implements Tip {
         // x-cross on U
         if (Prefs.getBoolean(R.string.pk_cross_hint_top_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintTopEnabled))) {
             State stateU = x.multiply(x).multiply(state).multiply(x).multiply(x);
-            tip.append(description).append(" U:\n");
+            tip.append(String.format(description, "U")).append("\n");
             tip.append(getOptimalSolutions(stateU, "x2 "));
             tip.append("\n");
         }
 
         // x-cross on D
         if (Prefs.getBoolean(R.string.pk_cross_hint_down_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintDownEnabled))) {
-            tip.append(description).append(" D:\n");
+            tip.append(String.format(description, "D")).append("\n");
             tip.append(getOptimalSolutions(state, "")); // state == "stateD"
             tip.append("\n");
         }
@@ -78,7 +78,7 @@ public class RubiksCubeOptimalXCross implements Tip {
         // x-cross on L
         if (Prefs.getBoolean(R.string.pk_cross_hint_left_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintLeftEnabled))) {
             State stateL = z.multiply(state).multiply(z).multiply(z).multiply(z);
-            tip.append(description).append(" L:\n");
+            tip.append(String.format(description, "L")).append("\n");
             tip.append(getOptimalSolutions(stateL, "z' "));
             tip.append("\n");
         }
@@ -86,7 +86,7 @@ public class RubiksCubeOptimalXCross implements Tip {
         // x-cross on R
         if (Prefs.getBoolean(R.string.pk_cross_hint_right_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintRightEnabled))) {
             State stateR = z.multiply(z).multiply(z).multiply(state).multiply(z);
-            tip.append(description).append(" R:\n");
+            tip.append(String.format(description, "R")).append("\n");
             tip.append(getOptimalSolutions(stateR, "z "));
             tip.append("\n");
         }
@@ -94,7 +94,7 @@ public class RubiksCubeOptimalXCross implements Tip {
         // x-cross on F
         if (Prefs.getBoolean(R.string.pk_cross_hint_front_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintFrontEnabled))) {
             State stateF = x.multiply(state).multiply(x).multiply(x).multiply(x);
-            tip.append(description).append(" F:\n");
+            tip.append(String.format(description, "F")).append("\n");
             tip.append(getOptimalSolutions(stateF, "x' "));
             tip.append("\n");
         }
@@ -102,7 +102,7 @@ public class RubiksCubeOptimalXCross implements Tip {
         // x-cross on B
         if (Prefs.getBoolean(R.string.pk_cross_hint_back_enabled, DefaultPrefs.getBoolean(R.bool.default_crossHintBackEnabled))) {
             State stateB = x.multiply(x).multiply(x).multiply(state).multiply(x);
-            tip.append(description).append(" B:\n");
+            tip.append(String.format(description, "B")).append("\n");
             tip.append(getOptimalSolutions(stateB, "x "));
             tip.append("\n");
         }

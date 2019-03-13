@@ -193,8 +193,8 @@
 
     <string name="no_penalty">No penalty</string>
 
-    <string name="optimal_cross">Optimal cross on</string>
-    <string name="optimal_x_cross">Optimal extended cross on</string>
+    <string name="optimal_cross">Optimal cross on %1$s:</string>
+    <string name="optimal_x_cross">Optimal extended cross on %1$s:</string>
 
     <string name="option_show_scramble_hints">Faces shown on hint</string>
     <string name="option_show_scramble_hints_summary">Select the faces you want to view hints for</string>
