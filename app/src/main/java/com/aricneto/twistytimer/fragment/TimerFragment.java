@@ -227,6 +227,7 @@ public class                                                                    
     @BindView(R.id.qa_dnf)           ImageView        dnfButton;
     @BindView(R.id.qa_plustwo)       ImageView        plusTwoButton;
     @BindView(R.id.qa_comment)       ImageView        commentButton;
+    @BindView(R.id.qa_penalty_layout)       View        qaPenaltyLayout;
     @BindView(R.id.qa_undo)          View        undoButton;
     @BindView(R.id.qa_layout) LinearLayout     quickActionButtons;
     @BindView(R.id.rippleBackground)     RippleBackground rippleBackground;
@@ -720,11 +721,11 @@ public class                                                                    
         }
 
         // Quick action button backgrounds
-        //penaltyBg.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1.6f));
-        //commentButton.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1.6f));
-        //deleteButton.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1.6f));
+        qaPenaltyLayout.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1f));
+        commentButton.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1f));
+        deleteButton.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1f));
 
-        detailAverageRecordMesssage.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorAccent, 20, 1.6f));
+        detailAverageRecordMesssage.setBackground(ThemeUtils.createSquareDrawableAttr(mContext, 0, R.attr.colorTimerText, 20, 1.6f));
 
         // Chronometer
         startTimerLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -1199,7 +1200,7 @@ public class                                                                    
             quickActionButtons.setEnabled(true);
             quickActionButtons.setVisibility(View.VISIBLE);
             quickActionButtons.animate()
-                    .alpha(1)
+                    .alpha(.8f)
                     .setDuration(mAnimationDuration);
         }
     }

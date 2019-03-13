@@ -11,44 +11,55 @@
 
     <ImageView
         android:id="@+id/qa_remove"
-        android:layout_width="?qaButtonSize"
-        android:layout_height="?qaButtonSize"
-        android:layout_marginRight="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="8dp"
         android:tint="?colorTimerText"
         app:srcCompat="@drawable/ic_clear_black_24dp" />
 
-
-    <ImageView
-        android:id="@+id/qa_dnf"
-        android:layout_width="?qaButtonSize"
-        android:layout_height="?qaButtonSize"
-        android:layout_marginRight="18dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="8dp"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_outline_block_24px" />
-
-    <!--View
-        android:layout_width="1.6dp"
+    <LinearLayout
+        android:id="@+id/qa_penalty_layout"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="?colorTimerText" /-->
+        android:layout_marginRight="18dp"
+        android:layout_marginLeft="18dp">
 
-    <ImageView
-        android:id="@+id/qa_plustwo"
-        android:layout_width="?qaButtonSize"
-        android:layout_height="?qaButtonSize"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="8dp"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_outline_flag_24px" />
+        <ImageView
+            android:id="@+id/qa_dnf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:tint="?colorTimerText"
+            app:srcCompat="@drawable/ic_outline_block_24px" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?colorTimerText" />
+
+        <ImageView
+            android:id="@+id/qa_plustwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:tint="?colorTimerText"
+            app:srcCompat="@drawable/ic_outline_flag_24px" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/qa_comment"
-        android:layout_width="?qaButtonSize"
-        android:layout_height="?qaButtonSize"
-        android:layout_marginLeft="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="8dp"
         android:tint="?colorTimerText"

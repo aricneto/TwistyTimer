@@ -119,7 +119,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="?tabBarPadding"
-        android:scaleType="fitCenter"
+        android:scaleType="fitStart"
         tools:background="@color/red_material" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -155,6 +155,7 @@
         android:layout_marginRight="16dp"
         android:text="@string/timer_detail_average_record_message"
         android:textColor="?colorTimerText"
+        android:textStyle="bold"
         android:textSize="12sp" />
 
 
@@ -164,7 +165,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="?tabBarPadding"
         android:alpha=".85"

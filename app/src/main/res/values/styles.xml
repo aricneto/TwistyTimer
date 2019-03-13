@@ -175,6 +175,8 @@
 
         <item name="colorActionBar">#FF678A</item>
         <item name="colorTabBar">#fd50b9</item>
+
+        <item name="colorAccent">#c1fd61</item>
     </style>
 
     <style name="BasePurpleTheme" parent="DefaultTheme">
@@ -183,6 +185,8 @@
 
         <item name="colorActionBar">#6e40c2</item>
         <item name="colorTabBar">#4b299b</item>
+
+        <item name="colorAccent">@color/md_amber_A400</item>
     </style>
 
     <style name="BaseLightBlueTheme" parent="DefaultTheme.Light">
@@ -192,7 +196,7 @@
         <item name="colorActionBar">#5bfbfb</item>
         <item name="colorTabBar">#31F7C9</item>
 
-        <item name="colorAccent">@color/md_purple_A200</item>
+        <item name="colorAccent">#f76642</item>
     </style>
 
     <style name="BaseLightGreenTheme" parent="DefaultTheme.Light">
@@ -202,7 +206,7 @@
         <item name="colorActionBar">#BBFF96</item>
         <item name="colorTabBar">#93FFB9</item>
 
-        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="colorAccent">#ff8f78</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -214,7 +218,7 @@
         <item name="colorActionBar">#55ffc0</item>
         <item name="colorTabBar">#6ff</item>
 
-        <item name="colorAccent">@color/md_amber_A400</item>
+        <item name="colorAccent">#ff4000</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -226,7 +230,7 @@
         <item name="colorActionBar">#29ff9f</item>
         <item name="colorTabBar">#0bec84</item>
 
-        <item name="colorAccent">@color/md_purple_A100</item>
+        <item name="colorAccent">#f53f24</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -238,7 +242,7 @@
         <item name="colorActionBar">#fcc46d</item>
         <item name="colorTabBar">#FF5656</item>
 
-        <item name="colorAccent">@color/md_blue_A100</item>
+        <item name="colorAccent">#56ff56</item>
     </style>
 
     <style name="BaseBrownTheme" parent="DefaultTheme">
@@ -248,7 +252,7 @@
         <item name="colorActionBar">#724b3c</item>
         <item name="colorTabBar">#37231e</item>
 
-        <item name="colorAccent">@color/md_amber_A100</item>
+        <item name="colorAccent">@color/md_amber_A200</item>
     </style>
 
     <style name="BaseBlueTheme" parent="DefaultTheme">
@@ -284,7 +288,7 @@
         <item name="colorActionBar">#78f74e</item>
         <item name="colorTabBar">#00f27d</item>
 
-        <item name="colorAccent">@color/md_deep_purple_A200</item>
+        <item name="colorAccent">#ff3415</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A200</item>
     </style>
@@ -297,7 +301,7 @@
         <item name="colorTabBar">#e54900</item>
 
         <item name="colorChartExtra1">@color/md_indigo_700</item>
-        <item name="colorAccent">@color/md_deep_purple_A200</item>
+        <item name="colorAccent">#19c2ff</item>
     </style>
 
     <style name="BaseDeepPurpleTheme" parent="DefaultTheme">
@@ -306,6 +310,8 @@
 
         <item name="colorActionBar">#d81169</item>
         <item name="colorTabBar">#5d297f</item>
+
+        <item name="colorAccent">@color/md_amber_A400</item>
     </style>
 
     <style name="BaseBlueGrayTheme" parent="DefaultTheme.Light">
@@ -315,7 +321,7 @@
         <item name="colorActionBar">#FFFEFF</item>
         <item name="colorTabBar">#e8fffe</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">@color/md_red_A200</item>
     </style>
 
     <style name="BaseWhiteTheme" parent="DefaultTheme.Light">
@@ -325,7 +331,7 @@
         <item name="colorActionBar">#FFFEFF</item>
         <item name="colorTabBar">#fff</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">@color/md_red_A200</item>
     </style>
 
     <style name="BaseWhiteGreenTheme" parent="DefaultTheme.Light">
@@ -335,7 +341,7 @@
         <item name="colorActionBar">#d5ffce</item>
         <item name="colorTabBar">#f2fff0</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">@color/md_red_A200</item>
 
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
     </style>
@@ -348,7 +354,7 @@
         <item name="colorActionBar">#ffee8f</item>
         <item name="colorTabBar">#fffd7a</item>
 
-        <item name="colorAccent">@color/md_deep_purple_A200</item>
+        <item name="colorAccent">@color/md_pink_A100</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
@@ -361,7 +367,7 @@
         <item name="colorActionBar">#fddab1</item>
         <item name="colorTabBar">#d06fe9</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">#ebe07e</item>
 
         <item name="colorChartBestTimes">@color/md_indigo_A700</item>
         <item name="colorChartExtra2">@color/md_deep_purple_A100</item>
@@ -384,7 +390,7 @@
         <item name="colorActionBar">#d4fcff</item>
         <item name="colorTabBar">#e8e3a3</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">@color/md_red_A200</item>
     </style>
 
     <style name="PixieFalls" parent="DefaultTheme.Light">
@@ -394,7 +400,7 @@
         <item name="colorActionBar">#fde6ee</item>
         <item name="colorTabBar">#8debe7</item>
 
-        <item name="colorAccent">@color/md_red_A100</item>
+        <item name="colorAccent">@color/md_red_A200</item>
     </style>
 
     <style name="WanderingDusk" parent="DefaultTheme">
@@ -404,7 +410,7 @@
         <item name="colorActionBar">#8067ff</item>
         <item name="colorTabBar">#fb5c5a</item>
 
-        <item name="colorAccent">@color/md_amber_A200</item>
+        <item name="colorAccent">#7bfc83</item>
     </style>
 
     <style name="SpottyGuy" parent="DefaultTheme.Darker">
