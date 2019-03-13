@@ -3,14 +3,14 @@
 <resources>
     <string name="action_add">Добавить</string>
     <string name="action_archive">Архивировать</string>
-    <string name="action_cancel">Отмена</string>
+    <string name="action_cancel">Отменить</string>
     <string name="action_choose">Выбрать</string>
     <string name="action_clear">Очистить</string>
     <string name="action_default">По умолчанию</string>
     <string name="action_donate">Пожертвовать</string>
     <string name="action_done">Готово</string>
-    <string name="action_export">Экспортировать</string>
-    <string name="action_import">Импортировать</string>
+    <string name="action_export">Экспорт</string>
+    <string name="action_import">Импорт</string>
     <string name="action_move">Двигать</string>
     <string name="action_ok">ОК</string>
     <string name="action_remove">Удалить</string>
@@ -59,7 +59,7 @@
     <string name="dialog_revert_title_confirmation">Сбросить алгоритмы</string>
     <string name="dialog_set_progress">Установить прогресс</string>
     <string name="drawer_about">О приложении</string>
-    <string name="drawer_title_changeColorScheme">Цветовая схема головоломки</string>
+    <string name="drawer_title_changeColorScheme">Цветовая схема</string>
     <string name="drawer_title_changeTheme">Тема приложения</string>
     <string name="drawer_title_export_import">Экспорт/Импорт</string>
     <string name="drawer_title_other">Прочее</string>
@@ -166,6 +166,12 @@
     <string name="scramble_text_tap_hint">Нажмите здесь, чтобы увидеть скрамбл</string>
     <string name="select_penalty">Выбрать штраф штраф</string>
     <string name="select_solve_type">Выбрать категорию</string>
+    <plurals name="selected_list">
+        <item quantity="one">%d сборок выбрано</item>
+        <item quantity="few">%d сборок выбрано</item>
+        <item quantity="many">%d сборок выбрано</item>
+        <item quantity="other">%d сборок выбрано</item>
+    </plurals>
     <string name="send_email_title">Отправить отзыв с...</string>
     <string name="sent_to_history">Отправлено в историю...</string>
     <string name="sent_to_session">Отправлено в сессию...</string>
@@ -244,4 +250,6 @@
     <string name="pref_screen_title_list">Список</string>
     <string name="unarchive_dialog_summary">У вас в настоящее время архивировано %1$d сборок.\n\nСколько разрешений вы хотите разархивировать? Это приведет к отсрочке последних сборок.</string>
     <string name="donation_message">Ваше пожертвование помогает мне сделать Twisty Timer еще лучше для всех :)</string>
+    <string name="pref_animation_duration_title">Длительность анимации</string>
+    <string name="pref_animation_duration_summary">Управление длительностью в миллисекундах для всех анимаций таймера</string>
 </resources>

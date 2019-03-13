@@ -248,4 +248,6 @@
     <string name="pref_screen_title_list">Lista</string>
     <string name="unarchive_dialog_summary">Você tem %1$d resoluções arquivadas no momento\n\nQuantas resoluções você deseja desarquivar? Isso irá desarquivar as resoluções mais recentes primeiro.</string>
     <string name="donation_message">Sua doação me ajuda a tornar o Twisty Timer ainda melhor para todos :)</string>
+    <string name="pref_animation_duration_title">Duração da animação</string>
+    <string name="pref_animation_duration_summary">Controla a duração em milissegundos para todas as animações do temporizador</string>
 </resources>

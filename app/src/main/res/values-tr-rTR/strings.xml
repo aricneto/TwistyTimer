@@ -124,8 +124,8 @@
     <string name="name_category">Kategori</string>
     <string name="name_puzzle">Puzzle</string>
     <string name="no_penalty">Ceza yok</string>
-    <string name="optimal_cross">Şu yüzde en uygun artı %1$s:</string>
-    <string name="optimal_x_cross">Şu yüzde en uygun genişletilmiş artı %1$s:</string>
+    <string name="optimal_cross">%1$s yüzünde en uygun artı:</string>
+    <string name="optimal_x_cross">%1$s yüzünde en uygun genişletilmiş artı:</string>
     <string name="option_show_scramble_hints">İpucunda gösterilen yüz</string>
     <string name="option_show_scramble_hints_summary">İpuçlarını görüntülemek istediğiniz yüzleri seçin</string>
     <string name="pagerEnabledSummary">Eğer bu ayar devre dışı bırakılırsa, sekmeler arasında dokunarak geçiş yapmak zorunda kalırsın.</string>
@@ -251,4 +251,6 @@
     <string name="pref_screen_title_list">Liste</string>
     <string name="unarchive_dialog_summary">Şuan %1$d çözümünüz arşivde.\n\nArşivden kaç çözümünüzü çıkarmak istiyorsunuz? Bu en son çözümleri arşivden çıkarır.</string>
     <string name="donation_message">Bağışın Twisty Timer\'ı herkes için daha iyi yapmama yardım ediyor :)</string>
+    <string name="pref_animation_duration_title">Animasyon süresi</string>
+    <string name="pref_animation_duration_summary">Bütün zamanlayıcı animasyonları için süreyi milisaniyelerle kontrol eder</string>
 </resources>

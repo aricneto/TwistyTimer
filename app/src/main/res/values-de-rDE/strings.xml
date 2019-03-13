@@ -248,4 +248,6 @@
     <string name="pref_screen_title_list">Liste</string>
     <string name="unarchive_dialog_summary">Aktuell hast Du %1$d Solves archiviert.\n\nWieviele Solves möchtest Du wiederherstellen? Es werden zuerst die neuesten Solves wiederhergestellt.</string>
     <string name="donation_message">Deine Spende hilft mir, Twisty Timer für alle besser zu machen :)</string>
+    <string name="pref_animation_duration_title">Animationsdauer</string>
+    <string name="pref_animation_duration_summary">Steuert die Dauer in Millisekunden für alle Timer-Animationen</string>
 </resources>
