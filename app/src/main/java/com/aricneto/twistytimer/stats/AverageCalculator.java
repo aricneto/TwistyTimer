@@ -93,6 +93,7 @@ public final class AverageCalculator {
 
     private AverageComponent mUpperTrim;
     private AverageComponent mLowerTrim;
+    private AverageComponent mMiddleTrim;
     private long mLowerTrimBound;
     private long mUpperTrimBound;
 
@@ -230,6 +231,7 @@ public final class AverageCalculator {
      */
     public void reset() {
         Arrays.fill(mTimes, 0L);
+        mSortedTimes.clear();
         mNext = 0;
         mNumSolves = 0;
         mNumCurrentDNFs = 0;
@@ -241,8 +243,11 @@ public final class AverageCalculator {
         mVarianceDelta2 = 0;
         mVarianceM2 = 0;
 
+        // FIXME: also reset best, worst and tree
+        mMiddleTrim.sum = UNKNOWN;
         mLowerTrim.sum = UNKNOWN;
         mUpperTrim.sum = UNKNOWN;
+
         mCurrentSum = UNKNOWN;
         mAllTimeSum = UNKNOWN;
         mCurrentBestTime = UNKNOWN;
@@ -454,26 +459,60 @@ public final class AverageCalculator {
 
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
         if (mNumSolves >= mN) {
+            // As soon as mNumSolves reaches N, we should begin counting up the sum of all
+            // stored solves.
+            // First, we loop through the entire mSortedTimes array. For subsequent times, we only
+            // have to remove the oldest time, and recalculate the sum.
             if (mNumSolves == mN) {
                 int count = 1;
                 for (Long time : mSortedTimes) {
+                    // TODO: account for DNFs (DNF = 0)
                     if (count <= mLowerTrimBound) {
+                        // Sum all solves from index 0 to index mLowerTimBound
                         mLowerTrim.sum = time + (mLowerTrim.sum == UNKNOWN ? 0L : mLowerTrim.sum);
+                        // Since the list is sorted in ascending order,
+                        // the best solve in the lower trim will be the last solve we added
                         if (count == mLowerTrimBound)
                             mLowerTrim.best = time;
                     } else if (count >= (mN - mLowerTrimBound)) {
+                        // Sum all solves from index mUpperTrimBound to the last index
                         mUpperTrim.sum = time + (mUpperTrim.sum == UNKNOWN ? 0L : mUpperTrim.sum);
+                        // Since the list is sorted in ascending order,
+                        // the worst solve in the upper trim will be the first solve we added
                         if (count == mUpperTrimBound)
                             mUpperTrim.worst = time;
                     } else {
-                        mCurrentSum = time + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
+                        // Sum all solves that will form the actual average (without upper or lower trim)
+                        mMiddleTrim.sum = time + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
+                        // Save best and worst solve
+                        if (count == mLowerTrimBound + 1)
+                            mMiddleTrim.worst = time;
+                        if (count == mUpperTrimBound - 1)
+                            mMiddleTrim.best = time;
                     }
                     count++;
                 }
-                mUpperTrim.tree = mSortedTimes.tailMultiset(mUpperTrim.worst, BoundType.CLOSED);
-                mLowerTrim.tree = mSortedTimes.headMultiset(mLowerTrim.best, BoundType.CLOSED);
+            } else {
+                /**
+                 * The number of solves {@link mNumSolves} is bigger than {@link mN}.
+                 * Now, find where the ejected time lies (lower, middle or upper trim) and remove
+                 * it from the sum
+                  */
+
+                /**
+                 * Ejected time was from the lower trim
+                 */
+                if (ejectedTime <= mLowerTrim.best) {
+                    mLowerTrim.sum = (mLowerTrim.sum == UNKNOWN ? 0L : mLowerTrim.sum) - ejectedTime;
+
+                    // Ejected time was not the best time from the lower trim. 
+                    if (ejectedTime < mLowerTrim.best) {
+
+                    }
+                }
+
+
             }
-            if (addedTime < mLowerTrim.best);
         }
     }
 
