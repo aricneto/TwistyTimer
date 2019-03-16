@@ -8,7 +8,12 @@ import com.aricneto.twistytimer.utils.StatUtils;
 import com.google.common.collect.BoundType;
 import com.google.common.collect.TreeMultiset;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated
@@ -86,16 +91,17 @@ public final class AverageCalculator {
     private final long[] mTimes;
 
     /**
-     * A TreeMultiset holding the most recently added solve times, sorted by lowest to highest
-     * The TreeMultiset structure automatically sorts its elements.
+     * An array holding a list of times, sorted lowest to highest
      */
-    private TreeMultiset<Long> mSortedTimes;
+    private long[] mSortedTimes;
 
-    private AverageComponent mUpperTrim;
-    private AverageComponent mLowerTrim;
-    private AverageComponent mMiddleTrim;
-    private long mLowerTrimBound;
-    private long mUpperTrimBound;
+    // TODO: comment these variables
+    public AverageComponent mUpperTrim;
+    public AverageComponent mLowerTrim;
+    public AverageComponent mMiddleTrim;
+    private int mLowerTrimBound;
+    private int mUpperTrimBound;
+    private int mTrimSize;
 
     /**
      * The index in {@link #mTimes} at which to add the next time. If this is equal to the length
@@ -215,10 +221,16 @@ public final class AverageCalculator {
 
         mN = n;
         mTimes = new long[n];
+        mSortedTimes = new long[n];
         mDisqualifyDNFs = disqualifyDNFs;
 
-        mLowerTrimBound = n / 10;
-        mUpperTrimBound = mN - mLowerTrimBound;
+        mTrimSize = 1;
+        mLowerTrimBound = mTrimSize;
+        mUpperTrimBound = mN - mTrimSize;
+
+        mUpperTrim = new AverageComponent();
+        mMiddleTrim = new AverageComponent();
+        mLowerTrim = new AverageComponent();
 
         // As "reset()" needs to be supported to ensure a sane state can be guaranteed before
         // populating statistics from the database, it makes sense to use it to initialise the
@@ -231,7 +243,7 @@ public final class AverageCalculator {
      */
     public void reset() {
         Arrays.fill(mTimes, 0L);
-        mSortedTimes.clear();
+        Arrays.fill(mSortedTimes, 0L);
         mNext = 0;
         mNumSolves = 0;
         mNumCurrentDNFs = 0;
@@ -314,13 +326,13 @@ public final class AverageCalculator {
                 ejectedTime = mTimes[mNext]; // May be DNF.
 
                 // Create the sorted list as soon as numSolves reaches N
-                if (mNumSolves == mN)
-                    mSortedTimes = TreeMultiset.create(StatUtils.asList(mTimes));
-
-                // Remove the oldest time from mSortedTimes
-                mSortedTimes.remove(ejectedTime);
-                // Add the new solve to mSortedTimes
-                mSortedTimes.add(time);
+                // We only need to sort it once. Subsequent added solves will use
+                // binary search to insert the new solves in the correct (sorted) position
+                if (mNumSolves == mN) {
+                    mTimes[mNext] = time;
+                    mSortedTimes = mTimes.clone();
+                    Arrays.sort(mSortedTimes);
+                }
 
             } else {
                 // "mNext" must be less than "mN" if "mNumSolves" is less than "mN".
@@ -330,15 +342,15 @@ public final class AverageCalculator {
             mTimes[mNext] = time;
             mNext++;
 
-            Log.d("AverageCalculator", "N: " + mN + " | Set: " + mSortedTimes);
+            //Log.d("AverageCalculator", "N: " + mN + " | Set: " + mSortedTimes);
 
             // Order is important here, as these methods change fields and some methods depend on the
             // fields being updated by other methods before they are called. All depend on the new
             // time being stored already (see above) and any ejected time being known (also above).
             updateDNFCounts(time, ejectedTime);
             updateCurrentBestAndWorstTimes(time, ejectedTime);
-            updateCurrentTrims(time, ejectedTime);
             updateSums(time, ejectedTime);
+            updateCurrentTrims(time, ejectedTime);
             updateVariance(time);
             updateCurrentAverage();
 
@@ -457,62 +469,104 @@ public final class AverageCalculator {
         }
     }
 
+    // FIXME: account for DNFs (DNF = 0)
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
+        if (ejectedTime == DNF)
+            ejectedTime = 0;
+        if (addedTime == DNF)
+            addedTime = 0;
         if (mNumSolves >= mN) {
             // As soon as mNumSolves reaches N, we should begin counting up the sum of all
             // stored solves.
-            // First, we loop through the entire mSortedTimes array. For subsequent times, we only
+            // First, we loop through the entire trim bound array. For subsequent times, we only
             // have to remove the oldest time, and recalculate the sum.
             if (mNumSolves == mN) {
-                int count = 1;
-                for (Long time : mSortedTimes) {
-                    // TODO: account for DNFs (DNF = 0)
-                    if (count <= mLowerTrimBound) {
-                        // Sum all solves from index 0 to index mLowerTimBound
-                        mLowerTrim.sum = time + (mLowerTrim.sum == UNKNOWN ? 0L : mLowerTrim.sum);
-                        // Since the list is sorted in ascending order,
-                        // the best solve in the lower trim will be the last solve we added
-                        if (count == mLowerTrimBound)
-                            mLowerTrim.best = time;
-                    } else if (count >= (mN - mLowerTrimBound)) {
-                        // Sum all solves from index mUpperTrimBound to the last index
-                        mUpperTrim.sum = time + (mUpperTrim.sum == UNKNOWN ? 0L : mUpperTrim.sum);
-                        // Since the list is sorted in ascending order,
-                        // the worst solve in the upper trim will be the first solve we added
-                        if (count == mUpperTrimBound)
-                            mUpperTrim.worst = time;
-                    } else {
-                        // Sum all solves that will form the actual average (without upper or lower trim)
-                        mMiddleTrim.sum = time + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
-                        // Save best and worst solve
-                        if (count == mLowerTrimBound + 1)
-                            mMiddleTrim.worst = time;
-                        if (count == mUpperTrimBound - 1)
-                            mMiddleTrim.best = time;
-                    }
-                    count++;
+                for (int i = 0; i < mLowerTrimBound; i++) {
+                    mLowerTrim.add(mSortedTimes[i]);
+                    //Log.d("AverageCalculator", "Lower trim | added: " + mSortedTimes[i] + " | sum: " + mLowerTrim.sum);
+                }
+                for (int i = mUpperTrimBound; i < mN; i++) {
+                    mUpperTrim.add(mSortedTimes[i]);
+                    //Log.d("AverageCalculator", "Upper trim | added: " + mSortedTimes[i] + " | sum: " + mUpperTrim.sum);
                 }
             } else {
                 /**
                  * The number of solves {@link mNumSolves} is bigger than {@link mN}.
                  * Now, find where the ejected time lies (lower, middle or upper trim) and remove
-                 * it from the sum
+                 * it from the sum and the list
                   */
+                int ejectedTimeIndex = Arrays.binarySearch(mSortedTimes, ejectedTime);
+                mSortedTimes = ArrayUtils.remove(mSortedTimes, ejectedTimeIndex);
+                int addedTimeIndex = Arrays.binarySearch(mSortedTimes, addedTime);
+                if (addedTimeIndex < 0) {
+                    // New time will be added at one of the array's boundaries
+                    if (addedTimeIndex == -1)
+                        addedTimeIndex = 0;
+                    else
+                        addedTimeIndex = mN - 1;
+                }
+                mSortedTimes = ArrayUtils.add(mSortedTimes, addedTimeIndex, addedTime);
 
                 /**
-                 * Ejected time was from the lower trim
+                 * Update trims based on location of ejected time
                  */
-                if (ejectedTime <= mLowerTrim.best) {
-                    mLowerTrim.sum = (mLowerTrim.sum == UNKNOWN ? 0L : mLowerTrim.sum) - ejectedTime;
+                if (ejectedTimeIndex < mLowerTrimBound) {
+                    // Time was ejected from lower trim
+                    mLowerTrim.sub(ejectedTime);
 
-                    // Ejected time was not the best time from the lower trim. 
-                    if (ejectedTime < mLowerTrim.best) {
+                    if (addedTimeIndex >= mLowerTrimBound) {
+                        // The new time was added outside the lower trim, so the time that will
+                        // take the ejected time's place will be the last one on the lower trim
+                        mLowerTrim.add(mSortedTimes[mLowerTrimBound - 1]);
 
+                        // If the time was added in the upper trim, update that too
+                        if (addedTimeIndex >= mUpperTrimBound) {
+                            // Remove the time that was pushed away
+                            mUpperTrim.sub(mSortedTimes[mUpperTrimBound - 1]);
+                            // Add the new time
+                            mUpperTrim.add(addedTime);
+                        }
+                    } else {
+                        // The new time was added inside the lower trim. Just sum the new time
+                        mLowerTrim.add(addedTime);
+                    }
+                } else if (ejectedTimeIndex >= mUpperTrimBound) {
+                    // Time was ejected from upper trim
+                    mUpperTrim.sub(ejectedTime);
+
+                    if (addedTimeIndex < mUpperTrimBound) {
+                        // The new time was added outside the upper trim, so the time that will
+                        // take the ejected time's place will be the first one on the upper trim
+                        mUpperTrim.add(mSortedTimes[mUpperTrimBound]);
+
+                        // If the time was added in the lower trim, update that too
+                        if (addedTimeIndex < mLowerTrimBound) {
+                            // Remove the time that was pushed away
+                            mLowerTrim.sub(mSortedTimes[mLowerTrimBound]);
+                            // Add the new time
+                            mLowerTrim.add(addedTime);
+                        }
+                    } else {
+                        // The new time was added inside the upper trim. Just sum the new time
+                        mUpperTrim.add(addedTime);
+                    }
+                } else {
+                    // If neither of those are true, the ejected and added time both belonged
+                    // to the middle trim, so no other action is necessary
+                    if (addedTimeIndex < mLowerTrimBound) {
+                        // Time was added inside lower trim.
+                        // Push the last time on the trim out, and add the new one in.
+                        mLowerTrim.sub(mSortedTimes[mLowerTrimBound - 1]);
+                        mLowerTrim.add(addedTime);
+                    } else if (addedTimeIndex >= mUpperTrimBound) {
+                        // Time was added inside upper trim.
+                        // Push the first time on the trim out, and add the new one in.
+                        mUpperTrim.sub(mSortedTimes[mUpperTrimBound - 1]);
+                        mUpperTrim.add(addedTime);
                     }
                 }
-
-
             }
+            mMiddleTrim.sum = mCurrentSum - (mLowerTrim.sum + mUpperTrim.sum);
         }
     }
 
@@ -590,10 +644,11 @@ public final class AverageCalculator {
                 // DNFs are present, so at least one non-DNF time will remain after discarding the
                 // outliers. Discard all other DNFs, if any. One DNF may already have been
                 // discarded as the worst time; do not discard it twice.
-                mCurrentAverage
-                        = (mCurrentSum - mCurrentBestTime
-                               - (mNumCurrentDNFs == 0 ? mCurrentWorstTime : 0))
-                          / (mN - 2 - (mNumCurrentDNFs > 1 ? mNumCurrentDNFs - 1 : 0));
+                mCurrentAverage = mMiddleTrim.sum / (mN - (mTrimSize * 2) - mNumCurrentDNFs);
+                //mCurrentAverage
+                //        = (mCurrentSum - mCurrentBestTime
+                //               - (mNumCurrentDNFs == 0 ? mCurrentWorstTime : 0))
+                //          / (mN - 2 - (mNumCurrentDNFs > 1 ? mNumCurrentDNFs - 1 : 0));
             }
         } else { // mN < MIN_N_TO_ALLOW_ONE_DNF
             // NOTE: "mN" could be as low as 1, but will not be zero (see the constructor).
