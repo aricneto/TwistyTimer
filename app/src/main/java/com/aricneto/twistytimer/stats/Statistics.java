@@ -77,20 +77,20 @@ public class Statistics {
         final Statistics stats = new Statistics();
 
         // Averages for all sessions.
-        stats.addAverageOf(3, true, false);
-        stats.addAverageOf(5, true, false);
-        stats.addAverageOf(12, true, false);
-        stats.addAverageOf(50, false, false);
-        stats.addAverageOf(100, false, false);
-        stats.addAverageOf(1_000, false, false);
+        stats.addAverageOf(3, 0, true, false);
+        stats.addAverageOf(5, 20, true, false);
+        stats.addAverageOf(12, 10, true, false);
+        stats.addAverageOf(50, 10, false, false);
+        stats.addAverageOf(100, 10, false, false);
+        stats.addAverageOf(1_000, 10, false, false);
 
         // Averages for the current session only.
-        stats.addAverageOf(3, true, true);
-        stats.addAverageOf(5, true, true);
-        stats.addAverageOf(12, true, true);
-        stats.addAverageOf(50, false, true);
-        stats.addAverageOf(100, false, true);
-        stats.addAverageOf(1_000, false, true);
+        stats.addAverageOf(3, 0, true, true);
+        stats.addAverageOf(5, 20, true, true);
+        stats.addAverageOf(12, 10, true, true);
+        stats.addAverageOf(50, 10, false, true);
+        stats.addAverageOf(100, 10, false, true);
+        stats.addAverageOf(1_000, 10, false, true);
 
         return stats;
     }
@@ -109,8 +109,8 @@ public class Statistics {
 
         // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
         // passes all data in for the "current session", but makes a distinction using its own API.
-        stats.addAverageOf(50, false, true);
-        stats.addAverageOf(100, false, true);
+        stats.addAverageOf(50, 10, false, true);
+        stats.addAverageOf(100, 10, false, true);
 
         return stats;
     }
@@ -125,8 +125,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, true, true);
-        stats.addAverageOf(12, true, true);
+        stats.addAverageOf(5, 20, true, true);
+        stats.addAverageOf(12, 10, true, true);
 
         return stats;
     }
@@ -213,8 +213,8 @@ public class Statistics {
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    private void addAverageOf(int n, boolean disqualifyDNFs, boolean isForCurrentSessionOnly) {
-        final AverageCalculator ac = new AverageCalculator(n, disqualifyDNFs);
+    private void addAverageOf(int n, int trimPercent, boolean disqualifyDNFs, boolean isForCurrentSessionOnly) {
+        final AverageCalculator ac = new AverageCalculator(n, trimPercent, disqualifyDNFs);
 
         if (isForCurrentSessionOnly) {
             mSessionACs.put(n, ac);
