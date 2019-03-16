@@ -32,7 +32,9 @@ public class AverageComponent {
     }
 
     public void sub(long val) {
-        if (val != DNF)
+        // If the lower trim is filled with DNFs, its value may be 0
+        // so do not allow any subtraction then
+        if (val != DNF && sum != 0)
             sum = (this.sum == UNKNOWN ? 0L : this.sum) - val;
     }
 }
