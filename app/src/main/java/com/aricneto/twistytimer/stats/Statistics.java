@@ -58,6 +58,11 @@ public class Statistics {
     private AverageCalculator mOneSessionAC;
 
     /**
+     * Percent to trim off each end
+     */
+    private static int mTrimSize = 5;
+
+    /**
      * Creates a new collection for statistics. Use a factory method to create a standard set of
      * statistics.
      */
@@ -78,19 +83,19 @@ public class Statistics {
 
         // Averages for all sessions.
         stats.addAverageOf(3, 0, true, false);
-        stats.addAverageOf(5, 20, true, false);
-        stats.addAverageOf(12, 10, true, false);
-        stats.addAverageOf(50, 10, false, false);
-        stats.addAverageOf(100, 10, false, false);
-        stats.addAverageOf(1_000, 10, false, false);
+        stats.addAverageOf(5, mTrimSize, true, false);
+        stats.addAverageOf(12, mTrimSize, true, false);
+        stats.addAverageOf(50, mTrimSize, false, false);
+        stats.addAverageOf(100, mTrimSize, false, false);
+        stats.addAverageOf(1_000, mTrimSize, false, false);
 
         // Averages for the current session only.
         stats.addAverageOf(3, 0, true, true);
-        stats.addAverageOf(5, 20, true, true);
-        stats.addAverageOf(12, 10, true, true);
-        stats.addAverageOf(50, 10, false, true);
-        stats.addAverageOf(100, 10, false, true);
-        stats.addAverageOf(1_000, 10, false, true);
+        stats.addAverageOf(5, mTrimSize, true, true);
+        stats.addAverageOf(12, mTrimSize, true, true);
+        stats.addAverageOf(50, mTrimSize, false, true);
+        stats.addAverageOf(100, mTrimSize, false, true);
+        stats.addAverageOf(1_000, mTrimSize, false, true);
 
         return stats;
     }
@@ -109,8 +114,8 @@ public class Statistics {
 
         // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
         // passes all data in for the "current session", but makes a distinction using its own API.
-        stats.addAverageOf(50, 10, false, true);
-        stats.addAverageOf(100, 10, false, true);
+        stats.addAverageOf(50, mTrimSize, false, true);
+        stats.addAverageOf(100, mTrimSize, false, true);
 
         return stats;
     }
@@ -125,8 +130,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, 20, true, true);
-        stats.addAverageOf(12, 10, true, true);
+        stats.addAverageOf(5, mTrimSize, true, true);
+        stats.addAverageOf(12, mTrimSize, true, true);
 
         return stats;
     }

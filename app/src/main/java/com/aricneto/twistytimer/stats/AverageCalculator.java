@@ -224,7 +224,7 @@ public final class AverageCalculator {
         mSortedTimes = new long[n];
         mDisqualifyDNFs = disqualifyDNFs;
 
-        mTrimSize = (int) (mN * (trimPercent / 100f));
+        mTrimSize = (int) Math.ceil (mN * (trimPercent / 100f));
         mLowerTrimBound = mTrimSize;
         mUpperTrimBound = mN - mTrimSize;
 
