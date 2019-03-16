@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 public class AverageCalculatorTestCase {
     @Test
     public void testCreateOne() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, 10, false);
+        final AverageCalculator ac = new AverageCalculator(1, 10, 10, false);
 
         assertEquals(1, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -40,7 +40,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testCreateThree() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, 0,false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
 
         assertEquals(3, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -58,7 +58,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testCreateFive() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20, false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, false);
 
         assertEquals(5, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -77,7 +77,7 @@ public class AverageCalculatorTestCase {
     @Test
     public void testCreateFailure() throws Exception {
         try {
-            new AverageCalculator(0, 0, false);
+            new AverageCalculator(0, 0, 0, false);
             fail("Expected an exception when 'n' is zero.");
         } catch (IllegalArgumentException ignore) {
             // This is expected.
@@ -86,7 +86,7 @@ public class AverageCalculatorTestCase {
         }
 
         try {
-            new AverageCalculator(-1, 0,false);
+            new AverageCalculator(-1, 0, 0,false);
             fail("Expected an exception when 'n' is negative.");
         } catch (IllegalArgumentException ignore) {
             // This is expected.
@@ -97,7 +97,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testAddTime() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
 
         // Initial state is already checked in other test methods.
         // Just test that the counters, sums, best, worst, etc. are updated.
@@ -146,7 +146,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testAddTimes() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
 
         // Initial state is already checked in other test methods.
         // Just test that the counters, sums, best, worst, etc. are updated.
@@ -213,7 +213,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfOneDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, 0, true);
+        final AverageCalculator ac = new AverageCalculator(1, 0, 0, true);
 
         // Initial state is already checked in other test methods.
         ac.addTime(500);
@@ -275,7 +275,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfOneAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, 0,false);
+        final AverageCalculator ac = new AverageCalculator(1, 0, 0,false);
 
         // Initial state is already checked in other test methods.
         ac.addTime(500);
@@ -337,7 +337,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfThreeDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, 0,true);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,true);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150);
@@ -435,7 +435,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfThreeAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, 0,false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150);
@@ -555,7 +555,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfFiveDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20,true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,true);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150, 400, 200);
@@ -637,7 +637,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfFiveAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20,false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,false);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150, 400, 200);
@@ -768,7 +768,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForThreeAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, 0,false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
         AverageOfN aoN;
 
         // Providing the times in the correct order (oldest first) is important. The source array
@@ -840,7 +840,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForThreeDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, 0,true);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,true);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -914,7 +914,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForFiveAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20,false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,false);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1010,7 +1010,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForFiveDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, 20, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1096,7 +1096,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testAssortedAverageOfHundredCalculations() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(100, 10, false);
+        final AverageCalculator ac = new AverageCalculator(100, 10, 10, false);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1140,7 +1140,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testLargeAverage() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(50, 5, false);
+        final AverageCalculator ac = new AverageCalculator(50, 5, 10, true);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1148,7 +1148,14 @@ public class AverageCalculatorTestCase {
         aoN = ac.getAverageOfN();
         assertEquals(ac.getN(), aoN.getTimes().length);
         assertEquals(83675, ac.getBestAverage());
-        //assertEquals("1:23.67", PuzzleUtils.convertTimeToString(ac.getBestAverage(), PuzzleUtils.FORMAT_DEFAULT));
+
+        ac.addTimes(DNF, DNF, DNF, DNF, DNF); // The DNF threshold is 10% of N. With 5 DNFs, we should still be able to calculate a valid average
+        assertEquals(5, ac.getNumDNFSolves());
+        assertEquals(101912, ac.getCurrentAverage());
+
+        ac.addTime(DNF); // 6 DNFs should disqualify the average.
+        assertEquals(6, ac.getNumDNFSolves());
+        assertEquals(DNF, ac.getCurrentAverage());
 
     }
 

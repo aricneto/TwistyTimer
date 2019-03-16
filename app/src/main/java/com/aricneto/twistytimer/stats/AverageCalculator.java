@@ -121,6 +121,12 @@ public final class AverageCalculator {
     private int mNumCurrentDNFs;
 
     /**
+     * The maximum number of DNFs that can be contained in {@link #mTimes}
+     * before the whole average is considered a DNF
+     */
+    private int mNumAcceptableDNFs;
+
+    /**
      * The number of DNF results ever recorded in {@code #mTimes}.
      */
     private int mNumAllTimeDNFs;
@@ -214,7 +220,7 @@ public final class AverageCalculator {
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    public AverageCalculator(int n, int trimPercent, boolean disqualifyDNFs) {
+    public AverageCalculator(int n, int trimPercent, int percentAcceptableDNFs, boolean disqualifyDNFs) {
         if (n <= 0) {
             throw new IllegalArgumentException("Number of solves must be > 0: " + n);
         }
@@ -225,6 +231,7 @@ public final class AverageCalculator {
         mDisqualifyDNFs = disqualifyDNFs;
 
         mTrimSize = (int) Math.ceil (mN * (trimPercent / 100f));
+        mNumAcceptableDNFs = (int) Math.ceil (mN * (percentAcceptableDNFs / 100f));
         mLowerTrimBound = mTrimSize;
         mUpperTrimBound = mN - mTrimSize;
 
@@ -628,8 +635,8 @@ public final class AverageCalculator {
             // non-DNF time present. Just use that time as the average.
             mCurrentAverage = mCurrentBestTime;
         } else if (mN >= MIN_N_TO_ALLOW_ONE_DNF) {
-            if (mDisqualifyDNFs && mNumCurrentDNFs > 1) {
-                // Disqualify the average: there is more than one DNF and only one DNF is allowed.
+            if (mDisqualifyDNFs && mNumCurrentDNFs > mNumAcceptableDNFs) {
+                // Disqualify the average: the number of current DNFs is above the acceptable threshold
                 mCurrentAverage = DNF;
             } else {
                 // There is no more than one DNF, or there is more than one DNF, but that will not

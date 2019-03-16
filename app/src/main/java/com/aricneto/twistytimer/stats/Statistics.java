@@ -63,6 +63,11 @@ public class Statistics {
     private static int mTrimSize = 5;
 
     /**
+     * Total percent of DNFs before an average is disqualified
+     */
+    private static int mNumAcceptableDNFs = 10;
+
+    /**
      * Creates a new collection for statistics. Use a factory method to create a standard set of
      * statistics.
      */
@@ -82,20 +87,20 @@ public class Statistics {
         final Statistics stats = new Statistics();
 
         // Averages for all sessions.
-        stats.addAverageOf(3, 0, true, false);
-        stats.addAverageOf(5, mTrimSize, true, false);
-        stats.addAverageOf(12, mTrimSize, true, false);
-        stats.addAverageOf(50, mTrimSize, false, false);
-        stats.addAverageOf(100, mTrimSize, false, false);
-        stats.addAverageOf(1_000, mTrimSize, false, false);
+        stats.addAverageOf(3, 0, 0, true, false);
+        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, true, false);
 
         // Averages for the current session only.
-        stats.addAverageOf(3, 0, true, true);
-        stats.addAverageOf(5, mTrimSize, true, true);
-        stats.addAverageOf(12, mTrimSize, true, true);
-        stats.addAverageOf(50, mTrimSize, false, true);
-        stats.addAverageOf(100, mTrimSize, false, true);
-        stats.addAverageOf(1_000, mTrimSize, false, true);
+        stats.addAverageOf(3, 0, 0, true, true);
+        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, true, true);
 
         return stats;
     }
@@ -114,8 +119,8 @@ public class Statistics {
 
         // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
         // passes all data in for the "current session", but makes a distinction using its own API.
-        stats.addAverageOf(50, mTrimSize, false, true);
-        stats.addAverageOf(100, mTrimSize, false, true);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, true);
 
         return stats;
     }
@@ -130,8 +135,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, mTrimSize, true, true);
-        stats.addAverageOf(12, mTrimSize, true, true);
+        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, true);
 
         return stats;
     }
@@ -218,8 +223,8 @@ public class Statistics {
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    private void addAverageOf(int n, int trimPercent, boolean disqualifyDNFs, boolean isForCurrentSessionOnly) {
-        final AverageCalculator ac = new AverageCalculator(n, trimPercent, disqualifyDNFs);
+    private void addAverageOf(int n, int trimPercent, int acceptableDNFPercent, boolean disqualifyDNFs, boolean isForCurrentSessionOnly) {
+        final AverageCalculator ac = new AverageCalculator(n, trimPercent, acceptableDNFPercent, disqualifyDNFs);
 
         if (isForCurrentSessionOnly) {
             mSessionACs.put(n, ac);
