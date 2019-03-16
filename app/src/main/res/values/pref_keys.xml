@@ -47,9 +47,14 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
     <string translatable="false" name="pk_scramble_image_size">scrambleImageSize</string>
 
+    <string translatable="false" name="pk_stat_trim_size">pkStatTrimSize</string>
+    <string translatable="false" name="pk_stat_acceptable_dnf_size">pkStatAcceptableDNFSize</string>
+    <string translatable="false" name="pk_stat_disqualify_dnf">pkDisqualifyDNF</string>
+
     <string translatable="false" name="pref_screen_title_timer_appearance_settings">timerAppearance</string>
     <string translatable="false" name="pref_screen_other_general">prefScreenOtherGeneral</string>
     <string translatable="false" name="pref_screen_other_list">prefScreenOtherList</string>
+    <string translatable="false" name="pref_screen_other_statistics">prefScreenOtherStatistics</string>
     <string translatable="false" name="pk_open_timer_behavior_settings">timerBehavior</string>
     <string translatable="false" name="pk_open_inspection_behavior_settings">inspectionBehavior</string>
 

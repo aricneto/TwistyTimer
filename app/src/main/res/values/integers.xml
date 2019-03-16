@@ -6,4 +6,6 @@
     <integer name="defaultTimeTextOffset">0</integer>
     <integer name="defaultScrambleTextSize">100</integer>
     <integer name="defaultAnimationDuration">250</integer>
+    <integer name="defaultTrimSize">5</integer>
+    <integer name="defaultAcceptableDNFSize">10</integer>
 </resources>

@@ -142,6 +142,8 @@ public class SettingsActivity extends AppCompatActivity {
                         R.string.pk_scramble_image_size,
                         R.string.pk_scramble_text_size,
                         R.string.pk_advanced_timer_settings_enabled,
+                        R.string.pk_stat_trim_size,
+                        R.string.pk_stat_acceptable_dnf_size,
                         R.string.pk_timer_animation_duration)) {
 
                     case R.string.pk_inspection_time:
@@ -201,6 +203,16 @@ public class SettingsActivity extends AppCompatActivity {
                                          R.integer.defaultAnimationDuration,
                                          "%d ms");
                         break;
+                    case R.string.pk_stat_trim_size:
+                        createAverageSeekDialog(R.string.pk_stat_trim_size,
+                                                0, 30,
+                                                R.integer.defaultTrimSize);
+                        break;
+                    case R.string.pk_stat_acceptable_dnf_size:
+                        createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
+                                                0, 30,
+                                                R.integer.defaultAcceptableDNFSize);
+                        break;
                 }
                 return false;
             }
@@ -228,6 +240,8 @@ public class SettingsActivity extends AppCompatActivity {
                     R.string.pk_scramble_text_size,
                     R.string.pk_scramble_image_size,
                     R.string.pk_advanced_timer_settings_enabled,
+                    R.string.pk_stat_trim_size,
+                    R.string.pk_stat_acceptable_dnf_size,
                     R.string.pk_timer_animation_duration};
 
             for (int prefId : listenerPrefIds) {
@@ -362,6 +376,75 @@ public class SettingsActivity extends AppCompatActivity {
                     .neutralText(R.string.action_default)
                     .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
                     .build());
+        }
+
+        private void createAverageSeekDialog(@StringRes int prefKeyResID,
+                                      int minValue, int maxValue, @IntegerRes int defaultValueRes) {
+
+            final View dialogView = LayoutInflater.from(
+                    getActivity()).inflate(R.layout.dialog_settings_progress, null);
+            final AppCompatSeekBar seekBar = dialogView.findViewById(R.id.seekbar);
+            final TextView text = dialogView.findViewById(R.id.text);
+
+            int defaultValue = getContext().getResources().getInteger(defaultValueRes);
+
+            seekBar.setMax(maxValue);
+            seekBar.setProgress(Prefs.getInt(prefKeyResID, defaultValue));
+            int progress = seekBar.getProgress();
+
+            int ao3, ao5, ao12, ao50, ao100, ao1000;
+
+            ao3 = getTrim(3, progress);
+            ao5 = getTrim(5, progress);
+            ao12 = getTrim(12, progress);
+            ao50 = getTrim(50, progress);
+            ao100 = getTrim(100, progress);
+            ao1000 = getTrim(1000, progress);
+            text.setText(String.format("Number of excluded solves:\nAo3: %d\nAo5: %d\nAo12: %d\nAo50: %d\nAo100: %d\nAo1000: %d", ao3, ao5, ao12, ao50, ao100, ao1000));
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                int ao3, ao5, ao12, ao50, ao100, ao1000;
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    ao3 = getTrim(3, progress);
+                    ao5 = getTrim(5, progress);
+                    ao12 = getTrim(12, progress);
+                    ao50 = getTrim(50, progress);
+                    ao100 = getTrim(100, progress);
+                    ao1000 = getTrim(1000, progress);
+                    text.setText(String.format("Number of excluded solves:\nAo3: %d\nAo5: %d\nAo12: %d\nAo50: %d\nAo100: %d\nAo1000: %d\n", ao3, ao5, ao12, ao50, ao100, ao1000));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                    .customView(dialogView, true)
+                    .positiveText(R.string.action_done)
+                    .negativeText(R.string.action_cancel)
+                    .onPositive((dialog, which) -> {
+                        final int seekProgress = seekBar.getProgress();
+
+                        Prefs.edit()
+                                .putInt(prefKeyResID, seekProgress > minValue ? seekProgress : minValue)
+                                .apply();
+                    })
+                    .neutralText(R.string.action_default)
+                    .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
+                    .build());
+        }
+
+        private int getTrim(int avg, int trim) {
+            return (int) Math.ceil(avg * (trim / 100f));
         }
 
         private void createSeekTextSizeDialog(

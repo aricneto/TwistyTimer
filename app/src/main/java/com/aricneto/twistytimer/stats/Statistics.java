@@ -1,5 +1,8 @@
 package com.aricneto.twistytimer.stats;
 
+import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.utils.Prefs;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -60,12 +63,17 @@ public class Statistics {
     /**
      * Percent to trim off each end
      */
-    private static int mTrimSize = 5;
+    private static int mTrimSize;
 
     /**
      * Total percent of DNFs before an average is disqualified
      */
-    private static int mNumAcceptableDNFs = 10;
+    private static int mNumAcceptableDNFs;
+
+    /**
+     * True if an average should be considered as DNF once the number of DNFs passes {@code mNumAcceptableDNFs}
+     */
+    private static boolean mDisqualifyDNF;
 
     /**
      * Creates a new collection for statistics. Use a factory method to create a standard set of
@@ -86,21 +94,25 @@ public class Statistics {
     public static Statistics newAllTimeStatistics() {
         final Statistics stats = new Statistics();
 
+        mTrimSize = Prefs.getInt(R.string.pk_stat_trim_size, Prefs.getDefaultIntValue(R.integer.defaultTrimSize));
+        mNumAcceptableDNFs = Prefs.getInt(R.string.pk_stat_acceptable_dnf_size, Prefs.getDefaultIntValue(R.integer.defaultAcceptableDNFSize));
+        mDisqualifyDNF = Prefs.getBoolean(R.string.pk_stat_disqualify_dnf, Prefs.getDefaultBoolValue(R.bool.defaultEnableDisqualifyDNF));
+
         // Averages for all sessions.
         stats.addAverageOf(3, 0, 0, true, false);
         stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, false);
         stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, false);
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, false);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, false);
-        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
+        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
 
         // Averages for the current session only.
         stats.addAverageOf(3, 0, 0, true, true);
         stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, true);
         stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
 
         return stats;
     }
@@ -119,8 +131,8 @@ public class Statistics {
 
         // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
         // passes all data in for the "current session", but makes a distinction using its own API.
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
 
         return stats;
     }
@@ -135,8 +147,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
 
         return stats;
     }

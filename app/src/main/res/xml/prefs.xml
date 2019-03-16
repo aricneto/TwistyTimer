@@ -145,6 +145,16 @@
 
             </PreferenceCategory>
 
+            <PreferenceCategory android:title="@string/pref_category_title_other">
+
+                <Preference
+                    android:defaultValue="@integer/defaultAnimationDuration"
+                    android:key="@string/pk_timer_animation_duration"
+                    android:summary="@string/pref_animation_duration_summary"
+                    android:title="@string/pref_animation_duration_title" />
+
+            </PreferenceCategory>
+
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -267,17 +277,30 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:icon="@drawable/ic_outline_list_alt_pref"
-            android:key="@string/pref_screen_title_timer_appearance_settings"
-            android:title="@string/pref_screen_title_list">
+            android:icon="@drawable/ic_outline_timeline_24px_teal"
+            android:key="@string/pref_screen_other_statistics"
+            android:title="@string/pref_screen_title_statistics">
 
-            <PreferenceCategory android:title="@string/pref_screen_title_list">
+            <PreferenceCategory android:title="@string/pref_screen_title_statistics">
+
+            <Preference
+                android:defaultValue="@integer/defaultTrimSize"
+                android:key="@string/pk_stat_trim_size"
+                android:summary="@string/pref_summary_stat_trim"
+                android:title="@string/pref_title_stat_trim" />
 
             <SwitchPreferenceCompat
-                android:defaultValue="@bool/default_clearEnabled"
-                android:key="@string/pk_show_clear_button"
-                android:summary="@string/clearEnabledSummary"
-                android:title="@string/clearEnabledTitle" />
+                android:defaultValue="@bool/defaultEnableDisqualifyDNF"
+                android:key="@string/pk_stat_disqualify_dnf"
+                android:summary="@string/pref_summary_disqualify_dnf"
+                android:title="@string/pref_title_disqualify_dnf" />
+
+            <Preference
+                android:defaultValue="@integer/defaultAcceptableDNFSize"
+                android:dependency="@string/pk_stat_disqualify_dnf"
+                android:key="@string/pk_stat_acceptable_dnf_size"
+                android:summary="@string/pref_summary_acceptable_dnf"
+                android:title="@string/pref_title_acceptable_dnf" />
 
             </PreferenceCategory>
 
@@ -285,17 +308,21 @@
 
     </PreferenceCategory>
 
-    <Preference android:layout="@layout/divider_preference_category" />
+    <PreferenceScreen
+        android:icon="@drawable/ic_outline_list_alt_pref"
+        android:key="@string/pref_screen_title_timer_appearance_settings"
+        android:title="@string/pref_screen_title_list">
 
-    <PreferenceCategory android:title="@string/w_new_subtype" android:summary="@string/pref_summary_new">
+        <PreferenceCategory android:title="@string/pref_screen_title_list">
 
-        <Preference
-            android:icon="@drawable/ic_outline_fiber_new_16px"
-            android:defaultValue="@integer/defaultAnimationDuration"
-            android:key="@string/pk_timer_animation_duration"
-            android:summary="@string/pref_animation_duration_summary"
-            android:title="@string/pref_animation_duration_title" />
+            <SwitchPreferenceCompat
+                android:defaultValue="@bool/default_clearEnabled"
+                android:key="@string/pk_show_clear_button"
+                android:summary="@string/clearEnabledSummary"
+                android:title="@string/clearEnabledTitle" />
 
-    </PreferenceCategory>
+        </PreferenceCategory>
+
+    </PreferenceScreen>
 
 </PreferenceScreen>
