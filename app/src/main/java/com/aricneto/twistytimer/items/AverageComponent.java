@@ -4,6 +4,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SortedMultiset;
 import com.google.common.collect.TreeMultiset;
 
+import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
 /**
@@ -26,10 +27,12 @@ public class AverageComponent {
     }
 
     public void add(long val) {
-        sum = (this.sum == UNKNOWN ? 0L : this.sum) + val;
+        if (val != DNF)
+            sum = (this.sum == UNKNOWN ? 0L : this.sum) + val;
     }
 
     public void sub(long val) {
-        add(-val);
+        if (val != DNF)
+            sum = (this.sum == UNKNOWN ? 0L : this.sum) - val;
     }
 }

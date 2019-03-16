@@ -57,7 +57,7 @@ public final class AverageCalculator {
     // no guarantee that it will remain with its current value of "-1" and this class needs to be
     // sure that the value will be negative and will not clash with "UNKNOWN". If changing these,
     // use values that can also be represented as in "int".
-    public static final long DNF = -665L;
+    public static final long DNF = 9000L;
 
     /**
      * A value that indicates that a calculated time is unknown. This is usually the case when not
@@ -469,12 +469,8 @@ public final class AverageCalculator {
         }
     }
 
-    // FIXME: account for DNFs (DNF = 0)
+    // FIXME: account for DNFs (DNF = MAXVALUE)
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
-        if (ejectedTime == DNF)
-            ejectedTime = 0;
-        if (addedTime == DNF)
-            addedTime = 0;
         if (mNumSolves >= mN) {
             // As soon as mNumSolves reaches N, we should begin counting up the sum of all
             // stored solves.
@@ -499,11 +495,12 @@ public final class AverageCalculator {
                 mSortedTimes = ArrayUtils.remove(mSortedTimes, ejectedTimeIndex);
                 int addedTimeIndex = Arrays.binarySearch(mSortedTimes, addedTime);
                 if (addedTimeIndex < 0) {
-                    // New time will be added at one of the array's boundaries
-                    if (addedTimeIndex == -1)
-                        addedTimeIndex = 0;
-                    else
-                        addedTimeIndex = mN - 1;
+                    /**
+                     * An equal time was not found in the array.
+                     * BinarySearch returns (-(insertionPoint) - 1) in this case
+                     * (read the {@link Arrays} doc on binarySearch for more )
+                     */
+                    addedTimeIndex = Math.abs(addedTimeIndex + 1);
                 }
                 mSortedTimes = ArrayUtils.add(mSortedTimes, addedTimeIndex, addedTime);
 
@@ -519,7 +516,7 @@ public final class AverageCalculator {
                         // take the ejected time's place will be the last one on the lower trim
                         mLowerTrim.add(mSortedTimes[mLowerTrimBound - 1]);
 
-                        // If the time was added in the upper trim, update that too
+                        // If the time was added in the upper trim, update that trim too
                         if (addedTimeIndex >= mUpperTrimBound) {
                             // Remove the time that was pushed away
                             mUpperTrim.sub(mSortedTimes[mUpperTrimBound - 1]);
@@ -539,7 +536,7 @@ public final class AverageCalculator {
                         // take the ejected time's place will be the first one on the upper trim
                         mUpperTrim.add(mSortedTimes[mUpperTrimBound]);
 
-                        // If the time was added in the lower trim, update that too
+                        // If the time was added in the lower trim, update that trim too
                         if (addedTimeIndex < mLowerTrimBound) {
                             // Remove the time that was pushed away
                             mLowerTrim.sub(mSortedTimes[mLowerTrimBound]);
@@ -644,7 +641,9 @@ public final class AverageCalculator {
                 // DNFs are present, so at least one non-DNF time will remain after discarding the
                 // outliers. Discard all other DNFs, if any. One DNF may already have been
                 // discarded as the worst time; do not discard it twice.
-                mCurrentAverage = mMiddleTrim.sum / (mN - (mTrimSize * 2) - mNumCurrentDNFs);
+                mCurrentAverage = mMiddleTrim.sum /
+                                  (mN - (mTrimSize * 2) -
+                                   (mNumCurrentDNFs > 1 ? mNumCurrentDNFs - 1 : 0));
                 //mCurrentAverage
                 //        = (mCurrentSum - mCurrentBestTime
                 //               - (mNumCurrentDNFs == 0 ? mCurrentWorstTime : 0))
