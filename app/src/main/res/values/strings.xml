@@ -401,7 +401,7 @@
     <string name="pref_animation_duration_summary">Controls the duration in milliseconds for all timer animations</string>
     <string name="pref_screen_title_statistics">Statistics</string>
     <string name="pref_title_stat_trim">Average trim</string>
-    <string name="pref_summary_stat_trim">Controls how many solves are excluded from the average</string>
+    <string name="pref_summary_stat_trim">Controls how many solves are included in the average</string>
     <string name="pref_title_acceptable_dnf">Max DNF attempts</string>
     <string name="pref_summary_acceptable_dnf">Controls the maximum number of DNFs an average can have before being disqualified</string>
     <string name="pref_title_disqualify_dnf">DNFs disqualifies average</string>
