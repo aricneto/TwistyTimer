@@ -5,8 +5,6 @@ import android.util.Log;
 import com.aricneto.twistytimer.items.AverageComponent;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.StatUtils;
-import com.google.common.collect.BoundType;
-import com.google.common.collect.TreeMultiset;
 
 import org.apache.commons.lang3.ArrayUtils;
 

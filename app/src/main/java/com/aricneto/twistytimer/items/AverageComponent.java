@@ -1,9 +1,5 @@
 package com.aricneto.twistytimer.items;
 
-import com.google.common.collect.Multiset;
-import com.google.common.collect.SortedMultiset;
-import com.google.common.collect.TreeMultiset;
-
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
@@ -14,16 +10,14 @@ public class AverageComponent {
     public long sum;
     public long best;
     public long worst;
-    public SortedMultiset<Long> tree;
 
     public AverageComponent() {
     }
 
-    public AverageComponent(long sum, long best, long worst, SortedMultiset<Long> tree) {
+    public AverageComponent(long sum, long best, long worst) {
         this.sum = sum;
         this.best = best;
         this.worst = worst;
-        this.tree = tree;
     }
 
     public void add(long val) {
