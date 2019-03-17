@@ -1118,11 +1118,13 @@ public class                                                                    
 
         StringBuilder stringDetailAvg = new StringBuilder();
         // Iterate through averages and set respective TextViews
+
+        String[] avgNums = {"5", "12", "50", "100"};
         for (int i = 0; i < 4; i++) {
             if (sessionStatsEnabled && averageRecordsEnabled && hasStoppedTimerOnce &&
                     sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
                 // Create string.
-                stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
+                stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(avgNums[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
 
                 // Show record message, if it was not shown before
                 if (!hasShownRecordMessage && !isRunning && !countingDown) {
@@ -1134,7 +1136,7 @@ public class                                                                    
                     hasShownRecordMessage = true;
                 }
             } else if (sessionStatsEnabled) {
-                stringDetailAvg.append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
+                stringDetailAvg.append(detailTextNamesArray[i]).append(avgNums[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
             // append newline to every line but the last
             if (i < 3) {

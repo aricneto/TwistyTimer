@@ -37,6 +37,8 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
+import java.util.function.Function;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -127,6 +129,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         private int inspectionDuration;
 
+        private String averageText;
+
         private final androidx.preference.Preference.OnPreferenceClickListener clickListener
                 = new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
@@ -204,14 +208,88 @@ public class SettingsActivity extends AppCompatActivity {
                                          "%d ms");
                         break;
                     case R.string.pk_stat_trim_size:
-                        createAverageSeekDialog(R.string.pk_stat_trim_size,
+                        // This would be a lot cleaner with high-order functions, but I couldn't find a way to get it working for API < 24
+                        View trimDialogView = createAverageSeekDialog(R.string.pk_stat_trim_size,
                                                 0, 30,
                                                 R.integer.defaultTrimSize);
+
+                        TextView trimText = trimDialogView.findViewById(R.id.text);
+                        AppCompatSeekBar trimSeekBar = trimDialogView.findViewById(R.id.seekbar);
+
+                        SeekBar.OnSeekBarChangeListener trimChangeListener = new SeekBar.OnSeekBarChangeListener() {
+                            int ao50, ao100, ao1000;
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                ao50 = getTrim(50, progress);
+                                ao100 = getTrim(100, progress);
+                                ao1000 = getTrim(1000, progress);
+                                trimText.setText(String.format(
+                                        getString(R.string.pref_dialog_trim_size, progress) + "%%\n\n" +
+                                        getString(R.string.pref_dialog_included_solves) +
+                                                               "\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+                                                               averageText + 3, 3,
+                                                               averageText + 5, 3,
+                                                               averageText + 12, 10,
+                                                               averageText + 50, ao50,
+                                                               averageText + 100, ao100,
+                                                               averageText + 1000, ao1000));
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        };
+
+                        trimSeekBar.setOnSeekBarChangeListener(trimChangeListener);
+                        trimChangeListener.onProgressChanged(trimSeekBar, trimSeekBar.getProgress(), false);
                         break;
                     case R.string.pk_stat_acceptable_dnf_size:
-                        createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
+                        View dnfDialogView = createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
                                                 0, 30,
                                                 R.integer.defaultAcceptableDNFSize);
+
+                        TextView dnfText = dnfDialogView.findViewById(R.id.text);
+                        AppCompatSeekBar dnfSeekBar = dnfDialogView.findViewById(R.id.seekbar);
+
+                        SeekBar.OnSeekBarChangeListener dnfChangeListener = new SeekBar.OnSeekBarChangeListener() {
+                            int ao50, ao100, ao1000;
+                            @SuppressLint("DefaultLocale")
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                ao50 = getAcceptableDNFCount(50, progress);
+                                ao100 = getAcceptableDNFCount(100, progress);
+                                ao1000 = getAcceptableDNFCount(1000, progress);
+                                dnfText.setText(String.format(
+                                        getString(R.string.pref_dialog_dnf_percent, progress) + "%%\n\n" +
+                                        getString(R.string.pref_dialog_acceptable_dnf) +
+                                                              "\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+                                                               averageText + 3, 0,
+                                                               averageText + 5, 1,
+                                                               averageText + 12, 1,
+                                                               averageText + 50, ao50,
+                                                               averageText + 100, ao100,
+                                                               averageText + 1000, ao1000));
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        };
+
+                        dnfSeekBar.setOnSeekBarChangeListener(dnfChangeListener);
+                        dnfChangeListener.onProgressChanged(dnfSeekBar, dnfSeekBar.getProgress(), false);
                         break;
                 }
                 return false;
@@ -225,6 +303,8 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             mContext = getContext();
+
+            averageText = getString(R.string.graph_legend_avg_prefix);
         }
 
         @Override
@@ -378,54 +458,17 @@ public class SettingsActivity extends AppCompatActivity {
                     .build());
         }
 
-        private void createAverageSeekDialog(@StringRes int prefKeyResID,
-                                      int minValue, int maxValue, @IntegerRes int defaultValueRes) {
+        private View createAverageSeekDialog(@StringRes int prefKeyResID,
+                                             int minValue, int maxValue, @IntegerRes int defaultValueRes) {
 
             final View dialogView = LayoutInflater.from(
                     getActivity()).inflate(R.layout.dialog_settings_progress, null);
             final AppCompatSeekBar seekBar = dialogView.findViewById(R.id.seekbar);
-            final TextView text = dialogView.findViewById(R.id.text);
 
             int defaultValue = getContext().getResources().getInteger(defaultValueRes);
 
             seekBar.setMax(maxValue);
             seekBar.setProgress(Prefs.getInt(prefKeyResID, defaultValue));
-            int progress = seekBar.getProgress();
-
-            int ao3, ao5, ao12, ao50, ao100, ao1000;
-
-            ao3 = getTrim(3, progress);
-            ao5 = getTrim(5, progress);
-            ao12 = getTrim(12, progress);
-            ao50 = getTrim(50, progress);
-            ao100 = getTrim(100, progress);
-            ao1000 = getTrim(1000, progress);
-            text.setText(String.format("Number of excluded solves:\nAo3: %d\nAo5: %d\nAo12: %d\nAo50: %d\nAo100: %d\nAo1000: %d", ao3, ao5, ao12, ao50, ao100, ao1000));
-
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                int ao3, ao5, ao12, ao50, ao100, ao1000;
-
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    ao3 = getTrim(3, progress);
-                    ao5 = getTrim(5, progress);
-                    ao12 = getTrim(12, progress);
-                    ao50 = getTrim(50, progress);
-                    ao100 = getTrim(100, progress);
-                    ao1000 = getTrim(1000, progress);
-                    text.setText(String.format("Number of excluded solves:\nAo3: %d\nAo5: %d\nAo12: %d\nAo50: %d\nAo100: %d\nAo1000: %d\n", ao3, ao5, ao12, ao50, ao100, ao1000));
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
 
             ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                     .customView(dialogView, true)
@@ -441,9 +484,15 @@ public class SettingsActivity extends AppCompatActivity {
                     .neutralText(R.string.action_default)
                     .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
                     .build());
+
+            return dialogView;
         }
 
         private int getTrim(int avg, int trim) {
+            return avg - ((int) Math.ceil(avg * (trim / 100f)) * 2);
+        }
+
+        private int getAcceptableDNFCount(int avg, int trim) {
             return (int) Math.ceil(avg * (trim / 100f));
         }
 

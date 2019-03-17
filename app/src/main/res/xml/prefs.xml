@@ -145,6 +145,8 @@
 
             </PreferenceCategory>
 
+            <Preference android:layout="@layout/divider_preference_category" />
+
             <PreferenceCategory android:title="@string/pref_category_title_other">
 
                 <Preference
@@ -281,7 +283,8 @@
             android:key="@string/pref_screen_other_statistics"
             android:title="@string/pref_screen_title_statistics">
 
-            <PreferenceCategory android:title="@string/pref_screen_title_statistics">
+            <PreferenceCategory
+                android:title="@string/pref_screen_title_statistics">
 
             <Preference
                 android:defaultValue="@integer/defaultTrimSize"
@@ -304,6 +307,19 @@
 
             </PreferenceCategory>
 
+            <Preference android:layout="@layout/divider_preference_category" />
+
+            <PreferenceCategory
+                android:title="@string/pref_screen_title_graph">
+
+                <SwitchPreferenceCompat
+                    android:defaultValue="@bool/pk_default_stat_discrete_graph_dataset"
+                    android:key="@string/pk_stat_discrete_graph_dataset"
+                    android:title="@string/pref_title_discrete_graph"
+                    android:summary="@string/pref_summary_discrete_graph" />
+
+            </PreferenceCategory>
+
         </PreferenceScreen>
 
     </PreferenceCategory>
@@ -318,8 +334,8 @@
             <SwitchPreferenceCompat
                 android:defaultValue="@bool/default_clearEnabled"
                 android:key="@string/pk_show_clear_button"
-                android:summary="@string/clearEnabledSummary"
-                android:title="@string/clearEnabledTitle" />
+                android:title="@string/clearEnabledTitle"
+                android:summary="@string/clearEnabledSummary"/>
 
         </PreferenceCategory>
 

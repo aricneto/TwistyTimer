@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
 /**
  * A collection of {@link AverageCalculator} instances that distributes solve times to each
@@ -100,16 +101,16 @@ public class Statistics {
 
         // Averages for all sessions.
         stats.addAverageOf(3, 0, 0, true, false);
-        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, false);
-        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, false);
+        stats.addAverageOf(5, 5, 5, true, false);
+        stats.addAverageOf(12, 5, 5, true, false);
         stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
         stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
         stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
 
         // Averages for the current session only.
         stats.addAverageOf(3, 0, 0, true, true);
-        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, true, true);
-        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, true, true);
+        stats.addAverageOf(5, 5, 5, true, true);
+        stats.addAverageOf(12, 5, 5, true, true);
         stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
         stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
         stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
@@ -147,8 +148,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
-        stats.addAverageOf(12, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(5, 5, 5, true, true);
+        stats.addAverageOf(12, 5, 5, true, true);
 
         return stats;
     }

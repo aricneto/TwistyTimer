@@ -52,7 +52,7 @@ public class StatisticsLoader extends AsyncTaskLoader<Wrapper<Statistics>> {
     /**
      * Flag to enable debug logging from this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" used to identify this class as the source of log messages.

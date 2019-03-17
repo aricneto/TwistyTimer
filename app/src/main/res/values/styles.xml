@@ -129,9 +129,6 @@
         <item name="md_positive_color">@color/md_blue_A700</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/md_white_1000</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-
     </style>
 
     <!--
