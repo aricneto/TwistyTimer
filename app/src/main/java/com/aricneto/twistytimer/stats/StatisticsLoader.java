@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Solve;
@@ -13,9 +14,12 @@ import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.Wrapper;
 
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_STATISTICS_LOADED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MOVED_TO_HISTORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
 /**
  * <p>
@@ -52,7 +56,7 @@ public class StatisticsLoader extends AsyncTaskLoader<Wrapper<Statistics>> {
     /**
      * Flag to enable debug logging from this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" used to identify this class as the source of log messages.
@@ -291,9 +295,13 @@ public class StatisticsLoader extends AsyncTaskLoader<Wrapper<Statistics>> {
         // poll the cancellation status as it iterates over the solves it reads from the database.
         TwistyTimer.getDBHandler().populateStatistics(mPuzzleType, mPuzzleSubtype, mStatistics);
 
-        if (DEBUG_ME)
+        if (DEBUG_ME) {
             Log.d(TAG, String.format("  Loaded Statistics in %,d ms.",
-                    SystemClock.elapsedRealtime() - startTime));
+                                     SystemClock.elapsedRealtime() - startTime));
+            new TTIntent.BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_STATISTICS_LOADED)
+                    .longValue(SystemClock.elapsedRealtime() - startTime)
+                    .broadcast();
+        }
 
         // If this is not the first time loading the data, a different object must be returned if
         // the "LoaderManager" is to trigger "onLoadFinished" (go figure). As "mStatistics" is

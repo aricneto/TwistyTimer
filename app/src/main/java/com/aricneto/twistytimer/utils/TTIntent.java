@@ -193,6 +193,11 @@ public final class TTIntent {
     public static final String ACTION_ALGS_MODIFIED = ACTION_PREFIX + "ALGS_MODIFIED";
 
     /**
+     * Statistics have finished loading
+     */
+    public static final String ACTION_STATISTICS_LOADED = ACTION_PREFIX + "STATISTICS_LOADED";
+
+    /**
      * The name of an intent extra that can hold the name of the puzzle type.
      */
     public static final String EXTRA_PUZZLE_TYPE = EXTRA_PREFIX + "PUZZLE_TYPE";
@@ -211,6 +216,11 @@ public final class TTIntent {
      * The name of an intent extra that can be used to record a scramble
      */
     public static final String EXTRA_SCRAMBLE = EXTRA_PREFIX + "SCRAMBLE";
+
+    /**
+     * The name of an intent extra that can be used to record a long
+     */
+    public static final String EXTRA_LONG = EXTRA_PREFIX + "LONG";
 
     /**
      * The actions that are allowed under each category. The category name is the key and the
@@ -233,7 +243,8 @@ public final class TTIntent {
                 ACTION_TIMES_MOVED_TO_HISTORY,
                 ACTION_HISTORY_TIMES_SHOWN,
                 ACTION_SESSION_TIMES_SHOWN,
-                ACTION_COMMENT_ADDED
+                ACTION_COMMENT_ADDED,
+                ACTION_STATISTICS_LOADED
         });
 
         put(CATEGORY_ALG_DATA_CHANGES, new String[] {
@@ -445,11 +456,19 @@ public final class TTIntent {
      * @return The scramble, or {@code null} if the intent does not specify a scramble.
      */
     public static String getScramble(Intent intent) {
-        final String scramble = intent.getStringExtra(EXTRA_SCRAMBLE);
-
-        return scramble;
+        return intent.getStringExtra(EXTRA_SCRAMBLE);
     }
 
+
+    /**
+     * Gets the long value specified in an intent extra.
+     *
+     * @param intent The intent from which to get the value.
+     * @return The long value, or -1 if the intent does not specify a long value
+     */
+    public static long getLongValue(Intent intent) {
+        return intent.getLongExtra(EXTRA_LONG, -1);
+    }
 
     /**
      * A builder for local broadcasts.
@@ -548,7 +567,7 @@ public final class TTIntent {
         /**
          * Sets an optional extra that identifies a scramble string related to the action of the intent
          * that will be broadcast. The receiver can call {@link TTIntent#getScramble(Intent)} to
-         * retrieve the solve from the intent.
+         * retrieve the scramble from the intent.
          *
          * @param scramble The scramble to be added to the broadcast intent.
          *
@@ -556,9 +575,23 @@ public final class TTIntent {
          */
         public BroadcastBuilder scramble(String scramble) {
             if (scramble != null) {
-                // "Solve" implements "Parcelable" to allow it to be passed in an intent extra.
                 mIntent.putExtra(EXTRA_SCRAMBLE, scramble);
             }
+
+            return this;
+        }
+
+        /**
+         * Sets an optional extra that identifies a long value related to the action of the intent
+         * that will be broadcast. The receiver can call {@link TTIntent#getScramble(Intent)} to
+         * retrieve the long from the intent.
+         *
+         * @param value The long to be added to the broadcast intent.
+         *
+         * @return {@code this} broadcast builder, allowing method calls to be chained.
+         */
+        public BroadcastBuilder longValue(long value) {
+            mIntent.putExtra(EXTRA_LONG, value);
 
             return this;
         }

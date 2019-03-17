@@ -1,11 +1,15 @@
 package com.aricneto.twistytimer.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -30,9 +34,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
@@ -59,7 +65,13 @@ public class TimerListFragment extends BaseFragment
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
+
+    /**
+     * The time it took to update the statistics. Only set if {@code DEBUG_ME} is true
+     */
+    private long mStatisticsLoadTime;
+    private boolean mDebugHasLoadedStats = false;
 
     private Context mContext;
 
@@ -255,6 +267,13 @@ public class TimerListFragment extends BaseFragment
                     history = false;
                     reloadList();
                     break;
+
+                case ACTION_STATISTICS_LOADED:
+                    if (DEBUG_ME) {
+                        mStatisticsLoadTime = TTIntent.getLongValue(intent);
+                        mDebugHasLoadedStats = true;
+                    }
+                    break;
             }
         }
     };
@@ -310,6 +329,7 @@ public class TimerListFragment extends BaseFragment
         }
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -319,6 +339,45 @@ public class TimerListFragment extends BaseFragment
 
         if (Prefs.getBoolean(R.string.pk_show_clear_button, false)) {
             clearButton.setVisibility(View.VISIBLE);
+        }
+
+        if (BuildConfig.DEBUG) {
+            View dataButton = rootView.findViewById(R.id.debug_data);
+
+            dataButton.setOnClickListener(v -> {
+                if (!mDebugHasLoadedStats) {
+                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
+                    Toast.makeText(mContext, "Please wait while we reload the statistics!\nPress this button again", Toast.LENGTH_LONG).show();
+                } else {
+                    if (mStatisticsLoadTime != -1) {
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "aricnetodev@gmail.com"));
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[Debug] Statistics data");
+
+                        try {
+                            emailIntent.putExtra(Intent.EXTRA_TEXT,
+                                                 String.format("Statistics loaded in %,d ms.\n" +
+                                                               "Number of solves: %d\n\n" +
+                                                               "Device info:\n" +
+                                                               "App version: %s\n" +
+                                                               "API Level: %d (%s)\n" +
+                                                               "OS Version: %s\n" +
+                                                               "Device and model: %s | %s\n",
+                                                               mStatisticsLoadTime,
+                                                               StatisticsCache.getInstance().getStatistics().getAllTimeNumSolves(),
+                                                               mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName,
+                                                               Build.VERSION.SDK_INT, Build.VERSION.RELEASE,
+                                                               System.getProperty("os.version"),
+                                                               Build.DEVICE, Build.MODEL));
+
+                            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_title)));
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(mContext, "Please wait for statistics to load!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         addTimeButton.setOnClickListener(clickListener);
