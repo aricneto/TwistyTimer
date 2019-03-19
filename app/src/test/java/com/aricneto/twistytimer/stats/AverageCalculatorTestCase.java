@@ -4,6 +4,8 @@ import com.aricneto.twistytimer.stats.AverageCalculator.AverageOfN;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 import static org.junit.Assert.assertArrayEquals;
@@ -1157,6 +1159,20 @@ public class AverageCalculatorTestCase {
         assertEquals(6, ac.getNumDNFSolves());
         assertEquals(DNF, ac.getCurrentAverage());
 
+    }
+
+    private Random rand            = new Random(0);
+    private long[] mLargeTestTimes = rand.longs(100_000, 25_000, 30_000).toArray();
+
+    /**
+     * Used to test the efficiency of the algorithm only.
+     * @throws Exception
+     */
+    @Test
+    public void testVeryLargeAverage() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(100, 5, 5, true);
+
+        ac.addTimes(mLargeTestTimes);
     }
 
 }
