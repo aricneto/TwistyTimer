@@ -71,6 +71,12 @@
             <PreferenceCategory android:title="@string/pref_category_title_control">
 
                 <SwitchPreferenceCompat
+                    android:defaultValue="false"
+                    android:key="@string/pk_enable_manual_entry"
+                    android:title="@string/pref_title_manual_mode"
+                    android:summary="@string/pref_summary_manual_mode" />
+
+                <SwitchPreferenceCompat
                     android:defaultValue="@bool/default_startCue"
                     android:key="@string/pk_start_cue_enabled"
                     android:summary="@string/startCueSummary"

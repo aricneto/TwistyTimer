@@ -23,6 +23,7 @@
         app:srcCompat="@drawable/ic_sigma" />
 
     <TextView
+        android:textColor="?graph_stats_card_text_color"
         android:id="@+id/stats_global"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -45,6 +46,7 @@
         app:srcCompat="@drawable/ic_alpha_g_box_outline" />
 
     <TextView
+        android:textColor="?graph_stats_card_text_color"
         android:id="@+id/stats_session"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,6 +69,7 @@
         app:srcCompat="@drawable/ic_alpha_s_box_outline" />
 
     <TextView
+        android:textColor="?graph_stats_card_text_color"
         android:id="@+id/stats_current"
         android:layout_width="0dp"
         android:layout_height="0dp"

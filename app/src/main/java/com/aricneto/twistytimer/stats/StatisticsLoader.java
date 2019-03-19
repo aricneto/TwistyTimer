@@ -18,6 +18,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_STATISTICS_LOADED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MOVED_TO_HISTORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED_MANUALLY;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
@@ -56,7 +57,7 @@ public class StatisticsLoader extends AsyncTaskLoader<Wrapper<Statistics>> {
     /**
      * Flag to enable debug logging from this class.
      */
-    private static final boolean DEBUG_ME = true;
+    private static final boolean DEBUG_ME = false;
 
     /**
      * A "tag" used to identify this class as the source of log messages.

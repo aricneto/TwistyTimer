@@ -65,13 +65,7 @@ public class TimerListFragment extends BaseFragment
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = true;
-
-    /**
-     * The time it took to update the statistics. Only set if {@code DEBUG_ME} is true
-     */
-    private long mStatisticsLoadTime;
-    private boolean mDebugHasLoadedStats = false;
+    private static final boolean DEBUG_ME = false;
 
     private Context mContext;
 
@@ -100,9 +94,9 @@ public class TimerListFragment extends BaseFragment
     @BindView(R.id.search_box)     AppCompatEditText searchEditText;
     @BindView(R.id.more_button)    View              moreButton;
 
-    private String            currentPuzzle;
-    private String            currentPuzzleSubtype;
-    private String            currentScramble;
+    private String currentPuzzle;
+    private String currentPuzzleCategory;
+    private String currentScramble;
 
     // Stores the current comment search query
     private String searchComment = "";
@@ -120,7 +114,7 @@ public class TimerListFragment extends BaseFragment
             // TODO: Should use "mRecentStatistics" when sharing averages.
             switch (view.getId()) {
                 case R.id.add_time_button:
-                    AddTimeDialog addTimeDialog = AddTimeDialog.newInstance(currentPuzzle, currentPuzzleSubtype, currentScramble);
+                    AddTimeDialog addTimeDialog = AddTimeDialog.newInstance(currentPuzzle, currentPuzzleCategory, currentScramble);
                     FragmentManager manager = getFragmentManager();
                     if (manager != null)
                         addTimeDialog.show(manager, "dialog_add_time");
@@ -140,7 +134,7 @@ public class TimerListFragment extends BaseFragment
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
                                     TwistyTimer.getDBHandler().moveAllSolvesToHistory(
-                                            currentPuzzle, currentPuzzleSubtype);
+                                            currentPuzzle, currentPuzzleCategory);
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MOVED_TO_HISTORY);
                                 }
                             })
@@ -156,7 +150,7 @@ public class TimerListFragment extends BaseFragment
                                 @Override
                                 public void onClick(MaterialDialog dialog, DialogAction which) {
                                     TwistyTimer.getDBHandler().deleteAllFromSession(
-                                            currentPuzzle, currentPuzzleSubtype);
+                                            currentPuzzle, currentPuzzleCategory);
                                     broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
                                 }
                             })
@@ -191,11 +185,11 @@ public class TimerListFragment extends BaseFragment
                                         .title(R.string.list_options_item_from_history)
                                         .content(getString(R.string.unarchive_dialog_summary,
                                                            TwistyTimer.getDBHandler()
-                                                                   .getNumArchivedSolves(currentPuzzle, currentPuzzleSubtype)))
+                                                                   .getNumArchivedSolves(currentPuzzle, currentPuzzleCategory)))
                                         .inputType(InputType.TYPE_CLASS_NUMBER)
                                         .input(null, null, false, (dialog, input) -> {
                                             TwistyTimer.getDBHandler().unarchiveSolves(
-                                                    currentPuzzle, currentPuzzleSubtype, Integer.parseInt(input.toString()));
+                                                    currentPuzzle, currentPuzzleCategory, Integer.parseInt(input.toString()));
                                             reloadList();
                                         })
                                         .positiveText(R.string.list_options_item_from_history)
@@ -222,11 +216,6 @@ public class TimerListFragment extends BaseFragment
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_COMMENT_ADDED:
-                    if (!history)
-                        reloadList();
-                    break;
-                case ACTION_TIME_ADDED_MANUALLY:
-                    onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
                     if (!history)
                         reloadList();
                     break;
@@ -266,13 +255,6 @@ public class TimerListFragment extends BaseFragment
                 case ACTION_SESSION_TIMES_SHOWN:
                     history = false;
                     reloadList();
-                    break;
-
-                case ACTION_STATISTICS_LOADED:
-                    if (DEBUG_ME) {
-                        mStatisticsLoadTime = TTIntent.getLongValue(intent);
-                        mDebugHasLoadedStats = true;
-                    }
                     break;
             }
         }
@@ -321,7 +303,7 @@ public class TimerListFragment extends BaseFragment
         mContext = getContext();
         if (getArguments() != null) {
             currentPuzzle = getArguments().getString(PUZZLE);
-            currentPuzzleSubtype = getArguments().getString(PUZZLE_SUBTYPE);
+            currentPuzzleCategory = getArguments().getString(PUZZLE_SUBTYPE);
             history = getArguments().getBoolean(HISTORY);
         }
         if (savedInstanceState != null) {
@@ -339,45 +321,6 @@ public class TimerListFragment extends BaseFragment
 
         if (Prefs.getBoolean(R.string.pk_show_clear_button, false)) {
             clearButton.setVisibility(View.VISIBLE);
-        }
-
-        if (BuildConfig.DEBUG) {
-            View dataButton = rootView.findViewById(R.id.debug_data);
-
-            dataButton.setOnClickListener(v -> {
-                if (!mDebugHasLoadedStats) {
-                    broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIMES_MODIFIED);
-                    Toast.makeText(mContext, "Please wait while we reload the statistics!\nPress this button again", Toast.LENGTH_LONG).show();
-                } else {
-                    if (mStatisticsLoadTime != -1) {
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "aricnetodev@gmail.com"));
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "[Debug] Statistics data");
-
-                        try {
-                            emailIntent.putExtra(Intent.EXTRA_TEXT,
-                                                 String.format("Statistics loaded in %,d ms.\n" +
-                                                               "Number of solves: %d\n\n" +
-                                                               "Device info:\n" +
-                                                               "App version: %s\n" +
-                                                               "API Level: %d (%s)\n" +
-                                                               "OS Version: %s\n" +
-                                                               "Device and model: %s | %s\n",
-                                                               mStatisticsLoadTime,
-                                                               StatisticsCache.getInstance().getStatistics().getAllTimeNumSolves(),
-                                                               mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName,
-                                                               Build.VERSION.SDK_INT, Build.VERSION.RELEASE,
-                                                               System.getProperty("os.version"),
-                                                               Build.DEVICE, Build.MODEL));
-
-                            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_title)));
-                        } catch (PackageManager.NameNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(mContext, "Please wait for statistics to load!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         }
 
         addTimeButton.setOnClickListener(clickListener);
@@ -490,7 +433,7 @@ public class TimerListFragment extends BaseFragment
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         if (DEBUG_ME) Log.d(TAG, "onCreateLoader()");
-        return new TimeTaskLoader(currentPuzzle, currentPuzzleSubtype, history, searchComment);
+        return new TimeTaskLoader(currentPuzzle, currentPuzzleCategory, history, searchComment);
     }
 
     @Override

@@ -78,7 +78,7 @@
                 android:paddingRight="14dp"
                 android:paddingBottom="6dp"
                 android:tint="?colorItemListText"
-                app:srcCompat="@drawable/ic_outline_add_circle_outline_18px" />
+                app:srcCompat="@drawable/ic_outline_alarm_add_18px" />
 
             <View
                 android:layout_width="1dp"

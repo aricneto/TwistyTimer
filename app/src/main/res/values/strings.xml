@@ -415,5 +415,7 @@
     <string name="pref_summary_discrete_graph">Draws main graph data as discrete points rather than a continuous line</string>
     <string name="graph_stats_title_session">Session</string>
     <string name="graph_stats_title_global">Global</string>
+    <string name="pref_title_manual_mode">Manual mode</string>
+    <string name="pref_summary_manual_mode">Adds a button on the timer screen for easier manual time entry</string>
 
 </resources>

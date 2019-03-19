@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="?colorItemListBackground"
     app:cardCornerRadius="14dp"
-    tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
 
     <RelativeLayout
@@ -56,6 +55,7 @@
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="8dp"
+            android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -68,6 +68,7 @@
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="8dp"
+            android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -80,7 +81,26 @@
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/scramble_button_manual_entry"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_toRightOf="@id/scramble_button_hint"
+            android:layout_alignWithParentIfMissing="true"
+            android:alpha=".85"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:tint="?colorItemListText"
+            app:srcCompat="@drawable/ic_outline_alarm_add_24px" />
 
 
     </RelativeLayout>
