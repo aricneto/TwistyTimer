@@ -7,5 +7,5 @@
     <integer name="defaultScrambleTextSize">100</integer>
     <integer name="defaultAnimationDuration">250</integer>
     <integer name="defaultTrimSize">5</integer>
-    <integer name="defaultAcceptableDNFSize">10</integer>
+    <integer name="defaultAcceptableDNFSize">5</integer>
 </resources>

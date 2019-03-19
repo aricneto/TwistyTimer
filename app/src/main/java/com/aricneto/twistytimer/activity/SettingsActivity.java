@@ -37,6 +37,7 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
+import java.lang.ref.PhantomReference;
 import java.util.function.Function;
 
 import butterknife.BindView;
@@ -209,12 +210,29 @@ public class SettingsActivity extends AppCompatActivity {
                         break;
                     case R.string.pk_stat_trim_size:
                         // This would be a lot cleaner with high-order functions, but I couldn't find a way to get it working for API < 24
-                        View trimDialogView = createAverageSeekDialog(R.string.pk_stat_trim_size,
+                        MaterialDialog trimDialogView = createAverageSeekDialog(R.string.pk_stat_trim_size,
                                                 0, 30,
                                                 R.integer.defaultTrimSize);
 
-                        TextView trimText = trimDialogView.findViewById(R.id.text);
-                        AppCompatSeekBar trimSeekBar = trimDialogView.findViewById(R.id.seekbar);
+                        TextView trimText = trimDialogView.getView().findViewById(R.id.text);
+                        AppCompatSeekBar trimSeekBar = trimDialogView.getView().findViewById(R.id.seekbar);
+
+                        trimDialogView.getBuilder().onPositive((dialog, which) -> {
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_trim_size, trimSeekBar.getProgress() > 0 ? trimSeekBar.getProgress() : 0)
+                                    .apply();
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_acceptable_dnf_size, trimSeekBar.getProgress() > 0 ? trimSeekBar.getProgress() : 0)
+                                    .apply();
+                        }).onNeutral((dialog, which) -> {
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_trim_size, getResources().getInteger(R.integer.defaultTrimSize))
+                                    .apply();
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_acceptable_dnf_size, getResources().getInteger(R.integer.defaultTrimSize))
+                                    .apply();
+                        });
+
 
                         SeekBar.OnSeekBarChangeListener trimChangeListener = new SeekBar.OnSeekBarChangeListener() {
                             int ao50, ao100, ao1000;
@@ -248,14 +266,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                         trimSeekBar.setOnSeekBarChangeListener(trimChangeListener);
                         trimChangeListener.onProgressChanged(trimSeekBar, trimSeekBar.getProgress(), false);
+                        trimDialogView.show();
                         break;
                     case R.string.pk_stat_acceptable_dnf_size:
-                        View dnfDialogView = createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
-                                                0, 30,
-                                                R.integer.defaultAcceptableDNFSize);
+                        MaterialDialog dnfDialogView = createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
+                                                                     0,
+                                                                     Prefs.getInt(R.string.pk_stat_trim_size,
+                                                                                  getResources().getInteger(R.integer.defaultTrimSize)),
+                                                                     R.integer.defaultAcceptableDNFSize);
 
-                        TextView dnfText = dnfDialogView.findViewById(R.id.text);
-                        AppCompatSeekBar dnfSeekBar = dnfDialogView.findViewById(R.id.seekbar);
+                        TextView dnfText = dnfDialogView.getView().findViewById(R.id.text);
+                        AppCompatSeekBar dnfSeekBar = dnfDialogView.getView().findViewById(R.id.seekbar);
 
                         SeekBar.OnSeekBarChangeListener dnfChangeListener = new SeekBar.OnSeekBarChangeListener() {
                             int ao50, ao100, ao1000;
@@ -290,6 +311,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                         dnfSeekBar.setOnSeekBarChangeListener(dnfChangeListener);
                         dnfChangeListener.onProgressChanged(dnfSeekBar, dnfSeekBar.getProgress(), false);
+                        dnfDialogView.show();
                         break;
                 }
                 return false;
@@ -458,7 +480,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .build());
         }
 
-        private View createAverageSeekDialog(@StringRes int prefKeyResID,
+        private MaterialDialog createAverageSeekDialog(@StringRes int prefKeyResID,
                                              int minValue, int maxValue, @IntegerRes int defaultValueRes) {
 
             final View dialogView = LayoutInflater.from(
@@ -470,7 +492,7 @@ public class SettingsActivity extends AppCompatActivity {
             seekBar.setMax(maxValue);
             seekBar.setProgress(Prefs.getInt(prefKeyResID, defaultValue));
 
-            ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+            return ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                     .customView(dialogView, true)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
@@ -484,8 +506,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .neutralText(R.string.action_default)
                     .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
                     .build());
-
-            return dialogView;
         }
 
         private int getTrim(int avg, int trim) {

@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
@@ -75,6 +76,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 
@@ -265,284 +267,291 @@ public class MainActivity extends AppCompatActivity
         //       ThemeUtils.fetchTintedDrawable(this, R.drawable.menu_header, R.attr.colorPrimary));
 
         // Setup drawer
-        mDrawer = new DrawerBuilder()
-            .withActivity(this)
-            .withDelayOnDrawerClose(- 1)
-            .withHeader(headerView)
-            .addDrawerItems(
+        DrawerBuilder drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withDelayOnDrawerClose(-1)
+                .withHeader(headerView)
+                .addDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withName(R.string.drawer_title_timer)
+                                .withIcon(R.drawable.ic_outline_timer_24px)
+                                .withIconTintingEnabled(true)
+                                .withIdentifier(TIMER_ID),
+
+                        new ExpandableDrawerItem()
+                                .withName(R.string.drawer_title_trainer)
+                                .withIcon(R.drawable.ic_outline_control_camera_24px)
+                                .withSelectable(false)
+                                .withIconTintingEnabled(true)
+                                .withSubItems(
+                                        new SecondaryDrawerItem()
+                                                .withName(R.string.drawer_title_oll)
+                                                .withLevel(2)
+                                                .withIcon(R.drawable.ic_oll_black_24dp)
+                                                .withIconTintingEnabled(true)
+                                                .withIdentifier(TRAINER_OLL_ID),
+                                        new SecondaryDrawerItem()
+                                                .withName(R.string.drawer_title_pll)
+                                                .withLevel(2)
+                                                .withIcon(R.drawable.ic_pll_black_24dp)
+                                                .withIconTintingEnabled(true)
+                                                .withIdentifier(TRAINER_PLL_ID)),
+
+                        new ExpandableDrawerItem()
+                                .withName(R.string.title_algorithms)
+                                .withIcon(R.drawable.ic_outline_library_books_24px)
+                                .withSelectable(false)
+                                .withIconTintingEnabled(true)
+                                .withSubItems(
+                                        new SecondaryDrawerItem()
+                                                .withName(R.string.drawer_title_oll)
+                                                .withLevel(2)
+                                                .withIcon(R.drawable.ic_oll_black_24dp)
+                                                .withIconTintingEnabled(true)
+                                                .withIdentifier(OLL_ID),
+                                        new SecondaryDrawerItem()
+                                                .withName(R.string.drawer_title_pll)
+                                                .withLevel(2)
+                                                .withIcon(R.drawable.ic_pll_black_24dp)
+                                                .withIconTintingEnabled(true)
+                                                .withIdentifier(PLL_ID)),
+
+                        new SectionDrawerItem()
+                                .withName(R.string.drawer_title_other),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.drawer_title_export_import)
+                                .withIcon(R.drawable.ic_outline_folder_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(EXPORT_IMPORT_ID),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.drawer_title_changeTheme)
+                                .withIcon(R.drawable.ic_outline_palette_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(THEME_ID),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.drawer_title_changeColorScheme)
+                                .withIcon(R.drawable.ic_outline_format_paint_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(SCHEME_ID),
+
+                        new DividerDrawerItem(),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.action_settings)
+                                .withIcon(R.drawable.ic_outline_settings_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(SETTINGS_ID),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.action_donate)
+                                .withIcon(R.drawable.ic_outline_favorite_border_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(DONATE_ID),
+
+                        new PrimaryDrawerItem()
+                                .withName(R.string.drawer_about)
+                                .withIcon(R.drawable.ic_outline_help_outline_24px)
+                                .withIconTintingEnabled(true)
+                                .withSelectable(false)
+                                .withIdentifier(ABOUT_ID)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+                        boolean closeDrawer = true;
+
+                        switch ((int) drawerItem.getIdentifier()) {
+                            default:
+                                closeDrawer = false;
+                            case TIMER_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragmentManager
+                                                .beginTransaction()
+                                                .replace(R.id.main_activity_container,
+                                                         TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                                .commit();
+                                    }
+                                });
+                                break;
+
+                            case TRAINER_OLL_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragmentManager
+                                                .beginTransaction()
+                                                .replace(R.id.main_activity_container,
+                                                         TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
+                                                .commit();
+                                    }
+                                });
+                                break;
+
+                            case TRAINER_PLL_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragmentManager
+                                                .beginTransaction()
+                                                .replace(R.id.main_activity_container,
+                                                         TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                                .commit();
+                                    }
+                                });
+                                break;
+
+                            case OLL_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragmentManager
+                                                .beginTransaction()
+                                                .replace(R.id.main_activity_container,
+                                                         AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL),
+                                                         "fragment_algs_oll")
+                                                .commit();
+                                    }
+                                });
+                                break;
+
+                            case PLL_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragmentManager
+                                                .beginTransaction()
+                                                .replace(R.id.main_activity_container,
+                                                         AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL),
+                                                         "fragment_algs_pll")
+                                                .commit();
+                                    }
+                                });
+                                break;
+
+                            case EXPORT_IMPORT_ID:
+                                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                                                                      Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+
+                                    // Should we show an explanation?
+                                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                            MainActivity.this,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                                        ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
+                                                .content(R.string.permission_denied_explanation)
+                                                .positiveText(R.string.action_ok)
+                                                .negativeText(R.string.action_cancel)
+                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                    @Override
+                                                    public void onClick(
+                                                            @NonNull MaterialDialog dialog,
+                                                            @NonNull DialogAction which) {
+                                                        ActivityCompat.requestPermissions(MainActivity.this,
+                                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                                          STORAGE_PERMISSION_CODE);
+                                                    }
+                                                })
+                                                .build());
+
+                                    } else {
+                                        ActivityCompat.requestPermissions(MainActivity.this,
+                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                          STORAGE_PERMISSION_CODE);
+                                    }
+
+                                } else {
+                                    ExportImportDialog.newInstance()
+                                            .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
+                                }
+                                break;
+
+                            case THEME_ID:
+                                ThemeSelectDialog.newInstance().show(fragmentManager, "theme_dialog");
+                                break;
+
+                            case SCHEME_ID:
+                                SchemeSelectDialogMain.newInstance()
+                                        .show(fragmentManager, "scheme_dialog");
+                                break;
+
+                            case SETTINGS_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivityForResult(new Intent(
+                                                                       getApplicationContext(), SettingsActivity.class),
+                                                               REQUEST_SETTING);
+                                    }
+                                });
+                                break;
+
+                            case DONATE_ID:
+                                if (readyToPurchase && BillingProcessor.isIabServiceAvailable(MainActivity.this))
+                                    DonateDialog.newInstance()
+                                            .show(fragmentManager, "donate_dialog");
+                                else
+                                    Toast.makeText(MainActivity.this, "Google Play not available",
+                                                   Toast.LENGTH_LONG).show();
+                                break;
+
+                            case ABOUT_ID:
+                                mDrawerToggle.runWhenIdle(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivityForResult(new Intent(getApplicationContext(),
+                                                                          AboutActivity.class), REQUEST_ABOUT);
+                                    }
+                                });
+                                break;
+
+                            case DEBUG_ID:
+                                if (BuildConfig.DEBUG) {
+                                    Random rand = new Random();
+                                    DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+                                    for (int i = 0; i < 10000; i++) {
+                                        dbHandler.addSolve(new Solve(30000 + rand.nextInt(6000), "333",
+                                                                     "|<<# DEBUG #>>|", 165165l+(i*10), "", 0, "", rand.nextBoolean()));
+                                    }
+                                }
+                                break;
+                        }
+                        if (closeDrawer)
+                            mDrawerLayout.closeDrawers();
+                        return false;
+                    }
+                })
+                .withSavedInstance(savedInstanceState);
+
+        if (BuildConfig.DEBUG) {
+            drawerBuilder.addDrawerItems(
                 new PrimaryDrawerItem()
-                        .withName(R.string.drawer_title_timer)
-                        .withIcon(R.drawable.ic_outline_timer_24px)
-                        .withIconTintingEnabled(true)
-                        .withIdentifier(TIMER_ID),
-
-                new ExpandableDrawerItem()
-                    .withName(R.string.drawer_title_trainer)
-                    .withIcon(R.drawable.ic_outline_control_camera_24px)
-                    .withSelectable(false)
-                    .withIconTintingEnabled(true)
-                    .withSubItems(
-                            new SecondaryDrawerItem()
-                                    .withName(R.string.drawer_title_oll)
-                                    .withLevel(2)
-                                    .withIcon(R.drawable.ic_oll_black_24dp)
-                                    .withIconTintingEnabled(true)
-                                    .withIdentifier(TRAINER_OLL_ID),
-                            new SecondaryDrawerItem()
-                                    .withName(R.string.drawer_title_pll)
-                                    .withLevel(2)
-                                    .withIcon(R.drawable.ic_pll_black_24dp)
-                                    .withIconTintingEnabled(true)
-                                    .withIdentifier(TRAINER_PLL_ID)),
-
-                new ExpandableDrawerItem()
-                        .withName(R.string.title_algorithms)
-                        .withIcon(R.drawable.ic_outline_library_books_24px)
-                        .withSelectable(false)
-                        .withIconTintingEnabled(true)
-                        .withSubItems(
-                                new SecondaryDrawerItem()
-                                        .withName(R.string.drawer_title_oll)
-                                        .withLevel(2)
-                                        .withIcon(R.drawable.ic_oll_black_24dp)
-                                        .withIconTintingEnabled(true)
-                                        .withIdentifier(OLL_ID),
-                                new SecondaryDrawerItem()
-                                        .withName(R.string.drawer_title_pll)
-                                        .withLevel(2)
-                                        .withIcon(R.drawable.ic_pll_black_24dp)
-                                        .withIconTintingEnabled(true)
-                                        .withIdentifier(PLL_ID)),
-
-                new SectionDrawerItem()
-                        .withName(R.string.drawer_title_other),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.drawer_title_export_import)
-                        .withIcon(R.drawable.ic_outline_folder_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(EXPORT_IMPORT_ID),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.drawer_title_changeTheme)
-                        .withIcon(R.drawable.ic_outline_palette_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(THEME_ID),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.drawer_title_changeColorScheme)
-                        .withIcon(R.drawable.ic_outline_format_paint_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(SCHEME_ID),
-
-                new DividerDrawerItem(),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.action_settings)
-                        .withIcon(R.drawable.ic_outline_settings_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(SETTINGS_ID),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.action_donate)
-                        .withIcon(R.drawable.ic_outline_favorite_border_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(DONATE_ID),
-
-                new PrimaryDrawerItem()
-                        .withName(R.string.drawer_about)
+                        .withName("DEBUG OPTION - ADD 10000 SOLVES")
                         .withIcon(R.drawable.ic_outline_help_outline_24px)
                         .withIconTintingEnabled(true)
                         .withSelectable(false)
-                        .withIdentifier(ABOUT_ID)
+                        .withIdentifier(DEBUG_ID)
+            );
+        }
 
-//                ,new PrimaryDrawerItem()
-//                        .withName("DEBUG OPTION - ADD 10000 SOLVES")
-//                        .withIcon(R.drawable.ic_action_help_black_24)
-//                        .withIconTintingEnabled(true)
-//                        .withSelectable(false)
-//                        .withIdentifier(DEBUG_ID)
-
-            )
-            .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                @Override
-                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-
-                    boolean closeDrawer = true;
-
-                    switch ((int) drawerItem.getIdentifier()) {
-                        default:
-                            closeDrawer = false;
-                        case TIMER_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                 TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                        .commit();
-                                }
-                            });
-                            break;
-
-                        case TRAINER_OLL_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragmentManager
-                                            .beginTransaction()
-                                            .replace(R.id.main_activity_container,
-                                                     TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
-                                            .commit();
-                                }
-                            });
-                            break;
-
-                        case TRAINER_PLL_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragmentManager
-                                            .beginTransaction()
-                                            .replace(R.id.main_activity_container,
-                                                     TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                            .commit();
-                                }
-                            });
-                            break;
-
-                        case OLL_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL),
-                                                "fragment_algs_oll")
-                                        .commit();
-                                }
-                            });
-                            break;
-
-                        case PLL_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL),
-                                                "fragment_algs_pll")
-                                        .commit();
-                                }
-                            });
-                            break;
-
-                        case EXPORT_IMPORT_ID:
-                            if (ContextCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED) {
-
-                                // Should we show an explanation?
-                                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                                        MainActivity.this,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                                    ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
-                                        .content(R.string.permission_denied_explanation)
-                                        .positiveText(R.string.action_ok)
-                                        .negativeText(R.string.action_cancel)
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(
-                                                    @NonNull MaterialDialog dialog,
-                                                    @NonNull DialogAction which) {
-                                                ActivityCompat.requestPermissions(MainActivity.this,
-                                                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
-                                                    STORAGE_PERMISSION_CODE);
-                                            }
-                                        })
-                                        .build());
-
-                                } else {
-                                    ActivityCompat.requestPermissions(MainActivity.this,
-                                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
-                                        STORAGE_PERMISSION_CODE);
-                                }
-
-                            } else {
-                                ExportImportDialog.newInstance()
-                                        .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
-                            }
-                            break;
-
-                        case THEME_ID:
-                            ThemeSelectDialog.newInstance().show(fragmentManager, "theme_dialog");
-                            break;
-
-                        case SCHEME_ID:
-                            SchemeSelectDialogMain.newInstance()
-                                    .show(fragmentManager, "scheme_dialog");
-                            break;
-
-                        case SETTINGS_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startActivityForResult(new Intent(
-                                            getApplicationContext(), SettingsActivity.class),
-                                            REQUEST_SETTING);
-                                }
-                            });
-                            break;
-
-                        case DONATE_ID:
-                            if (readyToPurchase && BillingProcessor.isIabServiceAvailable(MainActivity.this))
-                                DonateDialog.newInstance()
-                                        .show(fragmentManager, "donate_dialog");
-                            else
-                                Toast.makeText(MainActivity.this, "Google Play not available",
-                                        Toast.LENGTH_LONG).show();
-                            break;
-
-                        case ABOUT_ID:
-                            mDrawerToggle.runWhenIdle(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startActivityForResult(new Intent(getApplicationContext(),
-                                            AboutActivity.class), REQUEST_ABOUT);
-                                }
-                            });
-                            break;
-
-                        //case DEBUG_ID:
-                        //    Random rand = new Random();
-                        //    DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-                        //    for (int i = 0; i < 10000; i++) {
-                        //        dbHandler.addSolve(new Solve(30000 + rand.nextInt(2000), "333",
-                        //                "Normal", 165165l, "", 0, "", rand.nextBoolean()));
-                        //    }
-                        //    break;
-                    }
-                    if (closeDrawer)
-                        mDrawerLayout.closeDrawers();
-                    return false;
-                }
-            })
-            .withSavedInstance(savedInstanceState)
-            .build();
+        mDrawer = drawerBuilder.build();
 
         mDrawerLayout = mDrawer.getDrawerLayout();
         mDrawerToggle = new SmoothActionBarDrawerToggle(
                 this, mDrawerLayout, null, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
     }
 
     @Override
