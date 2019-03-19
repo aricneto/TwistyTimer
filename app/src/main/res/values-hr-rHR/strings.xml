@@ -4,7 +4,7 @@
     <string name="action_add">Dodaj</string>
     <string name="action_archive">Arhiviraj</string>
     <string name="action_cancel">Poništi</string>
-    <string name="action_choose">Odaberi</string>
+    <string name="action_choose">Idaberi</string>
     <string name="action_clear">Izbriši</string>
     <string name="action_default">Zadano</string>
     <string name="action_donate">Doniraj</string>
@@ -40,7 +40,7 @@
     <string name="contributors">Suradnici</string>
     <string name="contributors_content">Ogromno hvala ovim ljudima za doprinos razvoju aplikacije:%1$s</string>
     <string name="cube_222">2x2 kocka</string>
-    <string name="cube_333">3x3 kocka</string>
+    <string name="cube_333">3x3 Kocka</string>
     <string name="cube_444">4x4 kocka</string>
     <string name="cube_555">5x5 kocka</string>
     <string name="cube_666">6x6 kocka</string>
@@ -52,7 +52,7 @@
     <string name="cube_sq1">Sq-1</string>
     <string name="delete_dialog_cancel_button">Poništi</string>
     <string name="delete_dialog_confirmation_button">Izbriši</string>
-    <string name="delete_dialog_confirmation_title">Obriši slaganje?</string>
+    <string name="delete_dialog_confirmation_title">Obriši solve?</string>
     <string name="dialog_export_import_export">Izvoz…</string>
     <string name="dialog_export_import_import">Uvoz…</string>
     <string name="dialog_revert_content_confirmation">Resetiraj algoritme za ovaj slučaj na zadano?</string>
@@ -252,4 +252,6 @@
     <string name="pref_screen_title_list">Lista</string>
     <string name="unarchive_dialog_summary">Trenutno imate %1$d slaganja arhiviranih.\n\nKoliko slaganja želite vratiti iz arhive? Ovo će vratiti iz arhive slaganja koja su bila nedavno.</string>
     <string name="donation_message">Vaša donacija mi pomaže u razvoju Twisty Timera boljim za sve :)</string>
+    <string name="pref_animation_duration_title">Trajanje animacije</string>
+    <string name="pref_animation_duration_summary">Kontrolira trajanje svih animacija tajmera u milisekundama</string>
 </resources>
