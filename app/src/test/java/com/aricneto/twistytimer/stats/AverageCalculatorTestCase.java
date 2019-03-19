@@ -4,6 +4,8 @@ import com.aricneto.twistytimer.stats.AverageCalculator.AverageOfN;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 import static org.junit.Assert.assertArrayEquals;
@@ -22,7 +24,7 @@ import static org.junit.Assert.fail;
 public class AverageCalculatorTestCase {
     @Test
     public void testCreateOne() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, false);
+        final AverageCalculator ac = new AverageCalculator(1, 10, 10, false);
 
         assertEquals(1, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -40,7 +42,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testCreateThree() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
 
         assertEquals(3, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -58,7 +60,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testCreateFive() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, false);
 
         assertEquals(5, ac.getN());
         assertEquals(0, ac.getNumSolves());
@@ -77,7 +79,7 @@ public class AverageCalculatorTestCase {
     @Test
     public void testCreateFailure() throws Exception {
         try {
-            new AverageCalculator(0, false);
+            new AverageCalculator(0, 0, 0, false);
             fail("Expected an exception when 'n' is zero.");
         } catch (IllegalArgumentException ignore) {
             // This is expected.
@@ -86,7 +88,7 @@ public class AverageCalculatorTestCase {
         }
 
         try {
-            new AverageCalculator(-1, false);
+            new AverageCalculator(-1, 0, 0,false);
             fail("Expected an exception when 'n' is negative.");
         } catch (IllegalArgumentException ignore) {
             // This is expected.
@@ -97,7 +99,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testAddTime() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
 
         // Initial state is already checked in other test methods.
         // Just test that the counters, sums, best, worst, etc. are updated.
@@ -146,7 +148,7 @@ public class AverageCalculatorTestCase {
 
     @Test
     public void testAddTimes() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
 
         // Initial state is already checked in other test methods.
         // Just test that the counters, sums, best, worst, etc. are updated.
@@ -213,7 +215,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfOneDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, true);
+        final AverageCalculator ac = new AverageCalculator(1, 0, 0, true);
 
         // Initial state is already checked in other test methods.
         ac.addTime(500);
@@ -275,7 +277,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfOneAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(1, false);
+        final AverageCalculator ac = new AverageCalculator(1, 0, 0,false);
 
         // Initial state is already checked in other test methods.
         ac.addTime(500);
@@ -337,7 +339,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfThreeDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, true);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,true);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150);
@@ -435,7 +437,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfThreeAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150);
@@ -555,7 +557,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfFiveDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,true);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150, 400, 200);
@@ -637,7 +639,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfFiveAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,false);
 
         // Initial state is already checked in other test methods.
         ac.addTimes(500, 250, 150, 400, 200);
@@ -768,7 +770,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForThreeAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, false);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,false);
         AverageOfN aoN;
 
         // Providing the times in the correct order (oldest first) is important. The source array
@@ -840,7 +842,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForThreeDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(3, true);
+        final AverageCalculator ac = new AverageCalculator(3, 0, 0,true);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -914,7 +916,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForFiveAllowDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, false);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20,false);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1010,7 +1012,7 @@ public class AverageCalculatorTestCase {
      */
     @Test
     public void testAverageOfNDetailsForFiveDisqualifyDNFs() throws Exception {
-        final AverageCalculator ac = new AverageCalculator(5, true);
+        final AverageCalculator ac = new AverageCalculator(5, 20, 20, true);
         AverageOfN aoN;
 
         // Add less than the minimum required number of times. Average cannot be calculated.
@@ -1093,4 +1095,84 @@ public class AverageCalculatorTestCase {
         assertEquals(0, aoN.getBestTimeIndex());  // First time is "best".
         assertEquals(1, aoN.getWorstTimeIndex()); // Next time is "worst".
    }
+
+    @Test
+    public void testAssortedAverageOfHundredCalculations() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(100, 10, 10, false);
+        AverageOfN aoN;
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(4106, 6118, 7594, 5829, 4544, 8091, 3661, 7461, 9127, 4649, 6289, 5559, 4911, 2778, 3690, 7496, 6042, 4077, 6107, 9062, 8412, 7027, 2096, 8129, 7225, 7774, 9106, 8608, 2910, 3268, 6670, 9233, 5427, 4260, 2510, 4902, 2842, 1386, 9144, 2883, 6522, 1609, 3463, 7368, 2041, 8208, 5573, 2489, 3846, 9254, 4228, 6624, 6334, 2105, 7787, 2415, 7456, 8613, 3591, 7811, 2873, 4597, 7600, 3831, 1202, 8955, 3150, 1163, 7869, 4891, 3445, 4593, 1901, 8897, 9896, 8528, 4485, 9777, 5749, 8382, 3508, 1614, 6138, 2029, 4201, 4872, 7465, 8650, 8114, 6320, 7545, 9130, 3409, 1914, 7372, 4515, 5001, 3146, 7509);
+        aoN = ac.getAverageOfN();
+
+        assertNull(aoN.getTimes());
+        assertEquals(UNKNOWN, aoN.getAverage());
+        assertEquals(-1, aoN.getBestTimeIndex());
+        assertEquals(-1, aoN.getWorstTimeIndex());
+
+        ac.addTime(1007);
+        aoN = ac.getAverageOfN();
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 4106, 6118, 7594, 5829, 4544, 8091, 3661, 7461, 9127, 4649, 6289, 5559, 4911, 2778, 3690, 7496, 6042, 4077, 6107, 9062, 8412, 7027, 2096, 8129, 7225, 7774, 9106, 8608, 2910, 3268, 6670, 9233, 5427, 4260, 2510, 4902, 2842, 1386, 9144, 2883, 6522, 1609, 3463, 7368, 2041, 8208, 5573, 2489, 3846, 9254, 4228, 6624, 6334, 2105, 7787, 2415, 7456, 8613, 3591, 7811, 2873, 4597, 7600, 3831, 1202, 8955, 3150, 1163, 7869, 4891, 3445, 4593, 1901, 8897, 9896, 8528, 4485, 9777, 5749, 8382, 3508, 1614, 6138, 2029, 4201, 4872, 7465, 8650, 8114, 6320, 7545, 9130, 3409, 1914, 7372, 4515, 5001, 3146, 7509, 1007 }, aoN.getTimes()); // mNext == 5
+        assertArrayEquals(new long[] { 1007,1163,1202,1386,1609,1614,1901,1914,2029,2041,2096,2105,2415,2489,2510,2778,2842,2873,2883,2910,3146,3150,3268,3409,3445,3463,3508,3591,3661,3690,3831,3846,4077,4106,4201,4228,4260,4485,4515,4544,4593,4597,4649,4872,4891,4902,4911,5001,5427,5559,5573,5749,5829,6042,6107,6118,6138,6289,6320,6334,6522,6624,6670,7027,7225,7368,7372,7456,7461,7465,7496,7509,7545,7594,7600,7774,7787,7811,7869,8091,8114,8129,8208,8382,8412,8528,8608,8613,8650,8897,8955,9062,9106,9127,9130,9144,9233,9254,9777,9896 }, aoN.getSortedTimes()); // mNext == 5
+        assertEquals(5562, aoN.getAverage());
+
+        ac.addTime(9874); // Will eject 4106
+        aoN = ac.getAverageOfN();
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 6118, 7594, 5829, 4544, 8091, 3661, 7461, 9127, 4649, 6289, 5559, 4911, 2778, 3690, 7496, 6042, 4077, 6107, 9062, 8412, 7027, 2096, 8129, 7225, 7774, 9106, 8608, 2910, 3268, 6670, 9233, 5427, 4260, 2510, 4902, 2842, 1386, 9144, 2883, 6522, 1609, 3463, 7368, 2041, 8208, 5573, 2489, 3846, 9254, 4228, 6624, 6334, 2105, 7787, 2415, 7456, 8613, 3591, 7811, 2873, 4597, 7600, 3831, 1202, 8955, 3150, 1163, 7869, 4891, 3445, 4593, 1901, 8897, 9896, 8528, 4485, 9777, 5749, 8382, 3508, 1614, 6138, 2029, 4201, 4872, 7465, 8650, 8114, 6320, 7545, 9130, 3409, 1914, 7372, 4515, 5001, 3146, 7509, 1007, 9874 }, aoN.getTimes()); // mNext == 5
+        assertArrayEquals(new long[] { 1007,1163,1202,1386,1609,1614,1901,1914,2029,2041,2096,2105,2415,2489,2510,2778,2842,2873,2883,2910,3146,3150,3268,3409,3445,3463,3508,3591,3661,3690,3831,3846,4077,4201,4228,4260,4485,4515,4544,4593,4597,4649,4872,4891,4902,4911,5001,5427,5559,5573,5749,5829,6042,6107,6118,6138,6289,6320,6334,6522,6624,6670,7027,7225,7368,7372,7456,7461,7465,7496,7509,7545,7594,7600,7774,7787,7811,7869,8091,8114,8129,8208,8382,8412,8528,8608,8613,8650,8897,8955,9062,9106,9127,9130,9144,9233,9254,9777,9874,9896 }, aoN.getSortedTimes()); // mNext == 5
+        assertEquals(15866, aoN.getmLowerTrimSum());
+        assertEquals(93603, aoN.getmUpperTrimSum());
+        assertEquals(559351 - (aoN.getmLowerTrimSum() + aoN.getmUpperTrimSum()), aoN.getmMiddleTrimSum());
+        assertEquals(5623, aoN.getAverage());
+
+        ac.addTimes(1678, 6298, 6); // Will eject 6118, 7594, 5829
+        aoN = ac.getAverageOfN();
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertArrayEquals(new long[] { 4544, 8091, 3661, 7461, 9127, 4649, 6289, 5559, 4911, 2778, 3690, 7496, 6042, 4077, 6107, 9062, 8412, 7027, 2096, 8129, 7225, 7774, 9106, 8608, 2910, 3268, 6670, 9233, 5427, 4260, 2510, 4902, 2842, 1386, 9144, 2883, 6522, 1609, 3463, 7368, 2041, 8208, 5573, 2489, 3846, 9254, 4228, 6624, 6334, 2105, 7787, 2415, 7456, 8613, 3591, 7811, 2873, 4597, 7600, 3831, 1202, 8955, 3150, 1163, 7869, 4891, 3445, 4593, 1901, 8897, 9896, 8528, 4485, 9777, 5749, 8382, 3508, 1614, 6138, 2029, 4201, 4872, 7465, 8650, 8114, 6320, 7545, 9130, 3409, 1914, 7372, 4515, 5001, 3146, 7509, 1007, 9874, 1678, 6298, 6 }, aoN.getTimes()); // mNext == 5
+        assertArrayEquals(new long[] { 6,1007,1163,1202,1386,1609,1614,1678,1901,1914,2029,2041,2096,2105,2415,2489,2510,2778,2842,2873,2883,2910,3146,3150,3268,3409,3445,3463,3508,3591,3661,3690,3831,3846,4077,4201,4228,4260,4485,4515,4544,4593,4597,4649,4872,4891,4902,4911,5001,5427,5559,5573,5749,6042,6107,6138,6289,6298,6320,6334,6522,6624,6670,7027,7225,7368,7372,7456,7461,7465,7496,7509,7545,7600,7774,7787,7811,7869,8091,8114,8129,8208,8382,8412,8528,8608,8613,8650,8897,8955,9062,9106,9127,9130,9144,9233,9254,9777,9874,9896 }, aoN.getSortedTimes()); // mNext == 5
+        assertEquals(13480, aoN.getmLowerTrimSum());
+        assertEquals(93603, aoN.getmUpperTrimSum());
+        assertEquals(547792 - (aoN.getmLowerTrimSum() + aoN.getmUpperTrimSum()), aoN.getmMiddleTrimSum());
+        assertEquals(5508, aoN.getAverage());
+
+    }
+
+
+    @Test
+    public void testLargeAverage() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(50, 5, 10, true);
+        AverageOfN aoN;
+
+        // Add less than the minimum required number of times. Average cannot be calculated.
+        ac.addTimes(89950,95540,95990,72580,74560,92800,92420,83900,98010,89740,95070,82480,99060,81910,88290,72620,115280,96510,79570,79860,65980,79430,96970,89840,85730,74930,77310,91310,91990,97730,74350,66290,64820,78960,73680,86090,95390,75620,86390,79930,89150,88090,86570,73630,99780,91050,88750,89740,84670,92950,86830,78630,81930,86170,79480,87630,79190,90680,77230,80220,77070,79360,83350,100290,103240,80990,84190,75990,86490,77310,87960,72250,84340,82670,92400,97220,85430,87780,85710,94650,94970,80740,89290,75110,95410,111380,96660,74710,73920,90590,95820,103260,92030,87790,95400,99080,80910,90120,74520,89840,96060,74730,66320,88930,73740,84870,95960,105230,80370,80960,77450,103350,86730,106070,85510,72120,106750,84940,120410,97030,83840,94900,108510,87870,71520,82570,88600,101390,86790,84490,93170,93940,102440,99150,81370,85580,87860,94980,98780,81850,82610,78670,84810,89350,119210,76550,89270,98520,72340,99700,83060,70070,120210,78450,74580,84860,88730,84120,100840,98040,88520,106250,95910,90040,92360,83390,88580,81240,70700,103160,94160,107270,82590,79360,101450,92420,114950,83970,95780,102550,98690,73930,74890,85190,83980,72290,102640,77430,104500,130680,93820,89570,102470,93500,90470,113360,93550,99450,155980,121440,138660,113600,86400,96320,101420,106970,116600,109140,120990,144260,84500,92430,115610,104720,116010,170760,106910,118350,115150,123530,94250,116800,83410,90030,119140,86440,171490,176300,99300,113650,123400,123400,110880,124790,127890,125120,109420,119890,157070,108740,144950,130470,127060,103270,102450,124820,92750,99990,104990,123780,128360,95250,112700,99530,98620,116720,150670,107740,101990,144910,118340,134440,112190,103280,121440,114720,134100,106880,113970,113160,104740,73880,95690,85970,100150,102480,96730,67030,84900,86000,71500,88150,99320,92850,79970,103730,104490,77180,106040,115300,142720,88490,77750,89450,77590,170660,80350,88340,88030,102580,97660,88600,73960,84560,84880,84840,74140,98020,81770,95600);
+        aoN = ac.getAverageOfN();
+        assertEquals(ac.getN(), aoN.getTimes().length);
+        assertEquals(83675, ac.getBestAverage());
+
+        ac.addTimes(DNF, DNF, DNF, DNF, DNF); // The DNF threshold is 10% of N. With 5 DNFs, we should still be able to calculate a valid average
+        assertEquals(5, ac.getNumDNFSolves());
+        assertEquals(101912, ac.getCurrentAverage());
+
+        ac.addTime(DNF); // 6 DNFs should disqualify the average.
+        assertEquals(6, ac.getNumDNFSolves());
+        assertEquals(DNF, ac.getCurrentAverage());
+
+    }
+
+    private Random rand            = new Random(0);
+    private long[] mLargeTestTimes = rand.longs(100_000, 25_000, 30_000).toArray();
+
+    /**
+     * Used to test the efficiency of the algorithm only.
+     * @throws Exception
+     */
+    @Test
+    public void testVeryLargeAverage() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(100, 5, 5, true);
+
+        ac.addTimes(mLargeTestTimes);
+    }
+
 }

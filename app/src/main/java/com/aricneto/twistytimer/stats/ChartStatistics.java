@@ -1,6 +1,9 @@
 package com.aricneto.twistytimer.stats;
 
-import com.aricneto.twistytimer.utils.OffsetValuesLineChartRenderer;
+import android.graphics.Color;
+
+import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -15,10 +18,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.List;
-
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
+import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
 /**
  * A collector for solve times and related statistics (average times) to be presented in a chart.
@@ -43,7 +45,7 @@ public class ChartStatistics {
      * The line width to use in the chart when a thicker line is appropriate. The value is in DIP
      * units.
      */
-    private static final float LINE_WIDTH_THICK_DP = 2.0f;
+    private static final float LINE_WIDTH_THICK_DP = 1.8f;
 
     /**
      * The line width to use in the chart when a thinner line is appropriate. The value is in DIP
@@ -67,6 +69,18 @@ public class ChartStatistics {
      * value is in DIP units.
      */
     private static final float BEST_TIME_CIRCLE_RADIUS_DP = 3.5f;
+
+    /**
+     * The circle radius to use in the chart when a smaller circle is appropriate. The value is in
+     * DIP units.
+     */
+    private static final float MAIN_TIME_CIRCLE_RADIUS_DP_SMALL = 1f;
+
+    /**
+     * The circle radius to use in the chart when a bigger circle is appropriate. The value is in
+     * DIP units.
+     */
+    private static final float MAIN_TIME_CIRCLE_RADIUS_DP_BIG = 2f;
 
     /**
      * The Y-coordinate offset to apply to the value text of the "best" times to cause the text to
@@ -121,6 +135,11 @@ public class ChartStatistics {
      * sessions.
      */
     private final boolean mIsForCurrentSessionOnly;
+
+    /**
+     * Indicates if the main dataset should be represented as discrete points or a continuous line
+     */
+    private final boolean mMainShowDiscreteLineset;
 
     /**
      * The chart data for all solves and for each "average-of-N". The first data set (index zero)
@@ -213,6 +232,7 @@ public class ChartStatistics {
         mChartStyle = chartStyle;
         mNsOfAverages = statistics.getNsOfAverages();
         mIsForCurrentSessionOnly = isForCurrentSessionOnly;
+        mMainShowDiscreteLineset = Prefs.getBoolean(R.string.pk_stat_discrete_graph_dataset, false);
 
         /*/ Unfortunately, the mean value can only be set in the "LimitLine" constructor, so save
         // the label and color of the line now (while a "Context" is available) and create the line
@@ -273,7 +293,14 @@ public class ChartStatistics {
     private void addMainDataSets(LineData chartData, String allLabel, int allColor,
                                  String bestLabel, int bestColor) {
         // Main data set for all solve times.
-        chartData.addDataSet(createDataSet(allLabel, allColor));
+        final LineDataSet mainDataSet = createDataSet(allLabel, allColor);
+
+        mainDataSet.setDrawCircles(getDrawCircle());
+        mainDataSet.setCircleRadius(getCircleRadius());
+        mainDataSet.setCircleColor(allColor);
+        mainDataSet.setColor(getLineColor(allColor));
+
+        chartData.addDataSet(mainDataSet);
 
         // Data set to show the progression of best times along the main line of all times.
         final LineDataSet bestDataSet = createDataSet(bestLabel, bestColor);
@@ -345,6 +372,9 @@ public class ChartStatistics {
         // If graphing only times for a session, there will be fewer, and a thicker line will look
         // well. However, if all times are graphed, a thinner line will probably look better, as
         // the finer details will be more visible.
+        //
+        // Also, the library specifies that a thicker line has increased performance use compared
+        // thinner lines, so don't make lines too thick if the dataset is large!
         dataSet.setLineWidth(getLineWidth());
         dataSet.setColor(color);
         dataSet.setHighlightEnabled(false);
@@ -474,7 +504,7 @@ public class ChartStatistics {
         legendEntries[DS_ALL] = new LegendEntry();
         legendEntries[DS_ALL].form = Legend.LegendForm.CIRCLE;
         legendEntries[DS_ALL].label = ds.getLabel();
-        legendEntries[DS_ALL].formColor = ds.getColor();
+        legendEntries[DS_ALL].formColor = mChartStyle.getAllTimesColor();
 
         ds = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
         legendEntries[DS_BEST] = new LegendEntry();
@@ -626,6 +656,37 @@ public class ChartStatistics {
     private float getLineWidth() {
         // Perhaps adjust this for the number of data points in the chart data.
         return isForCurrentSessionOnly() ? LINE_WIDTH_THICK_DP : LINE_WIDTH_THIN_DP;
+    }
+
+    /**
+     * Gets the circle radius for the main line on the chart. The circles are shown slightly smaller
+     * when only the session times are displayed, as there will be less data points on the chart.
+     *
+     * @return The circle radius (in DIP units).
+     */
+    private float getCircleRadius() {
+        // Perhaps adjust this for the number of data points in the chart data.
+        return isForCurrentSessionOnly() ? MAIN_TIME_CIRCLE_RADIUS_DP_BIG : MAIN_TIME_CIRCLE_RADIUS_DP_SMALL;
+    }
+
+    /**
+     * Gets the color to use for the main data line in the chart.
+     *
+     * @return The color
+     */
+    private int getLineColor(int defaultColor) {
+        // Perhaps adjust this for the number of data points in the chart data.
+        return mMainShowDiscreteLineset ? Color.TRANSPARENT : defaultColor;
+    }
+
+    /**
+     * Gets whether the chart should draw discrete circles for the datapoints
+     *
+     * @return True if it should draw circles
+     */
+    private boolean getDrawCircle() {
+        // Perhaps adjust this for the number of data points in the chart data.
+        return mMainShowDiscreteLineset;
     }
 
     /**

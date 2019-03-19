@@ -27,4 +27,6 @@
     <bool name="default_showAverageRecordEnabled">true</bool>
 
     <bool name="default_inspectionAlertEnabled">false</bool>
+    <bool name="defaultEnableDisqualifyDNF">true</bool>
+    <bool name="pk_default_stat_discrete_graph_dataset">false</bool>
 </resources>

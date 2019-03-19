@@ -37,6 +37,9 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
+import java.lang.ref.PhantomReference;
+import java.util.function.Function;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -127,6 +130,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         private int inspectionDuration;
 
+        private String averageText;
+
         private final androidx.preference.Preference.OnPreferenceClickListener clickListener
                 = new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
@@ -142,6 +147,8 @@ public class SettingsActivity extends AppCompatActivity {
                         R.string.pk_scramble_image_size,
                         R.string.pk_scramble_text_size,
                         R.string.pk_advanced_timer_settings_enabled,
+                        R.string.pk_stat_trim_size,
+                        R.string.pk_stat_acceptable_dnf_size,
                         R.string.pk_timer_animation_duration)) {
 
                     case R.string.pk_inspection_time:
@@ -201,6 +208,111 @@ public class SettingsActivity extends AppCompatActivity {
                                          R.integer.defaultAnimationDuration,
                                          "%d ms");
                         break;
+                    case R.string.pk_stat_trim_size:
+                        // This would be a lot cleaner with high-order functions, but I couldn't find a way to get it working for API < 24
+                        MaterialDialog trimDialogView = createAverageSeekDialog(R.string.pk_stat_trim_size,
+                                                0, 30,
+                                                R.integer.defaultTrimSize);
+
+                        TextView trimText = trimDialogView.getView().findViewById(R.id.text);
+                        AppCompatSeekBar trimSeekBar = trimDialogView.getView().findViewById(R.id.seekbar);
+
+                        trimDialogView.getBuilder().onPositive((dialog, which) -> {
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_trim_size, trimSeekBar.getProgress() > 0 ? trimSeekBar.getProgress() : 0)
+                                    .apply();
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_acceptable_dnf_size, trimSeekBar.getProgress() > 0 ? trimSeekBar.getProgress() : 0)
+                                    .apply();
+                        }).onNeutral((dialog, which) -> {
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_trim_size, getResources().getInteger(R.integer.defaultTrimSize))
+                                    .apply();
+                            Prefs.edit()
+                                    .putInt(R.string.pk_stat_acceptable_dnf_size, getResources().getInteger(R.integer.defaultTrimSize))
+                                    .apply();
+                        });
+
+
+                        SeekBar.OnSeekBarChangeListener trimChangeListener = new SeekBar.OnSeekBarChangeListener() {
+                            int ao50, ao100, ao1000;
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                ao50 = getTrim(50, progress);
+                                ao100 = getTrim(100, progress);
+                                ao1000 = getTrim(1000, progress);
+                                trimText.setText(String.format(
+                                        getString(R.string.pref_dialog_trim_size, progress) + "%%\n\n" +
+                                        getString(R.string.pref_dialog_included_solves) +
+                                                               "\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+                                                               averageText + 3, 3,
+                                                               averageText + 5, 3,
+                                                               averageText + 12, 10,
+                                                               averageText + 50, ao50,
+                                                               averageText + 100, ao100,
+                                                               averageText + 1000, ao1000));
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        };
+
+                        trimSeekBar.setOnSeekBarChangeListener(trimChangeListener);
+                        trimChangeListener.onProgressChanged(trimSeekBar, trimSeekBar.getProgress(), false);
+                        trimDialogView.show();
+                        break;
+                    case R.string.pk_stat_acceptable_dnf_size:
+                        MaterialDialog dnfDialogView = createAverageSeekDialog(R.string.pk_stat_acceptable_dnf_size,
+                                                                     0,
+                                                                     Prefs.getInt(R.string.pk_stat_trim_size,
+                                                                                  getResources().getInteger(R.integer.defaultTrimSize)),
+                                                                     R.integer.defaultAcceptableDNFSize);
+
+                        TextView dnfText = dnfDialogView.getView().findViewById(R.id.text);
+                        AppCompatSeekBar dnfSeekBar = dnfDialogView.getView().findViewById(R.id.seekbar);
+
+                        SeekBar.OnSeekBarChangeListener dnfChangeListener = new SeekBar.OnSeekBarChangeListener() {
+                            int ao50, ao100, ao1000;
+                            @SuppressLint("DefaultLocale")
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                ao50 = getAcceptableDNFCount(50, progress);
+                                ao100 = getAcceptableDNFCount(100, progress);
+                                ao1000 = getAcceptableDNFCount(1000, progress);
+                                dnfText.setText(String.format(
+                                        getString(R.string.pref_dialog_dnf_percent, progress) + "%%\n\n" +
+                                        getString(R.string.pref_dialog_acceptable_dnf) +
+                                                              "\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+                                                               averageText + 3, 0,
+                                                               averageText + 5, 1,
+                                                               averageText + 12, 1,
+                                                               averageText + 50, ao50,
+                                                               averageText + 100, ao100,
+                                                               averageText + 1000, ao1000));
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        };
+
+                        dnfSeekBar.setOnSeekBarChangeListener(dnfChangeListener);
+                        dnfChangeListener.onProgressChanged(dnfSeekBar, dnfSeekBar.getProgress(), false);
+                        dnfDialogView.show();
+                        break;
                 }
                 return false;
             }
@@ -213,6 +325,8 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             mContext = getContext();
+
+            averageText = getString(R.string.graph_legend_avg_prefix);
         }
 
         @Override
@@ -228,6 +342,8 @@ public class SettingsActivity extends AppCompatActivity {
                     R.string.pk_scramble_text_size,
                     R.string.pk_scramble_image_size,
                     R.string.pk_advanced_timer_settings_enabled,
+                    R.string.pk_stat_trim_size,
+                    R.string.pk_stat_acceptable_dnf_size,
                     R.string.pk_timer_animation_duration};
 
             for (int prefId : listenerPrefIds) {
@@ -362,6 +478,42 @@ public class SettingsActivity extends AppCompatActivity {
                     .neutralText(R.string.action_default)
                     .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
                     .build());
+        }
+
+        private MaterialDialog createAverageSeekDialog(@StringRes int prefKeyResID,
+                                             int minValue, int maxValue, @IntegerRes int defaultValueRes) {
+
+            final View dialogView = LayoutInflater.from(
+                    getActivity()).inflate(R.layout.dialog_settings_progress, null);
+            final AppCompatSeekBar seekBar = dialogView.findViewById(R.id.seekbar);
+
+            int defaultValue = getContext().getResources().getInteger(defaultValueRes);
+
+            seekBar.setMax(maxValue);
+            seekBar.setProgress(Prefs.getInt(prefKeyResID, defaultValue));
+
+            return ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
+                    .customView(dialogView, true)
+                    .positiveText(R.string.action_done)
+                    .negativeText(R.string.action_cancel)
+                    .onPositive((dialog, which) -> {
+                        final int seekProgress = seekBar.getProgress();
+
+                        Prefs.edit()
+                                .putInt(prefKeyResID, seekProgress > minValue ? seekProgress : minValue)
+                                .apply();
+                    })
+                    .neutralText(R.string.action_default)
+                    .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, defaultValue).apply())
+                    .build());
+        }
+
+        private int getTrim(int avg, int trim) {
+            return avg - ((int) Math.ceil(avg * (trim / 100f)) * 2);
+        }
+
+        private int getAcceptableDNFCount(int avg, int trim) {
+            return (int) Math.ceil(avg * (trim / 100f));
         }
 
         private void createSeekTextSizeDialog(

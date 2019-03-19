@@ -130,7 +130,6 @@ public class ChartStatisticsLoader extends AsyncTaskLoader<Wrapper<ChartStatisti
 
             switch (intent.getAction()) {
                 case ACTION_TIME_ADDED:
-                case ACTION_TIME_ADDED_MANUALLY:
                     if (!mLoader.deliverQuickResult(intent)) {
                         // Could not deliver a quick update, so trigger a full re-load instead.
                         if (DEBUG_ME) Log.d(TAG, "  Quick update not possible. Will reload!");

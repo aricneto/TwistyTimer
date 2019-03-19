@@ -47,13 +47,20 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
     <string translatable="false" name="pk_scramble_image_size">scrambleImageSize</string>
 
+    <string translatable="false" name="pk_stat_trim_size">pk_stat_trim_size</string>
+    <string translatable="false" name="pk_stat_acceptable_dnf_size">pk_stat_acceptable_dnf_size</string>
+    <string translatable="false" name="pk_stat_disqualify_dnf">pk_stat_disqualify_dnf</string>
+    <string translatable="false" name="pk_stat_discrete_graph_dataset">pk_stat_discrete_graph_dataset</string>
+
     <string translatable="false" name="pref_screen_title_timer_appearance_settings">timerAppearance</string>
     <string translatable="false" name="pref_screen_other_general">prefScreenOtherGeneral</string>
     <string translatable="false" name="pref_screen_other_list">prefScreenOtherList</string>
+    <string translatable="false" name="pref_screen_other_statistics">prefScreenOtherStatistics</string>
     <string translatable="false" name="pk_open_timer_behavior_settings">timerBehavior</string>
     <string translatable="false" name="pk_open_inspection_behavior_settings">inspectionBehavior</string>
 
     <string translatable="false" name="pk_timer_bg_enabled">backgroundEnabled</string>
+    <string translatable="false" name="pk_enable_manual_entry">pk_enable_manual_entry</string>
     <string translatable="false" name="pk_show_hi_res_timer">millisecondsEnabled</string>
     <string translatable="false" name="pk_hide_time_while_running">hideTimeEnabled</string>
     <string translatable="false" name="pk_timer_animation_duration">timerAnimationDuration</string>

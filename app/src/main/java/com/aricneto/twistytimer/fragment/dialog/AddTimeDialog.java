@@ -78,7 +78,7 @@ public class AddTimeDialog extends DialogFragment {
                         TwistyTimer.getDBHandler().addSolve(solve);
                         // The receiver might be able to use the new solve and avoid
                         // accessing the database.
-                        new TTIntent.BroadcastBuilder(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED)
+                        new TTIntent.BroadcastBuilder(CATEGORY_UI_INTERACTIONS, ACTION_TIME_ADDED_MANUALLY)
                                 .solve(solve)
                                 .broadcast();
 

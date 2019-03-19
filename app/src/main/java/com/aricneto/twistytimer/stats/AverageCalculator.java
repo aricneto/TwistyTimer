@@ -2,9 +2,16 @@ package com.aricneto.twistytimer.stats;
 
 import android.util.Log;
 
+import com.aricneto.twistytimer.items.AverageComponent;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
+import com.aricneto.twistytimer.utils.StatUtils;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Calculates the average time of a number of puzzle solves. Running averages are easily calculated
@@ -48,7 +55,7 @@ public final class AverageCalculator {
     // no guarantee that it will remain with its current value of "-1" and this class needs to be
     // sure that the value will be negative and will not clash with "UNKNOWN". If changing these,
     // use values that can also be represented as in "int".
-    public static final long DNF = -665L;
+    public static final long DNF = Long.MAX_VALUE;
 
     /**
      * A value that indicates that a calculated time is unknown. This is usually the case when not
@@ -82,6 +89,19 @@ public final class AverageCalculator {
     private final long[] mTimes;
 
     /**
+     * An array holding a list of times, sorted lowest to highest
+     */
+    private long[] mSortedTimes;
+
+    // TODO: comment these variables
+    public AverageComponent mUpperTrim;
+    public AverageComponent mLowerTrim;
+    public AverageComponent mMiddleTrim;
+    private int mLowerTrimBound;
+    private int mUpperTrimBound;
+    private int mTrimSize;
+
+    /**
      * The index in {@link #mTimes} at which to add the next time. If this is equal to the length
      * of the array, it will be wrapped back to zero.
      */
@@ -97,6 +117,12 @@ public final class AverageCalculator {
      * The number of DNF results currently recorded in {@code #mTimes}.
      */
     private int mNumCurrentDNFs;
+
+    /**
+     * The maximum number of DNFs that can be contained in {@link #mTimes}
+     * before the whole average is considered a DNF
+     */
+    private int mNumAcceptableDNFs;
 
     /**
      * The number of DNF results ever recorded in {@code #mTimes}.
@@ -192,14 +218,24 @@ public final class AverageCalculator {
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    public AverageCalculator(int n, boolean disqualifyDNFs) {
+    public AverageCalculator(int n, int trimPercent, int percentAcceptableDNFs, boolean disqualifyDNFs) {
         if (n <= 0) {
             throw new IllegalArgumentException("Number of solves must be > 0: " + n);
         }
 
         mN = n;
         mTimes = new long[n];
+        mSortedTimes = new long[n];
         mDisqualifyDNFs = disqualifyDNFs;
+
+        mTrimSize = (int) Math.ceil (mN * (trimPercent / 100f));
+        mNumAcceptableDNFs = (int) Math.ceil (mN * (percentAcceptableDNFs / 100f));
+        mLowerTrimBound = mTrimSize;
+        mUpperTrimBound = mN - mTrimSize;
+
+        mUpperTrim = new AverageComponent();
+        mMiddleTrim = new AverageComponent();
+        mLowerTrim = new AverageComponent();
 
         // As "reset()" needs to be supported to ensure a sane state can be guaranteed before
         // populating statistics from the database, it makes sense to use it to initialise the
@@ -212,6 +248,7 @@ public final class AverageCalculator {
      */
     public void reset() {
         Arrays.fill(mTimes, 0L);
+        Arrays.fill(mSortedTimes, 0L);
         mNext = 0;
         mNumSolves = 0;
         mNumCurrentDNFs = 0;
@@ -222,6 +259,11 @@ public final class AverageCalculator {
         mVarianceDelta = 0;
         mVarianceDelta2 = 0;
         mVarianceM2 = 0;
+
+        // FIXME: also reset best, worst and tree
+        mMiddleTrim.sum = UNKNOWN;
+        mLowerTrim.sum = UNKNOWN;
+        mUpperTrim.sum = UNKNOWN;
 
         mCurrentSum = UNKNOWN;
         mAllTimeSum = UNKNOWN;
@@ -276,7 +318,9 @@ public final class AverageCalculator {
 
             final long ejectedTime;
 
+            // If the array has just been filled, store a sorted version of it
             // If the array is full, "mNext" points to the oldest result that needs to be ejected first.
+            //      We also need to remove the oldest solve from the sorted array and insert the new solve
             // If the array is not full, then "mNext" points to an empty entry, so no special handling
             // is needed.
             if (mNumSolves >= mN) {
@@ -285,6 +329,16 @@ public final class AverageCalculator {
                     mNext = 0;
                 }
                 ejectedTime = mTimes[mNext]; // May be DNF.
+
+                // Create the sorted list as soon as numSolves reaches N
+                // We only need to sort it once. Subsequent added solves will use
+                // binary search to insert the new solves in the correct (sorted) position
+                if (mNumSolves == mN) {
+                    mTimes[mNext] = time;
+                    mSortedTimes = mTimes.clone();
+                    Arrays.sort(mSortedTimes);
+                }
+
             } else {
                 // "mNext" must be less than "mN" if "mNumSolves" is less than "mN".
                 ejectedTime = UNKNOWN; // Nothing ejected.
@@ -293,12 +347,15 @@ public final class AverageCalculator {
             mTimes[mNext] = time;
             mNext++;
 
+            //Log.d("AverageCalculator", "N: " + mN + " | Set: " + mSortedTimes);
+
             // Order is important here, as these methods change fields and some methods depend on the
             // fields being updated by other methods before they are called. All depend on the new
             // time being stored already (see above) and any ejected time being known (also above).
             updateDNFCounts(time, ejectedTime);
             updateCurrentBestAndWorstTimes(time, ejectedTime);
             updateSums(time, ejectedTime);
+            updateCurrentTrims(time, ejectedTime);
             updateVariance(time);
             updateCurrentAverage();
 
@@ -417,6 +474,102 @@ public final class AverageCalculator {
         }
     }
 
+    // FIXME: account for DNFs (DNF = MAXVALUE)
+    private void updateCurrentTrims(long addedTime, long ejectedTime) {
+        if (mNumSolves >= mN) {
+            // As soon as mNumSolves reaches N, we should begin counting up the sum of all
+            // stored solves.
+            // First, we loop through the entire trim bound array. For subsequent times, we only
+            // have to remove the oldest time, and recalculate the sum.
+            if (mNumSolves == mN) {
+                for (int i = 0; i < mLowerTrimBound; i++) {
+                    mLowerTrim.add(mSortedTimes[i]);
+                }
+                for (int i = mUpperTrimBound; i < mN; i++) {
+                    mUpperTrim.add(mSortedTimes[i]);
+                }
+            } else {
+                /**
+                 * The number of solves {@link mNumSolves} is bigger than {@link mN}.
+                 * Now, find where the ejected time lies (lower, middle or upper trim) and remove
+                 * it from the sum and the list
+                  */
+                int ejectedTimeIndex = Arrays.binarySearch(mSortedTimes, ejectedTime);
+                mSortedTimes = ArrayUtils.remove(mSortedTimes, ejectedTimeIndex);
+                int addedTimeIndex = Arrays.binarySearch(mSortedTimes, addedTime);
+                if (addedTimeIndex < 0) {
+                    /**
+                     * An equal time was not found in the array.
+                     * BinarySearch returns (-(insertionPoint) - 1) in this case
+                     * (read the {@link Arrays} doc on binarySearch for more )
+                     */
+                    addedTimeIndex = Math.abs(addedTimeIndex + 1);
+                }
+                 mSortedTimes = ArrayUtils.add(mSortedTimes, addedTimeIndex, addedTime);
+
+                /**
+                 * Update trims based on location of ejected time
+                 */
+                if (ejectedTimeIndex < mLowerTrimBound) {
+                    // Time was ejected from lower trim
+                    mLowerTrim.sub(ejectedTime);
+
+                    if (addedTimeIndex >= mLowerTrimBound) {
+                        // The new time was added outside the lower trim, so the time that will
+                        // take the ejected time's place will be the last one on the lower trim
+                        mLowerTrim.add(mSortedTimes[mLowerTrimBound - 1]);
+
+                        // If the time was added in the upper trim, update that trim too
+                        if (addedTimeIndex >= mUpperTrimBound) {
+                            // Remove the time that was pushed away
+                            mUpperTrim.sub(mSortedTimes[mUpperTrimBound - 1]);
+                            // Add the new time
+                            mUpperTrim.add(addedTime);
+                        }
+                    } else {
+                        // The new time was added inside the lower trim. Just sum the new time
+                        mLowerTrim.add(addedTime);
+                    }
+                } else if (ejectedTimeIndex >= mUpperTrimBound) {
+                    // Time was ejected from upper trim
+                    mUpperTrim.sub(ejectedTime);
+
+                    if (addedTimeIndex < mUpperTrimBound) {
+                        // The new time was added outside the upper trim, so the time that will
+                        // take the ejected time's place will be the first one on the upper trim
+                        mUpperTrim.add(mSortedTimes[mUpperTrimBound]);
+
+                        // If the time was added in the lower trim, update that trim too
+                        if (addedTimeIndex < mLowerTrimBound) {
+                            // Remove the time that was pushed away
+                            mLowerTrim.sub(mSortedTimes[mLowerTrimBound]);
+                            // Add the new time
+                            mLowerTrim.add(addedTime);
+                        }
+                    } else {
+                        // The new time was added inside the upper trim. Just sum the new time
+                        mUpperTrim.add(addedTime);
+                    }
+                } else {
+                    // If neither of those are true, the ejected and added time both belonged
+                    // to the middle trim, so no other action is necessary
+                    if (addedTimeIndex < mLowerTrimBound) {
+                        // Time was added inside lower trim.
+                        // Push the last time on the trim out, and add the new one in.
+                        mLowerTrim.sub(mSortedTimes[mLowerTrimBound]);
+                        mLowerTrim.add(addedTime);
+                    } else if (addedTimeIndex >= mUpperTrimBound) {
+                        // Time was added inside upper trim.
+                        // Push the first time on the trim out, and add the new one in.
+                        mUpperTrim.sub(mSortedTimes[mUpperTrimBound - 1]);
+                        mUpperTrim.add(addedTime);
+                    }
+                }
+            }
+            mMiddleTrim.sum = mCurrentSum - (mLowerTrim.sum + mUpperTrim.sum);
+        }
+    }
+
     /**
      * Updates the sum of all times currently stored and the sum of all times ever added. Any
      * {@link #DNF} results are ignored. If all recorded times have been DNFs, the sums will set
@@ -431,7 +584,7 @@ public final class AverageCalculator {
     private void updateSums(long addedTime, long ejectedTime) {
         if (addedTime != DNF) {
             mCurrentSum = addedTime + (mCurrentSum == UNKNOWN ? 0L : mCurrentSum);
-            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);;
+            mAllTimeSum = addedTime + (mAllTimeSum == UNKNOWN ? 0L : mAllTimeSum);
         }
         if (ejectedTime != DNF && ejectedTime != UNKNOWN) {
             mCurrentSum -= ejectedTime;
@@ -480,21 +633,18 @@ public final class AverageCalculator {
             // non-DNF time present. Just use that time as the average.
             mCurrentAverage = mCurrentBestTime;
         } else if (mN >= MIN_N_TO_ALLOW_ONE_DNF) {
-            if (mDisqualifyDNFs && mNumCurrentDNFs > 1) {
-                // Disqualify the average: there is more than one DNF and only one DNF is allowed.
+            if (mDisqualifyDNFs && mNumCurrentDNFs > mNumAcceptableDNFs) {
+                // Disqualify the average: the number of current DNFs is above the acceptable threshold
                 mCurrentAverage = DNF;
             } else {
                 // There is no more than one DNF, or there is more than one DNF, but that will not
                 // cause automatic disqualification. There are at least two non-DNF times present.
                 // Calculate a truncated arithmetic mean. "mCurrentSum" is the sum of all non-DNF
-                // times. Discard the best and worst time, using one DNF as the worst time if any
-                // DNFs are present, so at least one non-DNF time will remain after discarding the
-                // outliers. Discard all other DNFs, if any. One DNF may already have been
-                // discarded as the worst time; do not discard it twice.
-                mCurrentAverage
-                        = (mCurrentSum - mCurrentBestTime
-                               - (mNumCurrentDNFs == 0 ? mCurrentWorstTime : 0))
-                          / (mN - 2 - (mNumCurrentDNFs > 1 ? mNumCurrentDNFs - 1 : 0));
+                // times. Discard the upper and lower trims, discard all other DNFs, if any.
+                // One DNF may already have been discarded as the worst time; do not discard it twice.
+                mCurrentAverage = mMiddleTrim.sum /
+                                  (mN - (mTrimSize * 2) -
+                                   (mNumCurrentDNFs > 1 ? mNumCurrentDNFs - 1 : 0));
             }
         } else { // mN < MIN_N_TO_ALLOW_ONE_DNF
             // NOTE: "mN" could be as low as 1, but will not be zero (see the constructor).
@@ -720,6 +870,31 @@ public final class AverageCalculator {
         private final long[] mTimes;
 
         /**
+         * The array of values that contributed to the calculation of the average-of-N. If too few
+         * values have been recorded (less than "N"), the array will be {@code null}. The times
+         * will be ordered with the oldest recorded time first.
+         */
+        private long[] mSortedTimes;
+
+        /**
+         * The total sum of the upper-trim of the calculated times. May be {@link #DNF} if there are too
+        * many DNF solves, or {@link #UNKNOWN} if the are too few times (less than "N").
+         */
+        private long mUpperTrimSum;
+
+        /**
+         * The total sum of the middle-trim of the calculated times. May be {@link #DNF} if there are too
+         * many DNF solves, or {@link #UNKNOWN} if the are too few times (less than "N").
+         */
+        private long mMiddleTrimSum;
+
+        /**
+         * The total sum of the lower-trim of the calculated times. May be {@link #DNF} if there are too
+         * many DNF solves, or {@link #UNKNOWN} if the are too few times (less than "N").
+         */
+        private long mLowerTrimSum;
+
+        /**
          * The index within {@link #mTimes} of the best time. The index will be -1 if that array is
          * {@code null}, or if the average calculation for the value of "N" does not eliminate the
          * best time, or if all of the times are DNFs, or if DNFs do not cause disqualification,
@@ -749,9 +924,13 @@ public final class AverageCalculator {
             final int n = ac.getN();
 
             mAverage = ac.getCurrentAverage();
+            mUpperTrimSum = ac.mUpperTrim.sum;
+            mMiddleTrimSum = ac.mMiddleTrim.sum;
+            mLowerTrimSum = ac.mLowerTrim.sum;
 
             if (mAverage != UNKNOWN && ac.getNumSolves() >= n) {
                 mTimes = new long[n];
+                mSortedTimes = new long[n];
 
                 // The oldest time recorded in "ac.mTimes" is not necessarily the first one, as
                 // that array operates as a circular queue. "ac.mNext" marks one index past the
@@ -762,6 +941,8 @@ public final class AverageCalculator {
 
                 System.arraycopy(ac.mTimes, oldestIndex, mTimes, 0, n - oldestIndex);
                 System.arraycopy(ac.mTimes, 0, mTimes, n - oldestIndex, oldestIndex);
+
+                System.arraycopy(ac.mSortedTimes, 0, mSortedTimes, 0, n);
 
                 // "-1" is the convention for an unknown *index*, so "UNKNOWN" is not used.
                 int bestIdx = -1;
@@ -798,6 +979,7 @@ public final class AverageCalculator {
                 mWorstTimeIndex = worstIdx;
             } else {
                 mTimes = null;
+                mSortedTimes = null;
                 mBestTimeIndex = -1;
                 mWorstTimeIndex = -1;
             }
@@ -815,6 +997,20 @@ public final class AverageCalculator {
          */
         public long[] getTimes() {
             return mTimes;
+        }
+
+        /**
+         * Gets the sorted array of values that contributed to the calculation of the average-of-N. If
+         * too few values have been recorded (less than "N"), the array will be {@code null}. The
+         * times will be ordered with the oldest recorded time first and may include {@link #DNF}
+         * values. The best and worst times can be identified with {@link #getBestTimeIndex()} and
+         * {@link #getWorstTimeIndex()}.
+         *
+         * @return
+         *     The array of times used to calculate the average. May be {@code null}.
+         */
+        public long[] getSortedTimes() {
+            return mSortedTimes;
         }
 
         /**
@@ -855,6 +1051,38 @@ public final class AverageCalculator {
          */
         public int getWorstTimeIndex() {
             return mWorstTimeIndex;
+        }
+
+        /**
+         * Gets the calculated upper trim sum. That is, the sum of all times in sorted order
+         * from the set trim boundary to the end of the mSortedList array
+         *
+         * @return
+         *     The trim value. May be {@link #UNKNOWN} if too few times have been recorded (i.e., less than "N").
+         */
+        public long getmUpperTrimSum() {
+            return mUpperTrimSum;
+        }
+
+        /**
+         * Gets the calculated middle trim sum. That is, the sum of all times minus
+         * {@code mUpperTrimSum} and {@code mLowerTrimSum}
+         * @return
+         *     The trim value. May be {@link #UNKNOWN} if too few times have been recorded (i.e., less than "N").
+         */
+        public long getmMiddleTrimSum() {
+            return mMiddleTrimSum;
+        }
+
+        /**
+         * Gets the calculated lower trim sum. That is, the sum of all times in sorted order
+         * from beginning mSortedList array until the set trim boundary
+         *
+         * @return
+         *     The trim value. May be {@link #UNKNOWN} if too few times have been recorded (i.e., less than "N").
+         */
+        public long getmLowerTrimSum() {
+            return mLowerTrimSum;
         }
     }
 }

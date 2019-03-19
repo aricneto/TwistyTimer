@@ -51,14 +51,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetDetailDialog;
 import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.layout.ChronometerMilli;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
@@ -71,14 +70,13 @@ import com.aricneto.twistytimer.utils.DefaultPrefs;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ScrambleGenerator;
+import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.Locale;
 
-import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -99,6 +97,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED_MANUALLY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
 import static com.aricneto.twistytimer.utils.TTIntent.BroadcastBuilder;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
@@ -146,10 +145,18 @@ public class                                                                    
     private String currentPuzzleCategory;
     private TrainerScrambler.TrainerSubset currentSubset;
 
+    /**
+     * The last generated scramble, related to the current solve. When the timer is started,
+     * the timer will generate a new scramble, but it will be saved in realScramble.
+     */
     private String currentScramble = "";
-    private Solve  currentSolve    = null;
 
+    /**
+     * The scramble that is currently being shown to the user. MAY NOT BE currentScramble!
+     */
     private String realScramble = null;
+
+    private Solve  currentSolve    = null;
 
     CountDownTimer countdown;
     boolean countingDown = false;
@@ -219,9 +226,10 @@ public class                                                                    
     @BindView(R.id.progressSpinner)  MaterialProgressBar progressSpinner;
     @BindView(R.id.scramble_progress)MaterialProgressBar scrambleProgress;
 
-    @BindView(R.id.scramble_button_hint)  AppCompatImageView  scrambleButtonHint;
-    @BindView(R.id.scramble_button_reset) AppCompatImageView scrambleButtonReset;
-    @BindView(R.id.scramble_button_edit)  AppCompatImageView scrambleButtonEdit;
+    @BindView(R.id.scramble_button_hint)  AppCompatImageView        scrambleButtonHint;
+    @BindView(R.id.scramble_button_reset) AppCompatImageView        scrambleButtonReset;
+    @BindView(R.id.scramble_button_edit)  AppCompatImageView        scrambleButtonEdit;
+    @BindView(R.id.scramble_button_manual_entry) AppCompatImageView scrambleButtonManualEntry;
 
     @BindView(R.id.qa_remove)        ImageView        deleteButton;
     @BindView(R.id.qa_dnf)           ImageView        dnfButton;
@@ -249,6 +257,11 @@ public class                                                                    
     private boolean showHintsEnabled;
     private boolean showHintsXCrossEnabled;
     private boolean averageRecordsEnabled;
+
+    /**
+     * True if manual entry is enabled
+     */
+    private boolean manualEntryEnabled;
 
     private boolean inspectionAlertEnabled;
     private boolean inspectionVibrationAlertEnabled;
@@ -282,27 +295,32 @@ public class                                                                    
                     isReady = false;
                     break;
 
+                case ACTION_TIME_ADDED_MANUALLY:
+                    currentSolve = TTIntent.getSolve(intent);
+                    chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToString(currentSolve.getTime(), PuzzleUtils.FORMAT_SMALL_MILLI)));
+                    hideButtons(true, true);
+                    broadcastNewSolve();
+                    declareRecordTimes(currentSolve);
+                    break;
+
                 case ACTION_TOOLBAR_RESTORED:
                     showItems();
                     animationDone = true;
                     // Wait for animations to run before broadcasting solve to avoid UI stuttering
                     Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isCanceled) {
-                                // Only broadcast a new solve if it hasn't been canceled
-                                broadcastNewSolve();
-                            } else {
-                                // The detail stats are triggered by a stats update.
-                                // Since the solve has been canceled, there's no new stats
-                                // to load, and it must be triggered manually
-                                showDetailStats();
-                            }
-
-                            // reset isCanceled state
-                            isCanceled = false;
+                    handler.postDelayed(() -> {
+                        if (!isCanceled) {
+                            // Only broadcast a new solve if it hasn't been canceled
+                            broadcastNewSolve();
+                        } else {
+                            // The detail stats are triggered by a stats update.
+                            // Since the solve has been canceled, there's no new stats
+                            // to load, and it must be triggered manually
+                            showDetailStats();
                         }
+
+                        // reset isCanceled state
+                        isCanceled = false;
                     }, mAnimationDuration + 50);
                     break;
 
@@ -431,6 +449,12 @@ public class                                                                    
                         scrambleEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
                     }
                     editScrambleDialog.show();
+                    break;
+                case R.id.scramble_button_manual_entry:
+                    AddTimeDialog addTimeDialog = AddTimeDialog.newInstance(currentPuzzle, currentPuzzleCategory, realScramble);
+                    FragmentManager manager = getFragmentManager();
+                    if (manager != null)
+                        addTimeDialog.show(manager, "dialog_add_time");
                     break;
             }
         }
@@ -572,6 +596,8 @@ public class                                                                    
         showHintsEnabled = Prefs.getBoolean(R.string.pk_show_scramble_hints, true);
         showHintsXCrossEnabled = Prefs.getBoolean(R.string.pk_show_scramble_x_cross_hints, false);
 
+        manualEntryEnabled = Prefs.getBoolean(R.string.pk_enable_manual_entry, false);
+
         scrambleBackgroundEnabled = Prefs.getBoolean(R.string.pk_show_scramble_background, false);
 
         inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
@@ -615,6 +641,7 @@ public class                                                                    
             scrambleButtonEdit.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
             scrambleButtonReset.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
             scrambleButtonHint.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
+            scrambleButtonManualEntry.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
         }
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
@@ -636,6 +663,12 @@ public class                                                                    
             detailTextOther.setVisibility(View.INVISIBLE);
         }
         // Preferences //
+
+        // Manual entry
+        if (manualEntryEnabled) {
+            scrambleButtonManualEntry.setVisibility(View.VISIBLE);
+            scrambleButtonManualEntry.setOnClickListener(buttonClickListener);
+        }
 
         // Inspection timer
         if (inspectionEnabled) {
@@ -1118,11 +1151,13 @@ public class                                                                    
 
         StringBuilder stringDetailAvg = new StringBuilder();
         // Iterate through averages and set respective TextViews
+
+        String[] avgNums = {"5", "12", "50", "100"};
         for (int i = 0; i < 4; i++) {
             if (sessionStatsEnabled && averageRecordsEnabled && hasStoppedTimerOnce &&
                     sessionCurrentAvg[i] > 0 && sessionCurrentAvg[i] <= allTimeBestAvg[i]) {
                 // Create string.
-                stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
+                stringDetailAvg.append("<u><b>").append(detailTextNamesArray[i]).append(avgNums[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT)).append("</b></u>");
 
                 // Show record message, if it was not shown before
                 if (!hasShownRecordMessage && !isRunning && !countingDown) {
@@ -1134,7 +1169,7 @@ public class                                                                    
                     hasShownRecordMessage = true;
                 }
             } else if (sessionStatsEnabled) {
-                stringDetailAvg.append(detailTextNamesArray[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
+                stringDetailAvg.append(detailTextNamesArray[i]).append(avgNums[i]).append(": ").append(convertTimeToString(sessionCurrentAvg[i], FORMAT_DEFAULT));
             }
             // append newline to every line but the last
             if (i < 3) {
@@ -1317,12 +1352,7 @@ public class                                                                    
                     .animate()
                     .alpha(0)
                     .setDuration(mAnimationDuration)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            detailAverageRecordMesssage.setVisibility(View.GONE);
-                        }
-                    });
+                    .withEndAction(() -> detailAverageRecordMesssage.setVisibility(View.GONE));
         }
     }
 
@@ -1506,6 +1536,7 @@ public class                                                                    
             scrambleButtonHint.setVisibility(View.GONE);
             scrambleButtonEdit.setVisibility(View.GONE);
             scrambleButtonReset.setVisibility(View.GONE);
+            scrambleButtonManualEntry.setVisibility(View.GONE);
             scrambleProgress.setVisibility(View.VISIBLE);
 
             hideImage();
@@ -1580,6 +1611,8 @@ public class                                                                    
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))
             scrambleButtonHint.setVisibility(View.VISIBLE);
+        if (manualEntryEnabled)
+            scrambleButtonManualEntry.setVisibility(View.VISIBLE);
         scrambleProgress.setVisibility(View.GONE);
         scrambleButtonEdit.setVisibility(View.VISIBLE);
         scrambleButtonReset.setVisibility(View.VISIBLE);

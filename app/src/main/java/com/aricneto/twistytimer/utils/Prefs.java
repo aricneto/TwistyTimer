@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.BoolRes;
+import androidx.annotation.IntegerRes;
 import androidx.annotation.StringRes;
 
 import com.aricneto.twistytimer.TwistyTimer;
@@ -40,6 +43,24 @@ public final class Prefs {
         }
 
         return sPrefs;
+    }
+
+    /**
+     * Returns an {@link Integer} given an {@link IntegerRes}
+     * @param res an {@link IntegerRes}
+     * @return an {@link Integer} associated with the given {@link IntegerRes}
+     */
+    public static int getDefaultIntValue(@IntegerRes int res) {
+        return TwistyTimer.getAppContext().getResources().getInteger(res);
+    }
+
+    /**
+     * Returns a {@link Boolean} given a {@link BoolRes}
+     * @param res an {@link BoolRes}
+     * @return an {@link Boolean} associated with the given {@link BoolRes}
+     */
+    public static boolean getDefaultBoolValue(@BoolRes int res) {
+        return TwistyTimer.getAppContext().getResources().getBoolean(res);
     }
 
     /**

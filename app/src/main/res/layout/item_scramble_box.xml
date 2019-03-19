@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="14dp"
     app:cardBackgroundColor="?colorItemListBackground"
-    tools:cardBackgroundColor="?colorPrimary"
     tools:layout_margin="12dp">
 
     <RelativeLayout
@@ -85,6 +84,22 @@
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px"
+            android:tint="?colorItemListText"
+            android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/scramble_button_manual_entry"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/scramble_text"
+            android:layout_toLeftOf="@id/scramble_button_edit"
+            android:alpha=".85"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_outline_alarm_add_24px"
             android:tint="?colorItemListText"
             android:padding="8dp"
             android:visibility="gone"

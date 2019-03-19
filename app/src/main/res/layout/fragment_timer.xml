@@ -108,7 +108,7 @@
         android:layout_alignBaseline="@id/chronometer"
         android:background="?selectableItemBackgroundBorderless"
         android:tint="?colorTimerText"
-        android:alpha=".8"
+        android:alpha=".9"
         android:paddingTop="24dp"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
