@@ -245,9 +245,9 @@ public class SettingsActivity extends AppCompatActivity {
                                         getString(R.string.pref_dialog_trim_size, progress) + "%%\n\n" +
                                         getString(R.string.pref_dialog_included_solves) +
                                                                "\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
-                                                               averageText + 3, 3,
-                                                               averageText + 5, 3,
-                                                               averageText + 12, 10,
+                                                               averageText + 3, 0,
+                                                               averageText + 5, 2,
+                                                               averageText + 12, 2,
                                                                averageText + 50, ao50,
                                                                averageText + 100, ao100,
                                                                averageText + 1000, ao1000));
@@ -509,7 +509,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private int getTrim(int avg, int trim) {
-            return avg - ((int) Math.ceil(avg * (trim / 100f)) * 2);
+            return ((int) Math.ceil(avg * (trim / 100f)) * 2);
         }
 
         private int getAcceptableDNFCount(int avg, int trim) {
