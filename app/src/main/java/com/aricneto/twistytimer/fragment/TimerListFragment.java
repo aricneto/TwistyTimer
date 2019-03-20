@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentManager;
@@ -108,6 +110,7 @@ public class TimerListFragment extends BaseFragment
      */
     private Statistics mRecentStatistics;
 
+    @SuppressLint("RestrictedApi")
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -160,8 +163,15 @@ public class TimerListFragment extends BaseFragment
                     PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
                     popupMenu.getMenuInflater().inflate(R.menu.menu_list_more, popupMenu.getMenu());
 
+                    MenuPopupHelper popupHelper = new MenuPopupHelper(mContext, (MenuBuilder) popupMenu.getMenu(), moreButton);
+                    popupHelper.setForceShowIcon(true);
+
                     PopupMenu shareMenu = new PopupMenu(getContext(), moreButton);
                     shareMenu.getMenuInflater().inflate(R.menu.menu_list_share, shareMenu.getMenu());
+
+                    MenuPopupHelper sharePopupHelper = new MenuPopupHelper(mContext, (MenuBuilder) shareMenu.getMenu(), moreButton);
+                    sharePopupHelper.setForceShowIcon(true);
+
 
                     shareMenu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
@@ -197,13 +207,13 @@ public class TimerListFragment extends BaseFragment
                                         .build());
                                 break;
                             case R.id.share:
-                                shareMenu.show();
+                                sharePopupHelper.show();
                                 break;
                         }
                         return true;
                     });
 
-                    popupMenu.show();
+                    popupHelper.show();
                     break;
             }
         }

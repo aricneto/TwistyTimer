@@ -46,6 +46,22 @@
             android:padding="8dp"
             android:textSize="22sp" />
 
+        <ImageView
+            android:id="@+id/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/edit_text_time"
+            android:layout_alignBottom="@id/edit_text_time"
+            android:layout_alignRight="@id/edit_text_time"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            app:srcCompat="@drawable/ic_outline_more_vert_18px" />
+
         <include
             android:id="@+id/divider02"
             layout="@layout/view_divider"
@@ -62,6 +78,7 @@
             android:layout_alignParentRight="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:focusable="true"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
