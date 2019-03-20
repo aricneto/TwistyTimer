@@ -254,4 +254,22 @@
     <string name="donation_message">תרומתך תעזור לי להפוך את Twisty Timer לאפילו יותר טוב לכולם :)</string>
     <string name="pref_animation_duration_title">משך אנימציה</string>
     <string name="pref_animation_duration_summary">שולט במשך האנימציה בשניות בעבור כל הנפשות הטיימר</string>
+    <string name="pref_screen_title_statistics">סטטיסטיקה</string>
+    <string name="pref_title_stat_trim">קיצוץ מממוצע</string>
+    <string name="pref_summary_stat_trim">שולט בכמות הפתירות הטובות והגרועות שלא ייכללו בממוצע</string>
+    <string name="pref_title_acceptable_dnf">מירב ניסיונות DNF</string>
+    <string name="pref_summary_acceptable_dnf">שולט בכמות המירבית של DNFs שממוצע יכול להכיל לפני פסילתו</string>
+    <string name="pref_title_disqualify_dnf">DNFs פוסלים ממוצע</string>
+    <string name="pref_summary_disqualify_dnf">אם מופעל, ממוצעים יכולים להיפסל אוטומטית ברגע שמספר ה-DNFs גדול מדי</string>
+    <string name="pref_dialog_included_solves">מספר הפתירות אשר לא ייכללו בממוצע:</string>
+    <string name="pref_dialog_trim_size">גודל קיצוץ: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">מספר מירבי של DNFs לממוצע:</string>
+    <string name="pref_screen_title_graph">גרף</string>
+    <string name="pref_title_discrete_graph">גרף דיסקרטי</string>
+    <string name="pref_summary_discrete_graph">צייר גרף פתירות בתור נקודות במקום בתור קו מתמשך</string>
+    <string name="graph_stats_title_session">סשן</string>
+    <string name="graph_stats_title_global">גלובלי</string>
+    <string name="pref_title_manual_mode">מצב ידני</string>
+    <string name="pref_summary_manual_mode">מוסיף כפתור על מסך הטיימר להכנסה קלה יותר של זמנים ידנית</string>
 </resources>

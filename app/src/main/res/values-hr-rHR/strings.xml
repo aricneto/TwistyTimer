@@ -254,4 +254,22 @@
     <string name="donation_message">Vaša donacija mi pomaže u razvoju Twisty Timera boljim za sve :)</string>
     <string name="pref_animation_duration_title">Trajanje animacije</string>
     <string name="pref_animation_duration_summary">Kontrolira trajanje svih animacija tajmera u milisekundama</string>
+    <string name="pref_screen_title_statistics">Statistika</string>
+    <string name="pref_title_stat_trim">Skraćivanje prosjeka</string>
+    <string name="pref_summary_stat_trim">Kontrolira broj najboljih i najgorih slaganja izvan prosjeka</string>
+    <string name="pref_title_acceptable_dnf">Maksimalan broj DNF pokušaja</string>
+    <string name="pref_summary_acceptable_dnf">Određuje koji maksimalan broj DNF-ova prosjek smije imati prije diskvalifikacije</string>
+    <string name="pref_title_disqualify_dnf">DNF-ovi poništavaju prosjek</string>
+    <string name="pref_summary_disqualify_dnf">Ukoliko uključeno, prosjek će se automatski diskvalificirati ako broj DNF-ova bude prevelik</string>
+    <string name="pref_dialog_included_solves">Broj slaganja isključenih iz prosjeka:</string>
+    <string name="pref_dialog_trim_size">Postotak \"rezanja\" %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNF-ovi: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Maksimalan broj DNF-ova po prosjeku:</string>
+    <string name="pref_screen_title_graph">Grafikon</string>
+    <string name="pref_title_discrete_graph">Diskretni graf</string>
+    <string name="pref_summary_discrete_graph">Skiciraj graf kao individualne točke umjesto neprekidne linije</string>
+    <string name="graph_stats_title_session">Sezona</string>
+    <string name="graph_stats_title_global">Sveukupno</string>
+    <string name="pref_title_manual_mode">Ručno podešavanje</string>
+    <string name="pref_summary_manual_mode">Dodaje gumb na ekran štoperice za lakse ručno dodavanje vremena</string>
 </resources>

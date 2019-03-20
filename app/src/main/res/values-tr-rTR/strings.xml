@@ -253,4 +253,5 @@
     <string name="donation_message">Bağışın Twisty Timer\'ı herkes için daha iyi yapmama yardım ediyor :)</string>
     <string name="pref_animation_duration_title">Animasyon süresi</string>
     <string name="pref_animation_duration_summary">Bütün zamanlayıcı animasyonları için süreyi milisaniyelerle kontrol eder</string>
+    <string name="pref_screen_title_statistics">İstatistikler</string>
 </resources>

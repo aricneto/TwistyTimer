@@ -250,4 +250,24 @@
     <string name="pref_screen_title_list">Lijst</string>
     <string name="unarchive_dialog_summary">Je hebt op dit moment %1$d oplossingen gearchiveerd.\n\nHoeveel oplossingen wil je dearchiveren? Dit zal eerst de meest recente oplossingen eerst dearchiveren.</string>
     <string name="donation_message">Jouw donatie helpt me om Twisty Timer nog beter te maken voor iedereen :)</string>
+    <string name="pref_animation_duration_title">Animatieduur</string>
+    <string name="pref_animation_duration_summary">Het aantal milliseconden dat alle timer animaties duren</string>
+    <string name="pref_screen_title_statistics">Statistieken</string>
+    <string name="pref_title_stat_trim">Getrimd gemiddelde</string>
+    <string name="pref_summary_stat_trim">Aantal beste en slechtste oplossingen om uit het gemiddelde te laten</string>
+    <string name="pref_title_acceptable_dnf">Max DNF pogingen</string>
+    <string name="pref_summary_acceptable_dnf">Het maximum aantal DNFs dat het gemiddelde mag hebben voordat het afgekeurd wordt</string>
+    <string name="pref_title_disqualify_dnf">DNFs keuren gemiddelde af</string>
+    <string name="pref_summary_disqualify_dnf">Gemiddelden worden automatisch afgekeurd wanneer het aantal DNFs te groot wordt</string>
+    <string name="pref_dialog_included_solves">Aantal oplossingen om uit het gemiddelde te laten:</string>
+    <string name="pref_dialog_trim_size">Trim grootte: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Maximum aantal DNFs per gemiddelde:</string>
+    <string name="pref_screen_title_graph">Grafiek</string>
+    <string name="pref_title_discrete_graph">Discrete grafiek</string>
+    <string name="pref_summary_discrete_graph">Grafiek met individuele punten in plaats van een continue lijn</string>
+    <string name="graph_stats_title_session">Sessie</string>
+    <string name="graph_stats_title_global">Globaal</string>
+    <string name="pref_title_manual_mode">Handmatige modus</string>
+    <string name="pref_summary_manual_mode">Een knop op het timerscherm om handmatig de tijd in te vullen</string>
 </resources>

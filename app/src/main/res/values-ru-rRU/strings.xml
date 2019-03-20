@@ -11,7 +11,7 @@
     <string name="action_done">Готово</string>
     <string name="action_export">Экспорт</string>
     <string name="action_import">Импорт</string>
-    <string name="action_move">Двигать</string>
+    <string name="action_move">Переместить</string>
     <string name="action_ok">ОК</string>
     <string name="action_remove">Удалить</string>
     <string name="action_rename">Переименовать</string>
@@ -36,7 +36,7 @@
     <string name="choose_donation_amount">Выберете сумму пожертвования</string>
     <string name="clearEnabledSummary">Кнопка \"Очистить\" показывается в списке с результатами и позволяет удалить результаты сборок последней сессии</string>
     <string name="clearEnabledTitle">Показывать кнопку \"Очистить\"</string>
-    <string name="contact">Контакт</string>
+    <string name="contact">Связаться</string>
     <string name="contributors">Соавторы</string>
     <string name="contributors_content">Огромное спасибо этим людям за вклад в разработку app:%1$s</string>
     <string name="cube_222">Куб 2х2</string>
@@ -252,4 +252,22 @@
     <string name="donation_message">Ваше пожертвование помогает мне сделать Twisty Timer еще лучше для всех :)</string>
     <string name="pref_animation_duration_title">Длительность анимации</string>
     <string name="pref_animation_duration_summary">Управление длительностью в миллисекундах для всех анимаций таймера</string>
+    <string name="pref_screen_title_statistics">Статистика</string>
+    <string name="pref_title_stat_trim">Выделение среднего врем</string>
+    <string name="pref_summary_stat_trim">Контролирует количество лучших и худших сборок, не взодящих в среднее</string>
+    <string name="pref_title_acceptable_dnf">Максимальное количество DNF попыток</string>
+    <string name="pref_summary_acceptable_dnf">Контролирует максимальное количество DNF, которое среднее время может иметь до дисквалификации</string>
+    <string name="pref_title_disqualify_dnf">DNFы дисквалифицируют среднее</string>
+    <string name="pref_summary_disqualify_dnf">Если включено, среднее будет автоматически дисквалифицировано, если количество DNF становится слишком большим</string>
+    <string name="pref_dialog_included_solves">Количество сборок не включаемых в среднее:</string>
+    <string name="pref_dialog_trim_size">Обрезать размер: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFы: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Максимальное количество DNF в среднем:</string>
+    <string name="pref_screen_title_graph">График</string>
+    <string name="pref_title_discrete_graph">Отдельный график</string>
+    <string name="pref_summary_discrete_graph">Нарисовать график сборок как отдельные точки, вместо непрерывной линии</string>
+    <string name="graph_stats_title_session">Сессия</string>
+    <string name="graph_stats_title_global">Общее</string>
+    <string name="pref_title_manual_mode">Ручной режим</string>
+    <string name="pref_summary_manual_mode">Добавляет кнопку на экране таймера для облегчения ввода вручную</string>
 </resources>

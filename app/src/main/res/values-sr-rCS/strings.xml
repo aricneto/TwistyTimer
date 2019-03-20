@@ -253,4 +253,24 @@
     <string name="pref_screen_title_list">Lista</string>
     <string name="unarchive_dialog_summary">Trenutno imate %1$d slaganja arhivirano.\n\n Koliko slaganja želite li da unarhivirate? Ovo će unarhivirati najskorija slaganja prvo.</string>
     <string name="donation_message">Vaša donacija mi pomaze da učinim Twisty Timer jos bolji za sve :)</string>
+    <string name="pref_animation_duration_title">Trajanje animacije</string>
+    <string name="pref_animation_duration_summary">Kontroliše trajanje u milisekundama za sve animacije tajmera</string>
+    <string name="pref_screen_title_statistics">Statistika</string>
+    <string name="pref_title_stat_trim">Presek proseka</string>
+    <string name="pref_summary_stat_trim">Kontroliše broj najgorih i najboljih slaganja, isključenih iz proseka</string>
+    <string name="pref_title_acceptable_dnf">Max DNF pokušaji</string>
+    <string name="pref_summary_acceptable_dnf">Oznacava maksimalan broj DNF-ova koje mozete imati pre nego sto budete diskvalifikovani</string>
+    <string name="pref_title_disqualify_dnf">DNF diskvalifikovanje proseka</string>
+    <string name="pref_summary_disqualify_dnf">Ako je uključeno, prosek će biti automatski diskvalifikovan kada broj DNF-ova bude velik</string>
+    <string name="pref_dialog_included_solves">Broj slaganja isključenih iz proseka:</string>
+    <string name="pref_dialog_trim_size">Smanji veličinu: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Maksimalan broj DNF-ova po proseku:</string>
+    <string name="pref_screen_title_graph">Grafik</string>
+    <string name="pref_title_discrete_graph">Discrete graph</string>
+    <string name="pref_summary_discrete_graph">Nalaze se poeni umesto linija na grafiku</string>
+    <string name="graph_stats_title_session">Sesija</string>
+    <string name="graph_stats_title_global">Globalno</string>
+    <string name="pref_title_manual_mode">Ručni režim</string>
+    <string name="pref_summary_manual_mode">Dodaje dugme na ekran za lakše ručno upisivanje vremena</string>
 </resources>

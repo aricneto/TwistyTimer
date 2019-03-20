@@ -250,4 +250,9 @@
     <string name="donation_message">Deine Spende hilft mir, Twisty Timer für alle besser zu machen :)</string>
     <string name="pref_animation_duration_title">Animationsdauer</string>
     <string name="pref_animation_duration_summary">Steuert die Dauer in Millisekunden für alle Timer-Animationen</string>
+    <string name="pref_screen_title_statistics">Statistiken</string>
+    <string name="pref_screen_title_graph">Graph</string>
+    <string name="graph_stats_title_session">Sitzung</string>
+    <string name="graph_stats_title_global">Global</string>
+    <string name="pref_title_manual_mode">Manueller Modus</string>
 </resources>
