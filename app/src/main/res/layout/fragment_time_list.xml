@@ -132,7 +132,7 @@
                 android:paddingBottom="6dp"
                 android:text="@string/action_add"
                 android:tint="?colorItemListText"
-                app:srcCompat="@drawable/ic_history_18" />
+                app:srcCompat="@drawable/ic_outline_archive_18px" />
 
             <ImageView
                 android:id="@+id/more_button"

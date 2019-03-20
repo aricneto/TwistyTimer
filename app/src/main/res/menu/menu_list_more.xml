@@ -2,10 +2,12 @@
 
     <item
         android:id="@+id/unarchive"
+        android:icon="@drawable/ic_outline_unarchive_18px"
         android:title="@string/list_options_item_from_history"/>
 
     <item
         android:id="@+id/share"
+        android:icon="@drawable/ic_outline_share_18px"
         android:title="@string/fab_share_title"/>
 
 </menu>

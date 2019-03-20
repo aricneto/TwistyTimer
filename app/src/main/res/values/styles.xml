@@ -24,6 +24,7 @@
         <item name="android:textColorPrimaryInverse">@color/black_text</item>
 
         <item name="popupMenuStyle">@style/RoundedPopupMenu</item>
+        <item name="android:itemTextAppearance">@style/RoundedPopupMenu.Text</item>
 
         <item name="colorBackgroundList">@color/materialGray</item>
         <item name="colorItemListText">@color/black_text</item>
@@ -527,6 +528,11 @@
     <style name="RoundedPopupMenu" parent="Base.Widget.AppCompat.Light.PopupMenu">
         <item name="android:popupBackground">@drawable/outline_background_card_smoother</item>
     </style>
+
+    <style name="RoundedPopupMenu.Text" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
     <style name="BottomPanelListTextStyle">
         <item name="android:paddingLeft">24dp</item>

@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.PopupMenu;
 import android.text.Html;
@@ -65,6 +68,7 @@ public class TimeDialog extends DialogFragment {
     private Solve           solve;
     private DialogListener  dialogListener;
 
+    @SuppressLint("RestrictedApi")
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -77,6 +81,10 @@ public class TimeDialog extends DialogFragment {
                         popupMenu.getMenuInflater().inflate(R.menu.menu_list_detail_history, popupMenu.getMenu());
                     else
                         popupMenu.getMenuInflater().inflate(R.menu.menu_list_detail, popupMenu.getMenu());
+
+                    MenuPopupHelper popupHelper = new MenuPopupHelper(mContext, (MenuBuilder) popupMenu.getMenu(), overflowButton);
+                    popupHelper.setForceShowIcon(true);
+
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
@@ -110,7 +118,7 @@ public class TimeDialog extends DialogFragment {
                             return true;
                         }
                     });
-                    popupMenu.show();
+                    popupHelper.show();
                     break;
                 case R.id.editButton:
                     ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)

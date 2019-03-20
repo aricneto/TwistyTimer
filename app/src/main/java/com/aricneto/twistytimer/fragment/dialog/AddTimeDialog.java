@@ -1,5 +1,6 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -8,23 +9,33 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.watcher.SolveTimeNumberTextWatcher;
 
 import org.joda.time.DateTime;
@@ -50,6 +61,9 @@ public class AddTimeDialog extends DialogFragment {
     @BindView(R.id.edit_text_time)
     AppCompatEditText timeEditText;
 
+    @BindView(R.id.button_more)
+    View moreButton;
+
     @BindView(R.id.check_scramble)
     AppCompatCheckBox useCurrentScramble;
 
@@ -62,6 +76,12 @@ public class AddTimeDialog extends DialogFragment {
     private String currentScramble;
     private String currentPuzzleSubtype;
 
+    private int mCurrentPenalty = PuzzleUtils.NO_PENALTY;
+    private String mCurrentComment = "";
+
+    private Context mContext;
+
+    @SuppressLint("RestrictedApi")
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -70,10 +90,15 @@ public class AddTimeDialog extends DialogFragment {
                 case R.id.button_save:
                     if (timeEditText.getText().toString().length() > 0) {
                         int time = (int) PuzzleUtils.parseAddedTime(timeEditText.getText().toString());
-                        final Solve solve = new Solve(time, currentPuzzle,
-                                                      currentPuzzleSubtype, new DateTime().getMillis(),
-                                                      useCurrentScramble.isChecked() ? currentScramble : "",
-                                                      PuzzleUtils.NO_PENALTY, "", false);
+                        final Solve solve = new Solve(
+                                mCurrentPenalty == PuzzleUtils.PENALTY_PLUSTWO ? time + 2_000 : time,
+                                currentPuzzle,
+                                currentPuzzleSubtype,
+                                new DateTime().getMillis(),
+                                useCurrentScramble.isChecked() ? currentScramble : "",
+                                mCurrentPenalty,
+                                mCurrentComment,
+                                false);
 
                         TwistyTimer.getDBHandler().addSolve(solve);
                         // The receiver might be able to use the new solve and avoid
@@ -89,6 +114,59 @@ public class AddTimeDialog extends DialogFragment {
                     } else {
                         dismiss();
                     }
+                    break;
+                case R.id.button_more:
+                    PopupMenu popupMenu = new PopupMenu(mContext, moreButton);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_add_time_options, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.penalty:
+                                ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                                        .title(R.string.select_penalty)
+                                        .items(R.array.array_penalties)
+                                        .itemsCallbackSingleChoice(mCurrentPenalty, (dialog, itemView, which, text) -> {
+                                            switch (which) {
+                                                case 0: // No penalty
+                                                    mCurrentPenalty = PuzzleUtils.NO_PENALTY;
+                                                    break;
+                                                case 1: // +2
+                                                    mCurrentPenalty = PuzzleUtils.PENALTY_PLUSTWO;
+                                                    break;
+                                                case 2: // DNF
+                                                    mCurrentPenalty = PuzzleUtils.PENALTY_DNF;
+                                                    break;
+                                            }
+                                            return true;
+                                        })
+                                        .negativeText(R.string.action_cancel)
+                                        .build());
+                                break;
+                            case R.id.comment:
+                                MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
+                                        .title(R.string.edit_comment)
+                                        .input("", mCurrentComment, (dialog1, input) -> {
+                                            mCurrentComment = input.toString();
+                                        })
+                                        .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                                        .positiveText(R.string.action_done)
+                                        .negativeText(R.string.action_cancel)
+                                        .build());
+                                EditText editText = dialog.getInputEditText();
+                                if (editText != null) {
+                                    editText.setSingleLine(false);
+                                    editText.setLines(3);
+                                    editText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+                                    editText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+                                }
+                                dialog.show();
+                                break;
+                        }
+                        return true;
+                    });
+
+                    MenuPopupHelper popupHelper = new MenuPopupHelper(mContext, (MenuBuilder) popupMenu.getMenu(), moreButton);
+                    popupHelper.setForceShowIcon(true);
+                    popupHelper.show();
                     break;
             }
         }
@@ -110,6 +188,7 @@ public class AddTimeDialog extends DialogFragment {
         currentPuzzle = getArguments().getString("puzzle");
         currentPuzzleSubtype = getArguments().getString("category");
         currentScramble = getArguments().getString("scramble");
+        mContext = getContext();
     }
 
     @Override
@@ -121,6 +200,7 @@ public class AddTimeDialog extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         saveButton.setOnClickListener(clickListener);
+        moreButton.setOnClickListener(clickListener);
         timeEditText.addTextChangedListener(new SolveTimeNumberTextWatcher());
 
         // Focus on editText and request keyboard
@@ -128,7 +208,7 @@ public class AddTimeDialog extends DialogFragment {
 
         try {
             timeEditText.postDelayed(() ->
-                    ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                    ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
                         .showSoftInput(timeEditText, InputMethodManager.SHOW_IMPLICIT), 400);
         } catch (Exception e) {
             Log.e("AddTimeDialog", "Error showing keyboard: " + e);
@@ -147,7 +227,7 @@ public class AddTimeDialog extends DialogFragment {
 
         // Hide keyboard
         try {
-            ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+            ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
                     .hideSoftInputFromWindow(timeEditText.getWindowToken(), 0);
         } catch (Exception e) {
             Log.e("AddTimeDialog", "Error hiding keyboard: " + e);

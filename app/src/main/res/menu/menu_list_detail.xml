@@ -2,11 +2,14 @@
       xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/history_to"
+        android:icon="@drawable/ic_outline_archive_18px"
         android:title="@string/list_options_item_history" />
     <item
         android:id="@+id/share"
+        android:icon="@drawable/ic_outline_share_18px"
         android:title="@string/list_options_item_share" />
     <item
         android:id="@+id/remove"
+        android:icon="@drawable/ic_outline_delete_18px"
         android:title="@string/task_remove" />
 </menu>

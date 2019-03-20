@@ -159,7 +159,6 @@ public class CategorySelectDialog extends DialogFragment {
             inflater.inflate(R.menu.menu_category_options, menuBuilder);
             MenuPopupHelper popupHelper = new MenuPopupHelper(context, menuBuilder, view12);
             popupHelper.setForceShowIcon(true);
-            popupHelper.setGravity(Gravity.RIGHT);
 
             menuBuilder.setCallback(new MenuBuilder.Callback() {
                 @Override

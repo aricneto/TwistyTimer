@@ -256,6 +256,11 @@ public final class ThemeUtils {
         return finalBool;
     }
 
+    public static Drawable fetchAttrDrawable (Context context, @AttrRes int attrRes) {
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrRes, outValue, true);
+        return ContextCompat.getDrawable(context, outValue.resourceId);
+    }
 
     public static int dpToPix(Context context, float dp) {
         return (int) (TypedValue.applyDimension(
