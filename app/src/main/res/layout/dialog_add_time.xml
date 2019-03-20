@@ -57,9 +57,7 @@
             android:clickable="true"
             android:focusable="true"
             android:paddingLeft="16dp"
-            android:paddingTop="16dp"
             android:paddingRight="16dp"
-            android:paddingBottom="16dp"
             app:srcCompat="@drawable/ic_outline_more_vert_18px" />
 
         <include
