@@ -251,4 +251,21 @@
     <string name="pref_animation_duration_title">Duração da animação</string>
     <string name="pref_animation_duration_summary">Controla a duração em milissegundos para todas as animações do temporizador</string>
     <string name="pref_screen_title_statistics">Estatísticas</string>
+    <string name="pref_title_stat_trim">Média truncada</string>
+    <string name="pref_summary_stat_trim">Controla o número de melhores e piores tempos excluídos das médias</string>
+    <string name="pref_title_acceptable_dnf">Numero máximo de DNFs</string>
+    <string name="pref_summary_acceptable_dnf">Controla a quantidade máxima de DNFs que uma média pode ter antes de ser desqualificada</string>
+    <string name="pref_title_disqualify_dnf">DNF desqualifica a média</string>
+    <string name="pref_summary_disqualify_dnf">Se habilitado, as médias serão automaticamente desqualificadas quando o número de DNFs ficar muito grande</string>
+    <string name="pref_dialog_included_solves">Numero de tempos excluidos da média:</string>
+    <string name="pref_dialog_trim_size">Tamanho do corte: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Número máximo de DNFs por média:</string>
+    <string name="pref_screen_title_graph">Gráfico</string>
+    <string name="pref_title_discrete_graph">Gráfico discreto</string>
+    <string name="pref_summary_discrete_graph">Desenha o gráfico como pontos individuais em vez de uma linha contínua</string>
+    <string name="graph_stats_title_session">Sessão</string>
+    <string name="graph_stats_title_global">Global</string>
+    <string name="pref_title_manual_mode">Modo manual</string>
+    <string name="pref_summary_manual_mode">Adiciona um botão na tela principal para facilitar a entrada manual de tempos</string>
 </resources>
