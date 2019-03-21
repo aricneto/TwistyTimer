@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,221 +7,226 @@
     android:background="?colorPrimary"
     tools:context="com.aricneto.twistytimer.activity.AboutActivity">
 
-    <TextView
-        android:id="@+id/title"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="@string/title_activity_about"
-        android:textColor="?colorTimerText"
-        android:textSize="20sp" />
+        android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/title"
-        android:layout_alignBottom="@id/title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:tint="?colorTimerText"
-        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
-
-    <ImageView
-        android:id="@+id/appIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher_round" />
-
-    <TextView
-        android:id="@+id/appTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appIcon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/app_name"
-        android:textColor="?colorTimerText"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/appVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appTitle"
-        android:layout_centerHorizontal="true"
-        android:textColor="?colorTimerText"
-        android:textSize="12sp"
-        tools:text="APP VERSION" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/rateButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appVersion"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/outline_background_card_info"
-        app:drawableLeftCompat="@drawable/ic_outline_star_border_18px"
-        android:drawablePadding="8dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/rate_app"
-        android:textColor="#000"
-        android:textSize="14sp" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/translateButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rateButton"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/outline_background_card_warn_stroke"
-        app:drawableLeftCompat="@drawable/ic_outline_translate_18px"
-        android:drawablePadding="8dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/about_translate_title"
-        android:textColor="#000"
-        android:textSize="14sp" />
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/translateButton"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:stretchColumns="*">
-
-        <TableRow
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="@string/title_activity_about"
+            android:textColor="?colorTimerText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/feedbackButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/outline_background_card"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/contact"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp"
-                app:drawableLeftCompat="@drawable/ic_outline_email_24px" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/title"
+            android:layout_alignBottom="@id/title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:tint="?colorTimerText"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/licenseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginLeft="32dp"
-                android:background="@drawable/outline_background_card"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/license"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp"
-                app:drawableLeftCompat="@drawable/ic_outline_copyright_18px" />
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            tools:layout_height="60dp"
+            android:src="@mipmap/ic_launcher_round" />
 
-        </TableRow>
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appIcon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/app_name"
+            android:textColor="?colorTimerText"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <TableRow
+        <TextView
+            android:id="@+id/appVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appTitle"
+            android:layout_centerHorizontal="true"
+            android:textColor="?colorTimerText"
+            android:textSize="12sp"
+            tools:text="APP VERSION" />
+
+        <TextView
+            android:id="@+id/creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appVersion"
+            android:layout_centerHorizontal="true"
+            android:textColor="?colorTimerText"
+            android:textSize="12sp"
+            tools:text="aricneto" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rateButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/creator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/outline_background_card_info"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/rate_app"
+            android:textColor="#000"
+            android:textSize="14sp"
+            app:drawableLeftCompat="@drawable/ic_outline_star_border_18px" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/testersButton"
-                android:layout_margin="8dp"
-                android:background="@drawable/outline_background_card"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/testers"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp"
-                app:drawableLeftCompat="@drawable/ic_outline_bug_report_18px" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/sourceButton"
-                android:layout_column="0"
-                android:layout_margin="8dp"
-                android:layout_marginLeft="32dp"
-                android:background="@drawable/outline_background_card"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/source"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp"
-                app:drawableLeftCompat="@drawable/ic_outline_track_changes_18px" />
-
-        </TableRow>
-
-        <TableRow
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/translateButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rateButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/outline_background_card_warn_stroke"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/about_translate_title"
+            android:textColor="#000"
+            android:textSize="14sp"
+            app:drawableLeftCompat="@drawable/ic_outline_translate_18px" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/translatorsButton"
-                android:layout_margin="8dp"
-                android:background="@drawable/outline_background_card"
-                app:drawableLeftCompat="@drawable/ic_outline_translate_18px"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/translators"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/translateButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_horizontal"
+            android:stretchColumns="*">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/contributorsButton"
-                android:layout_margin="8dp"
-                android:background="@drawable/outline_background_card"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/contributors"
-                android:textColor="@color/black_light_100"
-                android:textSize="14sp"
-                app:drawableLeftCompat="@drawable/ic_outline_build_24px" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-        </TableRow>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/feedbackButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/contact"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_email_24px" />
 
-    </TableLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/licenseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="32dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/license"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_copyright_18px" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:text="Created by aricneto"
-        android:gravity="center"
-        android:textColor="?colorTimerText"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:padding="16dp"
-        android:textSize="12sp"
-        android:layout_height="wrap_content" />
+            </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-</RelativeLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/testersButton"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/testers"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_bug_report_18px" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sourceButton"
+                    android:layout_column="0"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="32dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/source"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_track_changes_18px" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/translatorsButton"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/translators"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_translate_18px" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/contributorsButton"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/outline_background_card"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/contributors"
+                    android:textColor="@color/black_light_100"
+                    android:textSize="14sp"
+                    app:drawableLeftCompat="@drawable/ic_outline_build_24px" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

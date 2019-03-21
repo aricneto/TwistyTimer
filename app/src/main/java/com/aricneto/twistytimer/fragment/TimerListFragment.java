@@ -206,7 +206,7 @@ public class TimerListFragment extends BaseFragment
                                         .input(null, null, false, (dialog, input) -> {
                                             TwistyTimer.getDBHandler().unarchiveSolves(
                                                     currentPuzzle, currentPuzzleCategory, Integer.parseInt(input.toString()));
-                                            reloadList();
+                                            broadcast(CATEGORY_TIME_DATA_CHANGES, ACTION_TIME_ADDED);
                                         })
                                         .positiveText(R.string.list_options_item_from_history)
                                         .negativeText(R.string.action_cancel)

@@ -269,7 +269,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // Those that aren't will be commented
 
         // General chart settings
-        lineChartView.setPinchZoom(true);
+        //lineChartView.setPinchZoom(true);
         lineChartView.setBackgroundColor(Color.TRANSPARENT);
         lineChartView.setDrawGridBackground(false);
         lineChartView.getAxisLeft().setEnabled(false);
