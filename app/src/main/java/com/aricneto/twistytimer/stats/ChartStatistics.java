@@ -80,7 +80,7 @@ public class ChartStatistics {
      * The circle radius to use in the chart when a bigger circle is appropriate. The value is in
      * DIP units.
      */
-    private static final float MAIN_TIME_CIRCLE_RADIUS_DP_BIG = 2f;
+    private static final float MAIN_TIME_CIRCLE_RADIUS_DP_BIG = 1.5f;
 
     /**
      * The Y-coordinate offset to apply to the value text of the "best" times to cause the text to

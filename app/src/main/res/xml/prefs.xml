@@ -313,7 +313,7 @@
 
             </PreferenceCategory>
 
-            <Preference android:layout="@layout/divider_preference_category" />
+            <!--Preference android:layout="@layout/divider_preference_category" />
 
             <PreferenceCategory
                 android:title="@string/pref_screen_title_graph">
@@ -324,7 +324,7 @@
                     android:title="@string/pref_title_discrete_graph"
                     android:summary="@string/pref_summary_discrete_graph" />
 
-            </PreferenceCategory>
+            </PreferenceCategory-->
 
         </PreferenceScreen>
 
