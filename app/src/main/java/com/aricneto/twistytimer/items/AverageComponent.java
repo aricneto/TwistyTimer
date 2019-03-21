@@ -1,5 +1,11 @@
 package com.aricneto.twistytimer.items;
 
+import com.aricneto.twistytimer.structures.RedBlackTree;
+
+import java.util.TreeMap;
+
+import androidx.annotation.Nullable;
+
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
@@ -7,28 +13,65 @@ import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
  * Stores a sum, best and worst times
  */
 public class AverageComponent {
-    public long sum;
-    public long best;
-    public long worst;
+    private long                sum;
+    private @Nullable Long      best;
+    private @Nullable Long      worst;
+    private RedBlackTree<Long>  tree;
 
     public AverageComponent() {
+        this.sum = UNKNOWN;
+        this.best = null;
+        this.worst = null;
+        this.tree = new RedBlackTree<>();
     }
 
-    public AverageComponent(long sum, long best, long worst) {
-        this.sum = sum;
-        this.best = best;
-        this.worst = worst;
+    public void put(long val) {
+        tree.add(val);
+        addSum(val);
+
+        // Invalidate best/worst caches
+        best = null;
+        worst = null;
     }
 
-    public void add(long val) {
+    public void remove(long val) {
+        tree.remove(val);
+        subSum(val);
+
+        // Invalidate best/worst caches
+        best = null;
+        worst = null;
+    }
+
+    public long getLeast() {
+        // Cache request
+        if (best == null)
+            best = tree.getLeast();
+        return best;
+    }
+
+    public long getGreatest() {
+        // Cache request
+        if (worst == null)
+            worst = tree.getGreatest();
+        return worst;
+    }
+
+    public long getSum() {
+        return sum;
+    }
+
+    public RedBlackTree<Long> getTree() {
+        return tree;
+    }
+
+    public void addSum(long val) {
         if (val != DNF)
-            sum = (this.sum == UNKNOWN ? 0L : this.sum) + val;
+            sum = (sum == UNKNOWN ? 0L : sum) + val;
     }
 
-    public void sub(long val) {
-        // If the lower trim is filled with DNFs, its value may be 0
-        // so do not allow any subtraction then
+    public void subSum(long val) {
         if (val != DNF && sum != 0)
-            sum = (this.sum == UNKNOWN ? 0L : this.sum) - val;
+            sum = (sum == UNKNOWN ? 0L : sum) - val;
     }
 }
