@@ -29,18 +29,22 @@ public class AverageComponent {
         tree.add(val);
         addSum(val);
 
-        // Invalidate best/worst caches
-        best = null;
-        worst = null;
+        // Update best/worst caches if necessary
+        if (best != null && val < best)
+            best = val;
+        if (worst != null && val > worst)
+            worst = val;
     }
 
     public void remove(long val) {
         tree.remove(val);
         subSum(val);
 
-        // Invalidate best/worst caches
-        best = null;
-        worst = null;
+        // Update best/worst caches if necessary
+        if (best != null && val == best)
+            best = null;
+        if (worst != null && val == worst)
+            worst = null;
     }
 
     public long getLeast() {
