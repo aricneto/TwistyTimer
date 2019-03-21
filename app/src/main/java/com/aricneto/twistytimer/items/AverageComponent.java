@@ -2,26 +2,24 @@ package com.aricneto.twistytimer.items;
 
 import com.aricneto.twistytimer.structures.RedBlackTree;
 
-import java.util.TreeMap;
-
 import androidx.annotation.Nullable;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 
 /**
- * Stores a sum, best and worst times
+ * Stores a sum, least and greatest times
  */
 public class AverageComponent {
-    private long                sum;
-    private @Nullable Long      best;
-    private @Nullable Long      worst;
-    private RedBlackTree<Long>  tree;
+    private long               sum;
+    private @Nullable Long     least;
+    private @Nullable Long     greatest;
+    private RedBlackTree<Long> tree;
 
     public AverageComponent() {
         this.sum = UNKNOWN;
-        this.best = null;
-        this.worst = null;
+        this.least = null;
+        this.greatest = null;
         this.tree = new RedBlackTree<>();
     }
 
@@ -29,36 +27,36 @@ public class AverageComponent {
         tree.add(val);
         addSum(val);
 
-        // Update best/worst caches if necessary
-        if (best != null && val < best)
-            best = val;
-        if (worst != null && val > worst)
-            worst = val;
+        // Update least/greatest caches if necessary
+        if (least != null && val < least)
+            least = val;
+        if (greatest != null && val > greatest)
+            greatest = val;
     }
 
     public void remove(long val) {
         tree.remove(val);
         subSum(val);
 
-        // Update best/worst caches if necessary
-        if (best != null && val == best)
-            best = null;
-        if (worst != null && val == worst)
-            worst = null;
+        // Update least/greatest caches if necessary
+        if (least != null && val == least)
+            least = null;
+        if (greatest != null && val == greatest)
+            greatest = null;
     }
 
     public long getLeast() {
         // Cache request
-        if (best == null)
-            best = tree.getLeast();
-        return best;
+        if (least == null)
+            least = tree.getLeast();
+        return least;
     }
 
     public long getGreatest() {
         // Cache request
-        if (worst == null)
-            worst = tree.getGreatest();
-        return worst;
+        if (greatest == null)
+            greatest = tree.getGreatest();
+        return greatest;
     }
 
     public long getSum() {
