@@ -1159,7 +1159,7 @@ public class AverageCalculatorTestCase {
     }
 
     private Random rand            = new Random(0);
-    private long[] mLargeTestTimes = rand.longs(100_000, 25_000, 30_000).toArray();
+    private long[] mLargeTestTimes = rand.longs(1_000_000, 25_000, 30_000).toArray();
 
     /**
      * Used to test the efficiency of the algorithm only.

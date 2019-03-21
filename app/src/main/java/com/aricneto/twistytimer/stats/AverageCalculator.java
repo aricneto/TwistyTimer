@@ -479,7 +479,7 @@ public final class AverageCalculator {
     }
 
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
-        if (mNumSolves > mN) {
+        if (mNumSolves > mN && mLowerTrimBound > 0) {
             // Ejected time belongs to lower trim
             if (ejectedTime < mMiddleTrim.getLeast()) {
                 mLowerTrim.remove(ejectedTime);
@@ -550,6 +550,11 @@ public final class AverageCalculator {
                     mMiddleTrim.put(addedTime);
                 }
             }
+        } else if (mNumSolves > mN) {
+            // If the bound is 0, mLowerTrim and mUpperTrim will be null
+            // All operations will be done on mMiddleTrim
+            mMiddleTrim.remove(ejectedTime);
+            mMiddleTrim.put(addedTime);
         }
     }
 
