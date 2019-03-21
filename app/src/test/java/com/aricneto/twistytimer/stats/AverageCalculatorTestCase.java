@@ -11,6 +11,7 @@ import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -1158,10 +1159,24 @@ public class AverageCalculatorTestCase {
 
     }
 
-    private Random rand            = new Random(0);
-    private long[] mLargeTestTimes = rand.longs(1_000_000, 25_000, 30_000).toArray();
+    @Test
+    public void testAoFiveOverflow() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(5, 5, 10, true);
+        AverageOfN aoN;
 
+        ac.addTimes(new Random(1).longs(300_000, 25000, 30000).toArray());
+        //assertEquals(101912, ac.getBestAverage());
 
+        ac.addTimes(8,10,4,5,6); // 6 DNFs should disqualify the average.
+        assertTrue(ac.getBestAverage() > 0);
+
+    }
+
+    /**
+     * Tests all possible tree swap operations
+     *
+     * @throws Exception
+     */
     @Test
     public void TestTreeSwap() throws Exception {
         final AverageCalculator ac = new AverageCalculator(12, 20, 10, true);
@@ -1229,6 +1244,9 @@ public class AverageCalculatorTestCase {
         aoN = ac3.getAverageOfN();
         assertEquals(56666, aoN.getAverage());
     }
+
+    private Random rand            = new Random(0);
+    private long[] mLargeTestTimes = rand.longs(1_000_000, 25_000, 30_000).toArray();
 
     /**
      * Used to test the efficiency of the algorithm only.

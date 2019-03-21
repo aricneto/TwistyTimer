@@ -481,14 +481,14 @@ public final class AverageCalculator {
     private void updateCurrentTrims(long addedTime, long ejectedTime) {
         if (mNumSolves > mN && mLowerTrimBound > 0) {
             // Ejected time belongs to lower trim
-            if (ejectedTime < mMiddleTrim.getLeast()) {
+            if (ejectedTime <= mLowerTrim.getGreatest()) {
                 // Remove the ejected time
                 mLowerTrim.remove(ejectedTime);
 
-                if (addedTime < mMiddleTrim.getLeast()) {
+                if (addedTime <= mMiddleTrim.getLeast()) {
                     // Added time belongs to lower trim
                     mLowerTrim.put(addedTime);
-                } else if (addedTime > mMiddleTrim.getGreatest()) {
+                } else if (addedTime >= mUpperTrim.getLeast()) {
                     // Added time belongs to upper trim
                     // Move least elements to the left
                     mLowerTrim.put(mMiddleTrim.getLeast());
@@ -506,14 +506,14 @@ public final class AverageCalculator {
             }
 
             // Ejected time belongs to upper trim
-            else if (ejectedTime > mMiddleTrim.getGreatest()) {
+            else if (ejectedTime >= mUpperTrim.getLeast()) {
                 // Remove the ejected time
                 mUpperTrim.remove(ejectedTime);
 
-                if (addedTime > mMiddleTrim.getGreatest()) {
+                if (addedTime >= mMiddleTrim.getGreatest()) {
                     // Added time belongs to upper trim
                     mUpperTrim.put(addedTime);
-                } else if (addedTime < mMiddleTrim.getLeast()) {
+                } else if (addedTime <= mLowerTrim.getGreatest()) {
                     // Added time belongs to lower trim
                     // Move greatest elements to right
                     mUpperTrim.put(mMiddleTrim.getGreatest());
@@ -535,13 +535,13 @@ public final class AverageCalculator {
                 // Remove the ejected time
                 mMiddleTrim.remove(ejectedTime);
 
-                if (addedTime > mUpperTrim.getLeast()) {
+                if (addedTime >= mUpperTrim.getLeast()) {
                     // Added time belongs to upper trim
                     // Move least elements to left
                     mMiddleTrim.put(mUpperTrim.getLeast());
                     mUpperTrim.remove(mUpperTrim.getLeast());
                     mUpperTrim.put(addedTime);
-                } else if (addedTime < mLowerTrim.getGreatest()) {
+                } else if (addedTime <= mLowerTrim.getGreatest()) {
                     // Added time belongs to lower trim
                     // Move greatest elements to right
                     mMiddleTrim.put(mLowerTrim.getGreatest());

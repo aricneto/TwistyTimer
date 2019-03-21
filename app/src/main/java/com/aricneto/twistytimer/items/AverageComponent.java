@@ -17,6 +17,12 @@ public class AverageComponent {
     private RedBlackTree<Long> tree;
 
     /**
+     * This debug flag enables hard-checking every remove to verify that the element being
+     * removed does indeed exist. If the check fails, the application will crash.
+     */
+    private static final boolean DEBUG = true;
+
+    /**
      * Default constructor
      */
     public AverageComponent() {
@@ -46,7 +52,8 @@ public class AverageComponent {
      * @param val The value to be removed
      */
     public void remove(long val) {
-        tree.remove(val);
+        if (tree.remove(val) == null && DEBUG)
+            throw new Error("Removed time doesn't exist!: " + val);
         subSum(val);
 
         // Update least/greatest caches if necessary
