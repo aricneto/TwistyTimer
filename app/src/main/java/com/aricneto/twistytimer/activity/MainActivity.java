@@ -536,12 +536,15 @@ public class MainActivity extends AppCompatActivity
 
         if (BuildConfig.DEBUG) {
             drawerBuilder.addDrawerItems(
-                new PrimaryDrawerItem()
-                        .withName("DEBUG OPTION - ADD 10000 SOLVES")
-                        .withIcon(R.drawable.ic_outline_help_outline_24px)
-                        .withIconTintingEnabled(true)
-                        .withSelectable(false)
-                        .withIdentifier(DEBUG_ID)
+                    new SectionDrawerItem()
+                            .withName("DEBUG"),
+
+                    new PrimaryDrawerItem()
+                            .withName("DEBUG OPTION - ADD 10000 SOLVES")
+                            .withIcon(R.drawable.ic_outline_help_outline_24px)
+                            .withIconTintingEnabled(true)
+                            .withSelectable(false)
+                            .withIdentifier(DEBUG_ID)
             );
         }
 

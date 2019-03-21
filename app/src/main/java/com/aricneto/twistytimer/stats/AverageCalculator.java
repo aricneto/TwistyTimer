@@ -53,7 +53,7 @@ public final class AverageCalculator {
     // no guarantee that it will remain with its current value of "-1" and this class needs to be
     // sure that the value will be negative and will not clash with "UNKNOWN". If changing these,
     // use values that can also be represented as in "int".
-    public static final long DNF = Long.MAX_VALUE;
+    public static final long DNF = Integer.MAX_VALUE;
 
     /**
      * A value that indicates that a calculated time is unknown. This is usually the case when not

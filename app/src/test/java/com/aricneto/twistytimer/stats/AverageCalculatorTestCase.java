@@ -1161,6 +1161,75 @@ public class AverageCalculatorTestCase {
     private Random rand            = new Random(0);
     private long[] mLargeTestTimes = rand.longs(1_000_000, 25_000, 30_000).toArray();
 
+
+    @Test
+    public void TestTreeSwap() throws Exception {
+        final AverageCalculator ac = new AverageCalculator(12, 20, 10, true);
+        AverageOfN aoN;
+
+        ac.addTimes(10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000);
+        aoN = ac.getAverageOfN();
+        assertEquals(65000, aoN.getAverage());
+
+        // Eject lower, add lower
+        ac.addTime(10000);
+        aoN = ac.getAverageOfN();
+        assertEquals(65000, aoN.getAverage());
+
+        // Eject lower, add middle
+        ac.addTime(60000);
+        aoN = ac.getAverageOfN();
+        assertEquals(68333, aoN.getAverage());
+
+        // Eject lower, add top
+        ac.addTime(120000);
+        aoN = ac.getAverageOfN();
+        assertEquals(76666, aoN.getAverage());
+
+
+        final AverageCalculator ac2 = new AverageCalculator(12, 20, 10, true);
+
+        ac2.addTimes(120000, 110000, 100000, 90000, 80000, 70000, 60000, 50000, 40000, 30000, 20000, 10000);
+        aoN = ac2.getAverageOfN();
+        assertEquals(65000, aoN.getAverage());
+
+        // Eject upper, add lower
+        ac2.addTimes(10000);
+        aoN = ac2.getAverageOfN();
+        assertEquals(55000, aoN.getAverage());
+
+        // Eject upper, add middle
+        ac2.addTimes(60000);
+        aoN = ac2.getAverageOfN();
+        assertEquals(51666, aoN.getAverage());
+
+        // Eject upper, add upper
+        ac2.addTimes(120000);
+        aoN = ac2.getAverageOfN();
+        assertEquals(51666, aoN.getAverage());
+
+        final AverageCalculator ac3 = new AverageCalculator(12, 20, 10, true);
+
+        ac3.addTimes(90000, 80000, 70000, 60000, 50000, 40000, 30000, 20000, 10000, 120000, 110000, 100000);
+        aoN = ac3.getAverageOfN();
+        assertEquals(65000, aoN.getAverage());
+
+        // Eject middle, add lower
+        ac3.addTimes(10000);
+        aoN = ac3.getAverageOfN();
+        assertEquals(55000, aoN.getAverage());
+
+        // Eject middle, add middle
+        ac3.addTimes(60000);
+        aoN = ac3.getAverageOfN();
+        assertEquals(51666, aoN.getAverage());
+
+        // Eject middle, add upper
+        ac3.addTimes(120000);
+        aoN = ac3.getAverageOfN();
+        assertEquals(56666, aoN.getAverage());
+    }
+
     /**
      * Used to test the efficiency of the algorithm only.
      * @throws Exception
