@@ -482,8 +482,8 @@ public final class AverageCalculator {
         if (mNumSolves > mN && mLowerTrimBound > 0) {
             // Ejected time belongs to lower trim
             if (ejectedTime < mMiddleTrim.getLeast()) {
+                // Remove the ejected time
                 mLowerTrim.remove(ejectedTime);
-
 
                 if (addedTime < mMiddleTrim.getLeast()) {
                     // Added time belongs to lower trim
@@ -507,6 +507,7 @@ public final class AverageCalculator {
 
             // Ejected time belongs to upper trim
             else if (ejectedTime > mMiddleTrim.getGreatest()) {
+                // Remove the ejected time
                 mUpperTrim.remove(ejectedTime);
 
                 if (addedTime > mMiddleTrim.getGreatest()) {
@@ -531,6 +532,7 @@ public final class AverageCalculator {
 
             // Ejected time belongs to middle trim
             else {
+                // Remove the ejected time
                 mMiddleTrim.remove(ejectedTime);
 
                 if (addedTime > mUpperTrim.getLeast()) {
