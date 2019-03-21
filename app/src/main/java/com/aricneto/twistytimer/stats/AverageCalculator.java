@@ -645,7 +645,7 @@ public final class AverageCalculator {
                 // There is no DNF, or there are DNFs, but that will not cause automatic
                 // disqualification. There is at least one non-DNF time present. Calculate the
                 // (not truncated) arithmetic mean.
-                mCurrentAverage = mMiddleTrim.getSum() / (mN - mNumCurrentDNFs);
+                mCurrentAverage = mCurrentSum / (mN - mNumCurrentDNFs);
             }
         }
     }

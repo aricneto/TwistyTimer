@@ -315,15 +315,6 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsAverageLabelGridView = statsAverageLayout.findViewById(R.id.stats_label_gridView);
         statsOtherLabelGridView = statsOtherlayout.findViewById(R.id.stats_label_gridView);
 
-        // In order for the user to be able to drag the stats panel up, we have to disable
-        // interaction with GridView, so it can be handled by the panel
-        statsImprovementGridView.setOnTouchListener(doNothingTouchListener);
-        statsAverageGridView.setOnTouchListener(doNothingTouchListener);
-        statsOtherGridView.setOnTouchListener(doNothingTouchListener);
-        statsImprovementLabelGridView.setOnTouchListener(doNothingTouchListener);
-        statsAverageLabelGridView.setOnTouchListener(doNothingTouchListener);
-        statsOtherLabelGridView.setOnTouchListener(doNothingTouchListener);
-
         // The "Improvement" and "Other" grids should only have two columns. (Best and Session)
         // Since the base layout is 3-columns wide, we have to hide the last column title and set
         // num of columns to 2 for these two views
