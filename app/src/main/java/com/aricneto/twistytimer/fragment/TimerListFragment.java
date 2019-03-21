@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
+import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
@@ -54,6 +56,10 @@ import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
+
+import org.joda.time.DateTime;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -359,6 +365,8 @@ public class TimerListFragment extends BaseFragment
             }
         });
 
+        updateEasterEggs((RelativeLayout) rootView);
+
         setupRecyclerView();
         getLoaderManager().initLoader(MainActivity.TIME_LIST_LOADER_ID, null, this);
 
@@ -493,5 +501,57 @@ public class TimerListFragment extends BaseFragment
             recyclerView.setLayoutManager(gridLayoutManagerHorizontal);
 
         recyclerView.setAdapter(timeCursorAdapter);
+    }
+
+    private void updateEasterEggs(RelativeLayout root) {
+        DateTime date = new DateTime(DateTime.now());
+
+        // April 1st (April Fools)
+        if (date.getMonthOfYear() == 4 && date.getDayOfMonth() == 1) {
+            View clippyView = LayoutInflater.from(mContext).inflate(R.layout.item_easteregg_clippy, null);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+
+            layoutParams.rightMargin = ThemeUtils.dpToPix(mContext, 8);
+            layoutParams.bottomMargin = ThemeUtils.dpToPix(mContext, 8);
+
+            String[] clippyLines = {
+                    "It looks like you're having some trouble on that last layer.\n\nWould you like me to throw your cube away?",
+                    "Wow, is that a 10 by 10??",
+                    "It looks like you're relying too much on magnets\n\nWould you like to swap your cube for a Rubiks™ brand?",
+                    "Hey there, I'm Clippy, your new cubing assistant!",
+                    "I have a friend that can solve it in like, 3 seconds",
+                    "I mean, it's not that hard. Just some algorithms, right?",
+                    "It looks like you're trying to become color neutral.\n\nDid I mention I'm colorblind?",
+                    "To be honest, I just peel the stickers off",
+                    "I was walking through a cemetery once and saw a ghost cube.\n\nScary stuff.",
+                    "It looks like you're abusing that table too much\n\nWould you like to learn a real one-handed method?",
+                    "It looks like you're having some trouble with that 4x4 parity\n\nWould you like me to just peel off the stickers?",
+                    "I am Clippy. I am ethereal, ETERNAL-Oh, hey!\n\nWould you like some help?",
+                    "I once got six N perms in a row.\n\nI still have nightmares about that.",
+                    "I once solved like five sides, couldn't quite figure out the last one",
+                    "I CAN'T BELIEVE YOU GOT THAT PB, JUST AS MY SD CARD RUNS OUT",
+                    "I once used my Pyraminx as a fork. True story.",
+                    "Do you stop the timer with your feet too? Yuck.",
+                    "In the abscence of a rock, a Megaminx makes a great substitute.\n\nOr so I've heard.",
+                    "It is the year 2049. You have been cubing non-stop for over 30 years now.\n\nDon't you think it's time to take a break?"
+            };
+
+            TextView clippyText = clippyView.findViewById(R.id.clippy_text);
+            clippyText.setText(clippyLines[new Random().nextInt(clippyLines.length)]);
+
+            clippyView.setOnClickListener(v -> clippyView.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .withEndAction(() -> clippyView.setVisibility(View.GONE)));
+
+            root.addView(clippyView, layoutParams);
+        }
     }
 }
