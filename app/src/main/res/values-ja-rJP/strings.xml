@@ -250,4 +250,24 @@
     <string name="pref_screen_title_list">一覧</string>
     <string name="unarchive_dialog_summary">%1$d 件アーカイブされています。\n もとに戻したい個数を入力してください。\n ただし、一番最新のものから処理されます。</string>
     <string name="donation_message">あなたの支援によってTwisty Timer は使用者皆様により質の高いサービスを提供できます。</string>
+    <string name="pref_animation_duration_title">アニメーション速度</string>
+    <string name="pref_animation_duration_summary">ミリ秒単位でタイマーのアニメーション速度を制御する</string>
+    <string name="pref_screen_title_statistics">統計</string>
+    <string name="pref_title_stat_trim">平均タイムから除くタイムの割合の変更</string>
+    <string name="pref_summary_stat_trim">ワーストとベストから一定の割合で除外する</string>
+    <string name="pref_title_acceptable_dnf">許容するDNFの最大数を設定する</string>
+    <string name="pref_summary_acceptable_dnf">平均タイムに含む事が可能なDNFの最大数を設定する</string>
+    <string name="pref_title_disqualify_dnf">平均タイムにDNFを含まない</string>
+    <string name="pref_summary_disqualify_dnf">この機能を有効にすると、平均はDNFの回数が増えると自動的に失格となります</string>
+    <string name="pref_dialog_included_solves">平均タイムから除外するソルブ数の変更</string>
+    <string name="pref_dialog_trim_size">除外する量%1$d</string>
+    <string name="pref_dialog_dnf_percent">平均を失格にするDNFの量%1$d</string>
+    <string name="pref_dialog_acceptable_dnf">許容するDNFの回数</string>
+    <string name="pref_screen_title_graph">グラフ</string>
+    <string name="pref_title_discrete_graph">グラフを繋げない</string>
+    <string name="pref_summary_discrete_graph">それぞれのソルブを線で繋がない</string>
+    <string name="graph_stats_title_session">セッション</string>
+    <string name="graph_stats_title_global">全体</string>
+    <string name="pref_title_manual_mode">タイムを手入力する</string>
+    <string name="pref_summary_manual_mode">スタート画面に手入力ボタンを追加する</string>
 </resources>
