@@ -298,7 +298,7 @@
                 android:summary="@string/pref_summary_stat_trim"
                 android:title="@string/pref_title_stat_trim" />
 
-            <SwitchPreferenceCompat
+            <!--SwitchPreferenceCompat
                 android:defaultValue="@bool/defaultEnableDisqualifyDNF"
                 android:key="@string/pk_stat_disqualify_dnf"
                 android:summary="@string/pref_summary_disqualify_dnf"
@@ -309,7 +309,7 @@
                 android:dependency="@string/pk_stat_disqualify_dnf"
                 android:key="@string/pk_stat_acceptable_dnf_size"
                 android:summary="@string/pref_summary_acceptable_dnf"
-                android:title="@string/pref_title_acceptable_dnf" />
+                android:title="@string/pref_title_acceptable_dnf" /-->
 
             </PreferenceCategory>
 
