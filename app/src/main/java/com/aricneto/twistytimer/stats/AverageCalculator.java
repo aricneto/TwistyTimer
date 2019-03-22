@@ -218,10 +218,10 @@ public final class AverageCalculator {
 
         mN = n;
         mTimes = new long[n];
-        mDisqualifyDNFs = disqualifyDNFs;
+        mDisqualifyDNFs = true;
 
         mTrimSize = (int) Math.ceil (mN * (trimPercent / 100f));
-        mNumAcceptableDNFs = (int) Math.ceil (mN * (percentAcceptableDNFs / 100f));
+        mNumAcceptableDNFs = mTrimSize;
         mLowerTrimBound = mTrimSize;
         mUpperTrimBound = mN - mTrimSize;
 
