@@ -203,15 +203,11 @@ public final class AverageCalculator {
      * @param n
      *     The number of solve times that will be averaged (e.g., 3, 5, 12, ...). Must be greater
      *     than zero.
-     * @param disqualifyDNFs
-     *     {@code true} if an average should be disqualified if too many {@link #DNF}s are present,
-     *     or {@code false} if DNFs should be ignored. See {@link #getCurrentAverage()} for more
-     *     details on the calculation.
      *
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    public AverageCalculator(int n, int trimPercent, int percentAcceptableDNFs, boolean disqualifyDNFs) {
+    AverageCalculator(int n, int trimPercent) {
         if (n <= 0) {
             throw new IllegalArgumentException("Number of solves must be > 0: " + n);
         }

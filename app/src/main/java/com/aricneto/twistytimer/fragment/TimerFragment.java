@@ -75,6 +75,7 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import androidx.fragment.app.FragmentManager;
 import butterknife.BindView;
@@ -285,7 +286,7 @@ public class                                                                    
             = new TTFragmentBroadcastReceiver(this, CATEGORY_UI_INTERACTIONS) {
         @Override
         public void onReceiveWhileAdded(Context context, Intent intent) {
-            switch (intent.getAction()) {
+            switch (Objects.requireNonNull(intent.getAction())) {
                 case ACTION_SCROLLED_PAGE:
                     if (holdEnabled) {
                         holdHandler.removeCallbacks(holdRunnable);
@@ -297,10 +298,12 @@ public class                                                                    
 
                 case ACTION_TIME_ADDED_MANUALLY:
                     currentSolve = TTIntent.getSolve(intent);
-                    chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToString(currentSolve.getTime(), PuzzleUtils.FORMAT_SMALL_MILLI)));
-                    hideButtons(true, true);
-                    broadcastNewSolve();
-                    declareRecordTimes(currentSolve);
+                    if (currentSolve != null) {
+                        chronometer.setText(Html.fromHtml(PuzzleUtils.convertTimeToString(currentSolve.getTime(), PuzzleUtils.FORMAT_SMALL_MILLI)));
+                        hideButtons(true, true);
+                        broadcastNewSolve();
+                        declareRecordTimes(currentSolve);
+                    }
                     break;
 
                 case ACTION_TOOLBAR_RESTORED:
@@ -502,7 +505,8 @@ public class                                                                    
         detailTextNamesArray = getResources().getStringArray(R.array.timer_detail_stats);
 
         scrambleGeneratorAsync = new GenerateScrambleSequence();
-        optimalCrossAsync = new GetOptimalCross();
+
+        getNewOptimalCross();
 
         mFragManager = getFragmentManager();
 
@@ -572,8 +576,6 @@ public class                                                                    
 
             scrambleImg.getLayoutParams().width *= scrambleImageSize;
             scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(scrambleImageSize);
-        } else {
-            //scrambleImg.getLayoutParams().height *= calculateScrambleImageHeightMultiplier(1);
         }
 
         Resources res = getResources();
@@ -739,15 +741,13 @@ public class                                                                    
         // enough (0.5s) to trigger the starting of the timer.
         if (holdEnabled) {
             holdHandler = new Handler();
-            holdRunnable = new Runnable() {
-                public void run() {
-                    isReady = true;
-                    // Indicate to the user that the hold was long enough.
-                    chronometer.setHighlighted(true);
-                    if (! inspectionEnabled) {
-                        // If inspection is enabled, the toolbar is already hidden.
-                        hideToolbar();
-                    }
+            holdRunnable = () -> {
+                isReady = true;
+                // Indicate to the user that the hold was long enough.
+                chronometer.setHighlighted(true);
+                if (! inspectionEnabled) {
+                    // If inspection is enabled, the toolbar is already hidden.
+                    hideToolbar();
                 }
             };
         }
@@ -872,12 +872,7 @@ public class                                                                    
         // If they are null (i.e., not yet loaded), nothing will be displayed until this fragment,
         // as a registered observer, is notified when loading is complete. Post the firing of the
         // event, so that it is received after "onCreateView" returns.
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
-            }
-        });
+        new Handler().post(() -> onStatisticsUpdated(StatisticsCache.getInstance().getStatistics()));
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
     }
 
@@ -1060,12 +1055,9 @@ public class                                                                    
                         PuzzleUtils.convertTimeToString(previousBestTime - newTime, PuzzleUtils.FORMAT_DEFAULT)));
                 congratsText.setVisibility(View.VISIBLE);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (rippleBackground != null)
-                            rippleBackground.stopRippleAnimation();
-                    }
+                new Handler().postDelayed(() -> {
+                    if (rippleBackground != null)
+                        rippleBackground.stopRippleAnimation();
                 }, 2900);
             }
         }
@@ -1262,13 +1254,10 @@ public class                                                                    
                 .alpha(0)
                 .translationY(scrambleImg.getHeight())
                 .setDuration(mAnimationDuration)
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (scrambleImg != null) {
-                            scrambleImg.setVisibility(View.GONE);
-                            scrambleImg.setEnabled(false);
-                        }
+                .withEndAction(() -> {
+                    if (scrambleImg != null) {
+                        scrambleImg.setVisibility(View.GONE);
+                        scrambleImg.setEnabled(false);
                     }
                 });
     }
@@ -1301,12 +1290,7 @@ public class                                                                    
                     .alpha(0)
                     .translationY(-scrambleBox.getHeight())
                     .setDuration(mAnimationDuration)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrambleBox.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    .withEndAction(() -> scrambleBox.setVisibility(View.INVISIBLE));
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(false);
                 hideImage();
@@ -1317,22 +1301,12 @@ public class                                                                    
                     .alpha(0)
                     .translationY(detailTextAvg.getHeight())
                     .setDuration(mAnimationDuration)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            detailTextAvg.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    .withEndAction(() -> detailTextAvg.setVisibility(View.INVISIBLE));
             detailTextOther.animate()
                     .alpha(0)
                     .translationY(detailTextOther.getHeight())
                     .setDuration(mAnimationDuration)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            detailTextOther.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    .withEndAction(() -> detailTextOther.setVisibility(View.INVISIBLE));
         }
         if (buttonsEnabled) {
             undoButton.setVisibility(View.GONE);
@@ -1340,12 +1314,7 @@ public class                                                                    
             quickActionButtons.animate()
                     .alpha(0)
                     .setDuration(mAnimationDuration)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            quickActionButtons.setVisibility(View.GONE);
-                        }
-                    });
+                    .withEndAction(() -> quickActionButtons.setVisibility(View.GONE));
         }
         if (averageRecordsEnabled) {
             detailAverageRecordMesssage
@@ -1390,7 +1359,7 @@ public class                                                                    
      * Cancels the chronometer and any inspection countdown. Nothing is saved and the timer is
      * reset to zero.
      */
-    public void cancelChronometer() {
+    private void cancelChronometer() {
         if (backCancelEnabled) {
             stopInspectionCountdown();
             stopChronometer();
@@ -1433,7 +1402,7 @@ public class                                                                    
         mRecentStatistics = null;
     }
 
-    public static void lockOrientation(Activity activity) {
+    private static void lockOrientation(Activity activity) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         } else {
@@ -1465,8 +1434,13 @@ public class                                                                    
 
     private void getNewOptimalCross() {
         if (showHintsEnabled) {
-            optimalCrossAsync.cancel(true);
-            optimalCrossAsync = new GetOptimalCross();
+            if (optimalCrossAsync != null)
+                optimalCrossAsync.cancel(true);
+            optimalCrossAsync = new GetOptimalCross(realScramble,
+                                                    optimalCross, optimalXCross,
+                                                    showHintsXCrossEnabled,
+                                                    isRunning,
+                                                    scrambleDialog);
             optimalCrossAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
@@ -1474,7 +1448,7 @@ public class                                                                    
     /**
      * Generates a new scramble and handles everything.
      */
-    public void generateNewScramble() {
+    private void generateNewScramble() {
         if (scrambleEnabled && currentTimerMode.equals(TIMER_MODE_TIMER)) {
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
@@ -1487,7 +1461,29 @@ public class                                                                    
     }
 
 
-    private class GetOptimalCross extends AsyncTask<Void, Void, String> {
+    private static class GetOptimalCross extends AsyncTask<Void, Void, String> {
+
+        private String scramble;
+        private RubiksCubeOptimalCross optimalCross;
+        private RubiksCubeOptimalXCross optimalXCross;
+        private boolean showHintsXCrossEnabled;
+        private boolean isRunning;
+        private BottomSheetDetailDialog scrambleDialog;
+
+        GetOptimalCross(String scramble,
+                        RubiksCubeOptimalCross optimalCross,
+                        RubiksCubeOptimalXCross optimalXCross,
+                        boolean showHintsXCrossEnabled,
+                        boolean isRunning,
+                        BottomSheetDetailDialog scrambleDialog) {
+            this.scramble = scramble;
+            this.optimalCross = optimalCross;
+            this.optimalXCross = optimalXCross;
+            this.showHintsXCrossEnabled = showHintsXCrossEnabled;
+            this.isRunning = isRunning;
+            this.scrambleDialog = scrambleDialog;
+        }
+
         @Override
         protected void onPreExecute() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
@@ -1498,10 +1494,10 @@ public class                                                                    
         @Override
         protected String doInBackground(Void... voids) {
             String text = "";
-            text += optimalCross.getTip(realScramble);
+            text += optimalCross.getTip(scramble);
             if (showHintsXCrossEnabled) {
                 text += "\n\n";
-                text += optimalXCross.getTip(realScramble);
+                text += optimalXCross.getTip(scramble);
             }
             return text;
         }
@@ -1573,41 +1569,39 @@ public class                                                                    
     private void setScramble(final String scramble) {
         realScramble = scramble;
         scrambleText.setText(scramble);
-        scrambleText.post(() -> {
-            chronometer.post(() -> {
-                        if (scrambleText != null) {
-                            // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
-                            // If it does, show only a "tap here to see more" hint instead of the scramble
-                                Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
-                                // The top line calculation is a bit tricky
-                                // We first get the top of the bounding box (which isn't necessarily
-                                // the top of the actual, visible text. To that, we add the baseline,
-                            // which is the measure from the top of the box to the actual baseline
-                            // of the text. Then, we add the text size, which gets us to the visible
-                            // top.
-                                Rect chronometerRect = new Rect(chronometer.getLeft(),
-                                                                (int) (chronometer.getTop()
-                                                                        + chronometer.getBaseline()
-                                                                        - chronometer.getTextSize()
-                                                                        + ThemeUtils.dpToPix(mContext, 28)),
-                                                                chronometer.getRight(),
-                                                                chronometer.getBottom());
-                                Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
+        scrambleText.post(() -> chronometer.post(() -> {
+                    if (scrambleText != null) {
+                        // Calculate surrounding layouts to make sure the scramble text doesn't intersect any element
+                        // If it does, show only a "tap here to see more" hint instead of the scramble
+                            Rect scrambleRect = new Rect(scrambleBox.getLeft(), scrambleBox.getTop(), scrambleBox.getRight(), scrambleBox.getBottom());
+                            // The top line calculation is a bit tricky
+                            // We first get the top of the bounding box (which isn't necessarily
+                            // the top of the actual, visible text. To that, we add the baseline,
+                        // which is the measure from the top of the box to the actual baseline
+                        // of the text. Then, we add the text size, which gets us to the visible
+                        // top.
+                            Rect chronometerRect = new Rect(chronometer.getLeft(),
+                                                            (int) (chronometer.getTop()
+                                                                    + chronometer.getBaseline()
+                                                                    - chronometer.getTextSize()
+                                                                    + ThemeUtils.dpToPix(mContext, 28)),
+                                                            chronometer.getRight(),
+                                                            chronometer.getBottom());
+                            Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());
 
-                                if ((Rect.intersects(scrambleRect, chronometerRect)) ||
-                                    (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(scrambleRect, congratsRect))) {
-                                    scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
-                                    scrambleBox.setClickable(true);
-                                    scrambleBox.setOnClickListener(scrambleDetailClickListener);
-                                } else {
-                                    scrambleBox.setOnClickListener(null);
-                                    scrambleBox.setClickable(false);
-                                    scrambleBox.setFocusable(false);
-                                }
-                                scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
-                }
-            });
-        });
+                            if ((Rect.intersects(scrambleRect, chronometerRect)) ||
+                                (congratsText.getVisibility() == View.VISIBLE && Rect.intersects(chronometerRect, congratsRect))) {
+                                scrambleText.setText("[ " + getString(R.string.scramble_text_tap_hint) + " ]");
+                                scrambleBox.setClickable(true);
+                                scrambleBox.setOnClickListener(scrambleDetailClickListener);
+                            } else {
+                                scrambleBox.setOnClickListener(null);
+                                scrambleBox.setClickable(false);
+                                scrambleBox.setFocusable(false);
+                            }
+                            scrambleButtonHint.setOnClickListener(scrambleDetailClickListener);
+            }
+        }));
 
         if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333))
             scrambleButtonHint.setVisibility(View.VISIBLE);
@@ -1632,7 +1626,7 @@ public class                                                                    
                 .broadcast();
     }
 
-    View.OnClickListener scrambleDetailClickListener = new View.OnClickListener() {
+    private View.OnClickListener scrambleDetailClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             scrambleDialog = new BottomSheetDetailDialog();
@@ -1761,47 +1755,44 @@ public class                                                                    
         // to the original bounds and show the thumbnail instead of
         // the expanded image.
         final float startScaleFinal = startScale;
-        expandedImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mCurrentAnimator != null) {
-                    mCurrentAnimator.cancel();
+        expandedImageView.setOnClickListener(view -> {
+            if (mCurrentAnimator != null) {
+                mCurrentAnimator.cancel();
+            }
+
+            // Animate the four positioning/sizing properties in parallel,
+            // back to their original values.
+            AnimatorSet set1 = new AnimatorSet();
+            set1.play(ObjectAnimator
+                    .ofFloat(expandedImageView, View.X, startBounds.left))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.Y, startBounds.top))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.SCALE_X, startScaleFinal))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.SCALE_Y, startScaleFinal));
+            set1.setDuration(mAnimationDuration);
+            set1.setInterpolator(new DecelerateInterpolator());
+            set1.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    thumbView.setAlpha(1f);
+                    expandedImageView.setVisibility(View.GONE);
+                    mCurrentAnimator = null;
                 }
 
-                // Animate the four positioning/sizing properties in parallel,
-                // back to their original values.
-                AnimatorSet set = new AnimatorSet();
-                set.play(ObjectAnimator
-                        .ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.Y, startBounds.top))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_Y, startScaleFinal));
-                set.setDuration(mAnimationDuration);
-                set.setInterpolator(new DecelerateInterpolator());
-                set.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-                });
-                set.start();
-                mCurrentAnimator = set;
-            }
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    thumbView.setAlpha(1f);
+                    expandedImageView.setVisibility(View.GONE);
+                    mCurrentAnimator = null;
+                }
+            });
+            set1.start();
+            mCurrentAnimator = set1;
         });
     }
 }

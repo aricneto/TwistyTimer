@@ -48,7 +48,7 @@
         <item name="tabBarPadding">48dp</item>
         <item name="statTextStyle">@style/StatTextStyle</item>
 
-        <item name="qaButtonSize">36dp</item>
+        <item name="qaButtonSize">38dp</item>
 
         <item name="defaultFontFamily">@font/quicksand_medium</item>
 

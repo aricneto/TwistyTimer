@@ -6,20 +6,8 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.ArrayRes;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.core.content.ContextCompat;
-import androidx.loader.content.Loader;
-import androidx.appcompat.widget.TooltipCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -30,7 +18,6 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.StatGridAdapter;
 import com.aricneto.twistytimer.items.Stat;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.spans.RoundedAxisValueFormatter;
 import com.aricneto.twistytimer.spans.TimeFormatter;
 import com.aricneto.twistytimer.stats.ChartStatistics;
@@ -43,16 +30,22 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import com.aricneto.twistytimer.utils.Wrapper;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -109,15 +102,15 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     @BindView(R.id.stats_table_other)
         View statsOtherlayout;
 
-    GridView statsImprovementGridView;
-    GridView statsAverageGridView;
-    GridView statsOtherGridView;
-    GridView statsImprovementLabelGridView;
-    GridView statsAverageLabelGridView;
-    GridView statsOtherLabelGridView;
+    private GridView statsImprovementGridView;
+    private GridView statsAverageGridView;
+    private GridView statsOtherGridView;
+    private GridView statsImprovementLabelGridView;
+    private GridView statsAverageLabelGridView;
+    private GridView statsOtherLabelGridView;
 
-    Drawable buttonDrawable;
-    Drawable buttonDrawableFaded;
+    private Drawable buttonDrawable;
+    private Drawable buttonDrawableFaded;
 
 
     @BindView(R.id.stats_table_viewflipper)
@@ -340,9 +333,11 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsTabAverage.setOnClickListener(statTabClickListener);
         statsTabOther.setOnClickListener(statTabClickListener);
 
-        highlightStatTab(statsTabFavorite);
-        fadeStatTab(statsTabOther);
-        fadeStatTab(statsTabAverage);
+        view.post(() -> {
+            highlightStatTab(statsTabFavorite);
+            fadeStatTab(statsTabOther);
+            fadeStatTab(statsTabAverage);
+        });
 
         // If the statistics are already loaded, the update notification will have been missed,
         // so fire that notification now. If the statistics are non-null, they will be displayed.
@@ -476,14 +471,6 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         }
     };
 
-
-    private View.OnTouchListener doNothingTouchListener = new View.OnTouchListener() {
-        @SuppressLint("ClickableViewAccessibility")
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return true;
-        }
-    };
 
     /**
      * Sets the visibility of the statistics table values columns. When loading starts, the columns

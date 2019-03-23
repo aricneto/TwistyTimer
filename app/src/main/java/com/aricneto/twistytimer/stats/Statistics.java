@@ -67,16 +67,6 @@ public class Statistics {
     private static int mTrimSize;
 
     /**
-     * Total percent of DNFs before an average is disqualified
-     */
-    private static int mNumAcceptableDNFs;
-
-    /**
-     * True if an average should be considered as DNF once the number of DNFs passes {@code mNumAcceptableDNFs}
-     */
-    private static boolean mDisqualifyDNF;
-
-    /**
      * Creates a new collection for statistics. Use a factory method to create a standard set of
      * statistics.
      */
@@ -96,24 +86,22 @@ public class Statistics {
         final Statistics stats = new Statistics();
 
         mTrimSize = Prefs.getInt(R.string.pk_stat_trim_size, Prefs.getDefaultIntValue(R.integer.defaultTrimSize));
-        mNumAcceptableDNFs = Prefs.getInt(R.string.pk_stat_acceptable_dnf_size, Prefs.getDefaultIntValue(R.integer.defaultAcceptableDNFSize));
-        mDisqualifyDNF = Prefs.getBoolean(R.string.pk_stat_disqualify_dnf, Prefs.getDefaultBoolValue(R.bool.defaultEnableDisqualifyDNF));
 
         // Averages for all sessions.
-        stats.addAverageOf(3, 0, 0, true, false);
-        stats.addAverageOf(5, 5, 5, true, false);
-        stats.addAverageOf(12, 5, 5, true, false);
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
-        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, false);
+        stats.addAverageOf(3, 0, false);
+        stats.addAverageOf(5, 5, false);
+        stats.addAverageOf(12, 5, false);
+        stats.addAverageOf(50, mTrimSize, false);
+        stats.addAverageOf(100, mTrimSize, false);
+        stats.addAverageOf(1_000, mTrimSize, false);
 
         // Averages for the current session only.
-        stats.addAverageOf(3, 0, 0, true, true);
-        stats.addAverageOf(5, 5, 5, true, true);
-        stats.addAverageOf(12, 5, 5, true, true);
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
-        stats.addAverageOf(1_000, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(3, 0,true);
+        stats.addAverageOf(5, 5,true);
+        stats.addAverageOf(12, 5,true);
+        stats.addAverageOf(50, mTrimSize,true);
+        stats.addAverageOf(100, mTrimSize,true);
+        stats.addAverageOf(1_000, mTrimSize,true);
 
         return stats;
     }
@@ -132,8 +120,8 @@ public class Statistics {
 
         // Averages for the current session only IS NOT A MISTAKE! The "ChartStatistics" class
         // passes all data in for the "current session", but makes a distinction using its own API.
-        stats.addAverageOf(50, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
-        stats.addAverageOf(100, mTrimSize, mNumAcceptableDNFs, mDisqualifyDNF, true);
+        stats.addAverageOf(50, mTrimSize,true);
+        stats.addAverageOf(100, mTrimSize,true);
 
         return stats;
     }
@@ -148,8 +136,8 @@ public class Statistics {
     static Statistics newCurrentSessionAveragesChartStatistics() {
         final Statistics stats = new Statistics();
 
-        stats.addAverageOf(5, 5, 5, true, true);
-        stats.addAverageOf(12, 5, 5, true, true);
+        stats.addAverageOf(5, 5, true);
+        stats.addAverageOf(12, 5, true);
 
         return stats;
     }
@@ -225,10 +213,6 @@ public class Statistics {
      *     The number of solve times that will be averaged (e.g., 3, 5, 12, ...). Must be greater
      *     than zero. If a calculator for the same value of {@code n} has been added for the same
      *     value of {@code isForCurrentSessionOnly}, the previous calculator will be overwritten.
-     * @param disqualifyDNFs
-     *     {@code true} if an average is disqualified if there are too many DNFs, or {@code false}
-     *     if DNFs should be ignored (mostly). See {@link AverageCalculator#getCurrentAverage()}
-     *     for more details on the calculation.
      * @param isForCurrentSessionOnly
      *     {@code true} to collect times only for the current session, or {@code false} to collect
      *     times across all past and current sessions.
@@ -236,8 +220,8 @@ public class Statistics {
      * @throws IllegalArgumentException
      *     If {@code n} is not greater than zero.
      */
-    private void addAverageOf(int n, int trimPercent, int acceptableDNFPercent, boolean disqualifyDNFs, boolean isForCurrentSessionOnly) {
-        final AverageCalculator ac = new AverageCalculator(n, trimPercent, acceptableDNFPercent, disqualifyDNFs);
+    private void addAverageOf(int n, int trimPercent, boolean isForCurrentSessionOnly) {
+        final AverageCalculator ac = new AverageCalculator(n, trimPercent);
 
         if (isForCurrentSessionOnly) {
             mSessionACs.put(n, ac);

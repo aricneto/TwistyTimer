@@ -12,23 +12,23 @@ import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
  */
 public class AverageComponent {
     private long               sum;
-    private @Nullable Long     least;
-    private @Nullable Long     greatest;
+    private long               least;
+    private long               greatest;
     private RedBlackTree<Long> tree;
 
     /**
      * This debug flag enables hard-checking every remove to verify that the element being
      * removed does indeed exist. If the check fails, the application will crash.
      */
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /**
      * Default constructor
      */
     public AverageComponent() {
         this.sum = UNKNOWN;
-        this.least = null;
-        this.greatest = null;
+        this.least = UNKNOWN;
+        this.greatest = UNKNOWN;
         this.tree = new RedBlackTree<>();
     }
 
@@ -41,9 +41,9 @@ public class AverageComponent {
         addSum(val);
 
         // Update least/greatest caches if necessary
-        if (least != null && val < least)
+        if (least != UNKNOWN && val < least)
             least = val;
-        if (greatest != null && val > greatest)
+        if (greatest != UNKNOWN && val > greatest)
             greatest = val;
     }
 
@@ -57,10 +57,10 @@ public class AverageComponent {
         subSum(val);
 
         // Update least/greatest caches if necessary
-        if (least != null && val == least)
-            least = null;
-        if (greatest != null && val == greatest)
-            greatest = null;
+        if (least != UNKNOWN && val == least)
+            least = UNKNOWN;
+        if (greatest != UNKNOWN && val == greatest)
+            greatest = UNKNOWN;
     }
 
     /**
@@ -69,7 +69,7 @@ public class AverageComponent {
      */
     public long getLeast() {
         // Cache request
-        if (least == null)
+        if (least == UNKNOWN)
             least = tree.getLeast();
         return least;
     }
@@ -80,7 +80,7 @@ public class AverageComponent {
      */
     public long getGreatest() {
         // Cache request
-        if (greatest == null)
+        if (greatest == UNKNOWN)
             greatest = tree.getGreatest();
         return greatest;
     }

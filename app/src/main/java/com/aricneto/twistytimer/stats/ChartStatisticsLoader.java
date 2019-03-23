@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.aricneto.twistytimer.TwistyTimer;
@@ -13,12 +12,15 @@ import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.Wrapper;
 
+import java.util.Objects;
+
+import androidx.loader.content.AsyncTaskLoader;
+
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SESSION_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMES_MOVED_TO_HISTORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_ADDED_MANUALLY;
 
 /**
  * <p>
@@ -128,7 +130,7 @@ public class ChartStatisticsLoader extends AsyncTaskLoader<Wrapper<ChartStatisti
 
             final Intent finalIntent = intent;
 
-            switch (intent.getAction()) {
+            switch (Objects.requireNonNull(intent.getAction())) {
                 case ACTION_TIME_ADDED:
                     if (!mLoader.deliverQuickResult(intent)) {
                         // Could not deliver a quick update, so trigger a full re-load instead.
