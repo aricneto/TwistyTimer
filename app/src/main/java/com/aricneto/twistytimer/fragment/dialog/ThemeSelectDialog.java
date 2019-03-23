@@ -62,12 +62,11 @@ public class ThemeSelectDialog extends DialogFragment {
         textStyleRecycler.setHasFixedSize(true);
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(null);
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        GridLayoutManager themeLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.HORIZONTAL, false);
+        GridLayoutManager textLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.HORIZONTAL, false);
 
-        themeRecycler.setLayoutManager(gridLayoutManager);
-        textStyleRecycler.setLayoutManager(layoutManager);
+        themeRecycler.setLayoutManager(themeLayoutManager);
+        textStyleRecycler.setLayoutManager(textLayoutManager);
 
         ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), mContext);
         TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(mContext), mContext);
@@ -79,7 +78,6 @@ public class ThemeSelectDialog extends DialogFragment {
         // Set Text Style selector background
         GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, ThemeUtils.getPreferredTheme());
         gradientDrawable.setCornerRadii(new float[] {0, 0, 0, 0, cornerRadius, cornerRadius, cornerRadius, cornerRadius});
-        gradientDrawable.setStroke(ThemeUtils.dpToPix(mContext, 1), Color.BLACK);
 
         textStyleRecycler.setBackground(gradientDrawable);
 

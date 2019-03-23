@@ -55,10 +55,20 @@ public final class ThemeUtils {
 
 
     public static final String TEXT_DEFAULT   = "default";
-    public static final String TEXT_TARKOVSKY = "tarkovsky";
-    public static final String TEXT_MATSSON   = "matsson";
-    public static final String TEXT_TOLKIEN   = "tolkien";
     public static final String TEXT_PESSOA    = "pessoa";
+    public static final String TEXT_BURGESS   = "burgess";
+    public static final String TEXT_LOU       = "lou";
+    public static final String TEXT_BOWIE     = "bowie";
+    public static final String TEXT_BRIE      = "brie";
+    public static final String TEXT_MATSSON   = "matsson";
+    public static final String TEXT_ISAKOV    = "isakov";
+    public static final String TEXT_ADAMS     = "adams";
+    public static final String TEXT_IRWIN     = "irwin";
+    public static final String TEXT_TARKOVSKY = "tarkovsky";
+    public static final String TEXT_EBERT     = "ebert";
+    public static final String TEXT_TOLKIEN   = "tolkien";
+    public static final String TEXT_ASIMOV    = "asimov";
+    public static final String TEXT_KUBRICK   = "kubrick";
 
     /**
      * Private constructor to prevent instantiation of this utility class.
@@ -134,14 +144,34 @@ public final class ThemeUtils {
                 return R.style.SpottyGuy;
             case TEXT_DEFAULT:
                 return getPreferredTheme();
-            case TEXT_TARKOVSKY:
-                return R.style.TextStyleTarkovsky;
-            case TEXT_TOLKIEN:
-                return R.style.TextStyleTolkien;
-            case TEXT_MATSSON:
-                return R.style.TextStyleMatsson;
             case TEXT_PESSOA:
                 return R.style.TextStylePessoa;
+            case TEXT_BURGESS:
+                return R.style.TextStyleBurgess;
+            case TEXT_LOU:
+                return R.style.TextStyleLou;
+            case TEXT_BOWIE:
+                return R.style.TextStyleBowie;
+            case TEXT_BRIE:
+                return R.style.TextStyleBrie;
+            case TEXT_MATSSON:
+                return R.style.TextStyleMatsson;
+            case TEXT_ISAKOV:
+                return R.style.TextStyleIsakov;
+            case TEXT_ADAMS:
+                return R.style.TextStyleAdams;
+            case TEXT_IRWIN:
+                return R.style.TextStyleIrwin;
+            case TEXT_TARKOVSKY:
+                return R.style.TextStyleTarkovsky;
+            case TEXT_EBERT:
+                return R.style.TextStyleEbert;
+            case TEXT_TOLKIEN:
+                return R.style.TextStyleTolkien;
+            case TEXT_ASIMOV:
+                return R.style.TextStyleAsimov;
+            case TEXT_KUBRICK:
+                return R.style.TextStyleKubrick;
         }
     }
 
@@ -183,10 +213,20 @@ public final class ThemeUtils {
     public static Theme[] getAllTextStyles(Context context) {
         Theme[] styles = {
                 new Theme(TEXT_DEFAULT, context.getString(R.string.action_default)),
-                new Theme(TEXT_TARKOVSKY, "Tarkovsky"),
-                new Theme(TEXT_TOLKIEN, "Tolkien"),
+                new Theme(TEXT_PESSOA, "Pessoa"),
+                new Theme(TEXT_LOU, "Lou"),
+                new Theme(TEXT_BURGESS, "Burgess"),
+                new Theme(TEXT_BOWIE, "Bowie"),
+                new Theme(TEXT_BRIE, "Brie"),
                 new Theme(TEXT_MATSSON, "Matsson"),
-                new Theme(TEXT_PESSOA, "Pessoa")
+                new Theme(TEXT_ISAKOV, "Isakov"),
+                new Theme(TEXT_ADAMS, "Adams"),
+                new Theme(TEXT_IRWIN, "Irwin"),
+                new Theme(TEXT_TARKOVSKY, "Tarkovsky"),
+                new Theme(TEXT_EBERT, "Ebert"),
+                new Theme(TEXT_TOLKIEN, "Tolkien"),
+                new Theme(TEXT_ASIMOV, "Asimov"),
+                new Theme(TEXT_KUBRICK, "Kubrick"),
         };
         return styles;
     }

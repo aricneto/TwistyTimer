@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/outline_background_card"
+    android:background="@drawable/background_card_noborder"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
-            android:paddingRight="1dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp" />
 
@@ -39,8 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/list"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
             android:background="?colorCardBackgroundFaded"
             android:textStyle="bold"
             android:paddingTop="8dp"
@@ -53,8 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/text_style_title"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
             android:layout_marginBottom="0dp"
             android:background="@color/black_divider"
             android:visibility="gone"

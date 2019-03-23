@@ -458,20 +458,61 @@
     <!--
     Custom text styles
     -->
-    <style name="TextStyleTarkovsky">
-        <item name="colorTimerText">@color/md_green_A400</item>
+
+    <style name="TextStylePessoa">
+        <item name="colorTimerText">@color/md_red_A400</item>
     </style>
 
-    <style name="TextStyleTolkien">
-        <item name="colorTimerText">#FFFF4C</item>
+    <style name="TextStyleBurgess">
+        <item name="colorTimerText">#FF4500</item>
+    </style>
+
+    <style name="TextStyleLou">
+        <item name="colorTimerText">#FF2A9F</item>
+    </style>
+
+    <style name="TextStyleBowie">
+        <item name="colorTimerText">#E86E60</item>
+    </style>
+
+    <style name="TextStyleBrie">
+        <item name="colorTimerText">#FFD4F9</item>
     </style>
 
     <style name="TextStyleMatsson">
         <item name="colorTimerText">#651FFF</item>
     </style>
 
-    <style name="TextStylePessoa">
-        <item name="colorTimerText">@color/md_red_A400</item>
+    <style name="TextStyleIsakov">
+        <item name="colorTimerText">@color/md_blue_A700</item>
+    </style>
+
+    <style name="TextStyleAdams">
+        <item name="colorTimerText">#54FFFF</item>
+    </style>
+
+    <style name="TextStyleIrwin">
+        <item name="colorTimerText">#006B21</item>
+    </style>
+
+    <style name="TextStyleTarkovsky">
+        <item name="colorTimerText">@color/md_green_A400</item>
+    </style>
+
+    <style name="TextStyleEbert">
+        <item name="colorTimerText">#82FFB3</item>
+    </style>
+
+    <style name="TextStyleTolkien">
+        <item name="colorTimerText">#FFFF4C</item>
+    </style>
+
+    <style name="TextStyleAsimov">
+        <item name="colorTimerText">#FFFDBB</item>
+    </style>
+
+    <style name="TextStyleKubrick">
+        <item name="colorTimerText">#BDBDBD</item>
     </style>
 
     <!-- Style is declared in styles (v21) -->
