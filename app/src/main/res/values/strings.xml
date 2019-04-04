@@ -371,12 +371,12 @@
     <string name="language_italian" translatable="false">Italiano</string>
     <string name="language_czech" translatable="false">Čeština</string>
     <string name="language_english" translatable="false">English</string>
-    <string name="language_english_usa" translatable="false">English (United States)</string>
+    <string name="language_english_usa" translatable="false">English (US)</string>
     <string name="language_french" translatable="false">Français</string>
     <string name="language_german" translatable="false">Deutsch</string>
     <string name="language_lithuanian" translatable="false">Lietuvių kalba</string>
     <string name="language_polish" translatable="false">Język polski</string>
-    <string name="language_portuguese_br" translatable="false">Português (Brasil)</string>
+    <string name="language_portuguese_br" translatable="false">Português (BR)</string>
     <string name="language_russian" translatable="false">Русский</string>
     <string name="language_spanish" translatable="false">Español</string>
     <string name="language_serbian" translatable="false">Srpski</string>
@@ -384,6 +384,12 @@
     <string name="language_turkish" translatable="false">Türkçe</string>
     <string name="language_slovak" translatable="false">Slovenčina</string>
     <string name="language_japanese" translatable="false">日本語</string>
+    <string name="language_hungarian" translatable="false">Magyar</string>
+    <string name="language_vietnamese" translatable="false">Tiếng Việt</string>
+    <string name="language_arabic" translatable="false">Arabic</string>
+    <string name="language_tamil" translatable="false">தமிழ்</string>
+
+
     <string name="about_translate_title">Help translate Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">Save current scramble</string>
     <string name="pref_summary_new">Recently added preferences</string>

@@ -254,4 +254,21 @@
     <string name="pref_animation_duration_title">Animasyon süresi</string>
     <string name="pref_animation_duration_summary">Bütün zamanlayıcı animasyonları için süreyi milisaniyelerle kontrol eder</string>
     <string name="pref_screen_title_statistics">İstatistikler</string>
+    <string name="pref_title_stat_trim">En iyi/En kötü çıkarma</string>
+    <string name="pref_summary_stat_trim">Ortalama dışı bırakılan en iyi ve en kötü çözümlerin sayısını kontrol eder</string>
+    <string name="pref_title_acceptable_dnf">Maksimum DNF sayısı</string>
+    <string name="pref_summary_acceptable_dnf">Bir ortalamanın diskalifiye olmadan sahip olabileceği maksimum DNF sayısını kontrol eder</string>
+    <string name="pref_title_disqualify_dnf">DNF\'ler ortalamayı diskalifiye eder</string>
+    <string name="pref_summary_disqualify_dnf">Eğer açılırsa, DNF\'lerin sayısı arttığında ortalama diskalifiye edilir</string>
+    <string name="pref_dialog_included_solves">Ortalama dışı bırakılan çözüm sayısı:</string>
+    <string name="pref_dialog_trim_size">Çıkarma boyutu: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNF\'ler: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Bir ortalamanın alabileceği maksimum DNF sayısı:</string>
+    <string name="pref_screen_title_graph">Grafik</string>
+    <string name="pref_title_discrete_graph">Ayrık grafik</string>
+    <string name="pref_summary_discrete_graph">Çözüm grafiğini sürekli bir çizgi yerine tek noktalar halinde çiz</string>
+    <string name="graph_stats_title_session">Oturum</string>
+    <string name="graph_stats_title_global">Genel</string>
+    <string name="pref_title_manual_mode">Manuel mod</string>
+    <string name="pref_summary_manual_mode">Zamanlayıcı ekranına daha kolay manuel süre girebilmek için bir tuş ekler</string>
 </resources>

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.util.Pair;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
+
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -24,6 +27,9 @@ public class LocaleUtils {
     public static final String CHINESE           = "zh_CN";
     public static final String CATALAN           = "ca_ES";
     public static final String HUNGARIAN         = "hu_HU";
+    public static final String VIETNAMESE        = "vi_VN";
+    public static final String ARABIC            = "ar_SA";
+    public static final String TAMIL             = "ta_IN";
     public static final String INDONESIAN        = "in_ID";
     public static final String HEBREW            = "iw_IL";
     public static final String DUTCH             = "nl_NL";
@@ -65,6 +71,88 @@ public class LocaleUtils {
      */
     public static String getLocale() {
         return Prefs.getString(R.string.pk_locale, Locale.getDefault().getLanguage());
+    }
+
+    private static HashMap<String, Pair<Integer, Integer>> localeHash = null;
+
+    /**
+     * Returns a HashMap containing {@link Pair} with each language name and flag resource ID.
+     * The languages are keyed by the locale code
+     */
+    public static HashMap getLocaleHashMap() {
+        if (localeHash == null) {
+            localeHash = new HashMap<String, Pair<Integer, Integer>>() {
+                {
+                    put(ENGLISH, new Pair<>(R.string.language_english, R.drawable.flag_united_kingdom));
+                    put(ENGLISH_USA, new Pair<>(R.string.language_english, R.drawable.flag_united_states));
+                    put(SPANISH, new Pair<>(R.string.language_spanish, R.drawable.flag_spain));
+                    put(GERMAN, new Pair<>(R.string.language_german, R.drawable.flag_germany));
+                    put(FRENCH, new Pair<>(R.string.language_french, R.drawable.flag_france));
+                    put(RUSSIAN, new Pair<>(R.string.language_russian, R.drawable.flag_russia));
+                    put(PORTUGUESE_BRAZIL, new Pair<>(R.string.language_portuguese_br, R.drawable.flag_brazil));
+                    put(CZECH, new Pair<>(R.string.language_czech, R.drawable.flag_czech_republic));
+                    put(LITHUANIAN, new Pair<>(R.string.language_lithuanian, R.drawable.flag_lithuania));
+                    put(POLISH, new Pair<>(R.string.language_polish, R.drawable.flag_poland));
+                    put(CHINESE, new Pair<>(R.string.language_chinese, R.drawable.flag_china));
+                    put(CATALAN, new Pair<>(R.string.language_catalan, R.drawable.flag_spain));
+                    put(INDONESIAN, new Pair<>(R.string.language_indonesian, R.drawable.flag_indonesia));
+                    put(HEBREW, new Pair<>(R.string.language_hebrew, R.drawable.flag_israel));
+                    put(DUTCH, new Pair<>(R.string.language_dutch, R.drawable.flag_netherlands));
+                    put(SWEDISH, new Pair<>(R.string.language_swedish, R.drawable.flag_sweden));
+                    put(VALENCIAN, new Pair<>(R.string.language_valencian, R.drawable.flag_spain));
+                    put(ESPERANTO, new Pair<>(R.string.language_esperanto, R.drawable.flag_esperanto));
+                    put(ITALIAN, new Pair<>(R.string.language_italian, R.drawable.flag_italy));
+                    put(CROATIAN, new Pair<>(R.string.language_croatian, R.drawable.flag_croatia));
+                    put(SERBIAN_LATIN, new Pair<>(R.string.language_serbian, R.drawable.flag_serbia));
+                    put(TURKISH, new Pair<>(R.string.language_turkish, R.drawable.flag_turkey));
+                    put(SLOVAK, new Pair<>(R.string.language_slovak, R.drawable.flag_slovakia));
+                    put(JAPANESE, new Pair<>(R.string.language_japanese, R.drawable.flag_japan));
+                    put(HUNGARIAN, new Pair<>(R.string.language_hungarian, R.drawable.flag_hungary));
+                    put(VIETNAMESE, new Pair<>(R.string.language_vietnamese, R.drawable.flag_vietnam));
+                    put(ARABIC, new Pair<>(R.string.language_arabic, R.drawable.flag_sudan));
+                    put(TAMIL, new Pair<>(R.string.language_tamil, R.drawable.flag_india));
+                }
+            };
+        }
+
+        return localeHash;
+    }
+
+    /**
+     * Returns an array with all available locale codes
+     * @return
+     */
+    public static String[] getLocaleArray() {
+        return new String[] {
+                ENGLISH,
+                ENGLISH_USA,
+                SPANISH,
+                GERMAN,
+                FRENCH,
+                RUSSIAN,
+                PORTUGUESE_BRAZIL,
+                CZECH,
+                LITHUANIAN,
+                POLISH,
+                CHINESE,
+                CATALAN,
+                INDONESIAN,
+                HEBREW,
+                DUTCH,
+                SWEDISH,
+                VALENCIAN,
+                ESPERANTO,
+                ITALIAN,
+                CROATIAN,
+                SERBIAN_LATIN,
+                TURKISH,
+                SLOVAK,
+                JAPANESE,
+                HUNGARIAN,
+                VIETNAMESE,
+                ARABIC,
+                TAMIL
+        };
     }
 
     /**

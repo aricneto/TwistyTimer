@@ -1,11 +1,11 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +14,18 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.SettingsActivity;
+import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.LocaleUtils;
+import com.aricneto.twistytimer.utils.Prefs;
 
+import java.util.HashMap;
+import java.util.Locale;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -26,82 +36,10 @@ import butterknife.Unbinder;
 
 public class LocaleSelectDialog extends DialogFragment {
 
-    @BindView(R.id.en)    TextView en;
-    @BindView(R.id.en_US) TextView enUS;
-    @BindView(R.id.es)    TextView es;
-    @BindView(R.id.de)    TextView de;
-    @BindView(R.id.fr)    TextView fr;
-    @BindView(R.id.ru)    TextView ru;
-    @BindView(R.id.pt_BR) TextView ptBR;
-    @BindView(R.id.cs)    TextView cs;
-    @BindView(R.id.lt)    TextView lt;
-    @BindView(R.id.pl)    TextView pl;
-    @BindView(R.id.cn)    TextView cn;
-    @BindView(R.id.ca)    TextView ca;
-    @BindView(R.id.in)    TextView in;
-    @BindView(R.id.iw)    TextView iw;
-    @BindView(R.id.nl)    TextView nl;
-    @BindView(R.id.sv)    TextView sv;
-    @BindView(R.id.val)   TextView val;
-    @BindView(R.id.eo)    TextView eo;
-    @BindView(R.id.it)    TextView it;
-    @BindView(R.id.sr)    TextView sr;
-    @BindView(R.id.hr)    TextView hr;
-    @BindView(R.id.tr)    TextView tr;
-    @BindView(R.id.sk)    TextView sk;
-    @BindView(R.id.ja)    TextView ja;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     private Unbinder mUnbinder;
-
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            final String oldLocale = LocaleUtils.getLocale();
-            final String newLocale;
-
-            switch (view.getId()) {
-                case R.id.en:     newLocale = LocaleUtils.ENGLISH; break;
-                case R.id.en_US:  newLocale = LocaleUtils.ENGLISH_USA; break;
-                case R.id.es:     newLocale = LocaleUtils.SPANISH; break;
-                case R.id.de:     newLocale = LocaleUtils.GERMAN; break;
-                case R.id.fr:     newLocale = LocaleUtils.FRENCH; break;
-                case R.id.ru:     newLocale = LocaleUtils.RUSSIAN; break;
-                case R.id.pt_BR:  newLocale = LocaleUtils.PORTUGUESE_BRAZIL; break;
-                case R.id.cs:     newLocale = LocaleUtils.CZECH; break;
-                case R.id.lt:     newLocale = LocaleUtils.LITHUANIAN; break;
-                case R.id.pl:     newLocale = LocaleUtils.POLISH; break;
-                case R.id.cn:     newLocale = LocaleUtils.CHINESE; break;
-                case R.id.ca:     newLocale = LocaleUtils.CATALAN; break;
-                case R.id.in:     newLocale = LocaleUtils.INDONESIAN; break;
-                case R.id.iw:     newLocale = LocaleUtils.HEBREW; break;
-                case R.id.nl:     newLocale = LocaleUtils.DUTCH; break;
-                case R.id.sv:     newLocale = LocaleUtils.SWEDISH; break;
-                case R.id.val:    newLocale = LocaleUtils.VALENCIAN; break;
-                case R.id.eo:     newLocale = LocaleUtils.ESPERANTO; break;
-                case R.id.it:     newLocale = LocaleUtils.ITALIAN; break;
-                case R.id.hr:     newLocale = LocaleUtils.CROATIAN; break;
-                case R.id.sr:     newLocale = LocaleUtils.SERBIAN_LATIN; break;
-                case R.id.tr:     newLocale = LocaleUtils.TURKISH; break;
-                case R.id.sk:     newLocale = LocaleUtils.SLOVAK; break;
-                case R.id.ja:     newLocale = LocaleUtils.JAPANESE; break;
-                default:          newLocale = oldLocale;
-            }
-
-            Log.d("LocaleSelectDialog", "Selected locale: " + newLocale);
-
-            // If the locale has been changed, then the activity will need to be recreated. The
-            // locale can only be applied properly during the inflation of the layouts, so it has
-            // to go back to "Activity.updateLocale()" to do that.
-            if (!newLocale.equals(oldLocale)) {
-                LocaleUtils.setLocale(newLocale);
-
-                ((SettingsActivity) getActivity()).onRecreateRequired();
-            }
-
-            dismiss();
-
-        }
-    };
 
     public static LocaleSelectDialog newInstance() {
         return new LocaleSelectDialog();
@@ -112,8 +50,8 @@ public class LocaleSelectDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_settings_change_locale, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setAdapter(new LocaleSelectAdapter(getActivity()));
 
         return dialogView;
     }
@@ -121,32 +59,6 @@ public class LocaleSelectDialog extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        en.setOnClickListener(clickListener);
-        enUS.setOnClickListener(clickListener);
-        es.setOnClickListener(clickListener);
-        de.setOnClickListener(clickListener);
-        fr.setOnClickListener(clickListener);
-        ru.setOnClickListener(clickListener);
-        ptBR.setOnClickListener(clickListener);
-        cs.setOnClickListener(clickListener);
-        lt.setOnClickListener(clickListener);
-        pl.setOnClickListener(clickListener);
-        ca.setOnClickListener(clickListener);
-        in.setOnClickListener(clickListener);
-        iw.setOnClickListener(clickListener);
-        nl.setOnClickListener(clickListener);
-        sv.setOnClickListener(clickListener);
-        val.setOnClickListener(clickListener);
-        eo.setOnClickListener(clickListener);
-        cn.setOnClickListener(clickListener);
-        it.setOnClickListener(clickListener);
-        sr.setOnClickListener(clickListener);
-        hr.setOnClickListener(clickListener);
-        tr.setOnClickListener(clickListener);
-        sk.setOnClickListener(clickListener);
-        ja.setOnClickListener(clickListener);
-
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -156,5 +68,63 @@ public class LocaleSelectDialog extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+}
+
+class LocaleSelectAdapter extends RecyclerView.Adapter<LocaleSelectAdapter.CardViewHolder> {
+
+    private FragmentActivity                        mActivity;
+    private String                                  oldLocale;
+    private String                                  newLocale;
+    private HashMap<String, Pair<Integer, Integer>> localeHash;
+    private String[]                                locales;
+
+    LocaleSelectAdapter(FragmentActivity mActivity) {
+        this.mActivity = mActivity;
+        this.oldLocale = LocaleUtils.getLocale();
+        this.localeHash = LocaleUtils.getLocaleHashMap();
+        this.locales = LocaleUtils.getLocaleArray();
+    }
+
+    @Override
+    public LocaleSelectAdapter.CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // create a new view
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_locale, parent, false);
+
+        return new CardViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(CardViewHolder holder, int position) {
+        String itemLocale = locales[position];
+        holder.localeItem.setText(localeHash.get(itemLocale).first);
+        holder.localeItem.setCompoundDrawablesWithIntrinsicBounds(localeHash.get(itemLocale).second, 0, 0, 0);
+
+        holder.localeItem.setOnClickListener(v -> {
+            newLocale = itemLocale;
+            // If the locale has been changed, then the activity will need to be recreated. The
+            // locale can only be applied properly during the inflation of the layouts, so it has
+            // to go back to "Activity.updateLocale()" to do that.
+            if (!newLocale.equals(oldLocale)) {
+                LocaleUtils.setLocale(newLocale);
+
+                ((SettingsActivity) mActivity).onRecreateRequired();
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return locales.length;
+    }
+
+    static class CardViewHolder extends RecyclerView.ViewHolder {
+        TextView localeItem;
+
+        public CardViewHolder(View view) {
+            super(view);
+            this.localeItem = view.findViewById(R.id.locale_item);
+        }
     }
 }

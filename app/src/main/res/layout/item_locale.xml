@@ -1,0 +1,5 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/locale_item"
+    style="@style/DialogItem"
+    android:drawableLeft="@drawable/flag_united_kingdom"
+    android:text="@string/language_english" />

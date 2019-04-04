@@ -90,7 +90,7 @@
     <string name="graph_legend_all_times">所有成绩</string>
     <string name="graph_legend_avg_prefix">Ao</string>
     <string name="graph_legend_best_times">最好成绩</string>
-    <string name="graph_mean">总平均</string>
+    <string name="graph_mean">所有平均</string>
     <string name="hideTimeSummary">在还原结束后，计时器才会显示出你的成绩</string>
     <string name="hideTimeTitle">在还原过程中隐藏时间</string>
     <string name="holdEnabledSummary">按住0.5秒后启动计时</string>
@@ -130,7 +130,7 @@
     <string name="panel_swipe_down_to_hide">向下滑动以隐藏</string>
     <string name="permission_denied_explanation">为了使用导入/导出功能，你需要授权给Twisty Timer使用外部存储器的权限。</string>
     <string name="personal_best_message">恭喜！\n你刚刚打破了你先前的最好成绩，进步了%1$s</string>
-    <string name="personal_worst_message">恭喜！\n这是你的最差成绩，比先前还慢了%1$s</string>
+    <string name="personal_worst_message">抱歉！\n这是你的最差成绩，比先前还慢了%1$s</string>
     <string name="pref_category_title_advanced">高级设置</string>
     <string name="pref_category_title_alerts">提醒</string>
     <string name="pref_category_title_control">控制</string>
@@ -203,7 +203,7 @@
     <string name="graph_stats_title_session_best">本组最快</string>
     <string name="graph_stats_title_current">当前组\n成绩</string>
     <string name="graph_stats_label_deviation">标准差</string>
-    <string name="graph_stats_label_mean">平均</string>
+    <string name="graph_stats_label_mean">所有平均</string>
     <string name="graph_stats_label_best">最好成绩</string>
     <string name="graph_stats_label_worst">最差成绩</string>
     <string name="graph_stats_label_total_time">总时长</string>
