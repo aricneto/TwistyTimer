@@ -1,12 +1,9 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,9 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.TwistyTimer;
-import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.fragment.AlgListFragment;
+import com.aricneto.twistytimer.fragment.BaseFragment;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube;
@@ -30,10 +25,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
@@ -42,19 +35,23 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  */
 
 public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DialogListener {
-    private Context          mContext;
-    HashMap<Character, Integer> colorHash;
 
-    private String subset;
+    private Context          mContext;
+    private HashMap<Character, Integer> colorHash;
+
+    private String                         mSubset;
     private ArrayList<AlgorithmModel.Case> cases;
+
+    private FragmentManager fragmentManager;
 
     // Locks opening new windows until the last one is dismissed
     private boolean isLocked;
 
-    public AlgRecylerAdapter(Context context, String subset) {
+    public AlgRecylerAdapter(Context context, FragmentManager manager, String mSubset) {
         this.mContext = context;
         this.colorHash = AlgUtils.getColorLetterHashMap();
-        this.subset = subset;
+        this.mSubset = mSubset;
+        this.fragmentManager = manager;
 
         String myJson = StoreUtils.inputStreamToString(context.getResources().openRawResource(R.raw.algorithms));
         AlgorithmModel model = new Gson().fromJson(myJson, AlgorithmModel.class);
@@ -89,24 +86,25 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void handleTime(AlgHolder holder, int position) {
-        final String pName = cases.get(position).getName();
-        final String pState = AlgUtils.getCaseState(mContext, subset, pName);
+        AlgorithmModel.Case pCase = cases.get(position);
+        final String pName = pCase.getName();
+        final String pState = AlgUtils.getCaseState(mContext, mSubset, pName);
 
-//        holder.root.setOnClickListener(view -> {
-//            if (! isLocked()) {
-//                setIsLocked(true);
-//                AlgDialog algDialog = AlgDialog.newInstance(mId);
-//                algDialog.show(mFragmentManager, "alg_dialog");
-//                algDialog.setDialogListener(AlgRecylerAdapter.this);
-//            }
-//        });
+        holder.root.setOnClickListener(view -> {
+            if (! isLocked()) {
+                setIsLocked(true);
+                AlgDialog algDialog = AlgDialog.newInstance(mSubset, pCase);
+                algDialog.show(fragmentManager, "alg_dialog");
+                algDialog.setDialogListener(AlgRecylerAdapter.this);
+            }
+        });
 
         holder.name.setText(pName);
         //holder.progressBar.setProgress(pProgress);
         holder.cube.setCubeState(pState);
 
-        // If the subset is PLL, it'll need to show the pll arrows.
-        if (subset.equals("PLL")) {
+        // If the mSubset is PLL, it'll need to show the pll arrows.
+        if (mSubset.equals("PLL")) {
             holder.pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, pName));
             holder.pllArrows.setVisibility(View.VISIBLE);
         }

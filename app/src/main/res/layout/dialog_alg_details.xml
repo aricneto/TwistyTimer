@@ -59,28 +59,23 @@
             tools:visibility="visible"
             tools:src="@drawable/pll_gc_perm" />
 
-        <TextView
-            android:id="@+id/algText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ListView
+            android:id="@+id/algList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_below="@id/cube"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:lineSpacingExtra="4sp"
+            android:layout_marginTop="8dp"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
-            tools:text="R U2 R2 U' R U' R' U2 F R F'
-y R' F R U R U' R2 F' R2 U' R' U R U R'
-r U2 R2 F R F' U2 r' F R F'
-R' U2 R2 U R' U R U2 y R' F' R" />
+            android:textSize="14sp" />
 
         <include
             android:id="@+id/divider02"
             layout="@layout/view_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/algText"
+            android:layout_below="@id/algList"
             android:layout_marginTop="16dp" />
 
         <ImageView

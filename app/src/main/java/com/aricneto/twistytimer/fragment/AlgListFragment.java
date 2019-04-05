@@ -152,7 +152,6 @@ public class AlgListFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // To fix memory leaks
         unregisterReceiver(mAlgDataChangedReceiver);
         unregisterReceiver(mUIInteractionReceiver);
     }
@@ -160,7 +159,7 @@ public class AlgListFragment extends BaseFragment {
     private void setupRecyclerView() {
         Activity parentActivity = getActivity();
 
-        algCursorAdapter = new AlgRecylerAdapter(getActivity(), "OLL");
+        algCursorAdapter = new AlgRecylerAdapter(getActivity(), getFragmentManager(), "OLL");
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =

@@ -1,40 +1,31 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.AppCompatSeekBar;
-import android.text.InputType;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.TwistyTimer;
-import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
-import com.aricneto.twistytimer.utils.ThemeUtils;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -47,18 +38,18 @@ public class AlgDialog extends DialogFragment {
     private Unbinder mUnbinder;
     private Context mContext;
 
-    @BindView(R.id.editButton)     ImageView           editButton;
-    @BindView(R.id.progressButton) ImageView           progressButton;
-    @BindView(R.id.progressBar)    MaterialProgressBar progressBar;
-    @BindView(R.id.algText)        TextView            algText;
-    @BindView(R.id.nameText)       TextView            nameText;
-    @BindView(R.id.revertButton)   ImageView           revertButton;
-    @BindView(R.id.pll_arrows)     ImageView           pllArrows;
-    @BindView(R.id.cube)           Cube                cube;
+    @BindView(R.id.editButton)    ImageView           editButton;
+    @BindView(R.id.progressButton)ImageView           progressButton;
+    @BindView(R.id.progressBar) MaterialProgressBar progressBar;
+    @BindView(R.id.algList)     ListView            algList;
+    @BindView(R.id.nameText)    TextView            nameText;
+    @BindView(R.id.revertButton)ImageView           revertButton;
+    @BindView(R.id.pll_arrows)  ImageView           pllArrows;
+    @BindView(R.id.cube)        Cube                cube;
 
-    private long           mId;
-    private AlgorithmModel.Case algorithm;
-    private DialogListener dialogListener;
+    private AlgorithmModel.Case mCase;
+    private String mSubset;
+    private DialogListener      dialogListener;
 /*
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -72,7 +63,7 @@ public class AlgDialog extends DialogFragment {
                             .input("", algorithm.getAlgorithms(), (dialog1, input) -> {
                                 algorithm.setAlgs(input.toString());
                                 dbHandler.updateAlgorithmAlg(mId, input.toString());
-                                algText.setText(input.toString());
+                                algList.setText(input.toString());
                                 updateList();
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
@@ -116,7 +107,7 @@ public class AlgDialog extends DialogFragment {
                             .onPositive((dialog13, which) -> {
                                 algorithm.setAlgs(AlgUtils.getDefaultAlgs(algorithm.getSubset(), algorithm.getName()));
                                 dbHandler.updateAlgorithmAlg(mId, algorithm.getAlgs());
-                                algText.setText(algorithm.getAlgs());
+                                algList.setText(algorithm.getAlgs());
                             })
                             .build());
                     break;
@@ -124,10 +115,11 @@ public class AlgDialog extends DialogFragment {
         }
     };*/
 
-    public static AlgDialog newInstance(long id) {
+    public static AlgDialog newInstance(String subset, AlgorithmModel.Case algCase) {
         AlgDialog timeDialog = new AlgDialog();
         Bundle args = new Bundle();
-        args.putLong("id", id);
+        args.putParcelable("case", algCase);
+        args.putString("subset", subset);
         timeDialog.setArguments(args);
         return timeDialog;
     }
@@ -138,35 +130,38 @@ public class AlgDialog extends DialogFragment {
         mUnbinder = ButterKnife.bind(this, dialogView);
 
         mContext = getContext();
-        mId = getArguments().getLong("id");
+        mCase = getArguments().getParcelable("case");
+        mSubset = getArguments().getString("subset");
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-//        final Algorithm matchedAlgorithm = TwistyTimer.getDBHandler().getAlgorithm(mId);
-//
-//        if (matchedAlgorithm != null) {
-//            algorithm = matchedAlgorithm;
-//            algText.setText(algorithm.getAlgs());
-//            nameText.setText(algorithm.getName());
-//
-//            cube.setCubeState(AlgUtils.getCaseState(getContext(), algorithm.getSubset(), algorithm.getName()));
-//
-//            progressBar.setProgress(algorithm.getProgress());
-//
-//            revertButton.setOnClickListener(clickListener);
-//            progressButton.setOnClickListener(clickListener);
-//            editButton.setOnClickListener(clickListener);
-//
-//            // If the subset is PLL, it'll need to show the pll arrows.
-//            if (algorithm.getSubset().equals("PLL")) {
-//                pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), algorithm.getName()));
-//                pllArrows.setVisibility(View.VISIBLE);
-//            }
-//
-//        }
-
         return dialogView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ArrayAdapter<String> algAdapter =
+                new ArrayAdapter<>(mContext, R.layout.item_alg_list_text, mCase.getAlgorithms());
+
+        algList.setAdapter(algAdapter);
+        nameText.setText(mCase.getName());
+
+        cube.setCubeState(mCase.getState());
+
+        //progressBar.setProgress(algorithm.getProgress());
+
+//        revertButton.setOnClickListener(clickListener);
+//        progressButton.setOnClickListener(clickListener);
+//        editButton.setOnClickListener(clickListener);
+
+        // If the subset is PLL, it'll need to show the pll arrows.
+        if (mSubset.equals("PLL")) {
+            pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), mCase.getName()));
+            pllArrows.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setDialogListener(DialogListener listener) {

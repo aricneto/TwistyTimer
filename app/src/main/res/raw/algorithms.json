@@ -22,6 +22,551 @@
             "y r U r' U2 R U2 R' U2 r U' r'",
             "F R U r' U' R U R' M' U' F'"
           ]
+        },
+        {
+          "name": "OLL 03",
+          "state": "XYYNXNNNNYYNYNYNYNNNXNYYX",
+          "algorithms": [
+            "y' f R U R' U' f' U' F R U R' U' F'",
+            "r' R2 U R' U r U2 r' U M'",
+            "r' R U R' F2 R U L' U L M'",
+            "y F U R U' R' F' U F R U R' U' F'"
+          ]
+        },
+        {
+          "name": "OLL 04",
+          "state": "XNYYXYNNNNYNYNYNNNYNXYYNX",
+          "algorithms": [
+            "y' f R U R' U' f' U F R U R' U' F'",
+            "M U' r U2 r' U' R U' R2 r",
+            "y F U R U' R' F' U' F R U R' U' F'",
+            "y2 r R2' U' R U' r' U2 r U' M"
+          ]
+        },
+        {
+          "name": "OLL 05",
+          "state": "XYYNXNNNNYYNYYNYNYYNXNNNX",
+          "algorithms": [
+            "r' U2 R U R' U r",
+            "y2 l' U2 L U L' U l",
+            "y2 R' F2 r U r' F R",
+            "L' U' L2 F' L' F2 U' F'"
+          ]
+        },
+        {
+          "name": "OLL 06",
+          "state": "XNNNXYNYYNYNYYNNNNNYXYYNX",
+          "algorithms": [
+            "r U2 R' U' R U' r'",
+            "y2 l U2 L' U' L U' l'",
+            "y2 R U R2 F R F2 U F",
+            "y' x' D R2 U' R' U R' D' x"
+          ]
+        },
+        {
+          "name": "OLL 07",
+          "state": "XYNNXNNYNYNYYNYNYNNNXNYYX",
+          "algorithms": [
+            "r U R' U R U2 r'",
+            "L' U2 L U2 L F' L' F",
+            "F R' F' R U2 R U2 R'",
+            "r U r' U R U' R' r U' r'"
+          ]
+        },
+        {
+          "name": "OLL 08",
+          "state": "XNNYXYNYNNYNYYNNNNYNXYYNX",
+          "algorithms": [
+            "y2 r' U' R U' R' U2 r",
+            "l' U' L U' L' U2 l",
+            "R U2 R' U2 R' F R F'",
+            "F' L F L' U2 L' U2 L"
+          ]
+        },
+        {
+          "name": "OLL 09",
+          "state": "XNYNXYNNYNNYYNYNNYNYXYNNX",
+          "algorithms": [
+            "y R U R' U' R' F R2 U R' U' F'",
+            "y2 R' U' R U' R' U R' F R F' U R",
+            "r' R2 U2 R' U' R U' R' U' M'",
+            "y' L' U' L U' L F' L' F L' U2 L"
+          ]
+        },
+        {
+          "name": "OLL 10",
+          "state": "XYYNXNNNYNNYYNYYNYNNXNNYX",
+          "algorithms": [
+            "R U R' U R' F R F' R U2 R'",
+            "R U R' y R' F R U' R' F' R",
+            "y2 L' U' L U L F' L2 U' L U F",
+            "R U R' y' r' U r U' r' U' r"
+          ]
+        },
+        {
+          "name": "OLL 11",
+          "state": "XYYNXNNNNYYNYYNNYYNNXNNYX",
+          "algorithms": [
+            "r' R2 U R' U R U2 R' U M'",
+            "M R U R' U R U2 R' U M'",
+            "r U R' U R' F R F' R U2 r'",
+            "y2 r U R' U R' F R F' R U2 r'"
+          ]
+        },
+        {
+          "name": "OLL 12",
+          "state": "XNYNXYNNYNYNYYNNNYNYXYNNX",
+          "algorithms": [
+            "F R U R' U' F' U F R U R' U' F'",
+            "y' r R2' U' R U' R' U2 R U' R r'",
+            "y M U2 R' U' R U' R' U2 R U M'",
+            "y M L' U' L U' L' U2 L U' M'"
+          ]
+        },
+        {
+          "name": "OLL 13",
+          "state": "XYYNXNNNNYNYYYNNYNNNXNYYX",
+          "algorithms": [
+            "r U' r' U' r U r' F' U F",
+            "F U R U' R2 F' R U R U' R'",
+            "F U R U2 R' U' R U R' F'",
+            "r U' r' U' r U r' y' R' U R"
+          ]
+        },
+        {
+          "name": "OLL 14",
+          "state": "XNYYXYNNNNNYYYNNNNYNXYYNX",
+          "algorithms": [
+            "R' F R U R' F' R F U' F'",
+            "R' F R U R' F' R y' R U' R'",
+            "F' U' r' F r2 U r' U' r' F r",
+            "r' U r U r' U' r y R U' R'"
+          ]
+        },
+        {
+          "name": "OLL 15",
+          "state": "XYYNXNNNNYNYYYNYNNYNXNYNX",
+          "algorithms": [
+            "r' U' r R' U' R U r' U r",
+            "y2 l' U' l L' U' L U l' U l",
+            "r' U' M' U' R U r' U r",
+            "y' R' U2 R U R' F U R U' R' F' R"
+          ]
+        },
+        {
+          "name": "OLL 16",
+          "state": "XNYNXYNNYNNYYYNNNNNYXYYNX",
+          "algorithms": [
+            "r U r' R U R' U' r U' r'",
+            "r U M U R' U' r U' r'",
+            "y2 R' F R U R' U' F' R U' R' U2 R",
+            "y2 l U l' L U L' U' l U' l'"
+          ]
+        },
+        {
+          "name": "OLL 17",
+          "state": "XNYYXNYNNNYNYNYYNNYNXNYNX",
+          "algorithms": [
+            "R U R' U R' F R F' U2 R' F R F'",
+            "f R U R' U' f' U' R U R' U' R' F R F'",
+            "y2 F R' F' R2 r' U R U' R' U' M'",
+            "y' F' r U r' U' S r' F r S'"
+          ]
+        },
+        {
+          "name": "OLL 18",
+          "state": "XNYNXNYNYNYNYNYNNNNNXYYYX",
+          "algorithms": [
+            "r U R' U R U2 r2 U' R U' R' U2 r",
+            "y R U2 R2 F R F' U2 M' U R U' r'",
+            "y2 F R U R' d R' U2 R' F R F'",
+            "y2 F R U R' U y' R' U2 R' F R F'"
+          ]
+        },
+        {
+          "name": "OLL 19",
+          "state": "XNYNXNYNYNYNYNYYNNNYXNYNX",
+          "algorithms": [
+            "M U R U R' U' M' R' F R F'",
+            "r' R U R U R' U' r R2' F R F'",
+            "r' U2 R U R' U r2 U2 R' U' R U' r'",
+            "R' U2 F R U R' U' F2 U2 F R"
+          ]
+        },
+        {
+          "name": "OLL 20",
+          "state": "XNYNXNYNYNYNYNYNYNYNXNYNX",
+          "algorithms": [
+            "M U R U R' U' M2 U R U' r'",
+            "r U R' U' M2 U R U' R' U' M'",
+            "M' U M' U M' U M' U' M' U M' U M' U M'",
+            "M' U' R' U' R U M2' U' R' U r"
+          ]
+        },
+        {
+          "name": "OLL 21",
+          "state": "XNNNXYNYNYNYYYNYNYNYXNNNX",
+          "algorithms": [
+            "y R U2 R' U' R U R' U' R U' R'",
+            "y F R U R' U' R U R' U' R U R' U' F'",
+            "R U R' U R U' R' U R U2 R'",
+            "R' U' R U' R' U R U' R' U2 R"
+          ]
+        },
+        {
+          "name": "OLL 22",
+          "state": "XNNYXYNYNNNYYYNYNYNNXNNYX",
+          "algorithms": [
+            "R U2 R2 U' R2 U' R2 U2 R",
+            "f R U R' U' f' F R U R' U' F'",
+            "R' U2 R2 U R2 U R2 U2 R'",
+            "R U2' R2' U' R2 U' R2' U2 R"
+          ]
+        },
+        {
+          "name": "OLL 23",
+          "state": "XNNNXNYYYNNYYYNNNYNNXYNYX",
+          "algorithms": [
+            "R2 D R' U2 R D' R' U2 R'",
+            "y2 R2 D' R U2 R' D R U2 R",
+            "y R U R' U' R U' R' U2 R U' R' U2 R U R'",
+            "R U R' U R U2 R2 U' R U' R' U2 R"
+          ]
+        },
+        {
+          "name": "OLL 24",
+          "state": "XYNNXNNYYNNYYYNNNYYNXYNNX",
+          "algorithms": [
+            "r U R' U' r' F R F'",
+            "y2 l' U' L U R U' r' F",
+            "y' x' R U R' D R U' R' D' x",
+            "r U R' U' L' U R U' x'"
+          ]
+        },
+        {
+          "name": "OLL 25",
+          "state": "XNNNXNYYNYNYYYNNNYYNXYNNX",
+          "algorithms": [
+            "y F' r U R' U' r' F R",
+            "R' F R B' R' F' R B",
+            "F R' F' r U R U' r'",
+            "y2 R U2 R' U' R U R' U' R U R' U' R U' R'"
+          ]
+        },
+        {
+          "name": "OLL 26",
+          "state": "XNNYXNYYNNNYYYNNNYNYXYNNX",
+          "algorithms": [
+            "y R U2 R' U' R U' R'",
+            "R' U' R U' R' U2 R",
+            "y2 L' U' L U' L' U2 L",
+            "R' U L U' R U L'"
+          ]
+        },
+        {
+          "name": "OLL 27",
+          "state": "XYNNXNNYNYNYYYNNYYNNXNNYX",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y' R' U2 R U R' U R",
+            "R U' L' U R' U' L",
+            "y L' U2 L U L' U L"
+          ]
+        },
+        {
+          "name": "OLL 28",
+          "state": "XNNNXNYYYNNYYNYNYNYNXNYNX",
+          "algorithms": [
+            "r U R' U' M U R U' R'",
+            "y2 M' U M U2 M' U M",
+            "M U M' U2 M U M'",
+            "y' M' U' M U2 M' U' M"
+          ]
+        },
+        {
+          "name": "OLL 29",
+          "state": "XNYNXNYNYNNYYNYYNYNYXNNNX",
+          "algorithms": [
+            "M U R U R' U' R' F R F' M'",
+            "r2 D' r U r' D r2 U' r' U' r",
+            "y R U R' U' R U' R' F' U' F R U R'",
+            "y2 R' F R F' R U2 R' U' F' U' F"
+          ]
+        },
+        {
+          "name": "OLL 30",
+          "state": "XNYNXNYNYNYNYYNYNYNYXNNNX",
+          "algorithms": [
+            "M U' L' U' L U L F' L' F M'",
+            "y' r' D' r U' r' D r2 U' r' U r U r'",
+            "y2 F R' F R2 U' R' U' R U R' F2",
+            "R2 U R' B' R U' R2 U R B R'"
+          ]
+        },
+        {
+          "name": "OLL 31",
+          "state": "XYNNXNNYYNYNYYNNNNYNXYYNX",
+          "algorithms": [
+            "R' U' F U R U' R' F' R",
+            "y2 S' L' U' L U L F' L' f",
+            "y' F R' F' R U R U R' U' R U' R'",
+            "y S R U R' U' f' U' F"
+          ]
+        },
+        {
+          "name": "OLL 32",
+          "state": "XYYNXNNNYNYNYYNNNYYNXYNNX",
+          "algorithms": [
+            "S R U R' U' R' F R f'",
+            "R U B' U' R' U R B R'",
+            "y2 L U F' U' L' U L F L'",
+            "R d L' d' R' U l U l'"
+          ]
+        },
+        {
+          "name": "OLL 33",
+          "state": "XYYNXNNNYNNYYYNNNNYNXYYNX",
+          "algorithms": [
+            "R U R' U' R' F R F'",
+            "F R U' R' U R U R' F'",
+            "y2 L' U' L U L F' L' F",
+            "y' r' U' r' D' r U r' D r2"
+          ]
+        },
+        {
+          "name": "OLL 34",
+          "state": "XNYNXNYNYNNYYYNYNNNYXNYNX",
+          "algorithms": [
+            "y2 R U R' U' B' R' F R F' B",
+            "y2 R U R2 U' R' F R U R U' F'",
+            "F R U R' U' R' F' r U R U' r'",
+            "y2 R U R' U' y' r' U' R U M'"
+          ]
+        },
+        {
+          "name": "OLL 35",
+          "state": "XNYNXNYNNYYNYYNNNYYNXYNNX",
+          "algorithms": [
+            "R U2 R2' F R F' R U2 R'",
+            "f R U R' U' f' R U R' U R U2 R'",
+            "y' R U2 R' U' R U' R' U2 F R U R' U' F'",
+            "R U2 R' U' y' r' U r U' r' U' r"
+          ]
+        },
+        {
+          "name": "OLL 36",
+          "state": "XNYNXNYNNYNYYNYNNYYNXYNNX",
+          "algorithms": [
+            "y2 L' U' L U' L' U L U L F' L' F",
+            "R' U' R U' R' U R U l U' R' U x",
+            "R' U' R U' R' U R U R y R' F' R",
+            "R U2 r D r' U2 r D' R' r'"
+          ]
+        },
+        {
+          "name": "OLL 37",
+          "state": "XNNNXNYYNYNYYNYNNNYNXYYNX",
+          "algorithms": [
+            "F R U' R' U' R U R' F'",
+            "F R' F' R U R U' R'",
+            "R' F R F' U' F' U F",
+            "y' R U2 R' F R' F' R2 U2 R'"
+          ]
+        },
+        {
+          "name": "OLL 38",
+          "state": "XYNNXNNYYNNYYNYNYNNYXNYNX",
+          "algorithms": [
+            "R U R' U R U' R' U' R' F R F'",
+            "L' U' L F L' U' L U L F' L' U L F' L' F"
+          ]
+        },
+        {
+          "name": "OLL 39",
+          "state": "XNNYXNYYNNYNYNYYNYYNXNNNX",
+          "algorithms": [
+            "y L F' L' U' L U F U' L'",
+            "y' R U R' F' U' F U R U2 R'",
+            "y' R B' R' U' R U B U' R'",
+            "R' r' D' r U' r' D r U R"
+          ]
+        },
+        {
+          "name": "OLL 40",
+          "state": "XNNNXYNYYNYNYNYNYYNNXNNYX",
+          "algorithms": [
+            "y R' F R U R' U' F' U R",
+            "R r D r' U r D' r' U' R'",
+            "y' f R' F' R U R U' R' S'",
+            "y' F R U R' U' F' R U R' U R U2 R'"
+          ]
+        },
+        {
+          "name": "OLL 41",
+          "state": "XNYNXNYNYNYNYYNNNYNNXYNYX",
+          "algorithms": [
+            "y2 R U R' U R U2' R' F R U R' U' F'",
+            "R U' R' U2 R U y R U' R' U' F'",
+            "y' L F' L' F L F' L' F L' U' L U L' U' L",
+            "f R U R' U' f' U' R U R' U R U2 R'"
+          ]
+        },
+        {
+          "name": "OLL 42",
+          "state": "XNYNXNYNYNNYYNYNNYNNXYNYX",
+          "algorithms": [
+            "R' U' R U' R' U2 R F R U R' U' F'",
+            "y R' F R F' R' F R F' R U R' U' R U R'",
+            "L' U L U2 L' U' y' L' U L U F",
+            "R' U R U2 R' U' F' U F U R"
+          ]
+        },
+        {
+          "name": "OLL 43",
+          "state": "XNYNXNYNNYNYYNYNYYNYXNNNX",
+          "algorithms": [
+            "f' L' U' L U f",
+            "y2 F' U' L' U L F",
+            "y R' U' F' U F R",
+            "y2 R' U' F R' F' R U R"
+          ]
+        },
+        {
+          "name": "OLL 44",
+          "state": "XNYNXYNNYNYNYYNYNYYNXNNNX",
+          "algorithms": [
+            "f R U R' U' f'",
+            "y2 F U R U' R' F'",
+            "y2 r U x' R U' R' U x U' r'",
+            "y' L d R U' R' F'"
+          ]
+        },
+        {
+          "name": "OLL 45",
+          "state": "XNYNXYNNYNNYYYNYNNYNXNYNX",
+          "algorithms": [
+            "F R U R' U' F'",
+            "y2 f U R U' R' f'",
+            "y2 F' L' U' L U F",
+            "F R2 D R' U R D' R2 U' F'"
+          ]
+        },
+        {
+          "name": "OLL 46",
+          "state": "XNNNXNYYNYYNYNYNYYNYXNNNX",
+          "algorithms": [
+            "R' U' R' F R F' U R",
+            "y F R U R' y' R' U R U2 R'",
+            "y2 r' F' L' U L U' F r"
+          ]
+        },
+        {
+          "name": "OLL 47",
+          "state": "XYNNXNNYNYYNYYNNNNNYXYYNX",
+          "algorithms": [
+            "F' L' U' L U L' U' L U F",
+            "R' U' R' F R F' R' F R F' U R",
+            "R' U' l' U R U' R' U R U' x' U R",
+            "y2 B' R' U' R U R' U' R U B"
+          ]
+        },
+        {
+          "name": "OLL 48",
+          "state": "XNNYXYNYNNNYYNYYNNNNXNYYX",
+          "algorithms": [
+            "F R U R' U' R U R' U' F'",
+            "R U2 R' U' R U R' U2 R' F R F'"
+          ]
+        },
+        {
+          "name": "OLL 49",
+          "state": "XYYNXNNNNYNYYNYNNYNYXYNNX",
+          "algorithms": [
+            "y2 r U' r2 U r2 U r2 U' r",
+            "l U' l2 U l2 U l2 U' l",
+            "R B' R2 F R2 B R2 F' R",
+            "y2 R' F R' F' R2 U2 B' R B R'"
+          ]
+        },
+        {
+          "name": "OLL 50",
+          "state": "XNYYXYNNNNYNYYNYNYNNXNNYX",
+          "algorithms": [
+            "r' U r2 U' r2' U' r2 U r'",
+            "y2 R' F R2 B' R2 F' R2 B R'",
+            "y' R U2 R' U' R U' R' F R U R' U' F'",
+            "y2 l' U l2 U' l2 U' l2 U l'"
+          ]
+        },
+        {
+          "name": "OLL 51",
+          "state": "XNYYXYNNNNNYYYNYNNNNXNYYX",
+          "algorithms": [
+            "f R U R' U' R U R' U' f'",
+            "y2 F U R U' R' U R U' R' F'",
+            "y' R' U' R' F R F' R U' R' U2 R",
+            "y2 f' L' U' L U L' U' L U f"
+          ]
+        },
+        {
+          "name": "OLL 52",
+          "state": "XYNNXNNYNYYNYNYNNYNYXYNNX",
+          "algorithms": [
+            "R U R' U R d' R U' R' F'",
+            "R' U' R U' R' d R' U R B",
+            "R' U' R U' R' U F' U F R",
+            "R U R' U R U' y R U' R' F'"
+          ]
+        },
+        {
+          "name": "OLL 53",
+          "state": "XNYNXYNNNYYNYYNYNYNYXNNNX",
+          "algorithms": [
+            "r' U' R U' R' U R U' R' U2 r",
+            "y2 l' U' L U' L' U L U' L' U2 l",
+            "y r' U2 R U R' U' R U R' U r",
+            "y' l' U2 L U L' U' L U L' U l"
+          ]
+        },
+        {
+          "name": "OLL 54",
+          "state": "XNNNXYNYNYYNYYNYNNNYXNYNX",
+          "algorithms": [
+            "r U R' U R U' R' U R U2 r'",
+            "y' r U2 R' U' R U R' U' R U' r'",
+            "F' L' U' L U L' U L U' L' U' L F",
+            "y2 F R' F' R U2 F2 L F L' F"
+          ]
+        },
+        {
+          "name": "OLL 55",
+          "state": "XNNNXYNYNYYNYNYYNYNYXNNNX",
+          "algorithms": [
+            "R U2 R2 U' R U' R' U2 F R F'",
+            "y R' F R U R U' R2 F' R2 U' R' U R U R'",
+            "r U2 R2 F R F' U2 r' F R F'",
+            "R' U2 R2 U R' U R U2 y R' F' R"
+          ]
+        },
+        {
+          "name": "OLL 56",
+          "state": "XNYNXYNNNYNYYYNYNNNYXNYNX",
+          "algorithms": [
+            "r U r' U R U' R' U R U' R' r U' r'",
+            "F R U R' U' R F' r U R' U' r'",
+            "y f R U R' U' f' F R U R' U' R U R' U' F'",
+            "r' U' r U' R' U R U' R' U R r' U r"
+          ]
+        },
+        {
+          "name": "OLL 57",
+          "state": "XNYNXNYNYNNYYYNNYNYNXNYNX",
+          "algorithms": [
+            "R U R' U' M' U R U' r'",
+            "M' U M' U M' U2 M U M U M",
+            "R U R' U' r R' U R U' r'",
+            "M' U M' U M' U M' U2 M' U M' U M' U M'"
+          ]
         }
       ]
     }
