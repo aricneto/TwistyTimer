@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
-import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
@@ -310,7 +309,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 case ACTION_CHANGED_CATEGORY:
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
-                    bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
+                    //bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
                     updatePuzzleSpinnerHeader();
                     handleStatisticsLoader();
 
@@ -320,7 +319,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         }
     };
-    private BottomSheetTrainerDialog bottomSheetTrainerDialog;
+    //private BottomSheetTrainerDialog bottomSheetTrainerDialog;
     private PuzzleSelectDialog puzzleSelectDialog;
     private Context mContext;
     private FragmentManager mFragmentManager;
@@ -651,14 +650,16 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         puzzleSelectDialog = PuzzleSelectDialog.newInstance();
         puzzleSelectDialog.setDialogListener(this);
 
-        bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
+        //bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
 
         // Setup action bar click listener
         puzzleSpinnerLayout.setOnClickListener(v -> {
-            if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
-                bottomSheetTrainerDialog.show(mFragmentManager, "trainer_dialog_fragment");
-            else
+            if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER)) {
+                //bottomSheetTrainerDialog.show(mFragmentManager, "trainer_dialog_fragment");
+            }
+            else {
                 puzzleSelectDialog.show(mFragmentManager, "puzzle_spinner_dialog_fragment");
+            }
         });
 
         updatePuzzleSpinnerHeader();

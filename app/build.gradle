@@ -12,7 +12,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 51
-        versionName "4.6.3"
+        versionName "4.7.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -85,6 +85,8 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
     // Material color picker
     implementation 'com.pavelsikun:vintage-chroma:1.5'
+    // Google GSON
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     testImplementation 'junit:junit:4.12'
 }

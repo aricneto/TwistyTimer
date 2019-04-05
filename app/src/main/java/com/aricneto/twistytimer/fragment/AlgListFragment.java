@@ -11,12 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
-import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
+import com.aricneto.twistytimer.adapter.AlgRecylerAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -30,22 +29,13 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_ALGS_MODIFIED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_ON;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_SELECTED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_UNSELECTED;
-import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_ALG_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
-import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
 import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 
-public class AlgListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AlgListFragment extends BaseFragment {
 
     private static final String KEY_SUBSET = "subset";
 
@@ -73,9 +63,9 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
     @BindView(R.id.list)
     RecyclerView recyclerView;
 
-    private Unbinder mUnbinder;
-    private String currentSubset;
-    private AlgCursorAdapter algCursorAdapter;
+    private Unbinder                    mUnbinder;
+    private String                      currentSubset;
+    private AlgRecylerAdapter           algCursorAdapter;
     // Receives broadcasts about changes to the algorithm data.
     private TTFragmentBroadcastReceiver mAlgDataChangedReceiver
             = new TTFragmentBroadcastReceiver(this, CATEGORY_ALG_DATA_CHANGES) {
@@ -83,7 +73,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_ALGS_MODIFIED:
-                    reloadList();
+                    //reloadList();
                     break;
             }
         }
@@ -142,16 +132,9 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         spinnerIcon.setVisibility(View.GONE);
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
-        buttonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMainActivity().openDrawer();
-            }
-        });
+        buttonSettings.setOnClickListener(v -> getMainActivity().openDrawer());
 
         setupRecyclerView();
-
-        getLoaderManager().initLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
 
         // Register a receiver to update if something has changed
         registerReceiver(mAlgDataChangedReceiver);
@@ -172,33 +155,12 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         // To fix memory leaks
         unregisterReceiver(mAlgDataChangedReceiver);
         unregisterReceiver(mUIInteractionReceiver);
-        getLoaderManager().destroyLoader(MainActivity.ALG_LIST_LOADER_ID);
-    }
-
-    public void reloadList() {
-        getLoaderManager().restartLoader(MainActivity.ALG_LIST_LOADER_ID, null, this);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new AlgTaskLoader(currentSubset);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        algCursorAdapter.swapCursor(cursor);
-        recyclerView.getAdapter().notifyDataSetChanged();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        algCursorAdapter.swapCursor(null);
     }
 
     private void setupRecyclerView() {
         Activity parentActivity = getActivity();
 
-        algCursorAdapter = new AlgCursorAdapter(getActivity(), null, this);
+        algCursorAdapter = new AlgRecylerAdapter(getActivity(), "OLL");
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =

@@ -24,7 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.items.Algorithm;
+import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
@@ -56,10 +56,10 @@ public class AlgDialog extends DialogFragment {
     @BindView(R.id.pll_arrows)     ImageView           pllArrows;
     @BindView(R.id.cube)           Cube                cube;
 
-    private long            mId;
-    private Algorithm       algorithm;
-    private DialogListener  dialogListener;
-
+    private long           mId;
+    private AlgorithmModel.Case algorithm;
+    private DialogListener dialogListener;
+/*
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -69,7 +69,7 @@ public class AlgDialog extends DialogFragment {
                 case R.id.editButton:
                     MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.edit_algorithm)
-                            .input("", algorithm.getAlgs(), (dialog1, input) -> {
+                            .input("", algorithm.getAlgorithms(), (dialog1, input) -> {
                                 algorithm.setAlgs(input.toString());
                                 dbHandler.updateAlgorithmAlg(mId, input.toString());
                                 algText.setText(input.toString());
@@ -122,7 +122,7 @@ public class AlgDialog extends DialogFragment {
                     break;
             }
         }
-    };
+    };*/
 
     public static AlgDialog newInstance(long id) {
         AlgDialog timeDialog = new AlgDialog();
@@ -143,28 +143,28 @@ public class AlgDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        final Algorithm matchedAlgorithm = TwistyTimer.getDBHandler().getAlgorithm(mId);
-
-        if (matchedAlgorithm != null) {
-            algorithm = matchedAlgorithm;
-            algText.setText(algorithm.getAlgs());
-            nameText.setText(algorithm.getName());
-
-            cube.setCubeState(AlgUtils.getCaseState(getContext(), algorithm.getSubset(), algorithm.getName()));
-
-            progressBar.setProgress(algorithm.getProgress());
-
-            revertButton.setOnClickListener(clickListener);
-            progressButton.setOnClickListener(clickListener);
-            editButton.setOnClickListener(clickListener);
-
-            // If the subset is PLL, it'll need to show the pll arrows.
-            if (algorithm.getSubset().equals("PLL")) {
-                pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), algorithm.getName()));
-                pllArrows.setVisibility(View.VISIBLE);
-            }
-
-        }
+//        final Algorithm matchedAlgorithm = TwistyTimer.getDBHandler().getAlgorithm(mId);
+//
+//        if (matchedAlgorithm != null) {
+//            algorithm = matchedAlgorithm;
+//            algText.setText(algorithm.getAlgs());
+//            nameText.setText(algorithm.getName());
+//
+//            cube.setCubeState(AlgUtils.getCaseState(getContext(), algorithm.getSubset(), algorithm.getName()));
+//
+//            progressBar.setProgress(algorithm.getProgress());
+//
+//            revertButton.setOnClickListener(clickListener);
+//            progressButton.setOnClickListener(clickListener);
+//            editButton.setOnClickListener(clickListener);
+//
+//            // If the subset is PLL, it'll need to show the pll arrows.
+//            if (algorithm.getSubset().equals("PLL")) {
+//                pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), algorithm.getName()));
+//                pllArrows.setVisibility(View.VISIBLE);
+//            }
+//
+//        }
 
         return dialogView;
     }

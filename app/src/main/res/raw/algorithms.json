@@ -1,0 +1,29 @@
+{
+  "subsets": [
+    {
+      "subset": "OLL",
+      "cases": [
+        {
+          "name": "OLL 1",
+          "state": "XNYNXYNNNYYNYNYYNNNYXNYNX",
+          "algorithms": [
+            "R U2 R2' F R F' U2 R' F R F'",
+            "R U B' R B R2 U' R' F R F'",
+            "y R U' R2 D' r U' r' D R2 U R'",
+            "r U R' U R' r2 U' R' U R' r2 U2 r'"
+          ]
+        },
+        {
+          "name": "OLL 2",
+          "state": "XNYYXYNNNNYNYNYYNNNNXNYYX",
+          "algorithms": [
+            "F R U R' U' F' f R U R' U' f'",
+            "F R U R' U' S R U R' U' f'",
+            "y r U r' U2 R U2 R' U2 r U' r'",
+            "F R U r' U' R U R' M' U' F'"
+          ]
+        }
+      ]
+    }
+  ]
+}

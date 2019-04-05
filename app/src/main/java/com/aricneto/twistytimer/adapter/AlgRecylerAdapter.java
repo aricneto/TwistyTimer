@@ -17,14 +17,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
+import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.StoreUtils;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -35,25 +41,24 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  * Created by Ari on 05/06/2015.
  */
 
-public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHolder> implements DialogListener {
-    private final Context          mContext;  // Current context
-    private final FragmentManager  mFragmentManager;
+public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DialogListener {
+    private Context          mContext;
     HashMap<Character, Integer> colorHash;
+
+    private String subset;
+    private ArrayList<AlgorithmModel.Case> cases;
 
     // Locks opening new windows until the last one is dismissed
     private boolean isLocked;
 
-    public AlgCursorAdapter(Context context, Cursor cursor, Fragment listFragment) {
-        super(cursor);
+    public AlgRecylerAdapter(Context context, String subset) {
         this.mContext = context;
-        this.mFragmentManager = listFragment.getFragmentManager();
-        colorHash = AlgUtils.getColorLetterHashMap();
-    }
+        this.colorHash = AlgUtils.getColorLetterHashMap();
+        this.subset = subset;
 
-    @Override
-    public Cursor swapCursor(Cursor cursor) {
-        super.swapCursor(cursor);
-        return cursor;
+        String myJson = StoreUtils.inputStreamToString(context.getResources().openRawResource(R.raw.algorithms));
+        AlgorithmModel model = new Gson().fromJson(myJson, AlgorithmModel.class);
+        this.cases = model.subsets.get(0).getCases();
     }
 
     @Override
@@ -69,10 +74,8 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolderCursor(final RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
-        AlgHolder holder = (AlgHolder) viewHolder;
-        handleTime(holder, cursor);
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        handleTime((AlgHolder) holder, position);
     }
 
     @Override
@@ -85,32 +88,25 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
         setIsLocked(false);
     }
 
-    public void handleTime(final AlgHolder holder, final Cursor cursor) {
-        final long mId = cursor.getLong(0); // id
-        final String pName = cursor.getString(2);
-        final String pSubset = cursor.getString(1);
-        final String pState = AlgUtils.getCaseState(mContext, pSubset, pName);
-        final int pProgress = cursor.getInt(5);
+    public void handleTime(AlgHolder holder, int position) {
+        final String pName = cases.get(position).getName();
+        final String pState = AlgUtils.getCaseState(mContext, subset, pName);
 
-        holder.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (! isLocked()) {
-                    setIsLocked(true);
-                    AlgDialog algDialog = AlgDialog.newInstance(mId);
-                    algDialog.show(mFragmentManager, "alg_dialog");
-                    algDialog.setDialogListener(AlgCursorAdapter.this);
-                }
-
-            }
-        });
+//        holder.root.setOnClickListener(view -> {
+//            if (! isLocked()) {
+//                setIsLocked(true);
+//                AlgDialog algDialog = AlgDialog.newInstance(mId);
+//                algDialog.show(mFragmentManager, "alg_dialog");
+//                algDialog.setDialogListener(AlgRecylerAdapter.this);
+//            }
+//        });
 
         holder.name.setText(pName);
-        holder.progressBar.setProgress(pProgress);
+        //holder.progressBar.setProgress(pProgress);
         holder.cube.setCubeState(pState);
 
         // If the subset is PLL, it'll need to show the pll arrows.
-        if (cursor.getString(1).equals("PLL")) {
+        if (subset.equals("PLL")) {
             holder.pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, pName));
             holder.pllArrows.setVisibility(View.VISIBLE);
         }
@@ -123,6 +119,11 @@ public class AlgCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHol
 
     public void setIsLocked(boolean isLocked) {
         this.isLocked = isLocked;
+    }
+
+    @Override
+    public int getItemCount() {
+        return cases.size();
     }
 
     static class AlgHolder extends RecyclerView.ViewHolder {

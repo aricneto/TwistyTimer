@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.items.Algorithm;
-import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
