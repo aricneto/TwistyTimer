@@ -28,13 +28,14 @@ public final class AlgUtils {
     }
 
     private static HashMap<Character, Integer> colorLetterMap;
+    private static HashMap<Character, String> colorLetterMapHex;
     private static String[] colorStates;
     private static String mSubset = "";
 
     private static List<String> CASES_PLL;
 
     /**
-     * This function returns a hashmap which contains the colors for each face of the cube
+     * Returns a hashmap which contains the colors for each face of the cube
      */
     public static HashMap<Character, Integer> getColorLetterHashMap() {
         if (colorLetterMap == null) {
@@ -50,6 +51,25 @@ public final class AlgUtils {
         }
 
         return colorLetterMap;
+    }
+
+    /**
+     * Returns a hashmap which contains the colors (in hex) for each face of the cube
+     */
+    public static HashMap<Character, String> getColorLetterHashMapHex() {
+        if (colorLetterMapHex == null) {
+            colorLetterMapHex = new HashMap<>(7);
+            colorLetterMapHex.put('Y', "#" + Prefs.getString(R.string.pk_cube_down_color, "FDD835"));
+            colorLetterMapHex.put('R', "#" + Prefs.getString(R.string.pk_cube_right_color, "EC0000"));
+            colorLetterMapHex.put('G', "#" + Prefs.getString(R.string.pk_cube_front_color, "02D040"));
+            colorLetterMapHex.put('B', "#" + Prefs.getString(R.string.pk_cube_back_color, "304FFE"));
+            colorLetterMapHex.put('O', "#" + Prefs.getString(R.string.pk_cube_left_color, "FF8B24"));
+            colorLetterMapHex.put('W', "#" + Prefs.getString(R.string.pk_cube_top_color, "FFFFFF"));
+            colorLetterMapHex.put('N', "#4c4c4c");
+            colorLetterMapHex.put('X', "#000000");
+        }
+
+        return colorLetterMapHex;
     }
 
     /**
@@ -104,7 +124,7 @@ public final class AlgUtils {
     }
 
     /**
-     * Translates a char to a color
+     * Translates a char to a color res
      * i.e: Y -> yellow
      * The index is a number between 0-24 (number of cells in a 2d array)
      *
@@ -121,8 +141,11 @@ public final class AlgUtils {
         return Color.WHITE;
     }
 
-    public static String getCaseState (Context context, String subset, String name) {
-        return getCaseColorStates(context, subset)[caseNameToSubsetId(subset, name)];
+    public static int[] hexToRGBColor(String hex){
+        int red = Integer.valueOf(hex.substring(1, 3), 16);
+        int green = Integer.valueOf(hex.substring(3, 5), 16);
+        int blue = Integer.valueOf(hex.substring(5, 7), 16);
+        return new int[] {red, green, blue};
     }
 
     public static Drawable getPllArrow(Context context, String name) {

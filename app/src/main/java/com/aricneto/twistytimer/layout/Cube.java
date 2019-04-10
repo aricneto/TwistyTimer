@@ -106,8 +106,8 @@ public class Cube extends View {
         // padding is 3% of the cube's size
         mPadding = (int) (width * 0.04f);
 
-        // sticker size. in a 3x3, there'll be 5 stickers (3 for the face, 2 for the sides)
-        // in each line.
+        // sticker size.
+        // in a 3x3, there'll be 5 stickers in each line (3 for the face, 2 for the sides)
         mStickerSize = (width - (mPadding * 6)) / (3 + 0.75f);
         // size to subtract from outermost stickers
         // you MUST change mStickerSize to divide by the correct amount
@@ -124,8 +124,7 @@ public class Cube extends View {
 
         // Draw the cube
         // The edge conditions are used to draw half-stickers in the borders only
-        // This code is rather complicated to explain
-        // Basically, for every line, we create a rect at the beginning. We then draw that rect
+        // For every line, we create a rect at the beginning. We then draw that rect
         // and use its properties to calculate where the next sticker should be.
         for (int i = 0; i < 5; i++) {
             mStickerRect.set(

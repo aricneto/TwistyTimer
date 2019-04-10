@@ -24,6 +24,7 @@ import com.aricneto.twistytimer.utils.StoreUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -35,6 +36,8 @@ import io.fabianterhorst.isometric.Point;
 import io.fabianterhorst.isometric.shapes.Prism;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static com.aricneto.twistytimer.items.AlgorithmModel.*;
+
 /**
  * Created by Ari on 05/06/2015.
  */
@@ -44,10 +47,10 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context          mContext;
     private HashMap<Character, Integer> colorHash;
 
-    private String                         mSubset;
-    private ArrayList<AlgorithmModel.Case> cases;
+    private String          mSubset;
+    private ArrayList<Case> cases;
 
-    private final double mCubePuzzleSize = 2; // 3x3
+    private final int mCubePuzzleSize = 3; // 3x3
     private final double mCubeSize = 2;
     private double mPadding = mCubeSize * 0.06;
     private double mStickerSize = (mCubeSize - (mPadding * (mCubePuzzleSize + 1))) / mCubePuzzleSize;
@@ -96,9 +99,9 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void handleTime(AlgHolder holder, int position) {
-        AlgorithmModel.Case pCase = cases.get(position);
+        Case pCase = cases.get(position);
         final String pName = pCase.getName();
-        final String pState = AlgUtils.getCaseState(mContext, mSubset, pName);
+        final String[] pState = pCase.getState();
 
         holder.root.setOnClickListener(view -> {
             if (! isLocked()) {
@@ -115,41 +118,55 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.cube.add(
                 new Prism(Point.ORIGIN, 2, 2, 2),
-                new Color(30, 30, 80)
+                new Color(40, 40, 40)
         );
 
+        // Every start sticker starts at the top-left of the face
         Point[] rightStartPoint = new Point[] {
-                new Point(mPadding, 0, mPadding),
-                new Point(mPadding + mStickerSize, 0, mPadding),
-                new Point(mPadding + mStickerSize, 0, mPadding + mStickerSize),
-                new Point(mPadding, 0, mPadding + mStickerSize),
+                new Point(mPadding, 0, mCubeSize - mPadding),
+                new Point(mPadding + mStickerSize, 0, mCubeSize - mPadding),
+                new Point(mPadding + mStickerSize, 0, mCubeSize - mPadding - mStickerSize),
+                new Point(mPadding, 0, mCubeSize - mPadding - mStickerSize),
         };
 
         Point[] leftStartPoint = new Point[] {
-                new Point(0, mPadding, mPadding),
-                new Point(0, mPadding + mStickerSize, mPadding),
-                new Point(0, mPadding + mStickerSize, mPadding + mStickerSize),
-                new Point(0, mPadding, mPadding + mStickerSize)
+                new Point(0, mCubeSize - mPadding, mCubeSize - mPadding),
+                new Point(0, mCubeSize - mPadding - mStickerSize, mCubeSize - mPadding),
+                new Point(0, mCubeSize - mPadding - mStickerSize, mCubeSize - mPadding - mStickerSize),
+                new Point(0, mCubeSize - mPadding, mCubeSize - mPadding - mStickerSize),
         };
 
         Point[] topStartPoint = new Point[] {
-                new Point(mPadding, mPadding, mCubeSize),
-                new Point(mPadding + mStickerSize, mPadding, mCubeSize),
-                new Point(mPadding + mStickerSize, mPadding + mStickerSize, mCubeSize),
-                new Point(mPadding, mPadding + mStickerSize, mCubeSize)
+                new Point(mPadding, mCubeSize - mPadding, mCubeSize),
+                new Point(mPadding + mStickerSize, mCubeSize - mPadding, mCubeSize),
+                new Point(mPadding + mStickerSize, mCubeSize - mPadding - mStickerSize, mCubeSize),
+                new Point(mPadding, mCubeSize - mPadding - mStickerSize, mCubeSize),
         };
+
+
+        char sFace;
+        int[] sColor;
 
         for (int i = 0; i < mCubePuzzleSize; i++) {
             for (int j = 0; j < mCubePuzzleSize; j++) {
+
+                sFace = pState[Case.FACE_F].charAt((mCubePuzzleSize * i) + j);
+                sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 holder.cube.add(new Path(
-                                        translatePoints(rightStartPoint, (mPadding + mStickerSize) * i, 0, (mPadding + mStickerSize) * j)),
-                                new Color(0, 0, 255));
+                                        translatePoints(rightStartPoint, (mPadding + mStickerSize) * j, 0, -(mPadding + mStickerSize) * i)),
+                                new Color(sColor[0], sColor[1], sColor[2]));
+
+                sFace = pState[Case.FACE_L].charAt((mCubePuzzleSize * i) + j);
+                sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 holder.cube.add(new Path(
-                                        translatePoints(leftStartPoint, 0, (mPadding + mStickerSize) * i, (mPadding + mStickerSize) * j)),
-                                new Color(255, 0, 0));
+                                        translatePoints(leftStartPoint, 0, -(mPadding + mStickerSize) * j, -(mPadding + mStickerSize) * i)),
+                                new Color(sColor[0], sColor[1], sColor[2]));
+
+                sFace = pState[Case.FACE_U].charAt((mCubePuzzleSize * i) + j);
+                sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 holder.cube.add(new Path(
-                                        translatePoints(topStartPoint, (mPadding + mStickerSize) * i, (mPadding + mStickerSize) * j, 0)),
-                                new Color(255, 255, 255));
+                                        translatePoints(topStartPoint, (mPadding + mStickerSize) * j, -(mPadding + mStickerSize) * i, 0)),
+                                new Color(sColor[0], sColor[1], sColor[2]));
             }
         }
 

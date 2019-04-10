@@ -5,7 +5,14 @@
       "cases": [
         {
           "name": "OLL 1",
-          "state": "XNYNXYNNNYYNYNYYNNNYXNYNX",
+          "state": [
+            "NNNNYNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U2 R2' F R F' U2 R' F R F'",
             "R U B' R B R2 U' R' F R F'",
@@ -15,7 +22,14 @@
         },
         {
           "name": "OLL 2",
-          "state": "XNYYXYNNNNYNYNYYNNNNXNYYX",
+          "state": [
+            "NNNNYNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F R U R' U' F' f R U R' U' f'",
             "F R U R' U' S R U R' U' f'",
@@ -25,7 +39,14 @@
         },
         {
           "name": "OLL 03",
-          "state": "XYYNXNNNNYYNYNYNYNNNXNYYX",
+          "state": [
+            "NNNNYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y' f R U R' U' f' U' F R U R' U' F'",
             "r' R2 U R' U r U2 r' U M'",
@@ -35,7 +56,14 @@
         },
         {
           "name": "OLL 04",
-          "state": "XNYYXYNNNNYNYNYNNNYNXYYNX",
+          "state": [
+            "NNNNYNNNY",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y' f R U R' U' f' U F R U R' U' F'",
             "M U' r U2 r' U' R U' R2 r",
@@ -45,7 +73,14 @@
         },
         {
           "name": "OLL 05",
-          "state": "XYYNXNNNNYYNYYNYNYYNXNNNX",
+          "state": [
+            "NNNNYYNYY",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r' U2 R U R' U r",
             "y2 l' U2 L U L' U l",
@@ -55,7 +90,14 @@
         },
         {
           "name": "OLL 06",
-          "state": "XNNNXYNYYNYNYYNNNNNYXYYNX",
+          "state": [
+            "NYYNYYNNN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U2 R' U' R U' r'",
             "y2 l U2 L' U' L U' l'",
@@ -65,7 +107,14 @@
         },
         {
           "name": "OLL 07",
-          "state": "XYNNXNNYNYNYYNYNYNNNXNYYX",
+          "state": [
+            "NYNYYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U R' U R U2 r'",
             "L' U2 L U2 L F' L' F",
@@ -75,7 +124,14 @@
         },
         {
           "name": "OLL 08",
-          "state": "XNNYXYNYNNYNYYNNNNYNXYYNX",
+          "state": [
+            "NYNNYYNNY",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y2 r' U' R U' R' U2 r",
             "l' U' L U' L' U2 l",
@@ -85,7 +141,14 @@
         },
         {
           "name": "OLL 09",
-          "state": "XNYNXYNNYNNYYNYNNYNYXYNNX",
+          "state": [
+            "NNYYYNNYN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y R U R' U' R' F R2 U R' U' F'",
             "y2 R' U' R U' R' U R' F R F' U R",
@@ -95,7 +158,14 @@
         },
         {
           "name": "OLL 10",
-          "state": "XYYNXNNNYNNYYNYYNYNNXNNYX",
+          "state": [
+            "NNYYYNNYN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U R' F R F' R U2 R'",
             "R U R' y R' F R U' R' F' R",
@@ -105,7 +175,14 @@
         },
         {
           "name": "OLL 11",
-          "state": "XYYNXNNNNYYNYYNNYYNNXNNYX",
+          "state": [
+            "NNNNYYYYN",
+            "NNYNNNNNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r' R2 U R' U R U2 R' U M'",
             "M R U R' U R U2 R' U M'",
@@ -115,7 +192,14 @@
         },
         {
           "name": "OLL 12",
-          "state": "XNYNXYNNYNYNYYNNNYNYXYNNX",
+          "state": [
+            "NNYNYYNYN",
+            "YNNNNNNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F R U R' U' F' U F R U R' U' F'",
             "y' r R2' U' R U' R' U2 R U' R r'",
@@ -125,7 +209,14 @@
         },
         {
           "name": "OLL 13",
-          "state": "XYYNXNNNNYNYYYNNYNNNXNYYX",
+          "state": [
+            "NNNYYYYNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U' r' U' r U r' F' U F",
             "F U R U' R2 F' R U R U' R'",
@@ -135,7 +226,14 @@
         },
         {
           "name": "OLL 14",
-          "state": "XNYYXYNNNNNYYYNNNNYNXYYNX",
+          "state": [
+            "NNNYYYNNY",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R' F R U R' F' R F U' F'",
             "R' F R U R' F' R y' R U' R'",
@@ -145,7 +243,14 @@
         },
         {
           "name": "OLL 15",
-          "state": "XYYNXNNNNYNYYYNYNNYNXNYNX",
+          "state": [
+            "NNNYYYNNY",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r' U' r R' U' R U r' U r",
             "y2 l' U' l L' U' L U l' U l",
@@ -155,7 +260,14 @@
         },
         {
           "name": "OLL 16",
-          "state": "XNYNXYNNYNNYYYNNNNNYXYYNX",
+          "state": [
+            "NNYYYYNNN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U r' R U R' U' r U' r'",
             "r U M U R' U' r U' r'",
@@ -165,7 +277,14 @@
         },
         {
           "name": "OLL 17",
-          "state": "XNYYXNYNNNYNYNYYNNYNXNYNX",
+          "state": [
+            "YNNNYNNNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U R' F R F' U2 R' F R F'",
             "f R U R' U' f' U' R U R' U' R' F R F'",
@@ -175,7 +294,14 @@
         },
         {
           "name": "OLL 18",
-          "state": "XNYNXNYNYNYNYNYNNNNNXYYYX",
+          "state": [
+            "YNYNYNNNN",
+            "YYYNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U R' U R U2 r2 U' R U' R' U2 r",
             "y R U2 R2 F R F' U2 M' U R U' r'",
@@ -185,7 +311,14 @@
         },
         {
           "name": "OLL 19",
-          "state": "XNYNXNYNYNYNYNYYNNNYXNYNX",
+          "state": [
+            "YNYNYNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "M U R U R' U' M' R' F R F'",
             "r' R U R U R' U' r R2' F R F'",
@@ -195,7 +328,14 @@
         },
         {
           "name": "OLL 20",
-          "state": "XNYNXNYNYNYNYNYNYNYNXNYNX",
+          "state": [
+            "YNYNYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "M U R U R' U' M2 U R U' r'",
             "r U R' U' M2 U R U' R' U' M'",
@@ -205,7 +345,14 @@
         },
         {
           "name": "OLL 21",
-          "state": "XNNNXYNYNYNYYYNYNYNYXNNNX",
+          "state": [
+            "NYNYYYNYN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y R U2 R' U' R U R' U' R U' R'",
             "y F R U R' U' R U R' U' R U R' U' F'",
@@ -215,7 +362,14 @@
         },
         {
           "name": "OLL 22",
-          "state": "XNNYXYNYNNNYYYNYNYNNXNNYX",
+          "state": [
+            "NYNYYYNYN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U2 R2 U' R2 U' R2 U2 R",
             "f R U R' U' f' F R U R' U' F'",
@@ -225,7 +379,14 @@
         },
         {
           "name": "OLL 23",
-          "state": "XNNNXNYYYNNYYYNNNYNNXYNYX",
+          "state": [
+            "YYYYYYNYN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R2 D R' U2 R D' R' U2 R'",
             "y2 R2 D' R U2 R' D R U2 R",
@@ -235,7 +396,14 @@
         },
         {
           "name": "OLL 24",
-          "state": "XYNNXNNYYNNYYYNNNYYNXYNNX",
+          "state": [
+            "NYYYYYNYY",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U R' U' r' F R F'",
             "y2 l' U' L U R U' r' F",
@@ -245,7 +413,14 @@
         },
         {
           "name": "OLL 25",
-          "state": "XNNNXNYYNYNYYYNNNYYNXYNNX",
+          "state": [
+            "YYNYYYNYY",
+            "YNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y F' r U R' U' r' F R",
             "R' F R B' R' F' R B",
@@ -255,7 +430,14 @@
         },
         {
           "name": "OLL 26",
-          "state": "XNNYXNYYNNNYYYNNNYNYXYNNX",
+          "state": [
+            "YYNYYYNYN",
+            "YNNNNNNNN",
+            "YNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y R U2 R' U' R U' R'",
             "R' U' R U' R' U2 R",
@@ -265,7 +447,14 @@
         },
         {
           "name": "OLL 27",
-          "state": "XYNNXNNYNYNYYYNNYYNNXNNYX",
+          "state": [
+            "NYNYYYYYN",
+            "NNYNNNNNN",
+            "NNYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U R U2 R'",
             "y' R' U2 R U R' U R",
@@ -275,7 +464,14 @@
         },
         {
           "name": "OLL 28",
-          "state": "XNNNXNYYYNNYYNYNYNYNXNYNX",
+          "state": [
+            "YYYYYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U R' U' M U R U' R'",
             "y2 M' U M U2 M' U M",
@@ -285,7 +481,14 @@
         },
         {
           "name": "OLL 29",
-          "state": "XNYNXNYNYNNYYNYYNYNYXNNNX",
+          "state": [
+            "YNYYYNNYN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "M U R U R' U' R' F R F' M'",
             "r2 D' r U r' D r2 U' r' U' r",
@@ -295,7 +498,14 @@
         },
         {
           "name": "OLL 30",
-          "state": "XNYNXNYNYNYNYYNYNYNYXNNNX",
+          "state": [
+            "YNYNYYNYN",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "M U' L' U' L U L F' L' F M'",
             "y' r' D' r U' r' D r2 U' r' U r U r'",
@@ -305,7 +515,14 @@
         },
         {
           "name": "OLL 31",
-          "state": "XYNNXNNYYNYNYYNNNNYNXYYNX",
+          "state": [
+            "NYYNYYNNY",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R' U' F U R U' R' F' R",
             "y2 S' L' U' L U L F' L' f",
@@ -315,7 +532,14 @@
         },
         {
           "name": "OLL 32",
-          "state": "XYYNXNNNYNYNYYNNNYYNXYNNX",
+          "state": [
+            "NNYNYYNYY",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "S R U R' U' R' F R f'",
             "R U B' U' R' U R B R'",
@@ -325,7 +549,14 @@
         },
         {
           "name": "OLL 33",
-          "state": "XYYNXNNNYNNYYYNNNNYNXYYNX",
+          "state": [
+            "NNYYYYNNY",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U' R' F R F'",
             "F R U' R' U R U R' F'",
@@ -335,7 +566,14 @@
         },
         {
           "name": "OLL 34",
-          "state": "XNYNXNYNYNNYYYNYNNNYXNYNX",
+          "state": [
+            "YNYYYYNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y2 R U R' U' B' R' F R F' B",
             "y2 R U R2 U' R' F R U R U' F'",
@@ -345,7 +583,14 @@
         },
         {
           "name": "OLL 35",
-          "state": "XNYNXNYNNYYNYYNNNYYNXYNNX",
+          "state": [
+            "YNNNYYNYY",
+            "YNNNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U2 R2' F R F' R U2 R'",
             "f R U R' U' f' R U R' U R U2 R'",
@@ -355,7 +600,14 @@
         },
         {
           "name": "OLL 36",
-          "state": "XNYNXNYNNYNYYNYNNYYNXYNNX",
+          "state": [
+            "YNNYYNNYY",
+            "YNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y2 L' U' L U' L' U L U L F' L' F",
             "R' U' R U' R' U R U l U' R' U x",
@@ -365,7 +617,14 @@
         },
         {
           "name": "OLL 37",
-          "state": "XNNNXNYYNYNYYNYNNNYNXYYNX",
+          "state": [
+            "YYNYYNNNY",
+            "YYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F R U' R' U' R U R' F'",
             "F R' F' R U R U' R'",
@@ -375,7 +634,14 @@
         },
         {
           "name": "OLL 38",
-          "state": "XYNNXNNYYNNYYNYNYNNYXNYNX",
+          "state": [
+            "NYYYYNYNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U R U' R' U' R' F R F'",
             "L' U' L F L' U' L U L F' L' U L F' L' F"
@@ -383,7 +649,14 @@
         },
         {
           "name": "OLL 39",
-          "state": "XNNYXNYYNNYNYNYYNYYNXNNNX",
+          "state": [
+            "YYNNYNNYY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y L F' L' U' L U F U' L'",
             "y' R U R' F' U' F U R U2 R'",
@@ -393,7 +666,14 @@
         },
         {
           "name": "OLL 40",
-          "state": "XNNNXYNYYNYNYNYNYYNNXNNYX",
+          "state": [
+            "NYYNYNYYN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y R' F R U R' U' F' U R",
             "R r D r' U r D' r' U' R'",
@@ -403,7 +683,14 @@
         },
         {
           "name": "OLL 41",
-          "state": "XNYNXNYNYNYNYYNNNYNNXYNYX",
+          "state": [
+            "YNYNYYNYN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y2 R U R' U R U2' R' F R U R' U' F'",
             "R U' R' U2 R U y R U' R' U' F'",
@@ -413,7 +700,14 @@
         },
         {
           "name": "OLL 42",
-          "state": "XNYNXNYNYNNYYNYNNYNNXYNYX",
+          "state": [
+            "YNYYYNNYN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R' U' R U' R' U2 R F R U R' U' F'",
             "y R' F R F' R' F R F' R U R' U' R U R'",
@@ -423,7 +717,14 @@
         },
         {
           "name": "OLL 43",
-          "state": "XNYNXNYNNYNYYNYNYYNYXNNNX",
+          "state": [
+            "YNNYYNYYN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "f' L' U' L U f",
             "y2 F' U' L' U L F",
@@ -433,7 +734,14 @@
         },
         {
           "name": "OLL 44",
-          "state": "XNYNXYNNYNYNYYNYNYYNXNNNX",
+          "state": [
+            "NNYNYYNYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "f R U R' U' f'",
             "y2 F U R U' R' F'",
@@ -443,7 +751,14 @@
         },
         {
           "name": "OLL 45",
-          "state": "XNYNXYNNYNNYYYNYNNYNXNYNX",
+          "state": [
+            "NNYYYYNNY",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F R U R' U' F'",
             "y2 f U R U' R' f'",
@@ -453,7 +768,14 @@
         },
         {
           "name": "OLL 46",
-          "state": "XNNNXNYYNYYNYNYNYYNYXNNNX",
+          "state": [
+            "YYNNYNYYN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R' U' R' F R F' U R",
             "y F R U R' y' R' U R U2 R'",
@@ -462,7 +784,14 @@
         },
         {
           "name": "OLL 47",
-          "state": "XYNNXNNYNYYNYYNNNNNYXYYNX",
+          "state": [
+            "NYNNYYNNN",
+            "YYNNNNNNN",
+            "YNYNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F' L' U' L U L' U' L U F",
             "R' U' R' F R F' R' F R F' U R",
@@ -472,7 +801,14 @@
         },
         {
           "name": "OLL 48",
-          "state": "XNNYXYNYNNNYYNYYNNNNXNYYX",
+          "state": [
+            "NYNYYNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "F R U R' U' R U R' U' F'",
             "R U2 R' U' R U R' U2 R' F R F'"
@@ -480,7 +816,14 @@
         },
         {
           "name": "OLL 49",
-          "state": "XYYNXNNNNYNYYNYNNYNYXYNNX",
+          "state": [
+            "NNNYYNNYN",
+            "YNNNNNNNN",
+            "YYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "y2 r U' r2 U r2 U r2 U' r",
             "l U' l2 U l2 U l2 U' l",
@@ -490,7 +833,14 @@
         },
         {
           "name": "OLL 50",
-          "state": "XNYYXYNNNNYNYYNYNYNNXNNYX",
+          "state": [
+            "NNNNYYNYN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r' U r2 U' r2' U' r2 U r'",
             "y2 R' F R2 B' R2 F' R2 B R'",
@@ -500,7 +850,14 @@
         },
         {
           "name": "OLL 51",
-          "state": "XNYYXYNNNNNYYYNYNNNNXNYYX",
+          "state": [
+            "NNNYYYNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "f R U R' U' R U R' U' f'",
             "y2 F U R U' R' U R U' R' F'",
@@ -510,7 +867,14 @@
         },
         {
           "name": "OLL 52",
-          "state": "XYNNXNNYNYYNYNYNNYNYXYNNX",
+          "state": [
+            "NYNNYNNYN",
+            "YNNNNNNNN",
+            "YYYNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U R d' R U' R' F'",
             "R' U' R U' R' d R' U R B",
@@ -520,7 +884,14 @@
         },
         {
           "name": "OLL 53",
-          "state": "XNYNXYNNNYYNYYNYNYNYXNNNX",
+          "state": [
+            "NNNNYYNYN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r' U' R U' R' U R U' R' U2 r",
             "y2 l' U' L U' L' U L U' L' U2 l",
@@ -530,7 +901,14 @@
         },
         {
           "name": "OLL 54",
-          "state": "XNNNXYNYNYYNYYNYNNNYXNYNX",
+          "state": [
+            "NYNNYYNNN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U R' U R U' R' U R U2 r'",
             "y' r U2 R' U' R U R' U' R U' r'",
@@ -540,7 +918,14 @@
         },
         {
           "name": "OLL 55",
-          "state": "XNNNXYNYNYYNYNYYNYNYXNNNX",
+          "state": [
+            "NYNNYNNYN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U2 R2 U' R U' R' U2 F R F'",
             "y R' F R U R U' R2 F' R2 U' R' U R U R'",
@@ -550,7 +935,14 @@
         },
         {
           "name": "OLL 56",
-          "state": "XNYNXYNNNYNYYYNYNNNYXNYNX",
+          "state": [
+            "NNNYYYNNN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "r U r' U R U' R' U R U' R' r U' r'",
             "F R U R' U' R F' r U R' U' r'",
@@ -560,7 +952,14 @@
         },
         {
           "name": "OLL 57",
-          "state": "XNYNXNYNYNNYYYNNYNYNXNYNX",
+          "state": [
+            "YNYYYYYNY",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ],
           "algorithms": [
             "R U R' U' M' U R U' r'",
             "M' U M' U M' U2 M U M U M",

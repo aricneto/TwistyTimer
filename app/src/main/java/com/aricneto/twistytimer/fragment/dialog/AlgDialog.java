@@ -149,7 +149,7 @@ public class AlgDialog extends DialogFragment {
         algList.setAdapter(algAdapter);
         nameText.setText(mCase.getName());
 
-        cube.setCubeState(mCase.getState());
+        //cube.setCubeState(mCase.getState());
 
         //progressBar.setProgress(algorithm.getProgress());
 

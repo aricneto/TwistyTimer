@@ -32,8 +32,19 @@ public class AlgorithmModel {
     }
 
     public static class Case implements Parcelable {
+        public static final int FACE_U = 0;
+        public static final int FACE_F = 1;
+        public static final int FACE_R = 2;
+        public static final int FACE_B = 3;
+        public static final int FACE_L = 4;
+        public static final int FACE_D = 5;
+        /**
+         * Sticker colors. The array is arranged with the faces described as such:
+         * [U, F, R, B, L, D]
+         * Stickers are read from the top-left, left to right
+         */
         @SerializedName("state")
-        String state; // sticker colors
+        String[] state; // sticker colors
         @SerializedName("name")
         String name; // case name
         @SerializedName("algorithms")
@@ -52,12 +63,12 @@ public class AlgorithmModel {
         };
 
         protected Case(Parcel in) {
-            state = in.readString();
             name = in.readString();
+            state = in.createStringArray();
             algorithms = in.createStringArray();
         }
 
-        public String getState() {
+        public String[] getState() {
             return state;
         }
 
@@ -76,8 +87,8 @@ public class AlgorithmModel {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(state);
             dest.writeString(name);
+            dest.writeStringArray(state);
             dest.writeStringArray(algorithms);
         }
     }
