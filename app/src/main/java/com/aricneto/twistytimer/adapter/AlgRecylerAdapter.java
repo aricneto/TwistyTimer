@@ -28,6 +28,11 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabianterhorst.isometric.Color;
+import io.fabianterhorst.isometric.IsometricView;
+import io.fabianterhorst.isometric.Path;
+import io.fabianterhorst.isometric.Point;
+import io.fabianterhorst.isometric.shapes.Prism;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
@@ -41,6 +46,11 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private String                         mSubset;
     private ArrayList<AlgorithmModel.Case> cases;
+
+    private final double mCubePuzzleSize = 2; // 3x3
+    private final double mCubeSize = 2;
+    private double mPadding = mCubeSize * 0.08;
+    private double mStickerSize = (mCubeSize - (mPadding * (mCubePuzzleSize + 1))) / mCubePuzzleSize;
 
     private FragmentManager fragmentManager;
 
@@ -101,7 +111,37 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.name.setText(pName);
         //holder.progressBar.setProgress(pProgress);
-        holder.cube.setCubeState(pState);
+        //holder.cube.setCubeState(pState);
+
+        holder.cube.add(
+                new Prism(Point.ORIGIN, 2, 2, 2),
+                new Color(30, 54, 60)
+        );
+
+        Point[] startPoint = new Point[] {
+                new Point(mPadding, 0, mPadding),
+                new Point(mPadding + mStickerSize, 0, mPadding),
+                new Point(mPadding + mStickerSize, 0, mPadding + mStickerSize),
+                new Point(mPadding, 0, mPadding + mStickerSize),
+        };
+
+        holder.cube.add(new Path(startPoint),
+                        new Color(255, 255, 255));
+
+        holder.cube.add(new Path(
+                translatePoints(startPoint, mPadding + mStickerSize, 0, 0)),
+                        new Color(255, 255, 255));
+
+        holder.cube.add(new Path(
+                        translatePoints(startPoint, mPadding + mStickerSize, 0, mPadding + mStickerSize)),
+                                new Color(255, 255, 255));
+
+        holder.cube.add(new Path(
+                        translatePoints(startPoint, 0, 0, mPadding + mStickerSize)),
+                                new Color(255, 255, 255));
+
+
+
 
         // If the mSubset is PLL, it'll need to show the pll arrows.
         if (mSubset.equals("PLL")) {
@@ -119,18 +159,40 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.isLocked = isLocked;
     }
 
+    private Point[] translatePoints(Point[] startPoints, double dx, double dy, double dz) {
+        Point[] newPoint = new Point[4];
+        for (int i = 0; i < 4; i++)
+            newPoint[i] = startPoints[i].translate(dx, dy, dz);
+        return newPoint;
+    }
+
+    private Point[] scalePoints(Point[] startPoints, double dd) {
+        Point[] newPoint = new Point[4];
+        Point origin = getPointOrigin(startPoints);
+        for (int i = 0; i < startPoints.length; i++)
+            newPoint[i] = startPoints[i].scale(origin, dd, dd, dd);
+        return newPoint;
+    }
+
+    private Point getPointOrigin(Point[] startPoints) {
+        return new Point(
+                (startPoints[0].getX() + startPoints[2].getX()) / 2,
+                (startPoints[0].getY() + startPoints[2].getY()) / 2,
+                (startPoints[0].getZ() + startPoints[2].getZ()) / 2);
+    }
+
     @Override
     public int getItemCount() {
         return cases.size();
     }
 
     static class AlgHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.name)        TextView            name;
-        @BindView(R.id.pll_arrows)  ImageView           pllArrows;
-        @BindView(R.id.progressBar) MaterialProgressBar progressBar;
-        @BindView(R.id.root)        RelativeLayout      root;
-        @BindView(R.id.card)        CardView            card;
-        @BindView(R.id.cube)        Cube                cube;
+        @BindView(R.id.name)       TextView            name;
+        @BindView(R.id.pll_arrows) ImageView           pllArrows;
+        @BindView(R.id.progressBar)MaterialProgressBar progressBar;
+        @BindView(R.id.root)       RelativeLayout      root;
+        @BindView(R.id.card)       CardView            card;
+        @BindView(R.id.cube)       IsometricView       cube;
 
         public AlgHolder(View view) {
             super(view);

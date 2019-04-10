@@ -88,6 +88,8 @@ dependencies {
     // Google GSON
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    implementation 'io.fabianterhorst:Isometric:0.0.9'
+
     testImplementation 'junit:junit:4.12'
 }
 
