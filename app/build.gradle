@@ -52,7 +52,7 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha02'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
-    implementation "androidx.annotation:annotation:1.0.0"
+    implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'com.takisoft.fix:preference-v7:26.0.1.0'
     // Butterknife ("apt" dependency is defined in root "build.gradle" script).
@@ -68,7 +68,7 @@ dependencies {
         transitive = true
     }
     // Material Drawer
-    implementation "com.mikepenz:materialdrawer:6.1.2"
+    implementation 'com.mikepenz:materialdrawer:6.1.2'
     // Progress
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
     // Joda-time
@@ -87,9 +87,6 @@ dependencies {
     implementation 'com.pavelsikun:vintage-chroma:1.5'
     // Google GSON
     implementation 'com.google.code.gson:gson:2.8.5'
-
-    implementation 'io.fabianterhorst:Isometric:0.0.9'
-
     testImplementation 'junit:junit:4.12'
 }
 

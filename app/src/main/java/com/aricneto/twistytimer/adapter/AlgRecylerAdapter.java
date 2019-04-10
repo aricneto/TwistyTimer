@@ -18,6 +18,11 @@ import com.aricneto.twistytimer.fragment.BaseFragment;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube;
+import com.aricneto.twistytimer.layout.isometric.Color;
+import com.aricneto.twistytimer.layout.isometric.IsometricView;
+import com.aricneto.twistytimer.layout.isometric.Path;
+import com.aricneto.twistytimer.layout.isometric.Point;
+import com.aricneto.twistytimer.layout.isometric.shapes.Prism;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.StoreUtils;
@@ -29,11 +34,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.fabianterhorst.isometric.Color;
-import io.fabianterhorst.isometric.IsometricView;
-import io.fabianterhorst.isometric.Path;
-import io.fabianterhorst.isometric.Point;
-import io.fabianterhorst.isometric.shapes.Prism;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.aricneto.twistytimer.items.AlgorithmModel.*;
@@ -220,9 +220,9 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @BindView(R.id.name)       TextView            name;
         @BindView(R.id.pll_arrows) ImageView           pllArrows;
         @BindView(R.id.progressBar)MaterialProgressBar progressBar;
-        @BindView(R.id.root)       RelativeLayout      root;
-        @BindView(R.id.card)       CardView            card;
-        @BindView(R.id.cube)       IsometricView       cube;
+        @BindView(R.id.root) RelativeLayout root;
+        @BindView(R.id.card) CardView       card;
+        @BindView(R.id.cube) IsometricView  cube;
 
         public AlgHolder(View view) {
             super(view);

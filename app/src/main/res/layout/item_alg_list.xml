@@ -30,10 +30,10 @@
             android:textSize="10sp"
             android:textStyle="normal" />
 
-        <io.fabianterhorst.isometric.IsometricView
+        <com.aricneto.twistytimer.layout.isometric.IsometricView
             android:id="@+id/cube"
             android:layout_width="match_parent"
-            android:layout_height="104dp"
+            android:layout_height="90dp"
             android:layout_below="@id/progressBar"
             android:layout_margin="8dp"
             android:layout_centerHorizontal="true" />
