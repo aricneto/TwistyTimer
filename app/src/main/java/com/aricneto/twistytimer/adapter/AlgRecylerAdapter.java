@@ -49,7 +49,7 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private final double mCubePuzzleSize = 2; // 3x3
     private final double mCubeSize = 2;
-    private double mPadding = mCubeSize * 0.08;
+    private double mPadding = mCubeSize * 0.06;
     private double mStickerSize = (mCubeSize - (mPadding * (mCubePuzzleSize + 1))) / mCubePuzzleSize;
 
     private FragmentManager fragmentManager;
@@ -115,30 +115,43 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.cube.add(
                 new Prism(Point.ORIGIN, 2, 2, 2),
-                new Color(30, 54, 60)
+                new Color(30, 30, 80)
         );
 
-        Point[] startPoint = new Point[] {
+        Point[] rightStartPoint = new Point[] {
                 new Point(mPadding, 0, mPadding),
                 new Point(mPadding + mStickerSize, 0, mPadding),
                 new Point(mPadding + mStickerSize, 0, mPadding + mStickerSize),
                 new Point(mPadding, 0, mPadding + mStickerSize),
         };
 
-        holder.cube.add(new Path(startPoint),
-                        new Color(255, 255, 255));
+        Point[] leftStartPoint = new Point[] {
+                new Point(0, mPadding, mPadding),
+                new Point(0, mPadding + mStickerSize, mPadding),
+                new Point(0, mPadding + mStickerSize, mPadding + mStickerSize),
+                new Point(0, mPadding, mPadding + mStickerSize)
+        };
 
-        holder.cube.add(new Path(
-                translatePoints(startPoint, mPadding + mStickerSize, 0, 0)),
-                        new Color(255, 255, 255));
+        Point[] topStartPoint = new Point[] {
+                new Point(mPadding, mPadding, mCubeSize),
+                new Point(mPadding + mStickerSize, mPadding, mCubeSize),
+                new Point(mPadding + mStickerSize, mPadding + mStickerSize, mCubeSize),
+                new Point(mPadding, mPadding + mStickerSize, mCubeSize)
+        };
 
-        holder.cube.add(new Path(
-                        translatePoints(startPoint, mPadding + mStickerSize, 0, mPadding + mStickerSize)),
+        for (int i = 0; i < mCubePuzzleSize; i++) {
+            for (int j = 0; j < mCubePuzzleSize; j++) {
+                holder.cube.add(new Path(
+                                        translatePoints(rightStartPoint, (mPadding + mStickerSize) * i, 0, (mPadding + mStickerSize) * j)),
+                                new Color(0, 0, 255));
+                holder.cube.add(new Path(
+                                        translatePoints(leftStartPoint, 0, (mPadding + mStickerSize) * i, (mPadding + mStickerSize) * j)),
+                                new Color(255, 0, 0));
+                holder.cube.add(new Path(
+                                        translatePoints(topStartPoint, (mPadding + mStickerSize) * i, (mPadding + mStickerSize) * j, 0)),
                                 new Color(255, 255, 255));
-
-        holder.cube.add(new Path(
-                        translatePoints(startPoint, 0, 0, mPadding + mStickerSize)),
-                                new Color(255, 255, 255));
+            }
+        }
 
 
 
