@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.util.HashMap;
 
@@ -20,7 +19,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-public class Cube extends View {
+public class Cube2D extends View {
 
     private HashMap<Character, Integer> mStickerColors;
     private String                      mCubeState;
@@ -36,23 +35,23 @@ public class Cube extends View {
     private float mCubeCornerRadius;
     private float mStickerCornerRadius;
 
-    public Cube(Context context) {
+    public Cube2D(Context context) {
         super(context, null);
         init(null);
     }
 
-    public Cube(Context context, @Nullable AttributeSet attrs) {
+    public Cube2D(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs, 0);
         init(attrs);
     }
 
-    public Cube(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public Cube2D(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Cube(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public Cube2D(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
@@ -67,9 +66,9 @@ public class Cube extends View {
         if (attrs == null)
             return;
 
-        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.Cube);
-        mCubeCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube_cube_corner_radius, 8);
-        mStickerCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube_cube_sticker_corner_radius, 8);
+        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.Cube2D);
+        mCubeCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube2D_cube_corner_radius, 8);
+        mStickerCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube2D_cube_sticker_corner_radius, 8);
         ta.recycle();
     }
 

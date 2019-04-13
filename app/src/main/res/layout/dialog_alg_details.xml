@@ -31,7 +31,7 @@
             android:layout_alignParentTop="true"
             tools:text="OLL 21" />
 
-        <com.aricneto.twistytimer.layout.Cube
+        <com.aricneto.twistytimer.layout.Cube2D
             android:id="@+id/cube"
             android:layout_width="120dp"
             android:layout_height="120dp"

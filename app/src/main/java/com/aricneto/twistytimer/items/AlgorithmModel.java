@@ -19,6 +19,9 @@ public class AlgorithmModel {
         @SerializedName("subset")
         String subset;
 
+        @SerializedName("puzzle")
+        String puzzle;
+
         @SerializedName("cases")
         ArrayList<Case> cases;
 
@@ -28,6 +31,10 @@ public class AlgorithmModel {
 
         public ArrayList<Case> getCases() {
             return cases;
+        }
+
+        public String getPuzzle() {
+            return puzzle;
         }
     }
 

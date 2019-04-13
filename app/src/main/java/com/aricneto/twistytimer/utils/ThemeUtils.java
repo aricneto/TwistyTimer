@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
 import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
@@ -17,10 +16,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Theme;
 
 /**
@@ -70,9 +71,8 @@ public final class ThemeUtils {
     public static final String TEXT_ASIMOV    = "asimov";
     public static final String TEXT_KUBRICK   = "kubrick";
 
-    /**
-     * Private constructor to prevent instantiation of this utility class.
-     */
+    private static DisplayMetrics mDisplayMetrics;
+
     private ThemeUtils() {
     }
 
@@ -302,9 +302,16 @@ public final class ThemeUtils {
         return ContextCompat.getDrawable(context, outValue.resourceId);
     }
 
-    public static int dpToPix(Context context, float dp) {
+    /**
+     * Converts a dp value to pixels. Future calls will use a cached {@link DisplayMetrics}
+     * @param dp the dp value to convert
+     * @return the dp value in pixels
+     */
+    public static int dpToPix(float dp) {
+        if (mDisplayMetrics == null)
+            mDisplayMetrics = TwistyTimer.getAppContext().getResources().getDisplayMetrics();
         return (int) (TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, dp, mDisplayMetrics));
     }
 
     /**
@@ -333,8 +340,8 @@ public final class ThemeUtils {
      */
     public static GradientDrawable createSquareDrawable(Context context, int[] backgroundColors, int strokeColor, int cornerRadius, float strokeWidth) {
         GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, backgroundColors);
-        gradientDrawable.setStroke(ThemeUtils.dpToPix(context, strokeWidth), strokeColor);
-        gradientDrawable.setCornerRadius(ThemeUtils.dpToPix(context, cornerRadius));
+        gradientDrawable.setStroke(ThemeUtils.dpToPix(strokeWidth), strokeColor);
+        gradientDrawable.setCornerRadius(ThemeUtils.dpToPix(cornerRadius));
 
         return gradientDrawable;
     }

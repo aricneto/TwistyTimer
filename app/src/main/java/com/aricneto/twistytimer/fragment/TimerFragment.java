@@ -624,7 +624,7 @@ public class                                                                    
             // CongratsText is by default aligned to below the scramble box. If it's missing, we have
             // to add an extra margin to account for the title header
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
-            params.topMargin = ThemeUtils.dpToPix(mContext, 70); // WARNING: this has to be the same as attr/actionBarPadding
+            params.topMargin = ThemeUtils.dpToPix(70); // WARNING: this has to be the same as attr/actionBarPadding
             congratsText.requestLayout();
         }
 
@@ -632,7 +632,7 @@ public class                                                                    
             // CongratsText is by default aligned to below the scramble box. If it's missing, we have
             // to add an extra margin to account for the title header
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
-            params.topMargin = ThemeUtils.dpToPix(mContext, 70); // WARNING: this has to be the same as attr/actionBarPadding
+            params.topMargin = ThemeUtils.dpToPix(70); // WARNING: this has to be the same as attr/actionBarPadding
             congratsText.requestLayout();
         }
 
@@ -1189,7 +1189,7 @@ public class                                                                    
         // Resize startTimerLayout to have the little margin
         // on the left that allows the user to open the side menu.
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) startTimerLayout.getLayoutParams();
-        params.leftMargin = ThemeUtils.dpToPix(mContext, 16);
+        params.leftMargin = ThemeUtils.dpToPix(16);
         startTimerLayout.requestLayout();
         broadcast(CATEGORY_UI_INTERACTIONS, ACTION_TIMER_STOPPED);
     }
@@ -1584,7 +1584,7 @@ public class                                                                    
                                                             (int) (chronometer.getTop()
                                                                     + chronometer.getBaseline()
                                                                     - chronometer.getTextSize()
-                                                                    + ThemeUtils.dpToPix(mContext, 28)),
+                                                                    + ThemeUtils.dpToPix(28)),
                                                             chronometer.getRight(),
                                                             chronometer.getBottom());
                             Rect congratsRect = new Rect(congratsText.getLeft(), congratsText.getTop(), congratsText.getRight(), congratsText.getBottom());

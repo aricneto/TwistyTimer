@@ -48,7 +48,7 @@
     <attr format="color" name="colorChartExtra3"/>
 
 
-    <declare-styleable name="Cube">
+    <declare-styleable name="Cube2D">
         <attr name="cube_corner_radius" format="dimension"/>
         <attr name="cube_sticker_corner_radius" format="dimension"/>
     </declare-styleable>

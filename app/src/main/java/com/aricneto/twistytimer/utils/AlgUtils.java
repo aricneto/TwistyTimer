@@ -23,6 +23,32 @@ import java.util.Random;
  */
 public final class AlgUtils {
 
+    /**
+     * Returns the size of a puzzle (e.g. 3x3 = 3, 6x6 = 6)
+     */
+    public static int getPuzzleSize(String puzzle) {
+        switch (puzzle) {
+            case "3x3":
+                return 3;
+        }
+        throw new IllegalArgumentException("Invalid puzzle");
+    }
+
+    /**
+     * Whether the subset should be represented in a 2D or isometric view.
+     * @param subset
+     * @return
+     */
+    public static boolean isIsometricView(String subset) {
+        switch (subset) {
+            case "OLL":
+                return true;
+            case "PLL":
+                return false;
+        }
+        throw new IllegalArgumentException("Invalid subset");
+    }
+
     private AlgUtils() {
 
     }

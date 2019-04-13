@@ -2,6 +2,7 @@
   "subsets": [
     {
       "subset": "OLL",
+      "puzzle": "3x3",
       "cases": [
         {
           "name": "OLL 1",

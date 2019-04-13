@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
-import com.aricneto.twistytimer.layout.Cube;
+import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -44,8 +44,9 @@ public class AlgDialog extends DialogFragment {
     @BindView(R.id.algList)     ListView            algList;
     @BindView(R.id.nameText)    TextView            nameText;
     @BindView(R.id.revertButton)ImageView           revertButton;
-    @BindView(R.id.pll_arrows)  ImageView           pllArrows;
-    @BindView(R.id.cube)        Cube                cube;
+    @BindView(R.id.pll_arrows) ImageView pllArrows;
+    @BindView(R.id.cube)
+                               Cube2D    cube;
 
     private AlgorithmModel.Case mCase;
     private String mSubset;

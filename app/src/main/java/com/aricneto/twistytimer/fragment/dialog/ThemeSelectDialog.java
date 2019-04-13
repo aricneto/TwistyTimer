@@ -21,7 +21,6 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,7 +72,7 @@ public class ThemeSelectDialog extends DialogFragment {
         themeRecycler.setAdapter(themeListAdapter);
         textStyleRecycler.setAdapter(textStyleListAdapter);
 
-        int cornerRadius = ThemeUtils.dpToPix(mContext, 20);
+        int cornerRadius = ThemeUtils.dpToPix(20);
 
         // Set Text Style selector background
         GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, ThemeUtils.getPreferredTheme());
@@ -116,8 +115,8 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
     ThemeListAdapter(Theme[] themeSet, Context context) {
         this.themeSet = themeSet;
         this.mContext = context;
-        this.cornerRadius = ThemeUtils.dpToPix(context, 8);
-        this.strokeWidth = ThemeUtils.dpToPix(context, 1);
+        this.cornerRadius = ThemeUtils.dpToPix(8);
+        this.strokeWidth = ThemeUtils.dpToPix(1);
     }
 
     @Override
@@ -199,8 +198,8 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         this.themeSet = themeSet;
         this.mContext = context;
         colorTimerText = ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText);
-        this.cornerRadius = ThemeUtils.dpToPix(context, 8);
-        this.strokeWidth = ThemeUtils.dpToPix(context, 1);
+        this.cornerRadius = ThemeUtils.dpToPix(8);
+        this.strokeWidth = ThemeUtils.dpToPix(1);
     }
 
     @Override

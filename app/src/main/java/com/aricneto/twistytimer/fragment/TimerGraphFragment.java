@@ -217,7 +217,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                 // ATTENTION: 134dp is the sum of the actionBarPadding and tabBarPadding attributes,
                 // plus 16 dp for the view padding! Keep these in sync.
                 final int viewHeight = container.getHeight()
-                                       - ThemeUtils.dpToPix(mContext, 134);
+                                       - ThemeUtils.dpToPix(134);
                 if (chartParams != null) {
                     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         chartParams.height = viewHeight;
@@ -267,7 +267,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         lineChartView.setDrawGridBackground(false);
         lineChartView.getAxisLeft().setEnabled(false);
         lineChartView.getLegend().setTextColor(chartTextColor);
-        lineChartView.setExtraBottomOffset(ThemeUtils.dpToPix(mContext, 4));
+        lineChartView.setExtraBottomOffset(ThemeUtils.dpToPix(4));
         lineChartView.setDescription(null);
 
         // Set axis colors

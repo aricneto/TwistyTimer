@@ -5,11 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -37,18 +34,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.stats.Statistics;
 import com.aricneto.twistytimer.stats.StatisticsCache;
@@ -518,8 +512,8 @@ public class TimerListFragment extends BaseFragment
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 
-            layoutParams.rightMargin = ThemeUtils.dpToPix(mContext, 8);
-            layoutParams.bottomMargin = ThemeUtils.dpToPix(mContext, 8);
+            layoutParams.rightMargin = ThemeUtils.dpToPix(8);
+            layoutParams.bottomMargin = ThemeUtils.dpToPix(8);
 
             String[] clippyLines = {
                     "It looks like you're having some trouble on that last layer.\n\nWould you like me to throw your cube away?",
