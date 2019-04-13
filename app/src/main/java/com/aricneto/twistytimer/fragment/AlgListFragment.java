@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +15,9 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.AlgRecylerAdapter;
-import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import butterknife.BindView;
@@ -159,7 +155,7 @@ public class AlgListFragment extends BaseFragment {
     private void setupRecyclerView() {
         Activity parentActivity = getActivity();
 
-        algCursorAdapter = new AlgRecylerAdapter(getActivity(), getFragmentManager(), "OLL");
+        algCursorAdapter = new AlgRecylerAdapter(getActivity(), getFragmentManager(), "3x3", "OLL");
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =

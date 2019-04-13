@@ -41,6 +41,7 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private HashMap<Character, Integer> colorHash;
 
     private String          mSubset;
+    private String          mPuzzle;
     private ArrayList<Case> cases;
     private int             mCubePuzzleSize;
 
@@ -51,10 +52,11 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     // Locks opening new windows until the last one is dismissed
     private boolean isLocked;
 
-    public AlgRecylerAdapter(Context context, FragmentManager manager, String subset) {
+    public AlgRecylerAdapter(Context context, FragmentManager manager, String puzzle, String subset) {
         this.mContext = context;
         this.colorHash = AlgUtils.getColorLetterHashMap();
         this.mSubset = subset;
+        this.mPuzzle = puzzle;
         this.fragmentManager = manager;
 
         String myJson = StoreUtils.inputStreamToString(context.getResources().openRawResource(R.raw.algorithms));
@@ -100,7 +102,7 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.root.setOnClickListener(view -> {
             if (!isLocked()) {
                 setIsLocked(true);
-                AlgDialog algDialog = AlgDialog.newInstance(mSubset, pCase);
+                AlgDialog algDialog = AlgDialog.newInstance(mPuzzle, mSubset, pCase);
                 algDialog.show(fragmentManager, "alg_dialog");
                 algDialog.setDialogListener(AlgRecylerAdapter.this);
             }
@@ -111,12 +113,10 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         //holder.cube.setCubeState(pState);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ThemeUtils.dpToPix(104));
+                ViewGroup.LayoutParams.MATCH_PARENT, ThemeUtils.dpToPix(108));
         params.addRule(RelativeLayout.BELOW, R.id.progressBar);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        params.topMargin = ThemeUtils.dpToPix(8);
-
-        // FIXME: delete old cube before creating new one!
+        params.topMargin = ThemeUtils.dpToPix(4);
 
         if (mIsIsometricView) {
             IsometricView cube;

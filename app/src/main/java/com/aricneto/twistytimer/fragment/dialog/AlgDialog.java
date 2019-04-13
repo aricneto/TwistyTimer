@@ -4,11 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +11,22 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
-import com.aricneto.twistytimer.layout.Cube2D;
+import com.aricneto.twistytimer.items.Theme;
+import com.aricneto.twistytimer.layout.CubeIsometric;
+import com.aricneto.twistytimer.layout.isometric.IsometricView;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,21 +37,26 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  */
 public class AlgDialog extends DialogFragment {
 
+    @BindView(R.id.editButton)
+    ImageView editButton;
+    @BindView(R.id.progressButton)
+    ImageView progressButton;
+    @BindView(R.id.progressBar)
+    MaterialProgressBar progressBar;
+    @BindView(R.id.nameText)
+    TextView nameText;
+    @BindView(R.id.algList)
+    ListView algList;
+    @BindView(R.id.revertButton)
+    ImageView revertButton;
+    @BindView(R.id.root_layout)
+    RelativeLayout root;
+
     private Unbinder mUnbinder;
-    private Context mContext;
-
-    @BindView(R.id.editButton)    ImageView           editButton;
-    @BindView(R.id.progressButton)ImageView           progressButton;
-    @BindView(R.id.progressBar) MaterialProgressBar progressBar;
-    @BindView(R.id.algList)     ListView            algList;
-    @BindView(R.id.nameText)    TextView            nameText;
-    @BindView(R.id.revertButton)ImageView           revertButton;
-    @BindView(R.id.pll_arrows) ImageView pllArrows;
-    @BindView(R.id.cube)
-                               Cube2D    cube;
-
+    private Context  mContext;
     private AlgorithmModel.Case mCase;
-    private String mSubset;
+    private String              mSubset;
+    private String              mPuzzle;
     private DialogListener      dialogListener;
 /*
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -116,11 +123,12 @@ public class AlgDialog extends DialogFragment {
         }
     };*/
 
-    public static AlgDialog newInstance(String subset, AlgorithmModel.Case algCase) {
+    public static AlgDialog newInstance(String puzzle, String subset, AlgorithmModel.Case algCase) {
         AlgDialog timeDialog = new AlgDialog();
         Bundle args = new Bundle();
         args.putParcelable("case", algCase);
         args.putString("subset", subset);
+        args.putString("puzzle", puzzle);
         timeDialog.setArguments(args);
         return timeDialog;
     }
@@ -133,6 +141,7 @@ public class AlgDialog extends DialogFragment {
         mContext = getContext();
         mCase = getArguments().getParcelable("case");
         mSubset = getArguments().getString("subset");
+        mPuzzle = getArguments().getString("puzzle");
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -144,11 +153,40 @@ public class AlgDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Cube
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ThemeUtils.dpToPix(108),
+                ThemeUtils.dpToPix(108));
+        params.addRule(RelativeLayout.BELOW, R.id.progressBar);
+        params.topMargin = ThemeUtils.dpToPix(8);
+        params.leftMargin = ThemeUtils.dpToPix(8);
+
+        if (AlgUtils.isIsometricView(mSubset)) {
+            IsometricView cube;
+
+            cube = CubeIsometric.init(mContext, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
+            cube.setId(R.id.cube);
+            root.addView(cube, params);
+        }
+
+        // List
+        params = (RelativeLayout.LayoutParams) algList.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_TOP, R.id.cube);
+        params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.cube);
+        params.addRule(RelativeLayout.RIGHT_OF, R.id.cube);
+
+        algList.setLayoutParams(params);
+
+        root.removeView(algList);
+        root.addView(algList, params);
+
         ArrayAdapter<String> algAdapter =
                 new ArrayAdapter<>(mContext, R.layout.item_alg_list_text, mCase.getAlgorithms());
 
         algList.setAdapter(algAdapter);
         nameText.setText(mCase.getName());
+
+        algList.requestLayout();
 
         //cube.setCubeState(mCase.getState());
 
@@ -159,10 +197,10 @@ public class AlgDialog extends DialogFragment {
 //        editButton.setOnClickListener(clickListener);
 
         // If the subset is PLL, it'll need to show the pll arrows.
-        if (mSubset.equals("PLL")) {
-            pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), mCase.getName()));
-            pllArrows.setVisibility(View.VISIBLE);
-        }
+//        if (mSubset.equals("PLL")) {
+//            pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), mCase.getName()));
+//            pllArrows.setVisibility(View.VISIBLE);
+//        }
     }
 
     public void setDialogListener(DialogListener listener) {

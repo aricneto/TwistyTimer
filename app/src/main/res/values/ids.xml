@@ -2,5 +2,6 @@
 <resources>
 
     <!-- Pre-defined IDs allowing forward ID references for RelativeLayout of statistics table. -->
+    <item name="cube" type="id"/>
 
 </resources>
