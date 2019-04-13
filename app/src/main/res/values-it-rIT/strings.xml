@@ -45,6 +45,11 @@
     <string name="cube_555">Cubo 5x5</string>
     <string name="cube_666">Cubo 6x6</string>
     <string name="cube_777">Cubo 7x7</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
+    <string name="cube_skewb">Skewb</string>
+    <string name="cube_sq1">Square-1</string>
     <string name="delete_dialog_cancel_button">Annulla</string>
     <string name="delete_dialog_confirmation_button">Cancella</string>
     <string name="delete_dialog_confirmation_title">Rimuovere la solve?</string>
@@ -234,4 +239,34 @@
     <string name="about_translate_title">Aiuta a tradurre Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">Salva scramble corrente</string>
     <string name="pref_summary_new">Preferenze aggiunte di recente</string>
+    <string name="pref_summary_tint_navigation">Sperimentale. Colora la barra di navigazione con i colori del tema.\nFunziona solo su Android Lollipop e superiori!</string>
+    <string name="pref_title_tint_navigation">Colora la barra di navigazione</string>
+    <string name="pref_title_menu_background">Disabilita lo sfondo del menu</string>
+    <string name="pref_summary_menu_background">Disabilita lo sfondo colorato nel menu sulla barra superiore</string>
+    <string name="dialog_theme_text_style">Stile del testo</string>
+    <string name="pref_screen_title_general">Generale</string>
+    <string name="pref_screen_title_list">Lista</string>
+    <string name="unarchive_dialog_summary">Al momento hai %1$d solves archiviate.\n\n
+Quante solves vuoi rimuovere dall\'archivio? Verranno rimosse le solves piu\' recenti per prime.</string>
+    <string name="donation_message">La tua donaziona mi aiuta a rendere Twisty Timer migliore per tutti :)</string>
+    <string name="pref_animation_duration_title">Durata animazione</string>
+    <string name="pref_animation_duration_summary">Controlla la durata in millisecondi per tutte le animazioni nel timer</string>
+    <string name="pref_screen_title_statistics">Statistiche</string>
+    <string name="pref_title_stat_trim">Media troncata</string>
+    <string name="pref_summary_stat_trim">Controlla il numero di solves migliori e peggiori che verranno escluse dalle medie</string>
+    <string name="pref_title_acceptable_dnf">Max tentativi DNF</string>
+    <string name="pref_summary_acceptable_dnf">Controlla il numero massimo di DNF che una media può avere prima di essere squalificato</string>
+    <string name="pref_title_disqualify_dnf">DNFs squalificano le medie</string>
+    <string name="pref_summary_disqualify_dnf">Se attivo, le medie verranno squalificate al raggiungimento di un certo numero di DNFs</string>
+    <string name="pref_dialog_included_solves">Numero di solves escluse dalla media:</string>
+    <string name="pref_dialog_trim_size">Troncatura: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Numero massimo di DNF per media:</string>
+    <string name="pref_screen_title_graph">Grafico</string>
+    <string name="pref_title_discrete_graph">Grafico discreto</string>
+    <string name="pref_summary_discrete_graph">Disegna il grafico delle risoluzioni come singoli punti invece che con una linea continua</string>
+    <string name="graph_stats_title_session">Sessione</string>
+    <string name="graph_stats_title_global">Globale</string>
+    <string name="pref_title_manual_mode">Inserimento manuale</string>
+    <string name="pref_summary_manual_mode">Aggiunge un pulsante al timer, per facilitare l\'inserimento manuale</string>
 </resources>

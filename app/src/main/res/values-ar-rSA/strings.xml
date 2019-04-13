@@ -25,7 +25,7 @@
     <string name="advanced_pref_summary">قد يؤدي تغيير هذه الإعدادات إلى حدوث بعض مشكلات القطع</string>
     <string name="backCancelEnabledSummary">الضغط على زر العودة أثناء حل سوف يلغيه</string>
     <string name="backCancelEnabledTitle">العودة تلغي الحل</string>
-    <string name="backgroundEnabledSummary">لون خلفية المؤقت مع لون الثيم</string>
+    <string name="backgroundEnabledSummary">لون خلفية المؤقت مع لون السمة</string>
     <string name="backgroundEnabledTitle">خلفية ملونة</string>
     <string name="bestSolveEnabledSummary">التنبيه عند حصولك على رقم قياسي جديد</string>
     <string name="bestSolveEnabledTitle">تنبيه الرقم القياسي</string>
@@ -38,7 +38,7 @@
     <string name="clearEnabledTitle">إظهار زر الـ \"مسح\"</string>
     <string name="contact">اتصال</string>
     <string name="contributors">المساهمون</string>
-    <string name="contributors_content">شكر كبير لهؤلاء الناس لمساهمتهم في تطوير التطبيق: %1$s</string>
+    <string name="contributors_content">الشكر الكبير لهؤلاء الناس لمساهمتهم في تطوير التطبيق: %1$s</string>
     <string name="cube_222">مكعب ۲×۲</string>
     <string name="cube_333">مكعب ٣×٣</string>
     <string name="cube_444">مكعب ٤×٤</string>
@@ -57,6 +57,7 @@
     <string name="dialog_export_import_import">استيراد…</string>
     <string name="dialog_revert_content_confirmation">إعادة تعيين الخوارزميات لهذه الحالة للخوارزميات الافتراضية؟</string>
     <string name="dialog_revert_title_confirmation">إعادة تعيين الخوارزميات</string>
+    <string name="dialog_set_progress">تحديد التقدّم</string>
     <string name="drawer_about">حول و آراء المستخدم</string>
     <string name="drawer_title_changeColorScheme">نظام الألوان</string>
     <string name="drawer_title_changeTheme">مظهر التطبيق</string>
@@ -191,7 +192,7 @@
     <string name="startCueTitle">إشارة البدء</string>
     <string name="task_remove">حذف</string>
     <string name="testers">المجرّبون</string>
-    <string name="testers_content">شكر كبير لهؤلاء الناس لتقديمهم تعليقات قيّمة أثناء نسخة ألفا التجريبية من التطبيق:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
+    <string name="testers_content">الشكر الكبير لهؤلاء الناس لتقديمهم تعليقات قيّمة أثناء نسخة ألفا التجريبية من التطبيق:\n\n•dogelition_man\n•greengorilla60\n•Richiebay</string>
     <string name="timer_text_offset">إزاحة نص المؤقت</string>
     <string name="timer_text_offset_summary">يتحكم بمكان نص المؤقت</string>
     <string name="timer_text_size">حجم نص المؤقت</string>
@@ -199,7 +200,7 @@
     <string name="title_activity_about">حول و آراء المستخدم</string>
     <string name="title_activity_settings">الإعدادات</string>
     <string name="translators">المترجمون</string>
-    <string name="translators_content">شكر كبير لهؤلاء الناس لتوفير الترجمات لهذا التطبيق:%1$s</string>
+    <string name="translators_content">الشكر الكبير لهؤلاء الناس لتوفير الترجمات لهذا التطبيق:%1$s</string>
     <string name="w_new_subtype">جديد</string>
     <string name="warning">تحذير</string>
     <string name="worstSolveEnabledSummary">التنبيه عندما حصولك على أسوأ زمن</string>
@@ -233,6 +234,7 @@
     <string name="dialog_select_puzzle">اختر مكعّب</string>
     <string name="dialog_hint_title">التلميح</string>
     <string name="category_select_dialog_title">اختر فئة</string>
+    <string name="category_select_dialog_hint_edit">اضغط لمدة طويلة على خانة ما للتعديل</string>
     <string name="action_search">البحث</string>
     <string name="timelist_searchbox_hint">البحث في التعليقات</string>
     <string name="title_algorithms">الخوارزميات</string>
@@ -245,6 +247,7 @@
     <string name="about_translate_title">ساعد في ترجمة تطبيق Twisty Timer!</string>
     <string name="dialog_add_time_use_scramble">حفظ البعثرة الحالية</string>
     <string name="pref_summary_new">التفضيلات المُضافة مؤخراً</string>
+    <string name="pref_summary_tint_navigation">تجريبي. يقوم بتلوين شريط التنقل بحسب ألوان السمة.\nيعمل فقط على أندرويد لولي بوب و الاصدارات الأحدث!</string>
     <string name="pref_title_tint_navigation">تلوين شريط التنقل</string>
     <string name="pref_title_menu_background">تعطيل خلفية القائمة</string>
     <string name="pref_summary_menu_background">يعطّل الخلفية الملوّنة خلف شريط القائمة العلوية</string>

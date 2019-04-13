@@ -24,12 +24,12 @@
     <string name="added_comment">Comentário adicionado</string>
     <string name="advanced_pref_summary">Mudar estas configurações pode causar alguns problemas de clipping</string>
     <string name="backCancelEnabledSummary">Pressionar o botão \"voltar\" durante uma solução irá cancelar o cronômetro</string>
-    <string name="backCancelEnabledTitle">Botão voltar cancela a solução</string>
+    <string name="backCancelEnabledTitle">Botão \"voltar\" cancela a solução</string>
     <string name="backgroundEnabledSummary">Colorir o fundo do cronômetro com a cor do tema</string>
     <string name="backgroundEnabledTitle">Fundo colorido</string>
     <string name="bestSolveEnabledSummary">Alertar quando você conseguir um recorde de melhor tempo</string>
     <string name="bestSolveEnabledTitle">Alerta de melhor tempo</string>
-    <string name="averageRecordsEnabledSummary">Alerta e destacar estatísticas quando você obter uma melhor média</string>
+    <string name="averageRecordsEnabledSummary">Alertar e destacar estatísticas quando você obter uma nova melhor média</string>
     <string name="averageRecordsEnabledTitle">Alerta de melhor média</string>
     <string name="buttonsEnabledSummary">Mostrar os botões que aparecem debaixo do cronômetro</string>
     <string name="buttonsEnabledTitle">Botões de ação rápida</string>
