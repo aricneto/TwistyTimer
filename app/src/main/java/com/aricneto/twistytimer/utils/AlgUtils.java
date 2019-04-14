@@ -11,6 +11,8 @@ import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.items.AlgorithmModel;
+import com.aricneto.twistytimer.items.AlgorithmModel.Case;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,15 +154,25 @@ public final class AlgUtils {
     /**
      * Translates a char to a color res
      * i.e: Y -> yellow
-     * The index is a number between 0-24 (number of cells in a 2d array)
      *
      * @param state
-     * @param index
      * @return
      */
-    public static @ColorInt int getColorFromStateIndex (String state, int index) {
+    public static @ColorInt int getColorFromStateIndex (String[] state, int puzzleSize, int i, int j) {
         try {
-            return getColorLetterHashMap().get(state.charAt(index));
+            int face;
+            if (i == 0 && (j > 0 && j < puzzleSize - 1)) { // B
+                face = Case.FACE_B;
+            } else if (i == puzzleSize - 1 && (j > 0 && j < puzzleSize - 1)) {
+                face = Case.FACE_F;
+            } else if (j == 0 && (i > 0 && i < puzzleSize - 1)) {
+                face = Case.FACE_L;
+            } else if (j == puzzleSize - 1 && (i > 0 && i < puzzleSize - 1)) {
+                face = Case.FACE_R;
+            } else {
+                face = Case.FACE_U;
+            }
+            return getColorLetterHashMap().get(state[face].charAt((i * puzzleSize) + j));
         } catch (Exception e) {
             Log.e("ALGUTILS", "Invalid cube state: " + e);
         }

@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.layout.isometric.Point;
 import com.aricneto.twistytimer.utils.AlgUtils;
 
 import java.util.HashMap;
@@ -22,16 +23,18 @@ import androidx.annotation.RequiresApi;
 public class Cube2D extends View {
 
     private HashMap<Character, Integer> mStickerColors;
-    private String                      mCubeState;
+    private String[]                      mCubeState;
 
     private Paint mCubePaint;
     private Paint mStickerPaint;
 
     private RectF mStickerRect;
+    private RectF mStickerStarterRect;
     private RectF mCubeRect;
 
     private int   mPadding;
     private float mStickerSize;
+    private int mPuzzleSize;
     private float mCubeCornerRadius;
     private float mStickerCornerRadius;
 
@@ -62,14 +65,6 @@ public class Cube2D extends View {
         mStickerCornerRadius = 0f;
         initPaints();
         initRects();
-
-        if (attrs == null)
-            return;
-
-        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.Cube2D);
-        mCubeCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube2D_cube_corner_radius, 8);
-        mStickerCornerRadius = ta.getDimensionPixelSize(R.styleable.Cube2D_cube_sticker_corner_radius, 8);
-        ta.recycle();
     }
 
     private void initPaints() {
@@ -83,11 +78,13 @@ public class Cube2D extends View {
         mStickerPaint = new Paint();
         mStickerPaint.setStyle(Paint.Style.FILL);
         mStickerPaint.setAntiAlias(true);
+        mStickerPaint.setColor(Color.parseColor("#FFFFFF"));
     }
 
     private void initRects() {
         mCubeRect = new RectF();
         mStickerRect = new RectF();
+        mStickerStarterRect = new RectF();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -107,91 +104,52 @@ public class Cube2D extends View {
 
         // sticker size.
         // in a 3x3, there'll be 5 stickers in each line (3 for the face, 2 for the sides)
-        mStickerSize = (width - (mPadding * 6)) / (3 + 0.75f);
-        // size to subtract from outermost stickers
-        // you MUST change mStickerSize to divide by the correct amount
-        // i.e. if sizeSubtract = mStickerSize / 2, there'll be 3 whole stickers and 2 half-stickers
-        // which equals 4 stickers. Likewise, if you were to divide by 1.6, there would be 3.75 stickers
-        float sizeSubtract = (mStickerSize / 1.6f);
+        mStickerSize = (width - (mPadding * (mPuzzleSize + 3))) / (float) (mPuzzleSize + 2);
 
         mCubeRect.set(0, 0,
-                      (mPadding * 6) + (mStickerSize * 5) - (sizeSubtract * 2),
-                      (mPadding * 6) + (mStickerSize * 5) - (sizeSubtract * 2));
+                      (mPadding * 6) + (mStickerSize * 5),
+                      (mPadding * 6) + (mStickerSize * 5));
 
         // draw cube background
         canvas.drawRoundRect(mCubeRect, mCubeCornerRadius, mCubeCornerRadius, mCubePaint);
 
-        // Draw the cube
-        // The edge conditions are used to draw half-stickers in the borders only
-        // For every line, we create a rect at the beginning. We then draw that rect
-        // and use its properties to calculate where the next sticker should be.
-        for (int i = 0; i < 5; i++) {
-            mStickerRect.set(
-                    mPadding,
-                    mPadding + ((mStickerSize + mPadding) * i) - sizeSubtract,
-                    mPadding + mStickerSize,
-                    mPadding + mStickerSize + ((mStickerSize + mPadding) * i) - sizeSubtract
-            );
+        char sFace;
 
-            // top outer border
-            if (i == 0) {
-                mStickerRect.set(
-                        mStickerRect.left,
-                        mPadding,
-                        mStickerRect.right,
-                        mStickerRect.bottom
-                );
-            }
-
-            // bottom outer border
-            if (i == 4) {
-                mStickerRect.set(
-                        mStickerRect.left,
-                        mStickerRect.top,
-                        mStickerRect.right,
-                        mStickerRect.bottom - sizeSubtract
-                );
-            }
-
-            for (int j = 0; j < 5; j++) {
-
-                // left outer border
-                if (j == 0) {
-                    mStickerRect.set(
-                            mPadding, //mStickerRect.left + sizeSubtract,
-                            mStickerRect.top,
-                            mStickerRect.right - sizeSubtract,
-                            mStickerRect.bottom
-                    );
-                }
-
-                // ignore the four corners
-                // TODO: Error check if string is of correct size/format!
-                if (!((i == 0 || i == 4) && (j == 0 || j == 4))) {
-                    mStickerPaint.setColor(AlgUtils.getColorFromStateIndex(mCubeState, (5 * i) + j));
-                    canvas.drawRoundRect(
-                            mStickerRect,
-                            mStickerCornerRadius,
-                            mStickerCornerRadius,
-                            mStickerPaint
-                    );
-                }
-                mStickerRect.set(
-                        mStickerRect.right + mPadding,
-                        mStickerRect.top,
-                        j != 3 ? mStickerRect.right + mPadding + mStickerSize : mStickerRect.right + mPadding + mStickerSize - sizeSubtract, // right outer border
-                        mStickerRect.bottom
-                );
+        // Draw the cube (top-down, left-right)
+        mStickerStarterRect.set(
+            mPadding,
+            mCubeRect.top + mPadding,
+            mPadding + mStickerSize,
+            mCubeRect.top + mPadding + mStickerSize
+        );
+        
+        for (int i = 0; i < mPuzzleSize + 2; i++) {
+            for (int j = 0; j < mPuzzleSize + 2; j++) {
+                mStickerRect = translateRect(mStickerStarterRect, j * (mPadding + mStickerSize), i * (mPadding + mStickerSize));
+                canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
             }
         }
     }
 
-    public String getCubeState() {
+    private static RectF translateRect(RectF startRect, float dx, float dy) {
+        RectF newRect = new RectF();
+        newRect.set(
+                startRect.left + dx,
+                startRect.top + dy,
+                startRect.right + dx,
+                startRect.bottom + dy
+        );
+        return newRect;
+    }
+
+    public String[] getCubeState() {
         return mCubeState;
     }
 
-    public void setCubeState(String cubeState) {
+    public Cube2D setCubeState(String[] cubeState, int puzzleSize) {
         this.mCubeState = cubeState;
+        this.mPuzzleSize = puzzleSize;
         invalidate();
+        return this;
     }
 }

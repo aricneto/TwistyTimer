@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
 import com.aricneto.twistytimer.items.AlgorithmModel;
+import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
 import com.aricneto.twistytimer.layout.isometric.IsometricView;
 import com.aricneto.twistytimer.listener.DialogListener;
@@ -118,23 +119,20 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         params.topMargin = ThemeUtils.dpToPix(4);
 
-        if (mIsIsometricView) {
-            IsometricView cube;
+        // Remove old view if there is one (Remember that in a RecyclerView the view is recycled)
+        View cube = holder.root.findViewById(R.id.cube);
+        if (cube != null)
+            holder.root.removeView(cube);
 
-            // Remove old view if there is one (Remember that in a RecyclerView the view is recycled)
-            cube = holder.root.findViewById(R.id.cube);
-            if (cube != null)
-                holder.root.removeView(cube);
-
+        if (!mIsIsometricView)
             cube = CubeIsometric.init(mContext, mCubePuzzleSize, pState);
-            cube.setId(R.id.cube);
-            holder.root.addView(cube, params);
-        }
-//        else
-//            holder.root.addView(CubeLayout.cube2D(mContext, mCubePuzzleSize, pState));
+        else
+            cube = new Cube2D(mContext).setCubeState(pState, mCubePuzzleSize);
 
+        cube.setId(R.id.cube);
+        holder.root.addView(cube, params);
 
-        // If the mSubset is PLL, it'll need to show the pll arrows.
+//         If the mSubset is PLL, it'll need to show the pll arrows.
 //        if (mSubset.equals("PLL")) {
 //            holder.pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, pName));
 //            holder.pllArrows.setVisibility(View.VISIBLE);
