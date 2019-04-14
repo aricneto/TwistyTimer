@@ -167,7 +167,7 @@
     <string name="select_penalty">Selecciona penalización</string>
     <string name="select_solve_type">Seleccionar categoría</string>
     <plurals name="selected_list">
-        <item quantity="one">1 Solve seleccionado</item>
+        <item quantity="one">%d Solve seleccionado</item>
         <item quantity="other">%d Solves seleccionados</item>
     </plurals>
     <string name="send_email_title">Enviar comentarios con…</string>
@@ -221,7 +221,7 @@
     <string name="pref_inspection_alert_sound">Sonido</string>
     <string name="pref_inspection_alert_both">Ambos tipos</string>
     <string name="pref_inspection_alert_title">Alerta de tiempo restante</string>
-    <string name="pref_inspection_alert_summary">El cronómetro te avisará una vez que hayan pasado 8 y 12 segundos de inspección</string>
+    <string name="pref_inspection_alert_summary">El cronómetro te avisará una vez que hayan pasado %1$d y %2$d segundos de inspección</string>
     <string name="dialog_scramble_details">Detalles de la mezcla</string>
     <string name="dialog_select_puzzle">Seleccione un puzzle</string>
     <string name="dialog_hint_title">Pista</string>

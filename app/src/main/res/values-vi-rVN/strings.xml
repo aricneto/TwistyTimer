@@ -82,9 +82,9 @@
     <string name="fab_share_ao5">Lần 5</string>
     <string name="fab_share_distribution">Phân phối</string>
     <string name="fab_share_error">Không thể chia sẻ. Hãy chắc chắn rằng bạn đã thực hiện đủ lượt giải trong phiên này.</string>
-    <string name="fab_share_histogram_solvecount">Phân phối thời gian</string>
+    <string name="fab_share_histogram_solvecount">%1$s Phân phối thời gian (%2$d)</string>
     <string name="fab_share_title">Chia sẻ lần giải…</string>
-    <string name="file_selection_error_content">Hãy chắc chắn rằng bạn đang chọn một tập tin hợp lệ</string>
+    <string name="file_selection_error_content">Hãy chắc chắn rằng bạn đang chọn một %1$s tập tin hợp lệ</string>
     <string name="file_selection_error_title">Loại tệp sai</string>
     <string name="generating_scramble">Tạo scramble…</string>
     <string name="graph_legend_all_times">Tất cả mọi thứ</string>
@@ -124,8 +124,8 @@
     <string name="name_category">Thể loại</string>
     <string name="name_puzzle">Câu đố</string>
     <string name="no_penalty">Không bị phạt</string>
-    <string name="optimal_cross">Tối ưu cross trên U:</string>
-    <string name="optimal_x_cross">Tối ưu hóa mở rộng trên U:</string>
+    <string name="optimal_cross">Tối ưu cross trên %1$s:</string>
+    <string name="optimal_x_cross">Tối ưu hóa mở rộng trên %1$s:</string>
     <string name="option_show_scramble_hints">Mặt thể hiện trong gợi ý</string>
     <string name="option_show_scramble_hints_summary">Chọn mặt mà bạn muốn xem gợi ý cho</string>
     <string name="pagerEnabledSummary">Nếu vô hiệu hoá cài đặt này, bạn sẽ phải nhấn vào các tab để chuyển đổi giữa chúng.</string>

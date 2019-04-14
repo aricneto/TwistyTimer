@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.utils.LocaleUtils;
+import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import butterknife.BindView;
@@ -69,7 +70,7 @@ public class AboutActivity extends AppCompatActivity {
                 case R.id.translatorsButton:
                     ThemeUtils.roundAndShowDialog(AboutActivity.this, new MaterialDialog.Builder(AboutActivity.this)
                         .title(R.string.translators)
-                        .content(getString(R.string.translators_content, getString(R.string.translators_names)))
+                        .content(getString(R.string.translators_content, StoreUtils.getStringFromRaw(getResources(), R.raw.translators)))
                         .positiveText(R.string.action_ok)
                         .build());
                     break;

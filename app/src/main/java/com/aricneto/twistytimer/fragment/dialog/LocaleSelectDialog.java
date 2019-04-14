@@ -34,7 +34,7 @@ import butterknife.Unbinder;
  * Dialog used to select application language
  */
 
-public class LocaleSelectDialog extends DialogFragment {
+public class LocaleSelectDialog extends DialogFragment implements DialogListener{
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -51,7 +51,7 @@ public class LocaleSelectDialog extends DialogFragment {
         mUnbinder = ButterKnife.bind(this, dialogView);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.setAdapter(new LocaleSelectAdapter(getActivity()));
+        recyclerView.setAdapter(new LocaleSelectAdapter(getActivity(), this));
 
         return dialogView;
     }
@@ -70,6 +70,15 @@ public class LocaleSelectDialog extends DialogFragment {
         mUnbinder.unbind();
     }
 
+    @Override
+    public void onUpdateDialog() {
+
+    }
+
+    @Override
+    public void onDismissDialog() {
+        dismiss();
+    }
 }
 
 class LocaleSelectAdapter extends RecyclerView.Adapter<LocaleSelectAdapter.CardViewHolder> {
@@ -79,12 +88,14 @@ class LocaleSelectAdapter extends RecyclerView.Adapter<LocaleSelectAdapter.CardV
     private String                                  newLocale;
     private HashMap<String, Pair<Integer, Integer>> localeHash;
     private String[]                                locales;
+    private DialogListener                          dialogListener;
 
-    LocaleSelectAdapter(FragmentActivity mActivity) {
+    LocaleSelectAdapter(FragmentActivity mActivity, DialogListener listener) {
         this.mActivity = mActivity;
         this.oldLocale = LocaleUtils.getLocale();
         this.localeHash = LocaleUtils.getLocaleHashMap();
         this.locales = LocaleUtils.getLocaleArray();
+        this.dialogListener = listener;
     }
 
     @Override
@@ -108,8 +119,8 @@ class LocaleSelectAdapter extends RecyclerView.Adapter<LocaleSelectAdapter.CardV
             // to go back to "Activity.updateLocale()" to do that.
             if (!newLocale.equals(oldLocale)) {
                 LocaleUtils.setLocale(newLocale);
-
                 ((SettingsActivity) mActivity).onRecreateRequired();
+                dialogListener.onDismissDialog();
             }
         });
     }

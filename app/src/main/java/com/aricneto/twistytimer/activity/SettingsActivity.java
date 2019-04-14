@@ -352,14 +352,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             mainScreen = getPreferenceScreen();
+        }
 
+        @Override
+        public void onResume() {
+            super.onResume();
             // Set the Inspection Alert preference summary to display the correct information
             // about time elapsed depending on user's current inspection duration
             updateInspectionAlertText();
         }
 
-
-        @SuppressLint("StringFormatInvalid")
         private void updateInspectionAlertText() {
             inspectionDuration = Prefs.getInt(R.string.pk_inspection_time, 15);
             findPreference(getString(R.string.pk_inspection_alert_enabled))
@@ -396,38 +398,24 @@ public class SettingsActivity extends AppCompatActivity {
             ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
                     .title(title)
                     .input("", String.valueOf(Prefs.getInt(prefKeyResID, 15)),
-                            new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                    try {
-                                        final int time = Integer.parseInt(input.toString());
+                           (dialog, input) -> {
+                               try {
+                                   final int time = Integer.parseInt(input.toString());
 
-                                        Prefs.edit().putInt(prefKeyResID, time).apply();
+                                   Prefs.edit().putInt(prefKeyResID, time).apply();
 
 
-                                    } catch (NumberFormatException e) {
-                                        Toast.makeText(getActivity(),
-                                                R.string.invalid_time, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            })
+                               } catch (NumberFormatException e) {
+                                   Toast.makeText(getActivity(),
+                                           R.string.invalid_time, Toast.LENGTH_SHORT).show();
+                               }
+                           })
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.action_done)
                     .negativeText(R.string.action_cancel)
                     .neutralText(R.string.action_default)
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(
-                                @NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Prefs.edit().putInt(prefKeyResID, 15).apply();
-                        }
-                    })
-                    .onAny(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            updateInspectionAlertText();
-                        }
-                    })
+                    .onNeutral((dialog, which) -> Prefs.edit().putInt(prefKeyResID, 15).apply())
+                    .onAny((dialog, which) -> updateInspectionAlertText())
                     .build());
         }
 

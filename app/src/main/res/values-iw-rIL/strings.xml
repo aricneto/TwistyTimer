@@ -38,7 +38,7 @@
     <string name="clearEnabledTitle">הצג את כפתור ה\"נקה\"</string>
     <string name="contact">צור קשר</string>
     <string name="contributors">מתנדבים</string>
-    <string name="contributors_content">תודה ענקית לאנשים שתרמו למען התפתחות האפליקציה</string>
+    <string name="contributors_content">תודה ענקית לאנשים שתרמו למען התפתחות האפליקציה%1$s</string>
     <string name="cube_222">קובייה 2x2</string>
     <string name="cube_333">קובייה 3x3</string>
     <string name="cube_444">קובייה 4x4</string>

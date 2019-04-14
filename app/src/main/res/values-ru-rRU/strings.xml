@@ -234,7 +234,7 @@
     <string name="title_algorithms">Алгоритмы</string>
     <string name="edit_scramble">Введите свой скрамбл</string>
     <string name="drawer_title_trainer">Тренировка</string>
-    <string name="title_trainer">Обучение</string>
+    <string name="title_trainer">Обучение %1$s</string>
     <string name="trainer_help_message">Чтобы начать тренировку, выберите ситуации, нажав на их название\nВы так же можете создавать сессии с разрыми наборами ситуаций</string>
     <string name="trainer_spinner_title">Выюкрите случаи для тренировки</string>
     <string name="trainer_select_all">Выбрать все</string>

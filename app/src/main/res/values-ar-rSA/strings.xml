@@ -90,7 +90,7 @@
     <string name="graph_legend_all_times">كل شيء</string>
     <string name="graph_legend_avg_prefix">متوسط</string>
     <string name="graph_legend_best_times">الأفضل</string>
-    <string name="graph_mean">‮المتوسط</string>
+    <string name="graph_mean">المتوسط</string>
     <string name="hideTimeSummary">المؤقت سيُظهر زمنك عندما تنتهي</string>
     <string name="hideTimeTitle">إخفاء الزمن أثناء الحل</string>
     <string name="holdEnabledSummary">الضغط على المؤقت لمدّة ٠،٥ ثانية للبدء</string>
@@ -130,7 +130,7 @@
     <string name="option_show_scramble_hints">الأوجه الظاهرة في التلميح</string>
     <string name="option_show_scramble_hints_summary">حدد الأوجه التي تريد أن ترى التلميحات لها</string>
     <string name="pagerEnabledSummary">اذا كان هذا الإعداد معطّل، سيتوجّب عليك النقر على علامات التبويب من أجل الانتقال فيما بينها.</string>
-    <string name="pagerEnabledTitle">السماح بالانتقال بالسحب بين علامات التبويب</string>
+    <string name="pagerEnabledTitle">السماح بالتنقل بالسحب بين التبويبات</string>
     <string name="panel_swipe_down_to_hide">اسحب للأسفل للإخفاء</string>
     <string name="permission_denied_explanation">من أجل أن تعمل ميزة التصدير/الاستيراد، تحتاج الى منح تطبيق Twisty Timer الإذن بالوصول الى تخزينك الخارجي.</string>
     <string name="personal_best_message">تهانينا!\nلقد كسرت رقمك القياسي السابق بـ%1$s</string>
@@ -212,7 +212,7 @@
     <string name="graph_stats_title_session_best">الأفضل في الجلسة</string>
     <string name="graph_stats_title_current">الحالي</string>
     <string name="graph_stats_label_deviation">الانحراف المعياري</string>
-    <string name="graph_stats_label_mean">‮المتوسط</string>
+    <string name="graph_stats_label_mean">المتوسط</string>
     <string name="graph_stats_label_best">الأفضل</string>
     <string name="graph_stats_label_worst">الأسوأ</string>
     <string name="graph_stats_label_total_time">الوقت الإجمالي</string>

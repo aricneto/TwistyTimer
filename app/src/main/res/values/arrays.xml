@@ -55,8 +55,8 @@
         <item>@string/graph_legend_avg_prefix</item>
         <item>@string/graph_legend_avg_prefix</item>
         <item>@string/graph_stats_label_deviation</item>
-        <item>@string/graph_stats_label_best</item>
         <item>@string/graph_stats_label_mean</item>
+        <item>@string/graph_stats_label_best</item>
         <item>@string/graph_stats_label_solve_count</item>
     </string-array>
 
