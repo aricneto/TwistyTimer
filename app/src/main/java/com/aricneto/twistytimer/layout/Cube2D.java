@@ -138,34 +138,25 @@ public class Cube2D extends View {
         // draw cube background
         canvas.drawRoundRect(mCubeRect, mCubeCornerRadius, mCubeCornerRadius, mCubePaint);
 
-        char sFace;
+        char sticker;
         int sColor;
 
         for (int i = 0; i < mPuzzleSize; i++) {
-
-            sFace = mCubeState[AlgorithmModel.Case.FACE_B].charAt(mPuzzleSize - 1 - i);
-            sColor = AlgUtils.getColorLetterHashMap().get(sFace);
-            mStickerPaint.setColor(sColor);
+            sticker = mCubeState[AlgorithmModel.Case.FACE_B].charAt(mPuzzleSize - 1 - i);
             mStickerRect = translateRect(mStickerHalfHorizontalStartRect, i * (mPadding + mStickerSize), 0);
-            canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+            drawSticker(canvas, sticker);
 
-            sFace = mCubeState[AlgorithmModel.Case.FACE_F].charAt(i);
-            sColor = AlgUtils.getColorLetterHashMap().get(sFace);
-            mStickerPaint.setColor(sColor);
+            sticker = mCubeState[AlgorithmModel.Case.FACE_F].charAt(i);
             mStickerRect = translateRect(mStickerHalfHorizontalStartRect, i * (mPadding + mStickerSize), mCubeRect.bottom - (2 * mPadding) - (mStickerSize));
-            canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+            drawSticker(canvas, sticker);
 
-            sFace = mCubeState[AlgorithmModel.Case.FACE_L].charAt(i);
-            sColor = AlgUtils.getColorLetterHashMap().get(sFace);
-            mStickerPaint.setColor(sColor);
+            sticker = mCubeState[AlgorithmModel.Case.FACE_L].charAt(i);
             mStickerRect = translateRect(mStickerHalfVerticalStartRect, 0, i * (mPadding + mStickerSize));
-            canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+            drawSticker(canvas, sticker);
 
-            sFace = mCubeState[AlgorithmModel.Case.FACE_R].charAt(mPuzzleSize - 1 - i);
-            sColor = AlgUtils.getColorLetterHashMap().get(sFace);
-            mStickerPaint.setColor(sColor);
+            sticker = mCubeState[AlgorithmModel.Case.FACE_R].charAt(mPuzzleSize - 1 - i);
             mStickerRect = translateRect(mStickerHalfVerticalStartRect, mCubeRect.right - (2 * mPadding) - (mStickerSize), i * (mPadding + mStickerSize));
-            canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+            drawSticker(canvas, sticker);
         }
 
         mStickerStartRect.set(
@@ -177,11 +168,9 @@ public class Cube2D extends View {
 
         for (int i = 0; i < mPuzzleSize; i++) {
             for (int j = 0; j < mPuzzleSize; j++) {
-                sFace = mCubeState[AlgorithmModel.Case.FACE_U].charAt((i * mPuzzleSize) + j);
-                sColor = AlgUtils.getColorLetterHashMap().get(sFace);
-                mStickerPaint.setColor(sColor);
+                sticker = mCubeState[AlgorithmModel.Case.FACE_U].charAt((i * mPuzzleSize) + j);
                 mStickerRect = translateRect(mStickerStartRect, j * (mPadding + mStickerSize), i * (mPadding + mStickerSize));
-                canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+                drawSticker(canvas, sticker);
             }
         }
     }
@@ -195,6 +184,12 @@ public class Cube2D extends View {
                 startRect.bottom + dy
         );
         return newRect;
+    }
+
+    private void drawSticker(Canvas canvas, char sticker) {
+        int color = AlgUtils.getColorLetterHashMap().get(sticker);
+        mStickerPaint.setColor(color);
+        canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
     }
 
     public String[] getCubeState() {
