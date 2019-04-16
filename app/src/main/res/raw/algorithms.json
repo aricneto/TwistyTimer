@@ -1,470 +1,2964 @@
 {
   "subsets": [
     {
+      "subset": "CMLL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "CMLL AS 1",
+          "algorithms": [
+            "U R U2 R' U' R U' R'",
+            "R' U' R U' R' U2 R",
+            "U2 L' U' L U' L' U2 L",
+            "U r U2 R' U' R U' r'"
+          ],
+          "state": [
+            "YNONNNRNG",
+            "YNONNNNNN",
+            "YNBNNNNNN",
+            "YNBNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL AS 2",
+          "algorithms": [
+            "U2 R2 D R' U R D' R' U R' U' R U' R'",
+            "U2 l' U R U' L2 U2 R' U R U2 L2 x'",
+            "U R' U' R U' R' U R' D' R U R' D R2",
+            "U R U2 R2 F2 R F' R' F2 R2 U2 R'"
+          ],
+          "state": [
+            "YNRNNNGNO",
+            "YNBNNNNNN",
+            "YNGNNNNNN",
+            "YNBNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL AS 3",
+          "algorithms": [
+            "U2 F' r U r' U2 r' F2 r",
+            "U2 F' L F L' U2 L' U2 L",
+            "U' x' F U' R U L' U2 R' U2 R",
+            "U F R U' R' U R U2 R' U' F'"
+          ],
+          "state": [
+            "YNONNNGNB",
+            "YNRNNNNNN",
+            "YNBNNNNNN",
+            "YNRNNNNNN",
+            "GNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL AS 4",
+          "algorithms": [
+            "U2 R U2 R' U2 R' F R F'",
+            "U2 R U2 r' U2 R' F R F' M'",
+            "U2 r U2 r' U2 R' F R F'",
+            "U2 R U2 R' U2 r' F R F' M'"
+          ],
+          "state": [
+            "YNGNNNRNB",
+            "YNRNNNNNN",
+            "YNONNNNNN",
+            "YNONNNNNN",
+            "BNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL AS 5",
+          "algorithms": [
+            "U2 L' U R U' L U R'",
+            "R' U L U' R U L'",
+            "U2 R' F R F' r U r'",
+            "U2 r' F R F' r U R'"
+          ],
+          "state": [
+            "YNONNNBNG",
+            "YNONNNNNN",
+            "YNBNNNNNN",
+            "YNRNNNNNN",
+            "GNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL AS 6",
+          "algorithms": [
+            "R U R' F' R U2 R' U' R U' R' F R U' R'",
+            "U' R' U' R U' R' U R' F R F' U R",
+            "L' U' L U' L F' L' F L' U2 L",
+            "R U2 R' F R' F' R U' R U' R'"
+          ],
+          "state": [
+            "YNBNNNGNR",
+            "YNGNNNNNN",
+            "YNRNNNNNN",
+            "YNONNNNNN",
+            "BNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL H 1",
+          "algorithms": [
+            "R U2 R' U' R U R' U' R U' R'",
+            "U' R U R' U R U' R' U R U2 R'",
+            "U' R' U' R U' R' U R U' R' U2 R",
+            "r U' r' U' r U r' U r U r'"
+          ],
+          "state": [
+            "ONRNNNONR",
+            "YNYNNNNNN",
+            "BNGNNNNNN",
+            "YNYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL H 2",
+          "algorithms": [
+            "U' R U R' U R U L' U R' U' L",
+            "U2 r U' r2 D' r U' r' D r2 U r'",
+            "U' R' F' R U2 R U2 R' F U' R U' R'",
+            "U' R U R' U R U r' F R' F' r"
+          ],
+          "state": [
+            "BNGNNNRNR",
+            "YNYNNNNNN",
+            "BNONNNNNN",
+            "YNYNNNNNN",
+            "ONGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL H 3",
+          "algorithms": [
+            "U R U2 R2 F R F' U2 R' F R F'",
+            "U R U2 R2 U' R U' R' U2 F R F'",
+            "R' F2 D R2 U R2 D' F2 R",
+            "U2 R' F' R U2 R' F2 R U' F U F'"
+          ],
+          "state": [
+            "BNRNNNGNR",
+            "YNYNNNNNN",
+            "BNGNNNNNN",
+            "YNYNNNNNN",
+            "ONONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL H 4",
+          "algorithms": [
+            "F R U R' U' R U R' U' R U R' U' F'",
+            "y' x' U' R U' R' U2 R' F r U' R U2 r' x",
+            "R' F R U2 R' F' R U F R U R' U F'",
+            "F U R U' R' U R U' R' U R U' R' F'"
+          ],
+          "state": [
+            "GNGNNNBNB",
+            "YNYNNNNNN",
+            "ONONNNNNN",
+            "YNYNNNNNN",
+            "RNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 1",
+          "algorithms": [
+            "U' R U2 R' U' R U R' U' R U R' U' R U' R'",
+            "U R U2 R' U' R U' R' U2 R U R' U R U2 R'",
+            "U2 R' U' R U' R' U R U' R' U R U' R' U2 R",
+            "F' R D2 R' F U2 F' R D2 R' F"
+          ],
+          "state": [
+            "GNYNNNYNO",
+            "ONBNNNNNN",
+            "YNBNNNNNN",
+            "RNYNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 2",
+          "algorithms": [
+            "R' U2 R' D' R U2 R' D R2",
+            "U2 F U2 F' U' R' F' R U' R' F' R",
+            "U2 R' F2 R' U' R F2 R' U R2",
+            "U2 L' U2 L' D' L U2 L' D L2"
+          ],
+          "state": [
+            "GNYNNNYNG",
+            "BNONNNNNN",
+            "YNBNNNNNN",
+            "RNYNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 3",
+          "algorithms": [
+            "U R U2 R D R' U2 R D' R2",
+            "R' F' R U R' U' R' F R2 U' R' U2 R",
+            "U R' U' R U2 L' U R' U' L U' R",
+            "U' l U R' D R U2 R' D' R U l'"
+          ],
+          "state": [
+            "GNYNNNYNG",
+            "RNONNNNNN",
+            "YNONNNNNN",
+            "BNYNNNNNN",
+            "RNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 4",
+          "algorithms": [
+            "U F R' F' R U R U' R'",
+            "l U' R' D R U R' D' x",
+            "U2 R2 D R' U R D' R' U' R'",
+            "U' L' U' L' U R U' L U x'"
+          ],
+          "state": [
+            "GNYNNNYNB",
+            "BNRNNNNNN",
+            "YNGNNNNNN",
+            "ONYNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 5",
+          "algorithms": [
+            "U F R U' R' U' R U R' F'",
+            "U l' U R D' R' U' l B",
+            "U2 F' r U R' U' r' F R",
+            "U' R' U r U f R' f'"
+          ],
+          "state": [
+            "RNYNNNYNO",
+            "GNBNNNNNN",
+            "YNGNNNNNN",
+            "ONYNNNNNN",
+            "BNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL L 6",
+          "algorithms": [
+            "U R U2 R2 F R F' R U2 R'",
+            "U r U2 R2 F R F' R U2 r'",
+            "U' R' U' R U R' F' R U R' U' R' F R2",
+            "U' L' U2 R U' r' U2 R l U' R'"
+          ],
+          "state": [
+            "ONYNNNYNB",
+            "GNRNNNNNN",
+            "YNONNNNNN",
+            "BNYNNNNNN",
+            "GNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL O 1",
+          "algorithms": [
+            "U R U R' F' R U R' U' R' F R2 U' R'",
+            "R' U L' U2 R U' R' U2 R2 x'",
+            "U R U R' U' R' F R2 U' R' U' R U R' F'",
+            "R' U L' U2 R U' R' U2 R L"
+          ],
+          "state": [
+            "YNYNNNYNY",
+            "ONONNNNNN",
+            "BNRNNNNNN",
+            "GNBNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL O 2",
+          "algorithms": [
+            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            "R' U L' U2 R U' x' U L' U2 R U' R x'",
+            "R2 D r' U r D' R2 U' F' U' F",
+            "r' U' r' D' r U' r' D r U r' D' r U r' D r2"
+          ],
+          "state": [
+            "YNYNNNYNY",
+            "RNONNNNNN",
+            "BNGNNNNNN",
+            "ONRNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 1",
+          "algorithms": [
+            "F R U R' U' R U R' U' F'",
+            "R U2 R2 U' R2 U' R2 U2 R",
+            "U2 F' L' U' L U L' U' L U F",
+            "f R U R' U' R U R' U' f'"
+          ],
+          "state": [
+            "BNONNNGNO",
+            "RNYNNNNNN",
+            "GNBNNNNNN",
+            "YNRNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 2",
+          "algorithms": [
+            "U F R' F' R U2 R U' R' U R U2 R'",
+            "l U R' D R U' R U' R2 D' R U l'",
+            "R' U' R U' R' U2 R U' L' U R U' L U R'",
+            "U2 L' U2 L U L' U' L U2 L F' L' F"
+          ],
+          "state": [
+            "GNONNNRNG",
+            "BNYNNNNNN",
+            "RNBNNNNNN",
+            "YNONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 3",
+          "algorithms": [
+            "U' R' F R U F U' R U R' U' F'",
+            "R' F2 D R2 U' R2 D' F2 R",
+            "U2 F U' F' U R' F2 R U2 R' F R",
+            "F R' F' U2 R U R' U R2 U2 R'"
+          ],
+          "state": [
+            "GNBNNNBNG",
+            "ONYNNNNNN",
+            "RNRNNNNNN",
+            "YNONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 4",
+          "algorithms": [
+            "R U2 R' U' R U R' U2 R' F R F'",
+            "R U2 R' U2 R' F R2 U R' U' F'",
+            "R U R' U R U2 R' U' R U' L' U R' U' L",
+            "U F' L F L' U2 L' U L U' L' U2 L"
+          ],
+          "state": [
+            "ONGNNNGNR",
+            "RNYNNNNNN",
+            "BNONNNNNN",
+            "YNBNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 5",
+          "algorithms": [
+            "U' r U' r2 D' r U r' D r2 U r'",
+            "U2 L' U R U' L U' R' U' R U' R'",
+            "U2 R' F R F' r U' R' U' R U' r'",
+            "U2 r' F R F' r U' R' U' R U' R'"
+          ],
+          "state": [
+            "ONRNNNONR",
+            "GNYNNNNNN",
+            "BNGNNNNNN",
+            "YNBNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL Pi 6",
+          "algorithms": [
+            "U' R' U' R' F R F' R U' R' U2 R",
+            "U2 R' U' R U' R' U F' U F R",
+            "L' U' L U' L' U L F R U R' F'"
+          ],
+          "state": [
+            "RNGNNNRNB",
+            "BNYNNNNNN",
+            "ONONNNNNN",
+            "YNGNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 1",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "r U R' U R U2 r'",
+            "U L' U2 L U L' U L",
+            "U l' U2 l U L' U L"
+          ],
+          "state": [
+            "RNBNNNYNO",
+            "GNYNNNNNN",
+            "GNYNNNNNN",
+            "ONYNNNNNN",
+            "BNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 2",
+          "algorithms": [
+            "L' U2 L U2 L F' L' F",
+            "r' F2 r U2 r U' r' F",
+            "U2 R' U2 R U2 R f' U' f",
+            "L' U2 L U2 l F' L' F M'"
+          ],
+          "state": [
+            "ONBNNNYNG",
+            "RNYNNNNNN",
+            "RNYNNNNNN",
+            "ONYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 3",
+          "algorithms": [
+            "F R' F' R U2 R U2 R'",
+            "x U R' U' L U2 R U2 R'",
+            "F R' F' R U2 r U2 r'"
+          ],
+          "state": [
+            "BNGNNNYNO",
+            "RNYNNNNNN",
+            "GNYNNNNNN",
+            "RNYNNNNNN",
+            "ONBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 4",
+          "algorithms": [
+            "U' R U R' U R U' R D R' U' R D' R2",
+            "R U R' U' R' F R F' R U R' U R U2 R'",
+            "r U' L' U R2 U2 L U' L' U2 R2 x'",
+            "U2 R2 D' R U' R' D R U' R U R' U R"
+          ],
+          "state": [
+            "ONGNNNYNB",
+            "RNYNNNNNN",
+            "ONYNNNNNN",
+            "RNYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 5",
+          "algorithms": [
+            "R U' L' U R' U' L",
+            "L F' L' F l' U' l"
+          ],
+          "state": [
+            "GNBNNNYNO",
+            "RNYNNNNNN",
+            "GNYNNNNNN",
+            "ONYNNNNNN",
+            "RNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL S 6",
+          "algorithms": [
+            "U2 R U R' U R' F R F' R U2 R'",
+            "U2 R U R' U L' U R U' L U2 R'",
+            "U2 R U R' F' R U R' U R U2 R' F R U' R'",
+            "R' U2 l U' R U l' U R' U R"
+          ],
+          "state": [
+            "BNRNNNYNG",
+            "ONYNNNNNN",
+            "RNYNNNNNN",
+            "BNYNNNNNN",
+            "ONGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 1",
+          "algorithms": [
+            "R U2 R' U' R U' R2 U2 R U R' U R",
+            "F R' F R2 U' R' U' R U R' F2",
+            "r U2 R' U' R U' r2 U2 R U R' U r",
+            "U2 R' U2 R2 B2 D B D' B R2 U2 R"
+          ],
+          "state": [
+            "GNGNNNYNY",
+            "BNBNNNNNN",
+            "RNYNNNNNN",
+            "RNONNNNNN",
+            "YNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 2",
+          "algorithms": [
+            "R' U r U2 R2 F R F' r",
+            "r' U r U2 R2 F R F' R",
+            "R' U r U2 R2 F R F' R",
+            "r' U r' U2 l U' l' U2 r2 B'"
+          ],
+          "state": [
+            "ONRNNNYNY",
+            "GNGNNNNNN",
+            "ONYNNNNNN",
+            "BNBNNNNNN",
+            "YNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 3",
+          "algorithms": [
+            "U L' U' L U L F' L' F",
+            "U R' F' r U R U' r' F",
+            "U r' F' r U r U' r' F",
+            "U' F R U' R' U R U R' F'"
+          ],
+          "state": [
+            "GNRNNNYNY",
+            "BNRNNNNNN",
+            "GNYNNNNNN",
+            "BNONNNNNN",
+            "YNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 4",
+          "algorithms": [
+            "r' D' r U r' D r U' r U r'",
+            "F R' U' R F' R' U F' R",
+            "U R' D R U' R U R' U R' D' R",
+            "U2 F R U R' U' R U' R' U' R U R' F'"
+          ],
+          "state": [
+            "RNRNNNYNY",
+            "BNGNNNNNN",
+            "ONYNNNNNN",
+            "BNGNNNNNN",
+            "YNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 5",
+          "algorithms": [
+            "U' R U R' U' R' F R F'",
+            "R U R D R' U' R D' R2",
+            "U' r U R' U' L' U l F'"
+          ],
+          "state": [
+            "RNBNNNYNY",
+            "RNGNNNNNN",
+            "ONYNNNNNN",
+            "ONGNNNNNN",
+            "YNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL T 6",
+          "algorithms": [
+            "U2 r2 D' r U r' D r2 U' r' U' r",
+            "R' U R2 D r' U2 r D' R2 U' R",
+            "R2 U' R F R' U R2 U' R' F' R",
+            "R U' R' U' R U' R' F' U' F U2 R U R'"
+          ],
+          "state": [
+            "RNONNNYNY",
+            "RNONNNNNN",
+            "BNYNNNNNN",
+            "GNGNNNNNN",
+            "YNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 1",
+          "algorithms": [
+            "R' U' R U' R' U2 R2 U R' U R U2 R'",
+            "R2 F U' F U F2 R2 U' R' F R",
+            "U' F2 R U' R' U R U R2 F' R F'",
+            "U2 R U R' U R U2 R2 U' R U' R' U2 R"
+          ],
+          "state": [
+            "ONRNNNYNY",
+            "BNBNNNNNN",
+            "RNGNNNNNN",
+            "YNYNNNNNN",
+            "GNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 2",
+          "algorithms": [
+            "U' F R2 D R' U R D' R2 U' F'",
+            "U' L U' R' U L' U2 F' U F R",
+            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",
+            "U R' U L U' R U2 F U' F' L'"
+          ],
+          "state": [
+            "GNGNNNYNY",
+            "BNBNNNNNN",
+            "RNONNNNNN",
+            "YNYNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 3",
+          "algorithms": [
+            "U2 R2 D R' U2 R D' R' U2 R'",
+            "r U' r' U' r U' r' U' F' U2 F",
+            "L F' L' U' L F' L' U' F' U2 F"
+          ],
+          "state": [
+            "BNRNNNYNY",
+            "RNGNNNNNN",
+            "ONGNNNNNN",
+            "YNYNNNNNN",
+            "ONBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 4",
+          "algorithms": [
+            "U2 R' F2 R U2 R U2 R' F2 R U2 R'",
+            "y2 r U' r' U r' D' r U' r' D r",
+            "U2 R' F U' R F R' U R F'",
+            "U' R' D R U' R U' R' U R' D' R"
+          ],
+          "state": [
+            "ONRNNNYNY",
+            "RNONNNNNN",
+            "BNGNNNNNN",
+            "YNYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 5",
+          "algorithms": [
+            "R2 D' R U2 R' D R U2 R",
+            "R' F R U R' F R U F U2 F'"
+          ],
+          "state": [
+            "RNGNNNYNY",
+            "BNRNNNNNN",
+            "GNONNNNNN",
+            "YNYNNNNNN",
+            "BNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "CMLL U 6",
+          "algorithms": [
+            "U' F R U R' U' F'",
+            "U F U R U' R' F'",
+            "U2 R' U' F' U F R"
+          ],
+          "state": [
+            "RNRNNNYNY",
+            "BNGNNNNNN",
+            "ONGNNNNNN",
+            "YNYNNNNNN",
+            "BNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "COLL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "B1",
+          "algorithms": [
+            "R' U' R U' R' U2 R",
+            "y R U2 R' U' R U' R'",
+            "y2 L' U' L U' L' U2 L",
+            "y' L U2 L' U' L U' L'"
+          ],
+          "state": [
+            "YYOYYYRYG",
+            "YNONNNNNN",
+            "YNBNNNNNN",
+            "YNBNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "B2",
+          "algorithms": [
+            "y R' U' R U' R' U R' D' R U R' D R2",
+            "y2 R2 D R' U R D' R' U R' U' R U' R'",
+            "y' L' U' L U' L' U L' D' L U L' D L2",
+            "y2 R' U2 F' R U R' U' R' F R2 U R' U R"
+          ],
+          "state": [
+            "YYRYYYGYO",
+            "YNBNNNNNN",
+            "YNGNNNNNN",
+            "YNBNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "B3",
+          "algorithms": [
+            "L R' U' R U L' U2 R' U2 R",
+            "y2 R L' U' L U R' U2 L' U2 L",
+            "R U R' F' R U2 R' U2 R' F R2 U' R'",
+            "y2 R2 D R' U2 R D' R2 U' R U' R'"
+          ],
+          "state": [
+            "YYOYYYGYB",
+            "YNRNNNNNN",
+            "YNBNNNNNN",
+            "YNRNNNNNN",
+            "GNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "B4",
+          "algorithms": [
+            "R' U' R U R' F R U R' U' R' F' R2",
+            "y2 R U2 R' U2 L' U R U' R' L",
+            "y2 R' U' R U' R2 D' R U2 R' D R2",
+            "y2 M R U2 R' U2 R' F R F' M'"
+          ],
+          "state": [
+            "YYGYYYRYB",
+            "YNRNNNNNN",
+            "YNONNNNNN",
+            "YNONNNNNN",
+            "BNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "B5",
+          "algorithms": [
+            "R' U L U' R U L'",
+            "y2 L' U R U' L U R'",
+            "y2 r' F R F' r U R'"
+          ],
+          "state": [
+            "YYOYYYBYG",
+            "YNONNNNNN",
+            "YNBNNNNNN",
+            "YNRNNNNNN",
+            "GNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "B6",
+          "algorithms": [
+            "R U' R' U2 R U' R' U2 R' D' R U R' D R",
+            "R U R' F' R U2 R' U' R U' R' F R U' R'",
+            "R' U' R U' L U' R' U L' U2 R",
+            "y2 L' U' L U' R U' L' U R' U2 L"
+          ],
+          "state": [
+            "RYGYYYBYY",
+            "YNONNNNNN",
+            "BNONNNNNN",
+            "YNGNNNNNN",
+            "YNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C1",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y2 L U L' U L U2 L'",
+            "y' R' U2 R U R' U R",
+            "y L' U2 L U L' U L"
+          ],
+          "state": [
+            "RYBYYYYYO",
+            "GNYNNNNNN",
+            "GNYNNNNNN",
+            "ONYNNNNNN",
+            "BNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C2",
+          "algorithms": [
+            "L' U2 L U2 R U' L' U L R'",
+            "y2 R U R' U R2 D R' U2 R D' R2",
+            "L' U2 L U2 l F' L' F M'",
+            "y2 R' U2 R U2 L U' R' U L' R"
+          ],
+          "state": [
+            "OYBYYYYYG",
+            "RNYNNNNNN",
+            "RNYNNNNNN",
+            "ONYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C3",
+          "algorithms": [
+            "L' R U R' U' L U2 R U2 R'",
+            "F R' U' R2 U' R2 U2 R2 U' R' F'",
+            "y2 R2 D' R U2 R' D R2 U R' U R",
+            "y B' U' R U R' B U R U2 R'"
+          ],
+          "state": [
+            "BYGYYYYYO",
+            "RNYNNNNNN",
+            "GNYNNNNNN",
+            "RNYNNNNNN",
+            "ONBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C4",
+          "algorithms": [
+            "y' R U R' U R U' R D R' U' R D' R2",
+            "y R' U' R U' R2 F' R U R U' R' F U2 R",
+            "y' F R' U2 R F' R' F U2 F' R",
+            "y2 R2 D' R U' R' D R U' R U R' U R"
+          ],
+          "state": [
+            "OYGYYYYYB",
+            "RNYNNNNNN",
+            "ONYNNNNNN",
+            "RNYNNNNNN",
+            "GNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C5",
+          "algorithms": [
+            "R U' L' U R' U' L",
+            "z D R' U' R D' R' U R z'",
+            "y2 L U' R' U L' U' R",
+            "y' M' U R U' r' F R' F' R"
+          ],
+          "state": [
+            "GYBYYYYYO",
+            "RNYNNNNNN",
+            "GNYNNNNNN",
+            "ONYNNNNNN",
+            "RNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "C6",
+          "algorithms": [
+            "F' R U2 R' U2 R' F2 R U R U' R' F'",
+            "F R U' R2 U2 R U R' U R2 U R' F'",
+            "y2 R U R' F' R U R' U R U2 R' F R U' R'",
+            "R' U2 L U' R U L' U R' U R"
+          ],
+          "state": [
+            "GYOYYYYYB",
+            "RNYNNNNNN",
+            "ONYNNNNNN",
+            "GNYNNNNNN",
+            "RNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D1",
+          "algorithms": [
+            "y' R U2 R' U' R U R' U' R U R' U' R U' R'",
+            "y2 R' U' R U' R' U R U' R' U R U' R' U2 R",
+            "R' U' R U' R' U2 R U' R U R' U R U2 R'",
+            "y' R U R' U R U' R' U R U' R' U R U2 R'"
+          ],
+          "state": [
+            "GYYYYYYYO",
+            "ONBNNNNNN",
+            "YNBNNNNNN",
+            "RNYNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D2",
+          "algorithms": [
+            "R' U2 R' D' R U2 R' D R2",
+            "y2 L' U2 L' D' L U2 L' D L2",
+            "y' R' U2 R U R2 D' R U R' D R2",
+            "y' r D r' U r D' r' U y R U2 R'"
+          ],
+          "state": [
+            "GYYYYYYYG",
+            "BNONNNNNN",
+            "YNBNNNNNN",
+            "RNYNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D3",
+          "algorithms": [
+            "y R U2 R D R' U2 R D' R2",
+            "R' F' R U R' U' R' F R2 U' R' U2 R",
+            "R' D' r U2 r' D R U2 R U R'",
+            "y' L U2 L D L' U2 L D' L2"
+          ],
+          "state": [
+            "RYYYYYYYR",
+            "BNGNNNNNN",
+            "YNGNNNNNN",
+            "ONYNNNNNN",
+            "BNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D4",
+          "algorithms": [
+            "x' R U' R' D R U R' D' x",
+            "y F R' F' r U R U' r'",
+            "y' l' U' L' U R U' L U x'",
+            "y F l' U' L U l F' L'"
+          ],
+          "state": [
+            "RYYYYYYYO",
+            "ONBNNNNNN",
+            "YNRNNNNNN",
+            "GNYNNNNNN",
+            "BNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D5",
+          "algorithms": [
+            "y2 F' r U R' U' r' F R",
+            "y' F R U' R' U' R U2 R' U' F'",
+            "y2 r U R U' r' F R' F'",
+            "y x R' U R D' R' U' R D x'"
+          ],
+          "state": [
+            "BYYYYYYYG",
+            "RNONNNNNN",
+            "YNRNNNNNN",
+            "GNYNNNNNN",
+            "ONBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "D6",
+          "algorithms": [
+            "y' R' U' R U R' F' R U R' U' R' F R2",
+            "y r U2 R2 F R F' R U2 r'",
+            "F R U R' U' R U' R' U2 R U2 R' U' F'",
+            "R2 F' R U R U' R' F R U' R' U R"
+          ],
+          "state": [
+            "GYYYYYYYO",
+            "RNBNNNNNN",
+            "YNGNNNNNN",
+            "ONYNNNNNN",
+            "RNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E1",
+          "algorithms": [
+            "R' U' R U' R' U2 R2 U R' U R U2 R'",
+            "y2 R U R' U R U2 R2 U' R U' R' U2 R",
+            "y' R U R' U' R U' R' U2 R U' R' U2 R U R'",
+            "y2 R U R' U R U2 R' U R U2 R' U' R U' R'"
+          ],
+          "state": [
+            "OYRYYYYYY",
+            "BNBNNNNNN",
+            "RNGNNNNNN",
+            "YNYNNNNNN",
+            "GNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E2",
+          "algorithms": [
+            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",
+            "R2 F' R U R2 U' R' F R U' R2 U R2 U R'",
+            "y' R' U' R F R2 D' R U R' D R2 U' F'",
+            "y' L' U L U' F R' F R F2 L F' L' F"
+          ],
+          "state": [
+            "GYGYYYYYY",
+            "BNBNNNNNN",
+            "RNONNNNNN",
+            "YNYNNNNNN",
+            "RNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E3",
+          "algorithms": [
+            "y2 R2 D R' U2 R D' R' U2 R'",
+            "R' U L' U R U' L U2 R' U R",
+            "x' R U' R' D R U2 R' D' R U' R' x",
+            "R' U' R U' R' U2 R2 U' L' U R' U' L"
+          ],
+          "state": [
+            "GYOYYYYYY",
+            "ONBNNNNNN",
+            "RNBNNNNNN",
+            "YNYNNNNNN",
+            "RNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E4",
+          "algorithms": [
+            "F R U' R' U R U R' U R U' R' F'",
+            "y2 R' F2 R U2 R U2 R' F2 R U2 R'",
+            "x' R2 D2 R' U2 R D2 R' U2 R'",
+            "y R U R2 U' R' F R U R2 U' R' F'"
+          ],
+          "state": [
+            "RYOYYYYYY",
+            "ONRNNNNNN",
+            "GNBNNNNNN",
+            "YNYNNNNNN",
+            "BNGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E5",
+          "algorithms": [
+            "R2 D' R U2 R' D R U2 R",
+            "y2 L2 D' L U2 L' D L U2 L",
+            "L U' R U' L' U R' U2 L U' L'",
+            "y2 x R' U R D' R' U2 R D R' U R x'"
+          ],
+          "state": [
+            "RYGYYYYYY",
+            "BNRNNNNNN",
+            "GNONNNNNN",
+            "YNYNNNNNN",
+            "BNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E6",
+          "algorithms": [
+            "R' U2 R F U' R' U' R U F'",
+            "R2 D' R U R' D R U R U' R' U' R",
+            "R' U2 R U2 R' F' R U R' U' R' F R2",
+            "R U' R' U' R U R D R' U R D' R2"
+          ],
+          "state": [
+            "BYBYYYYYY",
+            "ONRNNNNNN",
+            "GNRNNNNNN",
+            "YNYNNNNNN",
+            "ONGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F1",
+          "algorithms": [
+            "R U2 R' U' R U' R2 U2 R U R' U R",
+            "y' R U R' U R U2 R' U' R U2 R' U' R U' R'",
+            "R U2 R' U' R U' R' U R U R' U R U2 R'",
+            "y' R U R' U R U2 R' L' U' L U' L' U2 L"
+          ],
+          "state": [
+            "GYGYYYYYY",
+            "BNBNNNNNN",
+            "RNYNNNNNN",
+            "RNONNNNNN",
+            "YNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2",
+          "algorithms": [
+            "R' U R U2 R' L' U R U' L",
+            "y2 R' F R U R' U' R' F' R2 U' R' U2 R",
+            "y2 R U' R' U2 L R U' R' U L'",
+            "R' U2 R U R2 F R U R U' R' F' R"
+          ],
+          "state": [
+            "OYRYYYYYY",
+            "GNGNNNNNN",
+            "ONYNNNNNN",
+            "BNBNNNNNN",
+            "YNRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F3",
+          "algorithms": [
+            "y l' U' L U R U' r' F",
+            "y2 x' R U R' D R U' R' D' x",
+            "y' F R F' r U R' U' r'",
+            "y R' F' r U R U' r' F"
+          ],
+          "state": [
+            "GYRYYYYYY",
+            "BNRNNNNNN",
+            "GNYNNNNNN",
+            "BNONNNNNN",
+            "YNONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F4",
+          "algorithms": [
+            "y2 F R U R' U' R U' R' U' R U R' F'",
+            "y' x' R U2 R D2 R' U2 R D2 R2 x",
+            "y R U2 R' F2 R U2 R' U2 R' F2 R",
+            "F U' L' U R2 U' L U R2 F'"
+          ],
+          "state": [
+            "GYGYYYYYY",
+            "RNONNNNNN",
+            "BNYNNNNNN",
+            "RNONNNNNN",
+            "YNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F5",
+          "algorithms": [
+            "y' r U R' U' r' F R F'",
+            "R U R D R' U' R D' R2",
+            "R' F' R U R' U' R' F R U R",
+            "y' R U R' U' L' U R U' R' L"
+          ],
+          "state": [
+            "RYBYYYYYY",
+            "RNGNNNNNN",
+            "ONYNNNNNN",
+            "ONGNNNNNN",
+            "YNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F6",
+          "algorithms": [
+            "R' U R2 D r' U2 r D' R2 U' R",
+            "y2 R U' R2 D' r U2 r' D R2 U R'",
+            "y2 R' U' R U' R' U R U R' F' R U R' U' R' F R2",
+            "R' U' R U R2 D' R U2 R' D R2 U' R' U R"
+          ],
+          "state": [
+            "RYOYYYYYY",
+            "RNONNNNNN",
+            "BNYNNNNNN",
+            "GNGNNNNNN",
+            "YNBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G1",
+          "algorithms": [
+            "R U2 R2 U' R2 U' R2 U2 R",
+            "f R U R' U' f' F R U R' U' F'",
+            "R' U2 R2 U R2 U R2 U2 R'",
+            "y2 L' U2 L2 U L2 U L2 U2 L'"
+          ],
+          "state": [
+            "BYOYYYGYO",
+            "RNYNNNNNN",
+            "GNBNNNNNN",
+            "YNRNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G2",
+          "algorithms": [
+            "R' F2 R U2 R U2 R' F2 U' R U' R'",
+            "y F U R U' R' U R U' R2 F' R U R U' R'",
+            "R' U2 R U R' U' R U2 L U' R' U R L'",
+            "y2 L' U' L U L F' L2 U' L U L' U' L U F"
+          ],
+          "state": [
+            "BYRYYYOYB",
+            "GNYNNNNNN",
+            "ONGNNNNNN",
+            "YNRNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G3",
+          "algorithms": [
+            "R' U' F' R U R' U' R' F R2 U2 R' U2 R",
+            "y F U R U' R' U R U2 R' U' R U R' F'",
+            "R U2 R' U L' U2 R U R' U' R U' R' L",
+            "y' B' R2 U R2 U' R2 U' S R2 F z'"
+          ],
+          "state": [
+            "GYBYYYBYG",
+            "ONYNNNNNN",
+            "RNRNNNNNN",
+            "YNONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G4",
+          "algorithms": [
+            "R U R' U' R' F R2 U R' U' R U R' U' F'",
+            "y' R' U2 R U R' U R2 U' L' U R' U' L",
+            "R U R' U R U2 R' U' R U' L' U R' U' L",
+            "R U2 R' U' R U R' U2 r' F R F' M'"
+          ],
+          "state": [
+            "OYGYYYGYR",
+            "RNYNNNNNN",
+            "BNONNNNNN",
+            "YNBNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G5",
+          "algorithms": [
+            "R U' L' U R' U L U L' U L",
+            "y' R U R' U F' R U2 R' U2 R' F R",
+            "r U' r' U' r U r' U' x' R2 U' R' U R' x",
+            "y2 L' U R U' L U' R' U' R U' R'"
+          ],
+          "state": [
+            "OYRYYYOYR",
+            "GNYNNNNNN",
+            "BNGNNNNNN",
+            "YNBNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "G6",
+          "algorithms": [
+            "R U D' R U R' D R2 U' R' U' R2 U2 R",
+            "R2 D' R U R' D R U R U' R' U R U R' U R",
+            "F R2 U' R U' R U' R' U2 R' U R2 F'",
+            "y R U2 R' U' F' R U2 R' U' R U' R' F R U' R'"
+          ],
+          "state": [
+            "RYGYYYRYB",
+            "BNYNNNNNN",
+            "ONONNNNNN",
+            "YNGNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H1",
+          "algorithms": [
+            "R U R' U R U' R' U R U2 R'",
+            "y' R U2 R' U' R U R' U' R U' R'",
+            "R' U' R U' R' U R U' R' U2 R",
+            "L U L' U L U' L' U L U2 L'"
+          ],
+          "state": [
+            "GYGYYYBYB",
+            "ONRNNNNNN",
+            "YNYNNNNNN",
+            "RNONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H2",
+          "algorithms": [
+            "F R U' R' U R U2 R' U' R U R' U' F'",
+            "L' U R U' L U' R' U2 r' F R F' M'",
+            "f R2 S' U' R2 U' R2 U R2 F'",
+            "R L' U' L U' L' U L U2 R' U L' U2 L"
+          ],
+          "state": [
+            "OYRYYYGYG",
+            "RNONNNNNN",
+            "YNYNNNNNN",
+            "BNBNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H3",
+          "algorithms": [
+            "R U R' U R U L' U R' U' L",
+            "R' F' R U2 R U2 R' F U' R U' R'",
+            "R U R' U R U r' F R' F' r",
+            "R' U' R U' R' U' L U' R U L'"
+          ],
+          "state": [
+            "GYRYYYBYR",
+            "ONGNNNNNN",
+            "YNYNNNNNN",
+            "BNONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H4",
+          "algorithms": [
+            "y F R U R' U' R U R' U' R U R' U' F'",
+            "y F U R U' R' U R U' R' U R U' R' F'",
+            "y R U R' U y' R' U R U' R2 F R F' R",
+            "y R' U' R' F R F' R' F R F' R' F R F' U R"
+          ],
+          "state": [
+            "GYBYYYGYB",
+            "RNRNNNNNN",
+            "YNYNNNNNN",
+            "ONONNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "ELL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "2-flip Adjacent",
+          "algorithms": [
+            "r U R' U' r' U2 R U R U' R2 U2 R",
+            "y' M' U' M U2 M' U' M' U' M' U2 M U' M2",
+            "R B M' U M' U M' U2 M U M U M U2 B' R'",
+            "R' U2 R2 U R' U' R' U2 r U R U' r'"
+          ],
+          "state": [
+            "YYYYYRYBY",
+            "BYBNNNNNN",
+            "RYRNNNNNN",
+            "GGGNNNNNN",
+            "OOONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "2-flip Opposite",
+          "algorithms": [
+            "M' U M' U M' U M' U2 M' U M' U M' U M'",
+            "M' U M' U M' U2 M U M U M",
+            "M' U' M' U' M' U' M' U2 M' U' M' U' M' U' M'",
+            "M' U M' U M' U M' U M' U' M' U' M' U' M' U'"
+          ],
+          "state": [
+            "YBYYYYYGY",
+            "GYGNNNNNN",
+            "OOONNNNNN",
+            "BYBNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "4-flip",
+          "algorithms": [
+            "M' U M' U M' U M' U' M' U M' U M' U M'",
+            "M' U2 M U2 M' U' M U2 M' U2 M",
+            "M' U' M' U' M' U' M' U M' U' M' U' M' U' M'",
+            "M' U M' U M' U M' U M U M U M U M"
+          ],
+          "state": [
+            "YOYBYGYRY",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "BYBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "4-flip H",
+          "algorithms": [
+            "M U R U R' U' M2 U R U' r'",
+            "r U R' U' M2 U R U' R' U' M'",
+            "L2 R D' B D L2 R' F R U' R' F'"
+          ],
+          "state": [
+            "YRYGYBYOY",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "BYBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "4-flip Ua",
+          "algorithms": [
+            "M' U M U M' U2 M' U M' U M U M' U M'"
+          ],
+          "state": [
+            "YGYRYBYOY",
+            "BYBNNNNNN",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "4-flip Ub",
+          "algorithms": [
+            "y' M' U' M U M' U M U M' U M U2 M' U' M"
+          ],
+          "state": [
+            "YOYRYBYGY",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "BYBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "4-flip Z",
+          "algorithms": [
+            "r' U M2 U' r U2 r' U M2 U' r",
+            "M U' M' U2 M U' M2 U M U2 M' U M",
+            "y' M U M U2 M U' M2 U M U2 M U' M",
+            "r' U M2 U' r U2 r' U M2 U' r"
+          ],
+          "state": [
+            "YRYBYGYOY",
+            "BYBNNNNNN",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BF-flip Ua",
+          "algorithms": [
+            "M' U' M' U2 M' U M U' M' U2 M U M2"
+          ],
+          "state": [
+            "YGYYYBYYY",
+            "BOBNNNNNN",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BF-flip Ub",
+          "algorithms": [
+            "M' U M' U2 M' U' M U M' U2 M U' M2"
+          ],
+          "state": [
+            "YGYBYYYYY",
+            "BRBNNNNNN",
+            "RORNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BL-flip Ua",
+          "algorithms": [
+            "U R' U' R F D R2 D' R' F' U R2 U2 R'",
+            "M2 U M' U2 M U' M' U M U2 M U' M",
+            "M2 U M U' M' U' M' U M' U M' U' M",
+            "y r' U' r R2 U' R2 U' R2 U2 R2 U2 r' U r"
+          ],
+          "state": [
+            "YGYYYYYOY",
+            "BYBNNNNNN",
+            "RBRNNNNNN",
+            "GYGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BL-flip Ub",
+          "algorithms": [
+            "y' M' U M' U2 M U M2 U M'"
+          ],
+          "state": [
+            "YGYYYOYYY",
+            "BRBNNNNNN",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OBONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BR-flip Ua",
+          "algorithms": [
+            "y M' U' M' U2 M U' M2 U' M'"
+          ],
+          "state": [
+            "YGYRYYYYY",
+            "BOBNNNNNN",
+            "RBRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "BR-flip Ub",
+          "algorithms": [
+            "M2 U' M' U2 M U M' U' M U2 M U M",
+            "y r U r' R2 U R2 U R2 U2 R2 U2 r U' r'"
+          ],
+          "state": [
+            "YGYYYYYRY",
+            "BYBNNNNNN",
+            "RORNNNNNN",
+            "GYGNNNNNN",
+            "OBONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "FB-flip H",
+          "algorithms": [
+            "R U2 R' U2 R' F R U R U' R2 F' R U R U' R'",
+            "R U R' U' M' U2 R' U' R2 U' r' U R' U R",
+            "R' U2 R U' R' U' R' F R2 U R' U' R' F' R2",
+            "R2 F R U R U' R2 F' R U R U R' U2 R"
+          ],
+          "state": [
+            "YBYYYYYGY",
+            "BYBNNNNNN",
+            "RORNNNNNN",
+            "GYGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "FB-flip Z",
+          "algorithms": [
+            "M' U M U' M' U M U M' U2 M",
+            "R' F2 U' R' F2 R F U R U2 R' F R",
+            "L2 U' L U L' F' L2 U' L' U F U' L2"
+          ],
+          "state": [
+            "YRYYYYYOY",
+            "BYBNNNNNN",
+            "RGRNNNNNN",
+            "GYGNNNNNN",
+            "OBONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "FR-flip H",
+          "algorithms": [
+            "M' U' M U' M' U' M U' M' U' M",
+            "y M' U M U M' U M U M' U M",
+            "F' U' r' F2 r F U R U2 R'",
+            "R' U' R' F R F' U R F R U R' U' F'"
+          ],
+          "state": [
+            "YYYYYBYOY",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "ORONNNNNN",
+            "BGBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "LB-flip Z",
+          "algorithms": [
+            "F R U R' U' F' R' U' R' F R F' U R",
+            "y2 M' U M U M' U2 M U' M' U' M"
+          ],
+          "state": [
+            "YRYBYYYYY",
+            "BOBNNNNNN",
+            "RGRNNNNNN",
+            "GYGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "LF-flip Ua",
+          "algorithms": [
+            "y' R U R' U' M' U R U' r'"
+          ],
+          "state": [
+            "YYYRYBYYY",
+            "RGRNNNNNN",
+            "GYGNNNNNN",
+            "OOONNNNNN",
+            "BYBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "LF-flip Ub",
+          "algorithms": [
+            "M U' M' U2 M U' M'",
+            "y2 M' U' M U2 M' U' M",
+            "R D2 L2 F U2 L2 D2 B R",
+            "M' U M U2 M' U M' U M2 U2 M2 U M2"
+          ],
+          "state": [
+            "YYYBYYYRY",
+            "BYBNNNNNN",
+            "RORNNNNNN",
+            "GGGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "LF-flip Z",
+          "algorithms": [
+            "y' F R U R' U' F2 L' U' L U F",
+            "F' L' U' L U F2 R U R' U' F'",
+            "M U' M' U2 M U' M U' M' U2 M U' M2",
+            "y' R2 F R2 U R' U' R' F' R U2 R U' R' U' R"
+          ],
+          "state": [
+            "YYYBYYYOY",
+            "BYBNNNNNN",
+            "RGRNNNNNN",
+            "GRGNNNNNN",
+            "OYONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "LR-flip Z",
+          "algorithms": [
+            "y M' U' M U M' U' M U' M' U2 M",
+            "y R2 U R' U' R F R2 U R U' F' U R2"
+          ],
+          "state": [
+            "YYYOYRYYY",
+            "OGONNNNNN",
+            "BYBNNNNNN",
+            "RBRNNNNNN",
+            "GYGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "RF-flip Ua",
+          "algorithms": [
+            "y2 M' U M U2 M' U M",
+            "M U M' U2 M U M'",
+            "R' B' D2 L2 U2 F' L2 D2 R'"
+          ],
+          "state": [
+            "YYYYYBYOY",
+            "BYBNNNNNN",
+            "RYRNNNNNN",
+            "GGGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "RF-flip Ub",
+          "algorithms": [
+            "y L' U' L U M' U' L' U l",
+            "y' R' U' R U M U' R' U r"
+          ],
+          "state": [
+            "YYYBYOYYY",
+            "OGONNNNNN",
+            "BYBNNNNNN",
+            "RRRNNNNNN",
+            "GYGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "RL-flip Ua",
+          "algorithms": [
+            "y' r' U' R U M' U' R' U R"
+          ],
+          "state": [
+            "YYYYYBYGY",
+            "RYRNNNNNN",
+            "GYGNNNNNN",
+            "OOONNNNNN",
+            "BRBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "RL-flip Ub",
+          "algorithms": [
+            "y' r U R' U' M U R U' R'"
+          ],
+          "state": [
+            "YYYGYYYBY",
+            "RYRNNNNNN",
+            "GRGNNNNNN",
+            "OOONNNNNN",
+            "BYBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "F2L",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "F2L 1",
+          "algorithms": [
+            "R' F R F'",
+            "U2 R U2 R'",
+            "M' U R U' r'",
+            "y2 U L U' L'"
+          ],
+          "state": [
+            "NNNNNBNNB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 2",
+          "algorithms": [
+            "y U' L' U L",
+            "F R' F' R",
+            "y' U' R' U R",
+            "r U R' U' M"
+          ],
+          "state": [
+            "NNNNNNNRR",
+            "NNNNNNNNN",
+            "BBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 3",
+          "algorithms": [
+            "y L' U' L",
+            "F' U' F",
+            "y' R' U' R",
+            "U M R U' R' U M'"
+          ],
+          "state": [
+            "NNNRNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 4",
+          "algorithms": [
+            "R U R'",
+            "y2 L U L'",
+            "y F U F'"
+          ],
+          "state": [
+            "NBNNNNNNR",
+            "NNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 5",
+          "algorithms": [
+            "U' R U R' U2 R U' R'",
+            "U' R U R' U' R U2 R'",
+            "U' R U R' U R' F R F'",
+            "F2 L' U' L U F2"
+          ],
+          "state": [
+            "NBNNNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 6",
+          "algorithms": [
+            "d R' U' R U2 R' U R",
+            "y U L' U' L U2 L' U L",
+            "U' r U' R' U R U r'",
+            "d R' U' R U R' U2 R"
+          ],
+          "state": [
+            "NNNRNNNNR",
+            "NNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 7",
+          "algorithms": [
+            "U' R U2 R' U2 R U' R'",
+            "U' R U2 R' U' R U2 R'",
+            "U' R U2 R' U R' F R F'",
+            "M' U' M U2 r U' r'"
+          ],
+          "state": [
+            "NNNBNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 8",
+          "algorithms": [
+            "d R' U2 R U2 R' U R",
+            "r' U2 R2 U R2’ U r",
+            "y U L' U2 L U2 L' U L",
+            "d R' U2 R U R' U2 R"
+          ],
+          "state": [
+            "NRNNNNNNR",
+            "NNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 9",
+          "algorithms": [
+            "U' R U' R' U F' U' F",
+            "U' R U' R' d R' U' R",
+            "F R U R' U' F' R U' R'",
+            "y' U R' U' R U' R' U' R"
+          ],
+          "state": [
+            "NRNNNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 10",
+          "algorithms": [
+            "U' R U R' U R U R'",
+            "U y' R' U R U' y R U R'",
+            "U2 R U' R' U' R U R'",
+            "d R' U R d' R U R'"
+          ],
+          "state": [
+            "NNNBNNNNR",
+            "NNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 11",
+          "algorithms": [
+            "U' R U2 R' U F' U' F",
+            "U' R U2 R' d R' U' R",
+            "y' R U2 R2 U' R2 U' R'",
+            "F R' F' R U' R U' R' U R U' R'"
+          ],
+          "state": [
+            "NNNNNRNNB",
+            "RBNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 12",
+          "algorithms": [
+            "R U' R' U R U' R' U2 R U' R'",
+            "R' U2 R2 U R2 U R",
+            "U F' U2 F U' R U R'",
+            "U R U' R' U' R U R' U' R U R'"
+          ],
+          "state": [
+            "NNNNNNNBR",
+            "NNNNNNNNN",
+            "RBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 13",
+          "algorithms": [
+            "y' U R' U R U' R' U' R",
+            "d R' U R U' R' U' R",
+            "M' U' R U R' U' R U2 r'",
+            "y U L' U L U' L' U' L"
+          ],
+          "state": [
+            "NNNNNNNGR",
+            "GNNNNNNNN",
+            "NRRNNNNNN",
+            "NGGNNNNNN",
+            "NGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 14",
+          "algorithms": [
+            "U' R U' R' U R U R'",
+            "y L' U2 L U2 F U2 F' U F U' F'",
+            "R U' R' U R U2 R' U2 R U' R'"
+          ],
+          "state": [
+            "NNNNNBNNR",
+            "RNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 15",
+          "algorithms": [
+            "R U R' U2 R U' R' U R U' R'",
+            "y L' U L U2 y' R U R'",
+            "M U r U' r' U' M'",
+            "R U2 R' U R U R' U R U' R'"
+          ],
+          "state": [
+            "NNNNNNNBB",
+            "RNNNNNNNN",
+            "NRBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 16",
+          "algorithms": [
+            "R U' R' U2 F' U' F",
+            "R U' R' U2 y L' U' L",
+            "R U' R' U d R' U' R",
+            "U F R U R' U' F' U R U' R'"
+          ],
+          "state": [
+            "NNNNNRNNR",
+            "BNNNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 17",
+          "algorithms": [
+            "R U2 R' U' R U R'",
+            "y L F' L' F L' U L U' L' U L",
+            "U' R U' R' U2 R U2 R2 F R F'"
+          ],
+          "state": [
+            "NNNNNBNNB",
+            "RNNNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 18",
+          "algorithms": [
+            "y' R' U2 R U R' U' R",
+            "y L' U2 L U L' U' L",
+            "R' F R F' R U' R' U R U' R'",
+            "R U R' U' R U R' U' F R' F' R"
+          ],
+          "state": [
+            "NNNNNNNGR",
+            "NNNNNNNNN",
+            "RGRNNNNNN",
+            "GGNNNNNNN",
+            "GGNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 19",
+          "algorithms": [
+            "U R U2 R' U R U' R'",
+            "U R U2 R2 F R F'",
+            "R U' R' U R U' R' U R U R'",
+            "y U F U2 F2 L F L'"
+          ],
+          "state": [
+            "NBNNNNNNB",
+            "NNNNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 20",
+          "algorithms": [
+            "y' U' R' U2 R U' R' U R",
+            "y U' L' U2 L U' L' U L",
+            "U' R U' R2 F R F' R U' R'",
+            "d' L' U2 L U' L' U L"
+          ],
+          "state": [
+            "NNNGNNNNR",
+            "NNNNNNNNN",
+            "NGRNNNNNN",
+            "GGNNNNNNN",
+            "GGNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 21",
+          "algorithms": [
+            "R U' R' U2 R U R'",
+            "U2 R U R' U R U' R'",
+            "y F R U2 R' F'",
+            "R B U2 B' R'"
+          ],
+          "state": [
+            "NNNBNNNNB",
+            "NNNNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 22",
+          "algorithms": [
+            "F' L' U2 L F",
+            "r U' r' U2 r U r'",
+            "y' R' U R U2 R' U' R",
+            "y' U2 R' U' R U' R' U R"
+          ],
+          "state": [
+            "NRNNNNNNB",
+            "NNNNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 23",
+          "algorithms": [
+            "R U R' U2 R U R' U' R U R'",
+            "U R U' R' U' R U' R' U R U' R'",
+            "U2 R2 U2 R' U' R U' R2",
+            "y F' U' L' U L F L' U L"
+          ],
+          "state": [
+            "NNNNNNNBB",
+            "NNNNNNNNN",
+            "RRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 24",
+          "algorithms": [
+            "F U R U' R' F' R U' R'",
+            "y U' L' U L U L' U L U' L' U L",
+            "U' R U R2 F R F' R U' R'",
+            "y' R' U' R U2 R' U' R U R' U' R"
+          ],
+          "state": [
+            "NNNNNRNNB",
+            "BNNNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 25",
+          "algorithms": [
+            "R' F' R U R U' R' F",
+            "U' R' F R F' R U R'",
+            "R' U' R' U' R' U R U R",
+            "U' F' R U R' U' R' F R"
+          ],
+          "state": [
+            "NNNNNBNNN",
+            "NRNNNNNNN",
+            "NNNNNNNNN",
+            "RRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 26",
+          "algorithms": [
+            "U R U' R' U' F' U F",
+            "U R U' R' F R' F' R",
+            "y r U r' U' r' F r F'",
+            "U R U' R' d' L' U L"
+          ],
+          "state": [
+            "NNNNNNNRN",
+            "NNNNNNNNN",
+            "NBNNNNNNN",
+            "RRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 27",
+          "algorithms": [
+            "R U' R' U R U' R'",
+            "R U' R2 F R F'",
+            "y L' U' L U2 F U' F'",
+            "y' R' U' R U y U R U' R'"
+          ],
+          "state": [
+            "NNNNNBNNN",
+            "NRNNNNNNN",
+            "NNNNNNNNN",
+            "BRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 28",
+          "algorithms": [
+            "y L' U L U' L' U L",
+            "R U R' U' F R' F' R",
+            "y' R' U R U' R' U R",
+            "R U R' U2 F' U F"
+          ],
+          "state": [
+            "NNNNNNNGN",
+            "NNNNNNNNN",
+            "RNRNNNNNN",
+            "GGNNNNNNN",
+            "NGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 29",
+          "algorithms": [
+            "R' F R F' R' F R F'",
+            "y L' U' L U L' U' L",
+            "y' R' U' R U R' U' R",
+            "M' U R U' r' U R U' R'"
+          ],
+          "state": [
+            "NNNNNNNRN",
+            "NNNNNNNNN",
+            "NBNNNNNNN",
+            "BRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 30",
+          "algorithms": [
+            "R U R' U' R U R'",
+            "y U' L' U' L U2 F U2 F' U F U' F'",
+            "F R' F' R F R' F' R"
+          ],
+          "state": [
+            "NNNNNBNNN",
+            "NRNNNNNNN",
+            "NNBNNNNNN",
+            "RRNNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 31",
+          "algorithms": [
+            "U' R' F R F' R U' R'",
+            "R U' R' y L' U2 L",
+            "l F' R U' R' U l'",
+            "R U' R' U2 F R' F' R"
+          ],
+          "state": [
+            "NNNNNNNNB",
+            "NNBNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 32",
+          "algorithms": [
+            "R U R' U' R U R' U' R U R'",
+            "U R U' R' U R U' R' U R U' R'",
+            "R2 U R2 U R2 U2 R2",
+            "R' F R F' R' F R F' R' F R F'"
+          ],
+          "state": [
+            "NNNNNNNNB",
+            "NNRNNNNNN",
+            "NRBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 33",
+          "algorithms": [
+            "U' R U' R' U2 R U' R'",
+            "U' R U' R' U R' F R F'",
+            "y R' D R U' R' D' R",
+            "R U R' U' F' U F R U' R' U F' U F"
+          ],
+          "state": [
+            "NNNNNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 34",
+          "algorithms": [
+            "U R U R' U2 R U R'",
+            "U' R U2 R' U R U R'",
+            "y U L' U L U2 L' U L",
+            "y' U R' U R U2 R' U R"
+          ],
+          "state": [
+            "NNNNNNNNR",
+            "NNRNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 35",
+          "algorithms": [
+            "U' R U R' U F' U' F",
+            "U2 R U R' F R' F' R",
+            "U M' U R U' r' R U' R'",
+            "U' R U R' d R' U' R"
+          ],
+          "state": [
+            "NNNNNNNNB",
+            "RNNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "BRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 36",
+          "algorithms": [
+            "U2 R' F R F' U2 R U R'",
+            "U F' U' F U' R U R'",
+            "R2 u R U R' U' u' R' U R'",
+            "y U L' U' L y' U' R U R'"
+          ],
+          "state": [
+            "NNNNNNNNR",
+            "NNBNNNNNN",
+            "NBBNNNNNN",
+            "RRNNNNNNN",
+            "RRNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 37",
+          "algorithms": [
+            "R2 U2 F R2 F' U2 R' U R'",
+            "R U' R' d R' U2 R U2 R' U R",
+            "R U R' U2 R U2 R' U F' U' F",
+            "R U2 R' U R U2 R' U F' U' F"
+          ],
+          "state": [
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RRRNNNNNN",
+            "BRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 38",
+          "algorithms": [
+            "R U R' U' R U2 R' U' R U R'",
+            "R U' R' U' R U R' U2 R U' R'",
+            "R2 U2 R' U' R U' R' U2 R'",
+            "F R' F' R2 U2 R' U' R U R'"
+          ],
+          "state": [
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 39",
+          "algorithms": [
+            "R U R' U2 R U' R' U R U R'",
+            "R U' R' U R U2 R' U R U' R'",
+            "R U2 R U R' U R U2 R2",
+            "R U2 R' U R U' R' U R U R'"
+          ],
+          "state": [
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBNNNNNN",
+            "RRNNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 40",
+          "algorithms": [
+            "R U' R' F R U R' U' F' R U' R'",
+            "r U' r' U2 r U r' R U R'",
+            "R F U R U' R' F' U' R'",
+            "F' L' U2 L F R U R'"
+          ],
+          "state": [
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BRRNNNNNN",
+            "BRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F2L 41",
+          "algorithms": [
+            "R U R' U' R U' R' U2 y' R' U' R",
+            "R U F R U R' U' F' R'",
+            "R U' R' F' L' U2 L F",
+            "R U' M' U' r' U2 r U r'"
+          ],
+          "state": [
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBNNNNNN",
+            "RRNNNNNNN",
+            "BRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
       "subset": "OLL",
-      "puzzle": "3x3",
+      "puzzle": "333",
       "cases": [
         {
           "name": "OLL 1",
-          "state": [
-            "NNNNYNNNN",
-            "NYNNNNNNN",
-            "YYYNNNNNN",
-            "NYNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
-            "R U2 R2' F R F' U2 R' F R F'",
+            "R U2 R2 F R F' U2 R' F R F'",
             "R U B' R B R2 U' R' F R F'",
             "y R U' R2 D' r U' r' D R2 U R'",
             "r U R' U R' r2 U' R' U R' r2 U2 r'"
+          ],
+          "state": [
+            "NNNNYNNNN",
+            "YYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 2",
-          "state": [
-            "NNNNYNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
-            "YYNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "F R U R' U' F' f R U R' U' f'",
             "F R U R' U' S R U R' U' f'",
             "y r U r' U2 R U2 R' U2 r U' r'",
-            "F R U r' U' R U R' M' U' F'"
+            "R' U2 r U' r' U2 r U r' U2 R"
+          ],
+          "state": [
+            "NNNNYNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
-          "name": "OLL 03",
-          "state": [
-            "NNNNYNYNN",
-            "NYYNNNNNN",
-            "NYYNNNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
+          "name": "OLL 3",
           "algorithms": [
             "y' f R U R' U' f' U' F R U R' U' F'",
             "r' R2 U R' U r U2 r' U M'",
             "r' R U R' F2 R U L' U L M'",
             "y F U R U' R' F' U F R U R' U' F'"
+          ],
+          "state": [
+            "NNNNYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
-          "name": "OLL 04",
-          "state": [
-            "NNNNYNNNY",
-            "YYNNNNNNN",
-            "NYNNNNNNN",
-            "YYNNNNNNN",
-            "YYNNNNNNN",
-            "NNNNNNNNN"
-          ],
+          "name": "OLL 4",
           "algorithms": [
             "y' f R U R' U' f' U F R U R' U' F'",
             "M U' r U2 r' U' R U' R2 r",
             "y F U R U' R' F' U' F R U R' U' F'",
-            "y2 r R2' U' R U' r' U2 r U' M"
+            "y2 r R2 U' R U' r' U2 r U' M"
+          ],
+          "state": [
+            "NNNNYNNNY",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
-          "name": "OLL 05",
-          "state": [
-            "NNNNYYNYY",
-            "NNNNNNNNN",
-            "NNYNNNNNN",
-            "NYYNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN"
-          ],
+          "name": "OLL 5",
           "algorithms": [
             "r' U2 R U R' U r",
             "y2 l' U2 L U L' U l",
             "y2 R' F2 r U r' F R",
-            "L' U' L2 F' L' F2 U' F'"
-          ]
-        },
-        {
-          "name": "OLL 06",
-          "state": [
-            "NYYNYYNNN",
-            "YYNNNNNNN",
-            "YNNNNNNNN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "NNNNNNNNN"
+            "F R U R' U' F' U' F R U R' U' F'"
           ],
-          "algorithms": [
-            "r U2 R' U' R U' r'",
-            "y2 l U2 L' U' L U' l'",
-            "y2 R U R2 F R F2 U F",
-            "y' x' D R2 U' R' U R' D' x"
-          ]
-        },
-        {
-          "name": "OLL 07",
           "state": [
-            "NYNYYNYNN",
-            "NYYNNNNNN",
-            "NYYNNNNNN",
+            "NNNNYYNYY",
             "NNYNNNNNN",
             "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 6",
+          "algorithms": [
+            "r U2 R' U' R U' r'",
+            "y' x' D R2 U' R' U R' D' x",
+            "y2 l U2 L' U' L U' l'",
+            "y2 R U R2 F R F2 U F"
           ],
+          "state": [
+            "NYYNYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 7",
           "algorithms": [
             "r U R' U R U2 r'",
             "L' U2 L U2 L F' L' F",
             "F R' F' R U2 R U2 R'",
-            "r U r' U R U' R' r U' r'"
+            "y2 l U L' U L U2 l'"
+          ],
+          "state": [
+            "NYNYYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
-          "name": "OLL 08",
-          "state": [
-            "NYNNYYNNY",
-            "YYNNNNNNN",
-            "NNNNNNNNN",
-            "YNNNNNNNN",
-            "YYNNNNNNN",
-            "NNNNNNNNN"
-          ],
+          "name": "OLL 8",
           "algorithms": [
             "y2 r' U' R U' R' U2 r",
             "l' U' L U' L' U2 l",
             "R U2 R' U2 R' F R F'",
-            "F' L F L' U2 L' U2 L"
+            "R' F' r U' r' F2 R"
+          ],
+          "state": [
+            "NYNNYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
-          "name": "OLL 09",
-          "state": [
-            "NNYYYNNYN",
-            "YNNNNNNNN",
-            "YYNNNNNNN",
-            "NYNNNNNNN",
-            "YNNNNNNNN",
-            "NNNNNNNNN"
-          ],
+          "name": "OLL 9",
           "algorithms": [
             "y R U R' U' R' F R2 U R' U' F'",
-            "y2 R' U' R U' R' U R' F R F' U R",
+            "y' L' U' L U' L F' L' F L' U2 L",
             "r' R2 U2 R' U' R U' R' U' M'",
-            "y' L' U' L U' L F' L' F L' U2 L"
+            "y2 R' U' R U' R' U R' F R F' U R"
+          ],
+          "state": [
+            "NNYYYNNYN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 10",
-          "state": [
-            "NNYYYNNYN",
-            "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NYYNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U R' U R' F R F' R U2 R'",
-            "R U R' y R' F R U' R' F' R",
             "y2 L' U' L U L F' L2 U' L U F",
+            "R U R' y R' F R U' R' F' R",
             "R U R' y' r' U r U' r' U' r"
+          ],
+          "state": [
+            "NNYYYNNYN",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 11",
+          "algorithms": [
+            "r' R2 U R' U R U2 R' U M'",
+            "M R U R' U R U2 R' U M'",
+            "y2 r U R' U R' F R F' R U2 r'",
+            "y F' L' U' L U F U F R U R' U' F'"
+          ],
           "state": [
             "NNNNYYYYN",
             "NNYNNNNNN",
             "NNYNNNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "r' R2 U R' U R U2 R' U M'",
-            "M R U R' U R U2 R' U M'",
-            "r U R' U R' F R F' R U2 r'",
-            "y2 r U R' U R' F R F' R U2 r'"
           ]
         },
         {
           "name": "OLL 12",
+          "algorithms": [
+            "F R U R' U' F' U F R U R' U' F'",
+            "y' M' R' U' R U' R' U2 R U' M",
+            "y' r R2 U' R U' R' U2 R U' R r'",
+            "y M U2 R' U' R U' R' U2 R U M'"
+          ],
           "state": [
             "NNYNYYNYN",
             "YNNNNNNNN",
             "YNNNNNNNN",
-            "NYNNNNNNN",
-            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "F R U R' U' F' U F R U R' U' F'",
-            "y' r R2' U' R U' R' U2 R U' R r'",
-            "y M U2 R' U' R U' R' U2 R U M'",
-            "y M L' U' L U' L' U2 L U' M'"
           ]
         },
         {
           "name": "OLL 13",
+          "algorithms": [
+            "r U' r' U' r U r' F' U F",
+            "F U R U2 R' U' R U R' F'",
+            "F U R U' R2 F' R U R U' R'",
+            "r U' r' U' r U r' y' R' U R"
+          ],
           "state": [
             "NNNYYYYNN",
-            "NYYNNNNNN",
             "NNYNNNNNN",
             "NYYNNNNNN",
             "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "r U' r' U' r U r' F' U F",
-            "F U R U' R2 F' R U R U' R'",
-            "F U R U2 R' U' R U R' F'",
-            "r U' r' U' r U r' y' R' U R"
           ]
         },
         {
           "name": "OLL 14",
-          "state": [
-            "NNNYYYNNY",
-            "YYNNNNNNN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "YNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R' F R U R' F' R F U' F'",
             "R' F R U R' F' R y' R U' R'",
-            "F' U' r' F r2 U r' U' r' F r",
-            "r' U r U r' U' r y R U' R'"
+            "r' U r U r' U' r y R U' R'",
+            "l' U l U l' U' l F U' F'"
+          ],
+          "state": [
+            "NNNYYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 15",
+          "algorithms": [
+            "y2 l' U' l L' U' L U l' U l",
+            "r' U' r R' U' R U r' U r",
+            "r' U' M' U' R U r' U r",
+            "y2 R' F' R L' U' L U R' F R"
+          ],
           "state": [
             "NNNYYYNNY",
+            "NNYNNNNNN",
             "NYNNNNNNN",
-            "NNYNNNNNN",
-            "NYYNNNNNN",
-            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "r' U' r R' U' R U r' U r",
-            "y2 l' U' l L' U' L U l' U l",
-            "r' U' M' U' R U r' U r",
-            "y' R' U2 R U R' F U R U' R' F' R"
           ]
         },
         {
           "name": "OLL 16",
-          "state": [
-            "NNYYYYNNN",
-            "YYNNNNNNN",
-            "YNNNNNNNN",
-            "NYNNNNNNN",
-            "YNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r U r' R U R' U' r U' r'",
             "r U M U R' U' r U' r'",
-            "y2 R' F R U R' U' F' R U' R' U2 R",
-            "y2 l U l' L U L' U' l U' l'"
+            "y2 l U l' L U L' U' l U' l'",
+            "y2 R' F R U R' U' F' R U' R' U2 R"
+          ],
+          "state": [
+            "NNYYYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 17",
+          "algorithms": [
+            "R U R' U R' F R F' U2 R' F R F'",
+            "y2 F R' F' R2 r' U R U' R' U' M'",
+            "f R U R' U' f' U' R U R' U' R' F R F'",
+            "y' F' r U r' U' S r' F r S'"
+          ],
           "state": [
             "YNNNYNNNY",
             "NYNNNNNNN",
             "NYNNNNNNN",
-            "YYNNNNNNN",
-            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "R U R' U R' F R F' U2 R' F R F'",
-            "f R U R' U' f' U' R U R' U' R' F R F'",
-            "y2 F R' F' R2 r' U R U' R' U' M'",
-            "y' F' r U r' U' S r' F r S'"
           ]
         },
         {
           "name": "OLL 18",
-          "state": [
-            "YNYNYNNNN",
-            "YYYNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r U R' U R U2 r2 U' R U' R' U2 r",
             "y R U2 R2 F R F' U2 M' U R U' r'",
             "y2 F R U R' d R' U2 R' F R F'",
             "y2 F R U R' U y' R' U2 R' F R F'"
+          ],
+          "state": [
+            "YNYNYNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 19",
-          "state": [
-            "YNYNYNNNN",
-            "NYNNNNNNN",
-            "YYNNNNNNN",
-            "NYNNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "M U R U R' U' M' R' F R F'",
-            "r' R U R U R' U' r R2' F R F'",
+            "r' R U R U R' U' r R2 F R F'",
             "r' U2 R U R' U r2 U2 R' U' R U' r'",
             "R' U2 F R U R' U' F2 U2 F R"
+          ],
+          "state": [
+            "YNYNYNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 20",
-          "state": [
-            "YNYNYNYNY",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "M U R U R' U' M2 U R U' r'",
             "r U R' U' M2 U R U' R' U' M'",
             "M' U M' U M' U M' U' M' U M' U M' U M'",
-            "M' U' R' U' R U M2' U' R' U r"
+            "M' U2 M U2 M' U M U2 M' U2 M"
+          ],
+          "state": [
+            "YNYNYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 21",
-          "state": [
-            "NYNYYYNYN",
-            "NNNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y R U2 R' U' R U R' U' R U' R'",
             "y F R U R' U' R U R' U' R U R' U' F'",
             "R U R' U R U' R' U R U2 R'",
             "R' U' R U' R' U R U' R' U2 R"
+          ],
+          "state": [
+            "NYNYYYNYN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 22",
-          "state": [
-            "NYNYYYNYN",
-            "NNYNNNNNN",
-            "NNNNNNNNN",
-            "YNNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U2 R2 U' R2 U' R2 U2 R",
             "f R U R' U' f' F R U R' U' F'",
             "R' U2 R2 U R2 U R2 U2 R'",
-            "R U2' R2' U' R2 U' R2' U2 R"
+            "R U2 R2 U' R2 U' R2 U2 R"
+          ],
+          "state": [
+            "NYNYYYNYN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 23",
-          "state": [
-            "YYYYYYNYN",
-            "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R2 D R' U2 R D' R' U2 R'",
             "y2 R2 D' R U2 R' D R U2 R",
             "y R U R' U' R U' R' U2 R U' R' U2 R U R'",
             "R U R' U R U2 R2 U' R U' R' U2 R"
+          ],
+          "state": [
+            "YYYYYYNYN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 24",
-          "state": [
-            "NYYYYYNYY",
-            "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r U R' U' r' F R F'",
             "y2 l' U' L U R U' r' F",
             "y' x' R U R' D R U' R' D' x",
-            "r U R' U' L' U R U' x'"
+            "L F R' F' L' F R F'"
+          ],
+          "state": [
+            "NYYYYYNYY",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 25",
-          "state": [
-            "YYNYYYNYY",
-            "YNNNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y F' r U R' U' r' F R",
             "R' F R B' R' F' R B",
             "F R' F' r U R U' r'",
-            "y2 R U2 R' U' R U R' U' R U R' U' R U' R'"
+            "y' x' R U' R' D R U R' D' x"
+          ],
+          "state": [
+            "YYNYYYNYY",
+            "NNYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 26",
-          "state": [
-            "YYNYYYNYN",
-            "YNNNNNNNN",
-            "YNNNNNNNN",
-            "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y R U2 R' U' R U' R'",
             "R' U' R U' R' U2 R",
             "y2 L' U' L U' L' U2 L",
-            "R' U L U' R U L'"
+            "y2 L' U R U' L U R'"
+          ],
+          "state": [
+            "YYNYYYNYN",
+            "YNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 27",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y' R' U2 R U R' U R",
+            "y L' U2 L U L' U L",
+            "R U' L' U R' U' L"
+          ],
           "state": [
             "NYNYYYYYN",
             "NNYNNNNNN",
             "NNYNNNNNN",
-            "NNYNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "R U R' U R U2 R'",
-            "y' R' U2 R U R' U R",
-            "R U' L' U R' U' L",
-            "y L' U2 L U L' U L"
           ]
         },
         {
           "name": "OLL 28",
+          "algorithms": [
+            "r U R' U' M U R U' R'",
+            "y2 M' U M U2 M' U M",
+            "y' M' U' M U2 M' U' M",
+            "M U M' U2 M U M'"
+          ],
           "state": [
             "YYYYYNYNY",
             "NYNNNNNNN",
@@ -472,500 +2966,2890 @@
             "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "r U R' U' M U R U' R'",
-            "y2 M' U M U2 M' U M",
-            "M U M' U2 M U M'",
-            "y' M' U' M U2 M' U' M"
           ]
         },
         {
           "name": "OLL 29",
-          "state": [
-            "YNYYYNNYN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "NYNNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "M U R U R' U' R' F R F' M'",
-            "r2 D' r U r' D r2 U' r' U' r",
             "y R U R' U' R U' R' F' U' F R U R'",
+            "r2 D' r U r' D r2 U' r' U' r",
             "y2 R' F R F' R U2 R' U' F' U' F"
+          ],
+          "state": [
+            "YNYYYNNYN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 30",
+          "algorithms": [
+            "y' r' D' r U' r' D r2 U' r' U r U r'",
+            "y2 F U R U2 R' U' R U2 R' U' F'",
+            "y2 F R' F R2 U' R' U' R U R' F2",
+            "M U' L' U' L U L F' L' F M'"
+          ],
           "state": [
             "YNYNYYNYN",
-            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NYNNNNNNN",
-            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "M U' L' U' L U L F' L' F M'",
-            "y' r' D' r U' r' D r2 U' r' U r U r'",
-            "y2 F R' F R2 U' R' U' R U R' F2",
-            "R2 U R' B' R U' R2 U R B R'"
           ]
         },
         {
           "name": "OLL 31",
-          "state": [
-            "NYYNYYNNY",
-            "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R' U' F U R U' R' F' R",
             "y2 S' L' U' L U L F' L' f",
             "y' F R' F' R U R U R' U' R U' R'",
             "y S R U R' U' f' U' F"
+          ],
+          "state": [
+            "NYYNYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 32",
-          "state": [
-            "NNYNYYNYY",
-            "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "S R U R' U' R' F R f'",
             "R U B' U' R' U R B R'",
             "y2 L U F' U' L' U L F L'",
             "R d L' d' R' U l U l'"
+          ],
+          "state": [
+            "NNYNYYNYY",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 33",
-          "state": [
-            "NNYYYYNNY",
-            "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U R' U' R' F R F'",
             "F R U' R' U R U R' F'",
             "y2 L' U' L U L F' L' F",
             "y' r' U' r' D' r U r' D r2"
+          ],
+          "state": [
+            "NNYYYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 34",
-          "state": [
-            "YNYYYYNNN",
-            "NYNNNNNNN",
-            "YNNNNNNNN",
-            "NYNNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y2 R U R' U' B' R' F R F' B",
             "y2 R U R2 U' R' F R U R U' F'",
             "F R U R' U' R' F' r U R U' r'",
-            "y2 R U R' U' y' r' U' R U M'"
+            "y2 R U R' U' x D' R' U R U' D x'"
+          ],
+          "state": [
+            "YNYYYYNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 35",
+          "algorithms": [
+            "R U2 R2 F R F' R U2 R'",
+            "f R U R' U' f' R U R' U R U2 R'",
+            "y' R' U2 R l U' R' U l' U2 R",
+            "y' R U2 R' U' R U' R' U2 F R U R' U' F'"
+          ],
           "state": [
             "YNNNYYNYY",
-            "YNNNNNNNN",
             "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN"
-          ],
-          "algorithms": [
-            "R U2 R2' F R F' R U2 R'",
-            "f R U R' U' f' R U R' U R U2 R'",
-            "y' R U2 R' U' R U' R' U2 F R U R' U' F'",
-            "R U2 R' U' y' r' U r U' r' U' r"
           ]
         },
         {
           "name": "OLL 36",
-          "state": [
-            "YNNYYNNYY",
-            "YNNNNNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y2 L' U' L U' L' U L U L F' L' F",
             "R' U' R U' R' U R U l U' R' U x",
-            "R' U' R U' R' U R U R y R' F' R",
-            "R U2 r D r' U2 r D' R' r'"
+            "y2 R U R' F' R U R' U' R' F R U' R' F R F'",
+            "R' U' R U' R' U R U R y R' F' R"
+          ],
+          "state": [
+            "YNNYYNNYY",
+            "NYYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 37",
-          "state": [
-            "YYNYYNNNY",
-            "YYNNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "F R U' R' U' R U R' F'",
             "F R' F' R U R U' R'",
             "R' F R F' U' F' U F",
-            "y' R U2 R' F R' F' R2 U2 R'"
+            "y' R U R' F' U F R U' R'"
+          ],
+          "state": [
+            "YYNYYNNNY",
+            "NYYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 38",
-          "state": [
-            "NYYYYNYNN",
-            "NYNNNNNNN",
-            "YYNNNNNNN",
-            "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U R' U R U' R' U' R' F R F'",
+            "R' U2 r' D' r U2 r' D R r",
+            "r U R' U R U' R' U' r' F R F'",
             "L' U' L F L' U' L U L F' L' U L F' L' F"
+          ],
+          "state": [
+            "NYYYYNYNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 39",
-          "state": [
-            "YYNNYNNYY",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "YNNNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y L F' L' U' L U F U' L'",
             "y' R U R' F' U' F U R U2 R'",
             "y' R B' R' U' R U B U' R'",
             "R' r' D' r U' r' D r U R"
+          ],
+          "state": [
+            "YYNNYNNYY",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 40",
-          "state": [
-            "NYYNYNYYN",
-            "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y R' F R U R' U' F' U R",
-            "R r D r' U r D' r' U' R'",
             "y' f R' F' R U R U' R' S'",
-            "y' F R U R' U' F' R U R' U R U2 R'"
+            "R r D r' U r D' r' U' R'",
+            "y R U R' F' U' F R U R' U' R U' R'"
+          ],
+          "state": [
+            "NYYNYNYYN",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 41",
-          "state": [
-            "YNYNYYNYN",
-            "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
-            "y2 R U R' U R U2' R' F R U R' U' F'",
+            "y2 R U R' U R U2 R' F R U R' U' F'",
             "R U' R' U2 R U y R U' R' U' F'",
             "y' L F' L' F L F' L' F L' U' L U L' U' L",
             "f R U R' U' f' U' R U R' U R U2 R'"
+          ],
+          "state": [
+            "YNYNYYNYN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 42",
-          "state": [
-            "YNYYYNNYN",
-            "YNYNNNNNN",
-            "NYNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R' U' R U' R' U2 R F R U R' U' F'",
             "y R' F R F' R' F R F' R U R' U' R U R'",
-            "L' U L U2 L' U' y' L' U L U F",
-            "R' U R U2 R' U' F' U F U R"
+            "M U F R U R' U' F' M'",
+            "L' U L U2 L' U' y' L' U L U F"
+          ],
+          "state": [
+            "YNYYYNNYN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 43",
-          "state": [
-            "YNNYYNYYN",
-            "NNNNNNNNN",
-            "YYYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "f' L' U' L U f",
             "y2 F' U' L' U L F",
             "y R' U' F' U F R",
-            "y2 R' U' F R' F' R U R"
+            "B' U' R' U R B"
+          ],
+          "state": [
+            "YNNYYNYYN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 44",
-          "state": [
-            "NNYNYYNYY",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "f R U R' U' f'",
             "y2 F U R U' R' F'",
             "y2 r U x' R U' R' U x U' r'",
-            "y' L d R U' R' F'"
+            "R U2 R2 F R F' U' R U' R'"
+          ],
+          "state": [
+            "NNYNYYNYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 45",
-          "state": [
-            "NNYYYYNNY",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "F R U R' U' F'",
             "y2 f U R U' R' f'",
             "y2 F' L' U' L U F",
             "F R2 D R' U R D' R2 U' F'"
+          ],
+          "state": [
+            "NNYYYYNNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 46",
-          "state": [
-            "YYNNYNYYN",
-            "NNNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R' U' R' F R F' U R",
             "y F R U R' y' R' U R U2 R'",
-            "y2 r' F' L' U L U' F r"
+            "y2 r' F' L' U L U' F r",
+            "y F R U R' F' d R U2 R'"
+          ],
+          "state": [
+            "YYNNYNYYN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 47",
-          "state": [
-            "NYNNYYNNN",
-            "YYNNNNNNN",
-            "YNYNNNNNN",
-            "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "F' L' U' L U L' U' L U F",
             "R' U' R' F R F' R' F R F' U R",
             "R' U' l' U R U' R' U R U' x' U R",
             "y2 B' R' U' R U R' U' R U B"
+          ],
+          "state": [
+            "NYNNYYNNN",
+            "YNYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 48",
-          "state": [
-            "NYNYYNNNN",
-            "NYYNNNNNN",
-            "NYNNNNNNN",
-            "YNNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "F R U R' U' R U R' U' F'",
+            "y2 f U R U' R' U R U' R' f'",
             "R U2 R' U' R U R' U2 R' F R F'"
+          ],
+          "state": [
+            "NYNYYNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 49",
-          "state": [
-            "NNNYYNNYN",
-            "YNNNNNNNN",
-            "YYYNNNNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "y2 r U' r2 U r2 U r2 U' r",
             "l U' l2 U l2 U l2 U' l",
             "R B' R2 F R2 B R2 F' R",
             "y2 R' F R' F' R2 U2 B' R B R'"
+          ],
+          "state": [
+            "NNNYYNNYN",
+            "YYYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 50",
-          "state": [
-            "NNNNYYNYN",
-            "NNYNNNNNN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
-            "r' U r2 U' r2' U' r2 U r'",
+            "r' U r2 U' r2 U' r2 U r'",
             "y2 R' F R2 B' R2 F' R2 B R'",
             "y' R U2 R' U' R U' R' F R U R' U' F'",
             "y2 l' U l2 U' l2 U' l2 U l'"
+          ],
+          "state": [
+            "NNNNYYNYN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 51",
-          "state": [
-            "NNNYYYNNN",
-            "NYYNNNNNN",
-            "NNNNNNNNN",
-            "YYNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "f R U R' U' R U R' U' f'",
             "y2 F U R U' R' U R U' R' F'",
             "y' R' U' R' F R F' R U' R' U2 R",
             "y2 f' L' U' L U L' U' L U f"
+          ],
+          "state": [
+            "NNNYYYNNN",
+            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 52",
-          "state": [
-            "NYNNYNNYN",
-            "YNNNNNNNN",
-            "YYYNNNNNN",
-            "NNYNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U R' U R d' R U' R' F'",
-            "R' U' R U' R' d R' U R B",
             "R' U' R U' R' U F' U F R",
-            "R U R' U R U' y R U' R' F'"
+            "R U R' U R U' y R U' R' F'",
+            "R' U' R U' R' d R' U R B"
+          ],
+          "state": [
+            "NYNNYNNYN",
+            "YYYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 53",
-          "state": [
-            "NNNNYYNYN",
-            "NNNNNNNNN",
-            "YNYNNNNNN",
-            "NYNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r' U' R U' R' U R U' R' U2 r",
             "y2 l' U' L U' L' U L U' L' U2 l",
             "y r' U2 R U R' U' R U R' U r",
             "y' l' U2 L U L' U' L U L' U l"
+          ],
+          "state": [
+            "NNNNYYNYN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 54",
-          "state": [
-            "NYNNYYNNN",
-            "NYNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r U R' U R U' R' U R U2 r'",
             "y' r U2 R' U' R U R' U' R U' r'",
-            "F' L' U' L U L' U L U' L' U' L F",
-            "y2 F R' F' R U2 F2 L F L' F"
+            "y' r U r' R U R' U' R U R' U' r U' r'",
+            "F' L' U' L U L' U L U' L' U' L F"
+          ],
+          "state": [
+            "NYNNYYNNN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 55",
-          "state": [
-            "NYNNYNNYN",
-            "NNNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN",
-            "YYYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U2 R2 U' R U' R' U2 F R F'",
             "y R' F R U R U' R2 F' R2 U' R' U R U R'",
             "r U2 R2 F R F' U2 r' F R F'",
-            "R' U2 R2 U R' U R U2 y R' F' R"
+            "y r U2 R' U' R2 r' U R' U' r U' r'"
+          ],
+          "state": [
+            "NYNNYNNYN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 56",
-          "state": [
-            "NNNYYYNNN",
-            "NYNNNNNNN",
-            "YNYNNNNNN",
-            "NYNNNNNNN",
-            "YNYNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "r U r' U R U' R' U R U' R' r U' r'",
             "F R U R' U' R F' r U R' U' r'",
-            "y f R U R' U' f' F R U R' U' R U R' U' F'",
-            "r' U' r U' R' U R U' R' U R r' U r"
+            "r' U' r U' R' U R U' R' U R r' U r",
+            "y f R U R' U' f' F R U R' U' R U R' U' F'"
+          ],
+          "state": [
+            "NNNYYYNNN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
           ]
         },
         {
           "name": "OLL 57",
-          "state": [
-            "YNYYYYYNY",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN"
-          ],
           "algorithms": [
             "R U R' U' M' U R U' r'",
             "M' U M' U M' U2 M U M U M",
             "R U R' U' r R' U R U' r'",
             "M' U M' U M' U M' U2 M' U M' U M' U M'"
+          ],
+          "state": [
+            "YNYYYYYNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "PLL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "Aa",
+          "algorithms": [
+            "l' U R' D2 R U' R' D2 R2",
+            "x R' U R' D2 R U' R' D2 R2",
+            "R' F R' B2 R F' R' B2 R2",
+            "y x' R2 D2 R' U' R D2 R' U R' x"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBGNNNNNN",
+            "ORBNNNNNN",
+            "RGRNNNNNN",
+            "GOONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ab",
+          "algorithms": [
+            "l' R' D2 R U R' D2 R U' R x'",
+            "x R2 D2 R U R' D2 R U' R x'",
+            "y x' R U' R D2 R' U R D2 R2 x",
+            "y l U' R D2 R' U R D2 R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBRNNNNNN",
+            "GRGNNNNNN",
+            "OGBNNNNNN",
+            "ROONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E",
+          "algorithms": [
+            "y x' R U' R' D R U R' D' R U R' D R U' R' D' x",
+            "R2 U R' U' y R U R' U' R U R' U' R U R' y' R U' R2",
+            "z U2 R2 F R U R' U' R U R' U' R U R' U' F' R2 U2 z'",
+            "y x' R U' R' D R U R' u2 R' U R D R' U' R x"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RBONNNNNN",
+            "BRGNNNNNN",
+            "OGRNNNNNN",
+            "GOBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F",
+          "algorithms": [
+            "y R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
+            "y2 R' U2 R' d' R' F' R2 U' R' U R' F R U' F",
+            "R' U R U' R2 F' U' F U R F R' F' R2",
+            "M' U2 L F' R U2 r' U r' R2 U2 R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OOONNNNNN",
+            "BGRNNNNNN",
+            "GRBNNNNNN",
+            "RBGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ga",
+          "algorithms": [
+            "R2 u R' U R' U' R u' R2 y' R' U R",
+            "R2 U R' U R' U' R U' R2 D U' R' U R D'",
+            "R2 u R' U R' U' R u' R2 F' U F",
+            "D' R2 U R' U R' U' R U' R2 U' D R' U R"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BRRNNNNNN",
+            "GOBNNNNNN",
+            "RBGNNNNNN",
+            "OGONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gb",
+          "algorithms": [
+            "R' U' R y R2 u R' U R U' R u' R2",
+            "R' U' R U D' R2 U R' U R U' R U' R2 D",
+            "y F' U' F R2 u R' U R U' R u' R2",
+            "R' d' F R2 u R' U R U' R u' R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BGRNNNNNN",
+            "GBBNNNNNN",
+            "ROGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gc",
+          "algorithms": [
+            "R2 u' R U' R U R' u R2 y R U' R'",
+            "y2 R2 F2 R U2 R U2 R' F R U R' U' R' F R2",
+            "R2 U' R U' R U R' U R2 D' U R U' R' D",
+            "R2 u' R U' R U R' u R2 f R' f'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BGRNNNNNN",
+            "GOBNNNNNN",
+            "RRGNNNNNN",
+            "OBONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gd",
+          "algorithms": [
+            "R U R' y' R2 u' R U' R' U R' u R2",
+            "R U R' U' D R2 U' R U' R' U R' U R2 D'",
+            "D' R U R' U' D R2 U' R U' R' U R' U R2",
+            "f R f' R2 u' R U' R' U R' u R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BORNNNNNN",
+            "GGBNNNNNN",
+            "RBGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H",
+          "algorithms": [
+            "M2 U M2 U2 M2 U M2",
+            "M2 U' M2 U2 M2 U' M2",
+            "R2 U2 R U2 R2 U2 R2 U2 R U2 R2",
+            "M2 U' M2 U2 M2 U' M2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BGBNNNNNN",
+            "RORNNNNNN",
+            "GBGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ja",
+          "algorithms": [
+            "y R' U L' U2 R U' R' U2 R L",
+            "L' U' L F L' U' L U L F' L2 U L",
+            "y2 x R2 F R F' R U2 r' U r U2 x'",
+            "y2 R' U2 R U R' U2 L U' R U L'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OOBNNNNNN",
+            "RRRNNNNNN",
+            "GGONNNNNN",
+            "BBGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Jb",
+          "algorithms": [
+            "R U R' F' R U R' U' R' F R2 U' R'",
+            "R U2 R' U' R U2 L' U R' U' r x",
+            "R U2 R' U' R U2 L' U R' U' L",
+            "L' U R U' L U2 R' U R U2 R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BRRNNNNNN",
+            "GBBNNNNNN",
+            "RGGNNNNNN",
+            "OOONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Na",
+          "algorithms": [
+            "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
+            "L U' R U2 L' U R' L U' R U2 L' U R'",
+            "z U R' D R2 U' R D' U R' D R2 U' R D' z'",
+            "r' D r U2 r' D r U2 r' D r U2 r' D r U2 r' D r"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "ROONNNNNN",
+            "BGGNNNNNN",
+            "ORRNNNNNN",
+            "GBBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Nb",
+          "algorithms": [
+            "R' U L' U2 R U' L R' U L' U2 R U' L",
+            "R' U R U' R' F' U' F R U R' F R' F' R U' R",
+            "z D' R U' R2 D R' U D' R U' R2 D R' U z'",
+            "z U' R D' R2 U R' D U' R D' R2 U R' D z'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RRONNNNNN",
+            "BBGNNNNNN",
+            "OORNNNNNN",
+            "GGBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ra",
+          "algorithms": [
+            "y R U R' F' R U2 R' U2 R' F R U R U2 R'",
+            "L U2 L' U2 L F' L' U' L U L F L2",
+            "y R U' R' U' R U R D R' U' R D' R' U2 R'",
+            "y2 R U2 R' U2 R B' R' U' R U R B R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RBRNNNNNN",
+            "GGONNNNNN",
+            "BOGNNNNNN",
+            "ORBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Rb",
+          "algorithms": [
+            "R' U2 R U2 R' F R U R' U' R' F' R2",
+            "R' U2 R' D' R U' R' D R U R U' R' U' R",
+            "y R2 F R U R U' R' F' R U2 R' U2 R",
+            "y' R U2 R' U2 R' F R2 U' R' U' R U R' F' R U R' U R U2 R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OBONNNNNN",
+            "BORNNNNNN",
+            "GRBNNNNNN",
+            "RGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "T",
+          "algorithms": [
+            "R U R' U' R' F R2 U' R' U' R U R' F'",
+            "R U R' U' R' F R2 U' R' U F' L' U L",
+            "R2 U R2 U' R2 U' D R2 U' R2 U R2 D'",
+            "y2 L' U' L U L F' L2 U L U L' U' L F"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBRNNNNNN",
+            "GOBNNNNNN",
+            "RGGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ua",
+          "algorithms": [
+            "y2 R U' R U R U R U' R' U' R2",
+            "R2 U' R' U' R U R U R U' R",
+            "y2 M2 U M U2 M' U M2",
+            "M2 U M' U2 M U M2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBBNNNNNN",
+            "RGRNNNNNN",
+            "GOGNNNNNN",
+            "ORONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ub",
+          "algorithms": [
+            "y2 R2 U R U R' U' R' U' R' U R'",
+            "R' U R' U' R' U' R' U R U R2",
+            "y2 M2 U' M U2 M' U' M2",
+            "M2 U' M' U2 M U' M2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBBNNNNNN",
+            "RORNNNNNN",
+            "GRGNNNNNN",
+            "OGONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "V",
+          "algorithms": [
+            "R' U R' d' R' F' R2 U' R' U R' F R F",
+            "R' U R' U' y R' F' R2 U' R' U R' F R F",
+            "z D' R2 D R2 U R' D' R U' R U R' D R U'",
+            "R U2 R' D R U' R U' R U R2 D R' U' R D2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OORNNNNNN",
+            "GRBNNNNNN",
+            "RBONNNNNN",
+            "BGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Y",
+          "algorithms": [
+            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            "F R' F R2 U' R' U' R U R' F' R U R' U' F'",
+            "R2 U' R2 U' R2 U R' F' R U R2 U' R' F R",
+            "R2 U' R2 U' R2 U y' R U R' B2 R U' R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBGNNNNNN",
+            "ORRNNNNNN",
+            "GOBNNNNNN",
+            "RGONNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Z",
+          "algorithms": [
+            "M2 U M2 U M' U2 M2 U2 M'",
+            "y M2 U' M2 U' M' U2 M2 U2 M'",
+            "M' U' M2 U' M2 U' M' U2 M2",
+            "R' U' R2 U R U R' U' R U R U' R U' R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GOGNNNNNN",
+            "OGONNNNNN",
+            "BRBNNNNNN",
+            "RBRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "OH OLL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "OLL 1",
+          "algorithms": [
+            "R U2 R2 F R F' U2 R' F R F'",
+            "y r' U' R U' R' U2 r U r U2 R' U' R U' r'",
+            "R' U R2 z' R u' z U r z' R' U2 z U' R",
+            "y R U2 R2 F R F' U2 R' F R F'"
+          ],
+          "state": [
+            "NNNNYNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 2",
+          "algorithms": [
+            "r U r' U2 R U2 R' U2 r U' r'",
+            "y' F R U R' U' F' f R U R' U' f'",
+            "y r' U' r R' U' R U' R' U R U2 r' U r",
+            "y' F R U R' U' S R U R' U' f'"
+          ],
+          "state": [
+            "NNNNYNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 3",
+          "algorithms": [
+            "r' R2 U R' U r U2 r' U r R'",
+            "y2 r U2 R' U' R U' r' U r' U' R U' R' U2 r"
+          ],
+          "state": [
+            "NNNNYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 4",
+          "algorithms": [
+            "r' R U' r U2 r' U' R U' R2 r",
+            "y F' U R U' R' F' U' F R U R' U' F'"
+          ],
+          "state": [
+            "NNNNYNNNY",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 5",
+          "algorithms": [
+            "r' U2 R U R' U r",
+            "y2 l' U2 L U L' U l"
+          ],
+          "state": [
+            "NNNNYYNYY",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 6",
+          "algorithms": [
+            "r U2 R' U' R U' r'"
+          ],
+          "state": [
+            "NYYNYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 7",
+          "algorithms": [
+            "r U R' U R U2 r'"
+          ],
+          "state": [
+            "NYNYYNYNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 8",
+          "algorithms": [
+            "r' U' R U' R' U2 r",
+            "y2 l' U' L U' L' U2 l"
+          ],
+          "state": [
+            "YNNYYNNYN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 9",
+          "algorithms": [
+            "y R U R' U' R' F R2 U R' U' F'",
+            "r' R2 U2 R' U' R U' R' U' r R'"
+          ],
+          "state": [
+            "NNYYYNNYN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 10",
+          "algorithms": [
+            "y' R U R' U x R' U R U' x' R U2 R'",
+            "r R2 U2 R U R' U R U r' R"
+          ],
+          "state": [
+            "NYNYYNNNY",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 11",
+          "algorithms": [
+            "r' R2 U R' U R U2 R' U r R'",
+            "M R U R' U R U2 R' U M'",
+            "y2 r U R' U R' x U R U' R x' U2 r'"
+          ],
+          "state": [
+            "NNNNYYYYN",
+            "NNYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 12",
+          "algorithms": [
+            "r R2 U' R U' R' U2 R U' r' R",
+            "y2 r' U' R U' R x' U' R' U x R' U2 r",
+            "y F R U R' U' F' U F R U R' U' F'"
+          ],
+          "state": [
+            "YYNNYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 13",
+          "algorithms": [
+            "r U' r' U' r U r' y' R' U R"
+          ],
+          "state": [
+            "NNNYYYYNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 14",
+          "algorithms": [
+            "r' U r U r' U' r y R U' R'"
+          ],
+          "state": [
+            "YNNYYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 15",
+          "algorithms": [
+            "r' U' r R' U' R U r' U r"
+          ],
+          "state": [
+            "NNNYYYNNY",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 16",
+          "algorithms": [
+            "r U r' R U R' U' r U' r'"
+          ],
+          "state": [
+            "NNYYYYNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 17",
+          "algorithms": [
+            "r U' z U' R x' U2 R U' y R U' R' F'",
+            "y2 R U R' U R' F R F' U2 R' F R F'",
+            "y2 R U R' U x R' U R U' x' U2 x R' U R U'"
+          ],
+          "state": [
+            "YNNNYNNNY",
+            "NYYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 18",
+          "algorithms": [
+            "r U R' U R U2 r2 U' R U' R' U2 r"
+          ],
+          "state": [
+            "YNYNYNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 19",
+          "algorithms": [
+            "r' U2 R U R' U r2 U2 R' U' R U' r'"
+          ],
+          "state": [
+            "YNYNYNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 20",
+          "algorithms": [
+            "r U R' U' r2 R2 U R U' R' U' r R'",
+            "M' U2 M U2 M' U M U2 M' U2 M"
+          ],
+          "state": [
+            "YNYNYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 21",
+          "algorithms": [
+            "R U2 R' U' R U R' U' R U' R'",
+            "F R U R' U' R U R' U' R U R' U' F'",
+            "y R' U' R U' R' U R U' R' U2 R",
+            "y F R U' R' U R U2 R' U' R U R' U' F'"
+          ],
+          "state": [
+            "NYNYYYNYN",
+            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 22",
+          "algorithms": [
+            "R U2 R2 U' R2 U' R2 U2’ R",
+            "y2 z U' R2 U2 R U2 R U2 R2 U'"
+          ],
+          "state": [
+            "NYNYYYNYN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 23",
+          "algorithms": [
+            "R U R' U' R U' R' U2 R U' R' U2 R U R'",
+            "R U R' U R U2 R2 U' R U' R' U2 R",
+            "y' R2 z' R U' z U2 R z' R' U' z U2 R'",
+            "y' R2 D R' U2 R D' R' U2 R'"
+          ],
+          "state": [
+            "NYYYYYNYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 24",
+          "algorithms": [
+            "R U R' U' z U' R z' R U' R' L",
+            "r U R' U' r' F R F'",
+            "L' U' L2 U L2 U L2 U2 L' U L' U L"
+          ],
+          "state": [
+            "NYYYYYNYY",
+            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 25",
+          "algorithms": [
+            "y2 R U2 R' U' R U R' U' R U R' U' R U' R'",
+            "L' R U R' U' z U R z' R U' R'"
+          ],
+          "state": [
+            "YYNYYYNYY",
+            "NNYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 26",
+          "algorithms": [
+            "R' U' R U' R' U2 R",
+            "y R U2 R' U' R U' R'",
+            "R' U L U' R z R U'",
+            "y2 z U' R' U R' U' R2 U"
+          ],
+          "state": [
+            "YYNYYYNYN",
+            "YNNNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 27",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y' R' U2 R U R' U R",
+            "y2 L U L' U L U2 L'",
+            "R U' z U' R z' R' U' L"
+          ],
+          "state": [
+            "NYNYYYYYN",
+            "NNYNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 28",
+          "algorithms": [
+            "r U R' U' r' R U R U' R'",
+            "r U R' U' M U R U' R'"
+          ],
+          "state": [
+            "YYYYYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 29",
+          "algorithms": [
+            "R U R' U' R U' R' F' U' F R U R'"
+          ],
+          "state": [
+            "NYYYYNNNY",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 30",
+          "algorithms": [
+            "y x' R U R' D R U2 R U R2 D'",
+            "F R' F R2 U' R' U' R U R' F2",
+            "F U R U2 R' U' R U2 R' U' F'"
+          ],
+          "state": [
+            "NYNYYNYNY",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 31",
+          "algorithms": [
+            "R' U' F U R U' R' F' R"
+          ],
+          "state": [
+            "NYYNYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 32",
+          "algorithms": [
+            "y2 r' U2 R U R2 U L U' R U",
+            "y2 x E' x' R U R' U' R' F R f'",
+            "z U R F' R' U' R U F U' z'"
+          ],
+          "state": [
+            "YYNYYNYNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 33",
+          "algorithms": [
+            "R U R' U' R' F R F'",
+            "y2 z U' R' U R U F' U' F"
+          ],
+          "state": [
+            "NNYYYYNNY",
+            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 34",
+          "algorithms": [
+            "R U R' U' x D' R' U R U' D",
+            "R U R' U' y' r' U' R U r R'"
+          ],
+          "state": [
+            "NNNYYYYNY",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 35",
+          "algorithms": [
+            "R U2 R2 x U R U' R x' U2 R'",
+            "R U2 R2 F R F' R U2 R'",
+            "R U2 R' U' y' r' U r U' r' U' r"
+          ],
+          "state": [
+            "YNNNYYNYY",
+            "NNYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 36",
+          "algorithms": [
+            "R' U' R U' R' U R U x' R U' R' U x",
+            "z U' R' U R' U' R U R U y' R' U' R"
+          ],
+          "state": [
+            "YNNYYNNYY",
+            "NYYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 37",
+          "algorithms": [
+            "F R U' R' U' R U R' F'"
+          ],
+          "state": [
+            "YYNYYNNNY",
+            "NYYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 38",
+          "algorithms": [
+            "R U R' U R U' R' U' R' x U R U' x'",
+            "R U R' U R U' R' U' R' F R F'"
+          ],
+          "state": [
+            "NYYYYNYNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 39",
+          "algorithms": [
+            "R U R' F' U' F U R U2 R'"
+          ],
+          "state": [
+            "NNYYYYYNN",
+            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 40",
+          "algorithms": [
+            "R' F R U R' U' F' U R"
+          ],
+          "state": [
+            "YNNYYYNNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 41",
+          "algorithms": [
+            "R U R' U R U2 R' F R U R' U' F'",
+            "r R2 y' R' U' R U y R U' r' R"
+          ],
+          "state": [
+            "NYNYYNYNY",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 42",
+          "algorithms": [
+            "R' U' R U' R' U2 R F R U R' U' F'"
+          ],
+          "state": [
+            "YNYYYNNYN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 43",
+          "algorithms": [
+            "z F' R' U' R U F z'"
+          ],
+          "state": [
+            "NYYNYYNNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 44",
+          "algorithms": [
+            "F U R U' R' F'",
+            "y2 f R U R' U' f'"
+          ],
+          "state": [
+            "YYNYYNYNN",
+            "YYYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 45",
+          "algorithms": [
+            "F R U R' U' F'",
+            "y2 z F' U' R' U R F z'"
+          ],
+          "state": [
+            "NNYYYYNNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 46",
+          "algorithms": [
+            "R' U' R' x U R U' x' U R",
+            "R' U' R' F R F' U R"
+          ],
+          "state": [
+            "YYNNYNYYN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 47",
+          "algorithms": [
+            "z F' U' R' U R U' R' U R F z'"
+          ],
+          "state": [
+            "NYNNYYNNN",
+            "YNYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 48",
+          "algorithms": [
+            "F R U R' U' R U R' U' F'"
+          ],
+          "state": [
+            "NYNYYNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 49",
+          "algorithms": [
+            "r U' r2 U r2 U r2 U' r"
+          ],
+          "state": [
+            "NYNNYYNNN",
+            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 50",
+          "algorithms": [
+            "r' U r2 U' r2 U' r2 U r'",
+            "y R u R' U R' U' R u' R2 U2 R"
+          ],
+          "state": [
+            "NNNNYYNYN",
+            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 51",
+          "algorithms": [
+            "F U R U' R' U R U' R' F'",
+            "f' L' U' L U L' U' L U f",
+            "y2 f R U R' U' R U R' U' f'"
+          ],
+          "state": [
+            "NNNYYYNNN",
+            "YNYNNNNNN",
+            "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 52",
+          "algorithms": [
+            "R U R' U R U' y R U' R' F'",
+            "y2 R' U2 R2 u R' U R U' R u' R'"
+          ],
+          "state": [
+            "NYNNYNNYN",
+            "YYYNNNNNN",
+            "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 53",
+          "algorithms": [
+            "y' r' U' R U' R' U R U' R' U2 r",
+            "r' U2 R U R' U' R U R' U r"
+          ],
+          "state": [
+            "NNNYYNNYN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 54",
+          "algorithms": [
+            "y r U R' U R U' R' U R U2 r'",
+            "r U2 R' U' R U R' U' R U' r'"
+          ],
+          "state": [
+            "NYNYYNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 55",
+          "algorithms": [
+            "y R U2 R2 U' R U' R' U2 x U R U' x'",
+            "R U2 R' U' R U' R' U' r' U' R U' R' U2 r"
+          ],
+          "state": [
+            "NNNYYYNNN",
+            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 56",
+          "algorithms": [
+            "r' U' r U' R' U R U' R' U R r' U r",
+            "r U r' U R U' R' U R U' R' r U' r'"
+          ],
+          "state": [
+            "NNNYYYNNN",
+            "YNYNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "OLL 57",
+          "algorithms": [
+            "R U R' U' r R' U R U' r'",
+            "R U R' U' M' U R U' r'"
+          ],
+          "state": [
+            "YNYYYYYNY",
+            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "OH PLL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "Aa",
+          "algorithms": [
+            "x R' U R' D2 R U' R' D2 R2 x'",
+            "y' x' U' R U' z U2 R z' R' U' z U2 R2",
+            "x R' U R' z' R2 z R U' R' z' R2",
+            "R' U2 R2 U' L' U R' U' L U R' U2 R"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "ORBNNNNNN",
+            "BBGNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ab",
+          "algorithms": [
+            "x R2 D2 R U R' D2 R U' R",
+            "R2 x z' R2 z R U R' z' R2 z R U' R",
+            "y x' R U' R D2 R' U R z' R2 U2",
+            "x' R2 U2 R z' R U' z U2 R z' R' U"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GRGNNNNNN",
+            "BBRNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "E",
+          "algorithms": [
+            "R2 U R' U' y R U R' U' R U R' U' R U R' y' R U' R2",
+            "x' R U' R U' z U' R u' z x' U' R U' R' U' z U' R z' R U'",
+            "R' U L' D2 L U' R L' U R' D2 R U' L",
+            "x' R U' R' D R U R' D' R U R' D R U' R' u'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BRGNNNNNN",
+            "RBONNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "F",
+          "algorithms": [
+            "R U R' U' R' U R U2 L' R' U R U' L U' R U' R'",
+            "y R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
+            "y L R2 U R U R2 U' R' U' R2 U' R U2 L' U R'",
+            "y R' U' F' U2 z U2 R' U2 R U2 x U2 R U2 r' U2 r R2 U R F"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "ROGNNNNNN",
+            "BBBNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ga",
+          "algorithms": [
+            "R2 U R' U R' U' R U' R2 D U' R' U R u'",
+            "R2 u R' U R' U' R u' R2 y' R' U R",
+            "y2 z L' U2 R U' R U' R' U R' U2 L R' U' R U"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OBRNNNNNN",
+            "RGGNNNNNN",
+            "GGGNNNNNN",
+            "GGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gb",
+          "algorithms": [
+            "R' U' R y R2 u R' U R U' R u' R2",
+            "y F' U' F R2 u R' U R U' R u' R2",
+            "D R' U' R U z' R' U2 z U R' U R U' R U' R2",
+            "y2 z U' R' U R L' U2 R U' R U R' U R' U2 L"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GBBNNNNNN",
+            "BGRNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gc",
+          "algorithms": [
+            "R2 u' R U' R U R' u R2 y R U' R'",
+            "R2 U' R U' R U R' U R2 U D' R U' R' D",
+            "y2 z L U2 R' U R' U R U' R U2 L' R U R' U'",
+            "R2 u' R U' R U R' D x' U2 r U' r'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BRGNNNNNN",
+            "GBONNNNNN",
+            "GGGNNNNNN",
+            "GGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Gd",
+          "algorithms": [
+            "R U R' U' D R2 U' R U' R' U R' U R2 u'",
+            "R U R' y' R2 u' R U' R' U R' u R2",
+            "y2 z U R U' R' L U2 R' U R' U' R U' R U2 L"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OORNNNNNN",
+            "RBGNNNNNN",
+            "GGGNNNNNN",
+            "GGGNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "H",
+          "algorithms": [
+            "R2 U2 R U2 R2 U2 R2 U2 R U2 R2",
+            "M2 U' M2 U2 M2 U' M2",
+            "R2 U2 R' U2 R2 U2 R2 U2 R' U2 R2",
+            "r' R y' R U2 R2 U2 R2 U2 R S'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RORNNNNNN",
+            "BGBNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ja",
+          "algorithms": [
+            "R' U2 R U R' U2 L U' R U L'",
+            "y' R' U L' U2 R U' R' U2 R r",
+            "y2 z U' R2 U R U' R2 D R' U R u'",
+            "z U R' z' R' U z U' z' U2 R U' R' U2 R"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GGBNNNNNN",
+            "BBRNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Jb",
+          "algorithms": [
+            "R U2 R' U' R U2 z U' R z' R' U' r",
+            "R U R' F' R U R' U' R' F R2 U' R'",
+            "R U2 R' U' R U2 L' U R' U' L",
+            "z U' R D R' U R2 z' R' U R U2 R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GBBNNNNNN",
+            "BRRNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Na",
+          "algorithms": [
+            "L U' R U2 L' U R' L U' R U2 L' U R'",
+            "R U R' U R U2 R' U' R U2 L' U R' U' L U' R U' R'",
+            "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BGGNNNNNN",
+            "ROONNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Nb",
+          "algorithms": [
+            "R' U z U' R2 z' R U' R' z U R U' R2 z' R U' r",
+            "R' U R U' R' F' U' F R U R' F R' F' R U' R",
+            "L' U R' U2 L U' R L' U R' U2 L U' R",
+            "R' U L' U2 R U' R' L U L' U2 R U' L"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BBGNNNNNN",
+            "RRONNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ra",
+          "algorithms": [
+            "y R U' R' U' R U R z' R U' z U' R z' R' U' z U2 R'",
+            "y R U R' F' R U2 R' U2 R' F R U R U2 R'",
+            "R U R' F' R U2 R' U2 R' F R U R U2 R'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OOBNNNNNN",
+            "GRGNNNNNN",
+            "BBBNNNNNN",
+            "BBBNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Rb",
+          "algorithms": [
+            "R' U2 R' D' R U' R' D R U R U' R' U' R",
+            "R' U2 R U2 R' F R U R' U' R' x U' R2",
+            "R' U2 R U2 R' F R U R' U' R' F' R2",
+            "y' z U' R U R U' R' U' z U' R z' R U' z U R z' R2 U"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "BORNNNNNN",
+            "OBONNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "T",
+          "algorithms": [
+            "R U R' U' R' F R2 U' R' U' R U R' F'",
+            "y2 z U2 R' U2 R U2 L' R U2 R U2 R' U2 r",
+            "R2 u' R2 U R2 y R2 u R2 U' R2",
+            "R U R' U' R2 D R' U' R' U' R U z' U2 R' U"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "GOBNNNNNN",
+            "BBRNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ua",
+          "algorithms": [
+            "R U' R U R U R U' R' U' R2",
+            "R2 U' R' U' R U R U R U' R",
+            "y2 R U R' U' L' U' L U2 R U' R' U' L' U L"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RORNNNNNN",
+            "BRBNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Ub",
+          "algorithms": [
+            "R2 U R U R' U' R' U' R' U R'",
+            "z U' R U' R' U' R' U' R U R U2 z'",
+            "y2 z U2 R U R U' R' U' R' U' R U'",
+            "y2 R' U R' U' R' U' R' U R U R2"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "RBRNNNNNN",
+            "BOBNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "V",
+          "algorithms": [
+            "R' U R U' x' U R U2 R' U' R U' R' U2 R U R' U' x",
+            "R U2 R' D R U' R U' R U R2 D R' U' R D2",
+            "R' U R' U' y z' U' R U' R' U' y' U' R' U' R U R",
+            "R' U2 R U2 L U' R' z R U' R U R' z' R U L'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OGRNNNNNN",
+            "BBGNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Y",
+          "algorithms": [
+            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            "y' R U R2 U L' U2 R U' R' U2 L R U' R U' R'",
+            "R2 U' R' U R U' x' U' z' U' R U' R' U' z U R",
+            "y' R U R' U' z U2 R z' R U' R' U2 z U2 R U2 R U2 z'"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "ORRNNNNNN",
+            "BBGNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Z",
+          "algorithms": [
+            "R' U' R U' R U R U' R' U R U R2 U' R'",
+            "y' R' U' R2 U R U R' U' R U R U' R U' R'",
+            "y R U R' U R' U' R' U R U' R' U' R2 U R",
+            "L U L' U L' U' L' U L U' L' U' L2 U L"
+          ],
+          "state": [
+            "YYYYYYYYY",
+            "OBONNNNNN",
+            "GRGNNNNNN",
+            "RRRNNNNNN",
+            "RRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "WVLS",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "WV 1",
+          "algorithms": [
+            "U L' U2 R U R' U2 L",
+            "U' L' U2 R U' R' U2 L",
+            "y' U r D r' U' r D' r'",
+            "R2 D R' U R D' R2 U R U' R'"
+          ],
+          "state": [
+            "YYYYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 2",
+          "algorithms": [
+            "U R U' R'"
+          ],
+          "state": [
+            "YYNYYBYYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 3",
+          "algorithms": [
+            "R' F R U R U' R' F'",
+            "U' L U' R U L' U R'"
+          ],
+          "state": [
+            "YYNYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 4",
+          "algorithms": [
+            "U R2 D R' U' R D' R2"
+          ],
+          "state": [
+            "NYYYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 5",
+          "algorithms": [
+            "U R U' R' U R' U' R U' R' U2 R",
+            "U R U' R' U2 R U2 R' U' R U' R'",
+            "U2 R2 B R' U' R' U R B' U2 R'",
+            "U R U' R' U R' U L U' R U L'"
+          ],
+          "state": [
+            "NYYYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 6",
+          "algorithms": [
+            "R U' R' U2 R U' R' U2 R U R'",
+            "U' R' D' R U2 R' D R2 U' R'"
+          ],
+          "state": [
+            "YYYYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 7",
+          "algorithms": [
+            "U R U R' U' R U' R'",
+            "R' U' R U R U' R' U' R' U R"
+          ],
+          "state": [
+            "YYYYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 8",
+          "algorithms": [
+            "U2 R U' R' U R U2 R'"
+          ],
+          "state": [
+            "NYYYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 9",
+          "algorithms": [
+            "U2 F' R U2 R' U2 R' F R",
+            "U L' U2 R U L U' L' U R' U2 L",
+            "U2 F2 R U2 R' U2 R' F2 R",
+            "U2 L' R U R' U' R U R' U' L U' R U' R'"
+          ],
+          "state": [
+            "NYYYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 10",
+          "algorithms": [
+            "R' F R2 U R' U' R U R' U' F'",
+            "U R U R2 U' R2 U' R2 U2 R",
+            "U2 F2 L' U L U L' U' L F2"
+          ],
+          "state": [
+            "NYYYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 11",
+          "algorithms": [
+            "U2 R' U' R2 U' R2 U2 R"
+          ],
+          "state": [
+            "NYYYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 12",
+          "algorithms": [
+            "R' F2 R F2 U L' U L",
+            "U R U2 L U L' R' U2 L U L'"
+          ],
+          "state": [
+            "YYNYYBNYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 13",
+          "algorithms": [
+            "U2 R U2 R2 U' R U' R' U2 R",
+            "R' F R F' R' U' F' U F R",
+            "U' F2 L' U L U' L' U' L F2"
+          ],
+          "state": [
+            "YYNYYBNYB",
+            "RRYNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 14",
+          "algorithms": [
+            "U2 R2 D R' U2 R D' R2",
+            "U2 L' U R U' L U2 R'"
+          ],
+          "state": [
+            "YYNYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 15",
+          "algorithms": [
+            "L' U R U' R' L",
+            "r' F R F' M'",
+            "L' U R U' M' x'"
+          ],
+          "state": [
+            "YYNYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 16",
+          "algorithms": [
+            "U2 L' R U R' U' L R U2 R'",
+            "U R' D' R U R' D R2 U2 R'",
+            "U2 R U' R' U' R' F R U R U' R' F'",
+            "U2 M x U R' U' L R U2 R'"
+          ],
+          "state": [
+            "NYNYYBYYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 17",
+          "algorithms": [
+            "R' F' R U2 R U2 R' F",
+            "U L' U2 R U' R' U2 L U R U' R'",
+            "U2 F2 L F2 L' U' L' U L"
+          ],
+          "state": [
+            "NYNYYBYYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 18",
+          "algorithms": [
+            "U2 R U2 R'"
+          ],
+          "state": [
+            "NYNYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 19",
+          "algorithms": [
+            "R' F2 R2 U' R' U' R U R' F2",
+            "U2 L' U R U' R' L U' R U' R'"
+          ],
+          "state": [
+            "NYNYYBYYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 20",
+          "algorithms": [
+            "U R U' R' U' R U R' U R U2 R'",
+            "U L' U2 L R U R' U L' U L"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 21",
+          "algorithms": [
+            "U R U' R2 U2 R U R' U R",
+            "U2 R U' R D R' U' R D' R2"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 22",
+          "algorithms": [
+            "U R U R D R' U2 R D' R2",
+            "U R2 D R' U R D' R' U2 R'"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRYNNNNNN",
+            "YNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 23",
+          "algorithms": [
+            "R2 U R' U R' U' R U R U2 R2",
+            "U2 R U R' U' R U R D R' U R D' R2",
+            "U2 R' U L U' R2 U L' U R'",
+            "U2 R U' R' U L' U R U' R' L U' R U' R'"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 24",
+          "algorithms": [
+            "U2 R U' R' U R U' R' U R U2 R'"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRYNNNNNN",
+            "NNBNNNNNN",
+            "YRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 25",
+          "algorithms": [
+            "U2 R U2 R2 U2 R U R' U R",
+            "U2 R U' R' U R U' R D R' U' R D' R2"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRNNNNNNN",
+            "NNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 26",
+          "algorithms": [
+            "U R U' R2 U' R U' R' U2 R",
+            "U R U R' U F2 L' U L U' L' U' L F2"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRYNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 27",
+          "algorithms": [
+            "U R U R' U' R U R' U' R U' R'"
+          ],
+          "state": [
+            "NYNYYBNYB",
+            "RRNNNNNNN",
+            "YNBNNNNNN",
+            "NRRNNNNNN",
+            "NRRNNNNNN",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "WVLS FL",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "WV 1",
+          "algorithms": [
+            "y U' R U2 L' U' L U2 R'",
+            "U' r' D' r U r' D r",
+            "y2 R' F' R U R' U' R' F R2",
+            "y U R U2 L' U L U2 R'"
+          ],
+          "state": [
+            "YYYYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 2",
+          "algorithms": [
+            "y U' L' U L"
+          ],
+          "state": [
+            "YYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 3",
+          "algorithms": [
+            "y L F' L' U' L' U L F",
+            "F R' F' U' F' U F R",
+            "y U R' U L' U' R U' L"
+          ],
+          "state": [
+            "YYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 4",
+          "algorithms": [
+            "y U' L2 D' L U L' D L2",
+            "y' R2 D' R U R' D R2"
+          ],
+          "state": [
+            "NYYYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 5",
+          "algorithms": [
+            "y U' L' U L U2 L' U2 L U L' U L"
+          ],
+          "state": [
+            "NYYYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 6",
+          "algorithms": [
+            "y L' U L U2 L' U L U2 L' U' L"
+          ],
+          "state": [
+            "YYNYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 7",
+          "algorithms": [
+            "y U' L' U' L U L' U L"
+          ],
+          "state": [
+            "YYNYYYYBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 8",
+          "algorithms": [
+            "y U2 M x U' L U R' L' U2 L"
+          ],
+          "state": [
+            "NYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 9",
+          "algorithms": [
+            "y U' R U2 L' U L U2 R' U' L' U L"
+          ],
+          "state": [
+            "NYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 10",
+          "algorithms": [
+            "y U2 R U' L' U L R' U L' U L"
+          ],
+          "state": [
+            "NYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 11",
+          "algorithms": [
+            "y U2 L' U2 L"
+          ],
+          "state": [
+            "NYYYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 12",
+          "algorithms": [
+            "y U2 L' U L U' L' U2 L"
+          ],
+          "state": [
+            "NYNYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 13",
+          "algorithms": [
+            "y U' R U2 L' U' R' U R U' L U2 R'"
+          ],
+          "state": [
+            "NYNYYYYBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 14",
+          "algorithms": [
+            "y U2 L U L2 U L2 U2 L'"
+          ],
+          "state": [
+            "NYNYYYYBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 15",
+          "algorithms": [
+            "y U' L' U' L2 U L2 U L2 U2 L'"
+          ],
+          "state": [
+            "NYNYYYYBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 16",
+          "algorithms": [
+            "y U' L' U2 R' U' R L U2 R' U' R"
+          ],
+          "state": [
+            "YYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 17",
+          "algorithms": [
+            "y U2 L' U2 L2 U L' U L U2 L'"
+          ],
+          "state": [
+            "YYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 18",
+          "algorithms": [
+            "y U2 R U' L' U R' U2 L"
+          ],
+          "state": [
+            "YYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 19",
+          "algorithms": [
+            "y R U' L' U M' x'"
+          ],
+          "state": [
+            "YYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 20",
+          "algorithms": [
+            "y U' R U2 R' L' U' L U' R U' R'"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 21",
+          "algorithms": [
+            "y U' L2 D' L U' L' D L U2 L"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 22",
+          "algorithms": [
+            "y U' L' U L2 U L' U L U2 L'"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 23",
+          "algorithms": [
+            "y U2 L' U L U' L' U L U' L' U2 L"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBYNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 24",
+          "algorithms": [
+            "y U2 L' U2 L2 U2 L' U' L U' L'"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 25",
+          "algorithms": [
+            "y U' L' U L2 U2 L' U' L U' L'"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NNYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 26",
+          "algorithms": [
+            "y U2 L U' R' U L2 U' R U' L"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBNNNNNNN",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "WV 27",
+          "algorithms": [
+            "y U' L' U' L U L' U' L U L' U L"
+          ],
+          "state": [
+            "NYNYYYNBB",
+            "NYYNNNNNN",
+            "OOONNNNNN",
+            "BBNNNNNNN",
+            "BBYNNNNNN",
+            "NNNNNNNNN"
           ]
         }
       ]

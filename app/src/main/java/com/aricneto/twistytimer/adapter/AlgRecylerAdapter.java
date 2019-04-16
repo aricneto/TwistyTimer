@@ -60,12 +60,10 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mPuzzle = puzzle;
         this.fragmentManager = manager;
 
-        String myJson = StoreUtils.inputStreamToString(context.getResources().openRawResource(R.raw.algorithms));
-        AlgorithmModel model = new Gson().fromJson(myJson, AlgorithmModel.class);
-        this.cases = model.subsets.get(0).getCases();
+        this.cases = AlgUtils.getAlgJsonSubsetModel(puzzle, subset).getCases();
 
         mIsIsometricView = AlgUtils.isIsometricView(subset);
-        mCubePuzzleSize = AlgUtils.getPuzzleSize(model.subsets.get(0).getPuzzle());
+        mCubePuzzleSize = AlgUtils.getPuzzleSize(puzzle);
     }
 
     @Override

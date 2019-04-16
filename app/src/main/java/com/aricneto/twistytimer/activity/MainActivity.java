@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
+import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
@@ -297,24 +299,11 @@ public class MainActivity extends AppCompatActivity
                                                 .withIconTintingEnabled(true)
                                                 .withIdentifier(TRAINER_PLL_ID)),
 
-                        new ExpandableDrawerItem()
+                        new PrimaryDrawerItem()
                                 .withName(R.string.title_algorithms)
                                 .withIcon(R.drawable.ic_outline_library_books_24px)
                                 .withSelectable(false)
-                                .withIconTintingEnabled(true)
-                                .withSubItems(
-                                        new SecondaryDrawerItem()
-                                                .withName(R.string.drawer_title_oll)
-                                                .withLevel(2)
-                                                .withIcon(R.drawable.ic_oll_black_24dp)
-                                                .withIconTintingEnabled(true)
-                                                .withIdentifier(OLL_ID),
-                                        new SecondaryDrawerItem()
-                                                .withName(R.string.drawer_title_pll)
-                                                .withLevel(2)
-                                                .withIcon(R.drawable.ic_pll_black_24dp)
-                                                .withIconTintingEnabled(true)
-                                                .withIdentifier(PLL_ID)),
+                                .withIconTintingEnabled(true),
 
                         new SectionDrawerItem()
                                 .withName(R.string.drawer_title_other),
@@ -406,34 +395,6 @@ public class MainActivity extends AppCompatActivity
                                                 .beginTransaction()
                                                 .replace(R.id.main_activity_container,
                                                          TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                                .commit();
-                                    }
-                                });
-                                break;
-
-                            case OLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container,
-                                                         AlgListFragment.newInstance(DatabaseHandler.SUBSET_OLL),
-                                                         "fragment_algs_oll")
-                                                .commit();
-                                    }
-                                });
-                                break;
-
-                            case PLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container,
-                                                         AlgListFragment.newInstance(DatabaseHandler.SUBSET_PLL),
-                                                         "fragment_algs_pll")
                                                 .commit();
                                     }
                                 });

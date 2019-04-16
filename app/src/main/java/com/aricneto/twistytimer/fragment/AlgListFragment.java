@@ -34,6 +34,7 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 public class AlgListFragment extends BaseFragment {
 
     private static final String KEY_SUBSET = "subset";
+    private static final String KEY_PUZZLE = "puzzle";
 
     @BindView(R.id.root)
     LinearLayout rootLayout;
@@ -61,7 +62,10 @@ public class AlgListFragment extends BaseFragment {
 
     private Unbinder                    mUnbinder;
     private String                      currentSubset;
+    private String                      currentPuzzle;
     private AlgRecylerAdapter           algCursorAdapter;
+
+
     // Receives broadcasts about changes to the algorithm data.
     private TTFragmentBroadcastReceiver mAlgDataChangedReceiver
             = new TTFragmentBroadcastReceiver(this, CATEGORY_ALG_DATA_CHANGES) {
@@ -98,10 +102,11 @@ public class AlgListFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static AlgListFragment newInstance(String subset) {
+    public static AlgListFragment newInstance(String puzzle, String subset) {
         AlgListFragment fragment = new AlgListFragment();
         Bundle args = new Bundle();
         args.putString(KEY_SUBSET, subset);
+        args.putString(KEY_PUZZLE, puzzle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -111,6 +116,7 @@ public class AlgListFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentSubset = getArguments().getString(KEY_SUBSET);
+            currentPuzzle = getArguments().getString(KEY_PUZZLE);
         }
     }
 
@@ -155,7 +161,7 @@ public class AlgListFragment extends BaseFragment {
     private void setupRecyclerView() {
         Activity parentActivity = getActivity();
 
-        algCursorAdapter = new AlgRecylerAdapter(getActivity(), getFragmentManager(), "3x3", "OLL");
+        algCursorAdapter = new AlgRecylerAdapter(getActivity(), getFragmentManager(), currentPuzzle, currentSubset);
 
         // Set different managers to support different orientations
         StaggeredGridLayoutManager gridLayoutManagerHorizontal =

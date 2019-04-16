@@ -6,13 +6,16 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.AlgorithmModel.Case;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,15 +28,45 @@ import java.util.Random;
  */
 public final class AlgUtils {
 
+    private static AlgorithmModel mAlgorithmModel;
+
     /**
      * Returns the size of a puzzle (e.g. 3x3 = 3, 6x6 = 6)
      */
     public static int getPuzzleSize(String puzzle) {
         switch (puzzle) {
-            case "3x3":
+            case "333":
                 return 3;
         }
         throw new IllegalArgumentException("Invalid puzzle");
+    }
+
+    /**
+     * Loads the Algorithms JSON file and assigns it to the appropriate GSON model object
+     * @return The loaded GSON model
+     */
+    public static AlgorithmModel getAlgJsonModel() {
+        if (mAlgorithmModel == null) {
+            String myJson = StoreUtils.inputStreamToString(TwistyTimer.getAppContext().getResources().openRawResource(R.raw.algorithms));
+            mAlgorithmModel = new Gson().fromJson(myJson, AlgorithmModel.class);
+        }
+        return mAlgorithmModel;
+    }
+
+    /**
+     * Gets a list of algs from a given puzzle/subset, sourced from the Algorithms JSON file.
+     * @param puzzle The puzzle (333, 222, pyra...)
+     * @param subset The subset (OLL, CLL, ...)
+     * @return A {@link com.aricneto.twistytimer.items.AlgorithmModel.Subset} object containing the
+     * appropriate info
+     */
+    public static AlgorithmModel.Subset getAlgJsonSubsetModel(String puzzle, String subset) {
+        for (AlgorithmModel.Subset algSubset : getAlgJsonModel().subsets) {
+            if (algSubset.getSubset().equals(subset) && algSubset.getPuzzle().equals(puzzle))
+                return algSubset;
+        }
+
+        throw new IllegalArgumentException("Subset or puzzle not found");
     }
 
     /**
@@ -48,7 +81,8 @@ public final class AlgUtils {
             case "PLL":
                 return false;
         }
-        throw new IllegalArgumentException("Invalid subset");
+        return false;
+        //throw new IllegalArgumentException("Invalid subset");
     }
 
     private AlgUtils() {
