@@ -50,7 +50,7 @@ import butterknife.Unbinder;
 /**
  * Shows the timeList dialog
  */
-public class TimeDialog extends DialogFragment {
+public class SolveDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
 
@@ -174,12 +174,12 @@ public class TimeDialog extends DialogFragment {
     };
     private Context mContext;
 
-    public static TimeDialog newInstance(long id) {
-        TimeDialog timeDialog = new TimeDialog();
+    public static SolveDialog newInstance(long id) {
+        SolveDialog solveDialog = new SolveDialog();
         Bundle args = new Bundle();
         args.putLong("id", id);
-        timeDialog.setArguments(args);
-        return timeDialog;
+        solveDialog.setArguments(args);
+        return solveDialog;
     }
 
     @Override

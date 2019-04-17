@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
@@ -36,7 +35,7 @@ import butterknife.Unbinder;
 /**
  * Created by Ari on 09/02/2016.
  */
-public class SchemeSelectDialogMain extends DialogFragment {
+public class SchemeSelectDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
     private Context mContext;
@@ -50,8 +49,8 @@ public class SchemeSelectDialogMain extends DialogFragment {
     @BindView(R.id.reset) TextView reset;
     @BindView(R.id.done)  TextView done;
 
-    public static SchemeSelectDialogMain newInstance() {
-        return new SchemeSelectDialogMain();
+    public static SchemeSelectDialog newInstance() {
+        return new SchemeSelectDialog();
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {

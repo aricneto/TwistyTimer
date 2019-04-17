@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,18 +38,17 @@ import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
+import com.aricneto.twistytimer.fragment.dialog.AlgSubsetListDialog;
 import com.aricneto.twistytimer.fragment.dialog.DonateDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
-import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialogMain;
+import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
-import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
@@ -111,8 +109,7 @@ public class MainActivity extends AppCompatActivity
     private static final int TIMER_ID         = 1;
     private static final int THEME_ID         = 2;
     private static final int SCHEME_ID        = 9;
-    private static final int OLL_ID           = 6;
-    private static final int PLL_ID           = 7;
+    private static final int REFERENCE_ID           = 6;
     private static final int DONATE_ID        = 8;
     private static final int EXPORT_IMPORT_ID = 10;
     private static final int ABOUT_ID         = 4;
@@ -303,7 +300,8 @@ public class MainActivity extends AppCompatActivity
                                 .withName(R.string.title_algorithms)
                                 .withIcon(R.drawable.ic_outline_library_books_24px)
                                 .withSelectable(false)
-                                .withIconTintingEnabled(true),
+                                .withIconTintingEnabled(true)
+                                .withIdentifier(REFERENCE_ID),
 
                         new SectionDrawerItem()
                                 .withName(R.string.drawer_title_other),
@@ -443,7 +441,7 @@ public class MainActivity extends AppCompatActivity
                                 break;
 
                             case SCHEME_ID:
-                                SchemeSelectDialogMain.newInstance()
+                                SchemeSelectDialog.newInstance()
                                         .show(fragmentManager, "scheme_dialog");
                                 break;
 
@@ -456,6 +454,11 @@ public class MainActivity extends AppCompatActivity
                                                                REQUEST_SETTING);
                                     }
                                 });
+                                break;
+
+                            case REFERENCE_ID:
+                                AlgSubsetListDialog.newInstance()
+                                        .show(fragmentManager, "subset_list_dialog");
                                 break;
 
                             case DONATE_ID:

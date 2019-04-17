@@ -68,14 +68,11 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View v;
-        RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        v = inflater.inflate(R.layout.item_alg_list, parent, false);
-        viewHolder = new AlgHolder(v);
+        View v = inflater.inflate(R.layout.item_alg_list, parent, false);
 
-        return viewHolder;
+        return new AlgHolder(v);
     }
 
     @Override

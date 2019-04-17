@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.fragment.TimerListFragment;
-import com.aricneto.twistytimer.fragment.dialog.TimeDialog;
+import com.aricneto.twistytimer.fragment.dialog.SolveDialog;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -161,9 +161,9 @@ public class TimeCursorAdapter extends CursorRecyclerAdapter<RecyclerView.ViewHo
                     toggleSelection(mId, holder.card);
                 else if (! isLocked()) {
                     setIsLocked(true);
-                    TimeDialog timeDialog = TimeDialog.newInstance(mId);
-                    timeDialog.show(mFragmentManager, "time_dialog");
-                    timeDialog.setDialogListener(TimeCursorAdapter.this);
+                    SolveDialog solveDialog = SolveDialog.newInstance(mId);
+                    solveDialog.show(mFragmentManager, "time_dialog");
+                    solveDialog.setDialogListener(TimeCursorAdapter.this);
                 }
             }
         });

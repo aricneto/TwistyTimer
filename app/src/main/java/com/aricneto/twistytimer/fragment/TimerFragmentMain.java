@@ -12,9 +12,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
-import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
