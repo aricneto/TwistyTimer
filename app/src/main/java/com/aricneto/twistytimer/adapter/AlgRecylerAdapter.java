@@ -9,15 +9,11 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
-import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
-import com.aricneto.twistytimer.layout.isometric.IsometricView;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.aricneto.twistytimer.utils.StoreUtils;
 import com.aricneto.twistytimer.utils.ThemeUtils;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,7 +118,7 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (!mIsIsometricView)
             cube = CubeIsometric.init(mContext, mCubePuzzleSize, pState);
         else
-            cube = new Cube2D(mContext).setCubeState(pState, mCubePuzzleSize);
+            cube = new Cube2D(mContext).setCubeState(mCubePuzzleSize, pState);
 
         cube.setId(R.id.cube);
         holder.root.addView(cube, params);

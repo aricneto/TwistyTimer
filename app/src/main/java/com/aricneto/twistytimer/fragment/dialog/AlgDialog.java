@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.Theme;
+import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
 import com.aricneto.twistytimer.layout.isometric.IsometricView;
 import com.aricneto.twistytimer.listener.DialogListener;
@@ -161,13 +162,14 @@ public class AlgDialog extends DialogFragment {
         params.topMargin = ThemeUtils.dpToPix(8);
         params.leftMargin = ThemeUtils.dpToPix(8);
 
-        if (AlgUtils.isIsometricView(mSubset)) {
-            IsometricView cube;
-
+        View cube;
+        if (!AlgUtils.isIsometricView(mSubset))
             cube = CubeIsometric.init(mContext, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
-            cube.setId(R.id.cube);
-            root.addView(cube, params);
-        }
+        else
+            cube = new Cube2D(mContext).setCubeState(AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
+
+        cube.setId(R.id.cube);
+        root.addView(cube, params);
 
         // List
         params = (RelativeLayout.LayoutParams) algList.getLayoutParams();

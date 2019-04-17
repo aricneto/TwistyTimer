@@ -1,36 +1,28 @@
 package com.aricneto.twistytimer.fragment.dialog;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
-import com.aricneto.twistytimer.items.Theme;
-import com.aricneto.twistytimer.listener.DialogListenerMessage;
+import com.aricneto.twistytimer.layout.Cube2D;
+import com.aricneto.twistytimer.layout.CubeIsometric;
+import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
-import com.aricneto.twistytimer.utils.Prefs;
-import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +32,7 @@ import butterknife.Unbinder;
 
 public class AlgSubsetListDialog extends DialogFragment {
 
-    private DialogListenerMessage dialogListener;
+    private AlgorithmDialogListener mDialogListener;
     private Unbinder mUnbinder;
     private Context mContext;
 
@@ -63,10 +55,10 @@ public class AlgSubsetListDialog extends DialogFragment {
 
         recyclerView.setHasFixedSize(true);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        AlgSubsetListAdapter listAdapter = new AlgSubsetListAdapter(mContext);
+        AlgSubsetListAdapter listAdapter = new AlgSubsetListAdapter(mContext, mDialogListener);
 
         recyclerView.setAdapter(listAdapter);
 
@@ -78,25 +70,30 @@ public class AlgSubsetListDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void setDialogListener(DialogListenerMessage listener) {
-        this.dialogListener = listener;
+    public void setDialogListener(AlgorithmDialogListener listener) {
+        this.mDialogListener = listener;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }
 
 class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
-    private final HashMap<Character, Integer> colorHash;
-    private final AlgorithmModel model;
+    private final AlgorithmDialogListener mDialogListener;
     private final ArrayList<AlgorithmModel.Subset> subsets;
 
-    public AlgSubsetListAdapter(Context context) {
+    public AlgSubsetListAdapter(Context context, AlgorithmDialogListener listener) {
         this.mContext = context;
-        this.colorHash = AlgUtils.getColorLetterHashMap();
+        this.mDialogListener = listener;
 
-        this.model = AlgUtils.getAlgJsonModel();
+        AlgorithmModel model = AlgUtils.getAlgJsonModel();
         this.subsets = new ArrayList<>();
-        subsets.addAll(this.model.subsets);
+        subsets.addAll(model.subsets);
     }
 
     @NonNull
@@ -121,11 +118,31 @@ class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void handleCase(CaseHolder holder, int position) {
         AlgorithmModel.Subset subset = subsets.get(position);
-        String name = String.format("%s: %s", subset.getPuzzle(), subset.getSubset());
+        String name = subset.getSubset();
         String cases = String.format("%d %s", subset.getCases().size(), "cases");
 
         holder.name.setText(name);
         holder.numCases.setText(cases);
+
+        int puzzleSize = AlgUtils.getPuzzleSize(subset.getPuzzle());
+        AlgorithmModel.Case firstCase = subset.getCases().get(0);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.cube.getLayoutParams();
+
+        // Remove old view if there is one (Remember that in a RecyclerView the view is recycled)
+        View cube = holder.root.findViewById(R.id.cube);
+        if (cube != null)
+            holder.root.removeView(cube);
+
+        if (!AlgUtils.isIsometricView(subset.getSubset()))
+            cube = CubeIsometric.init(mContext, puzzleSize, firstCase.getState());
+        else
+            cube = new Cube2D(mContext).setCubeState(puzzleSize, firstCase.getState());
+
+        cube.setId(R.id.cube);
+        holder.root.addView(cube, params);
+
+        holder.root.setOnClickListener(v -> mDialogListener.onSubsetSelected(subset.getPuzzle(), subset.getSubset()));
     }
 
     static class CaseHolder extends RecyclerView.ViewHolder {

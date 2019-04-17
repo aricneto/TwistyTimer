@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="?selectableItemBackgroundBorderless"
+    android:padding="8dp">
+
+    <View
+        android:id="@+id/cube"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/outline_background_card_error" />
+
+    <TextView
+        android:id="@+id/case_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cube"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="4dp"
+        android:text="CMLL" />
+
+    <TextView
+        android:id="@+id/num_cases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/case_name"
+        android:fontFamily="@font/quicksand"
+        android:paddingBottom="4dp"
+        android:layout_centerHorizontal="true"
+        android:text="32/46 cases"
+        android:textSize="9sp" />
+</RelativeLayout>

@@ -38,6 +38,7 @@ import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
 import com.aricneto.twistytimer.fragment.dialog.AlgSubsetListDialog;
@@ -47,6 +48,7 @@ import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
+import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
@@ -259,6 +261,18 @@ public class MainActivity extends AppCompatActivity
     }
    */
 
+    private AlgorithmDialogListener algorithmDialogListener = new AlgorithmDialogListener() {
+        @Override
+        public void onSubsetSelected(String puzzle, String subset) {
+            mDrawerToggle.runWhenIdle(() -> fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_activity_container,
+                            AlgListFragment.newInstance(puzzle, subset), "algorithm_fragment")
+                    .commit());
+
+        }
+    };
+
     private void handleDrawer(Bundle savedInstanceState) {
         ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
 
@@ -457,8 +471,9 @@ public class MainActivity extends AppCompatActivity
                                 break;
 
                             case REFERENCE_ID:
-                                AlgSubsetListDialog.newInstance()
-                                        .show(fragmentManager, "subset_list_dialog");
+                                AlgSubsetListDialog algSubsetListDialog = AlgSubsetListDialog.newInstance();
+                                algSubsetListDialog.setDialogListener(algorithmDialogListener);
+                                algSubsetListDialog.show(fragmentManager, "subset_list_dialog");
                                 break;
 
                             case DONATE_ID:
