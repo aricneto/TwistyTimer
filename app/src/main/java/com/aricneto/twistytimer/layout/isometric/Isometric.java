@@ -33,9 +33,9 @@ public class Isometric {
 
     private boolean itemsChanged;
 
-    public Isometric() {
+    public Isometric(double scale) {
         this.angle = Math.PI / 6;
-        this.scale = 30;
+        this.scale = scale;
         this.transformation = new double[][]{
                 {
                         this.scale * Math.cos(this.angle),

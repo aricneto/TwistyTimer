@@ -423,5 +423,6 @@
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Manual mode</string>
     <string name="pref_summary_manual_mode">Adds a button on the timer screen for easier manual time entry</string>
+    <string name="algorithm_dialog_select">Select a case</string>
 
 </resources>

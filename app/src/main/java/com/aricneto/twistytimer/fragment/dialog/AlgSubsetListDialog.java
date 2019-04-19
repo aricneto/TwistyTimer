@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
+import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
 import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
+import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class AlgSubsetListDialog extends DialogFragment {
     private Context mContext;
 
     @BindView(R.id.list) RecyclerView recyclerView;
+    @BindView(R.id.title) TextView title;
 
     public static AlgSubsetListDialog newInstance() {
         return new AlgSubsetListDialog();
@@ -52,6 +54,8 @@ public class AlgSubsetListDialog extends DialogFragment {
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+        title.setText(R.string.algorithm_dialog_select);
 
         recyclerView.setHasFixedSize(true);
 
@@ -86,6 +90,7 @@ class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final Context mContext;
     private final AlgorithmDialogListener mDialogListener;
     private final ArrayList<AlgorithmModel.Subset> subsets;
+    private final int cubePadding = ThemeUtils.dpToPix(4);
 
     public AlgSubsetListAdapter(Context context, AlgorithmDialogListener listener) {
         this.mContext = context;
@@ -134,10 +139,13 @@ class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (cube != null)
             holder.root.removeView(cube);
 
-        if (!AlgUtils.isIsometricView(subset.getSubset()))
-            cube = CubeIsometric.init(mContext, puzzleSize, firstCase.getState());
-        else
+        if (AlgUtils.isIsometricView(subset.getSubset())) {
+            cube = CubeIsometric.init(mContext, 45, puzzleSize, firstCase.getState());
+        } else {
             cube = new Cube2D(mContext).setCubeState(puzzleSize, firstCase.getState());
+            cube.setScaleX(0.90f);
+            cube.setScaleY(0.90f);
+        }
 
         cube.setId(R.id.cube);
         holder.root.addView(cube, params);

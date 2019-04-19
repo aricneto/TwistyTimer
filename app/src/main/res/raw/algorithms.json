@@ -1802,11 +1802,11 @@
             "y2 U L U' L'"
           ],
           "state": [
-            "NNNNNBNNB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1819,11 +1819,11 @@
             "r U R' U' M"
           ],
           "state": [
-            "NNNNNNNRR",
+            "NNNRNNRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "BBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NBBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1836,11 +1836,11 @@
             "U M R U' R' U M'"
           ],
           "state": [
-            "NNNRNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NRNNNNBNN",
+            "RNNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1852,11 +1852,11 @@
             "y F U F'"
           ],
           "state": [
-            "NBNNNNNNR",
+            "NNNNNBRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1869,11 +1869,11 @@
             "F2 L' U' L U F2"
           ],
           "state": [
-            "NBNNNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNBBNN",
+            "RNNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1886,11 +1886,11 @@
             "d R' U' R U R' U2 R"
           ],
           "state": [
-            "NNNRNNNNR",
+            "NRNNNNRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1903,11 +1903,11 @@
             "M' U' M U2 r U' r'"
           ],
           "state": [
-            "NNNBNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NBNNNNBNN",
+            "RNNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1920,11 +1920,11 @@
             "d R' U2 R U R' U2 R"
           ],
           "state": [
-            "NRNNNNNNR",
+            "NNNNNRRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1937,11 +1937,11 @@
             "y' U R' U' R U' R' U' R"
           ],
           "state": [
-            "NRNNNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNRBNN",
+            "RNNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1954,11 +1954,11 @@
             "d R' U R d' R U R'"
           ],
           "state": [
-            "NNNBNNNNR",
+            "NBNNNNRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1971,11 +1971,11 @@
             "F R' F' R U' R U' R' U R U' R'"
           ],
           "state": [
-            "NNNNNRNNB",
-            "RBNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNBRN",
+            "RBNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -1988,11 +1988,11 @@
             "U R U' R' U' R U R' U' R U R'"
           ],
           "state": [
-            "NNNNNNNBR",
+            "NNNBNNRNN",
+            "WNNNRRNRR",
             "NNNNNNNNN",
-            "RBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NRBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2005,11 +2005,11 @@
             "y U L' U L U' L' U' L"
           ],
           "state": [
-            "NNNNNNNGR",
-            "GNNNNNNNN",
-            "NRRNNNNNN",
-            "NGGNNNNNN",
-            "NGGNNNNNN",
+            "NNNGNNRNN",
+            "GNNNGGNGG",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NRWRRNRRN",
             "NNNNNNNNN"
           ]
         },
@@ -2021,11 +2021,11 @@
             "R U' R' U R U2 R' U2 R U' R'"
           ],
           "state": [
-            "NNNNNBNNR",
-            "RNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNRBN",
+            "WRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2038,11 +2038,11 @@
             "R U2 R' U R U R' U R U' R'"
           ],
           "state": [
-            "NNNNNNNBB",
-            "RNNNNNNNN",
-            "NRBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNBNNBNN",
+            "RNNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NRWBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2055,11 +2055,11 @@
             "U F R U R' U' F' U R U' R'"
           ],
           "state": [
-            "NNNNNRNNR",
-            "BNNNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNRRN",
+            "WBNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2071,11 +2071,11 @@
             "U' R U' R' U2 R U2 R2 F R F'"
           ],
           "state": [
-            "NNNNNBNNB",
-            "RNNNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNWBN",
+            "BRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2088,11 +2088,11 @@
             "R U R' U' R U R' U' F R' F' R"
           ],
           "state": [
-            "NNNNNNNGR",
+            "NNNGNNWNN",
+            "RNNNGGNGG",
             "NNNNNNNNN",
-            "RGRNNNNNN",
-            "GGNNNNNNN",
-            "GGNNNNNNN",
+            "NNNNNNNNN",
+            "NRGRRNRRN",
             "NNNNNNNNN"
           ]
         },
@@ -2105,11 +2105,11 @@
             "y U F U2 F2 L F L'"
           ],
           "state": [
-            "NBNNNNNNB",
+            "NNNNNBWNN",
+            "BNNNRRNRR",
             "NNNNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2122,11 +2122,11 @@
             "d' L' U2 L U' L' U L"
           ],
           "state": [
-            "NNNGNNNNR",
+            "NGNNNNWNN",
+            "RNNNGGNGG",
             "NNNNNNNNN",
-            "NGRNNNNNN",
-            "GGNNNNNNN",
-            "GGNNNNNNN",
+            "NNNNNNNNN",
+            "NNGRRNRRN",
             "NNNNNNNNN"
           ]
         },
@@ -2139,11 +2139,11 @@
             "R B U2 B' R'"
           ],
           "state": [
-            "NNNBNNNNB",
+            "NBNNNNWNN",
+            "BNNNRRNRR",
             "NNNNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2156,11 +2156,11 @@
             "y' U2 R' U' R U' R' U R"
           ],
           "state": [
-            "NRNNNNNNB",
+            "NNNNNRWNN",
+            "BNNNRRNRR",
             "NNNNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2173,11 +2173,11 @@
             "y F' U' L' U L F L' U L"
           ],
           "state": [
-            "NNNNNNNBB",
+            "NNNBNNWNN",
+            "BNNNRRNRR",
             "NNNNNNNNN",
-            "RRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNNNN",
+            "NRRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2190,11 +2190,11 @@
             "y' R' U' R U2 R' U' R U R' U' R"
           ],
           "state": [
-            "NNNNNRNNB",
-            "BNNNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNWRN",
+            "BBNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBNBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2207,11 +2207,11 @@
             "U' F' R U R' U' R' F R"
           ],
           "state": [
-            "NNNNNBNNN",
-            "NRNNNNNNN",
+            "NNNNNNNBN",
+            "NRNNRRRRR",
             "NNNNNNNNN",
-            "RRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNNNN",
+            "NNNBBNBBB",
             "NNNNNNNNN"
           ]
         },
@@ -2224,11 +2224,11 @@
             "U R U' R' d' L' U L"
           ],
           "state": [
-            "NNNNNNNRN",
+            "NNNRNNNNN",
+            "NNNNRRRRR",
             "NNNNNNNNN",
-            "NBNNNNNNN",
-            "RRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNNNN",
+            "NBNBBNBBB",
             "NNNNNNNNN"
           ]
         },
@@ -2241,11 +2241,11 @@
             "y' R' U' R U y U R U' R'"
           ],
           "state": [
-            "NNNNNBNNN",
-            "NRNNNNNNN",
+            "NNNNNNNBN",
+            "NRNNRRBRR",
             "NNNNNNNNN",
-            "BRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNNNN",
+            "NNNBBNBBW",
             "NNNNNNNNN"
           ]
         },
@@ -2258,11 +2258,11 @@
             "R U R' U2 F' U F"
           ],
           "state": [
-            "NNNNNNNGN",
+            "NNNGNNNNN",
+            "NNNNGGWGG",
             "NNNNNNNNN",
-            "RNRNNNNNN",
-            "GGNNNNNNN",
-            "NGGNNNNNN",
+            "NNNNNNNNN",
+            "NRNRRNRRG",
             "NNNNNNNNN"
           ]
         },
@@ -2275,11 +2275,11 @@
             "M' U R U' r' U R U' R'"
           ],
           "state": [
-            "NNNNNNNRN",
+            "NNNRNNNNN",
+            "NNNNRRBRR",
             "NNNNNNNNN",
-            "NBNNNNNNN",
-            "BRRNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNNNN",
+            "NBNBBNBBW",
             "NNNNNNNNN"
           ]
         },
@@ -2291,11 +2291,11 @@
             "F R' F' R F R' F' R"
           ],
           "state": [
-            "NNNNNBNNN",
-            "NRNNNNNNN",
-            "NNBNNNNNN",
-            "RRNNNNNNN",
-            "NRRNNNNNN",
+            "NNNNNNNBN",
+            "NRNNRRWRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNBBNBBR",
             "NNNNNNNNN"
           ]
         },
@@ -2308,11 +2308,11 @@
             "R U' R' U2 F R' F' R"
           ],
           "state": [
-            "NNNNNNNNB",
-            "NNBNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNWNN",
+            "BNNBRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBRBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2325,11 +2325,11 @@
             "R' F R F' R' F R F' R' F R F'"
           ],
           "state": [
-            "NNNNNNNNB",
-            "NNRNNNNNN",
-            "NRBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNWNN",
+            "BNNRRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNRBBBBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2342,11 +2342,11 @@
             "R U R' U' F' U F R U' R' U F' U F"
           ],
           "state": [
-            "NNNNNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "RRRNNNNNN",
+            "NNNNNNBNN",
+            "RNNRRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBBBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2359,11 +2359,11 @@
             "y' U R' U R U2 R' U R"
           ],
           "state": [
-            "NNNNNNNNR",
-            "NNRNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNRNN",
+            "WNNRRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBBBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2376,11 +2376,11 @@
             "U' R U R' d R' U' R"
           ],
           "state": [
-            "NNNNNNNNB",
-            "RNNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "BRRNNNNNN",
+            "NNNNNNBNN",
+            "RNNBRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBRBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2393,11 +2393,11 @@
             "y U L' U' L y' U' R U R'"
           ],
           "state": [
-            "NNNNNNNNR",
-            "NNBNNNNNN",
-            "NBBNNNNNN",
-            "RRNNNNNNN",
-            "RRNNNNNNN",
+            "NNNNNNRNN",
+            "WNNBRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNBBBRBBN",
             "NNNNNNNNN"
           ]
         },
@@ -2411,10 +2411,10 @@
           ],
           "state": [
             "NNNNNNNNN",
+            "NNNBRRRRR",
             "NNNNNNNNN",
             "NNNNNNNNN",
-            "RRRNNNNNN",
-            "BRRNNNNNN",
+            "NNNBBRBBB",
             "NNNNNNNNN"
           ]
         },
@@ -2428,10 +2428,10 @@
           ],
           "state": [
             "NNNNNNNNN",
+            "NNNRRRBRR",
             "NNNNNNNNN",
             "NNNNNNNNN",
-            "BRRNNNNNN",
-            "RRRNNNNNN",
+            "NNNBBBBBW",
             "NNNNNNNNN"
           ]
         },
@@ -2445,10 +2445,10 @@
           ],
           "state": [
             "NNNNNNNNN",
+            "NNNRRRWRR",
             "NNNNNNNNN",
-            "NNBNNNNNN",
-            "RRNNNNNNN",
-            "RRRNNNNNN",
+            "NNNNNNNNN",
+            "NNNBBBBBR",
             "NNNNNNNNN"
           ]
         },
@@ -2462,10 +2462,10 @@
           ],
           "state": [
             "NNNNNNNNN",
+            "NNNBRRBRR",
             "NNNNNNNNN",
             "NNNNNNNNN",
-            "BRRNNNNNN",
-            "BRRNNNNNN",
+            "NNNBBRBBW",
             "NNNNNNNNN"
           ]
         },
@@ -2479,10 +2479,10 @@
           ],
           "state": [
             "NNNNNNNNN",
+            "NNNBRRWRR",
             "NNNNNNNNN",
-            "NNBNNNNNN",
-            "RRNNNNNNN",
-            "BRRNNNNNN",
+            "NNNNNNNNN",
+            "NNNBBRBBR",
             "NNNNNNNNN"
           ]
         }
@@ -2490,6 +2490,7 @@
     },
     {
       "subset": "OLL",
+      "puzzle": "333",
       "puzzle": "333",
       "cases": [
         {
@@ -2502,10 +2503,10 @@
           ],
           "state": [
             "NNNNYNNNN",
+            "NYNNNNNNN",
             "YYYNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2519,10 +2520,10 @@
           ],
           "state": [
             "NNNNYNNNN",
-            "NYNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2538,8 +2539,8 @@
             "NNNNYNYNN",
             "NYYNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2553,10 +2554,10 @@
           ],
           "state": [
             "NNNNYNNNY",
+            "YYNNNNNNN",
             "NYNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2570,10 +2571,10 @@
           ],
           "state": [
             "NNNNYYNYY",
+            "NNNNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2587,10 +2588,10 @@
           ],
           "state": [
             "NYYNYYNNN",
-            "YNNNNNNNN",
             "YYNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2606,7 +2607,7 @@
             "NYNYYNYNN",
             "NYYNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -2621,10 +2622,10 @@
           ],
           "state": [
             "NYNNYYNNY",
-            "NNNNNNNNN",
             "YYNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "YYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2638,10 +2639,10 @@
           ],
           "state": [
             "NNYYYNNYN",
-            "YYNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2655,10 +2656,10 @@
           ],
           "state": [
             "NNYYYNNYN",
-            "NYNNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2674,8 +2675,8 @@
             "NNNNYYYYN",
             "NNYNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2691,8 +2692,8 @@
             "NNYNYYNYN",
             "YNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2706,9 +2707,9 @@
           ],
           "state": [
             "NNNYYYYNN",
+            "NYYNNNNNN",
             "NNYNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -2723,10 +2724,10 @@
           ],
           "state": [
             "NNNYYYNNY",
-            "NNNNNNNNN",
             "YYNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2740,10 +2741,10 @@
           ],
           "state": [
             "NNNYYYNNY",
-            "NNYNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NYYNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2757,10 +2758,10 @@
           ],
           "state": [
             "NNYYYYNNN",
-            "YNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2776,8 +2777,8 @@
             "YNNNYNNNY",
             "NYNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2791,10 +2792,10 @@
           ],
           "state": [
             "YNYNYNNNN",
-            "NYNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2808,10 +2809,10 @@
           ],
           "state": [
             "YNYNYNNNN",
+            "NYNNNNNNN",
             "YYNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2827,8 +2828,8 @@
             "YNYNYNYNY",
             "NYNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2842,10 +2843,10 @@
           ],
           "state": [
             "NYNYYYNYN",
+            "NNNNNNNNN",
             "YNYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2859,10 +2860,10 @@
           ],
           "state": [
             "NYNYYYNYN",
-            "NNNNNNNNN",
             "NNYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2876,8 +2877,8 @@
           ],
           "state": [
             "YYYYYYNYN",
-            "NNNNNNNNN",
             "YNYNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
@@ -2893,9 +2894,9 @@
           ],
           "state": [
             "NYYYYYNYY",
-            "NNNNNNNNN",
             "YNNNNNNNN",
             "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -2910,8 +2911,8 @@
           ],
           "state": [
             "YYNYYYNYY",
-            "NNYNNNNNN",
             "YNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
@@ -2929,7 +2930,7 @@
             "YYNYYYNYN",
             "YNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -2946,7 +2947,7 @@
             "NYNYYYYYN",
             "NNYNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -2978,10 +2979,10 @@
           ],
           "state": [
             "YNYYYNNYN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -2995,10 +2996,10 @@
           ],
           "state": [
             "YNYNYYNYN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3012,10 +3013,10 @@
           ],
           "state": [
             "NYYNYYNNY",
-            "NNNNNNNNN",
             "YYNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3029,10 +3030,10 @@
           ],
           "state": [
             "NNYNYYNYY",
-            "NNNNNNNNN",
             "YNNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3046,9 +3047,9 @@
           ],
           "state": [
             "NNYYYYNNY",
-            "NNNNNNNNN",
             "YYNNNNNNN",
             "NNNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3063,10 +3064,10 @@
           ],
           "state": [
             "YNYYYYNNN",
+            "NYNNNNNNN",
             "YNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3080,10 +3081,10 @@
           ],
           "state": [
             "YNNNYYNYY",
-            "NNYNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3097,9 +3098,9 @@
           ],
           "state": [
             "YNNYYNNYY",
-            "NYYNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
+            "NYYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3114,8 +3115,8 @@
           ],
           "state": [
             "YYNYYNNNY",
-            "NYYNNNNNN",
             "YYNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
@@ -3131,9 +3132,9 @@
           ],
           "state": [
             "NYYYYNYNN",
-            "YYNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3148,10 +3149,10 @@
           ],
           "state": [
             "YYNNYNNYY",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3165,10 +3166,10 @@
           ],
           "state": [
             "NYYNYNYYN",
-            "NYNNNNNNN",
             "NNYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3182,10 +3183,10 @@
           ],
           "state": [
             "YNYNYYNYN",
-            "NNNNNNNNN",
             "YNYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3199,9 +3200,9 @@
           ],
           "state": [
             "YNYYYNNYN",
-            "NYNNNNNNN",
             "YNYNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3216,9 +3217,9 @@
           ],
           "state": [
             "YNNYYNYYN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3235,8 +3236,8 @@
             "NNYNYYNYY",
             "NNNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3250,10 +3251,10 @@
           ],
           "state": [
             "NNYYYYNNY",
-            "NNNNNNNNN",
             "NYNNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3267,10 +3268,10 @@
           ],
           "state": [
             "YYNNYNYYN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3284,10 +3285,10 @@
           ],
           "state": [
             "NYNNYYNNN",
-            "YNYNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNYNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3300,10 +3301,10 @@
           ],
           "state": [
             "NYNYYNNNN",
-            "NYNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YNNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3317,9 +3318,9 @@
           ],
           "state": [
             "NNNYYNNYN",
-            "YYYNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3334,10 +3335,10 @@
           ],
           "state": [
             "NNNNYYNYN",
-            "NNNNNNNNN",
             "NNYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3351,10 +3352,10 @@
           ],
           "state": [
             "NNNYYYNNN",
-            "NNNNNNNNN",
             "NYYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3368,10 +3369,10 @@
           ],
           "state": [
             "NYNNYNNYN",
-            "YYYNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYYNNNNNN",
+            "NNYNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3385,10 +3386,10 @@
           ],
           "state": [
             "NNNNYYNYN",
+            "NNNNNNNNN",
             "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "NYNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3402,10 +3403,10 @@
           ],
           "state": [
             "NYNNYYNNN",
-            "YNYNNNNNN",
             "NYNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3419,10 +3420,10 @@
           ],
           "state": [
             "NYNNYNNYN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
             "NNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3436,10 +3437,10 @@
           ],
           "state": [
             "NNNYYYNNN",
+            "NYNNNNNNN",
             "YNYNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
+            "YNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3453,9 +3454,9 @@
           ],
           "state": [
             "YNYYYYYNY",
-            "NNNNNNNNN",
             "NYNNNNNNN",
             "NNNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN"
           ]
@@ -3464,6 +3465,7 @@
     },
     {
       "subset": "PLL",
+      "puzzle": "333",
       "puzzle": "333",
       "cases": [
         {
@@ -3840,9 +3842,9 @@
           "state": [
             "NNNNYNNNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3857,9 +3859,9 @@
           "state": [
             "NNNNYNNNN",
             "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3870,11 +3872,11 @@
             "y2 r U2 R' U' R U' r' U r' U' R U' R' U2 r"
           ],
           "state": [
-            "NNNNYNYNN",
-            "NYYNNNNNN",
+            "YNNNYNNNN",
             "NYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3885,11 +3887,11 @@
             "y F' U R U' R' F' U' F R U R' U' F'"
           ],
           "state": [
-            "NNNNYNNNY",
+            "NNNNYNYNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3900,7 +3902,7 @@
             "y2 l' U2 L U L' U l"
           ],
           "state": [
-            "NNNNYYNYY",
+            "NNNYYNYYN",
             "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
@@ -3914,11 +3916,11 @@
             "r U2 R' U' R U' r'"
           ],
           "state": [
-            "NYYNYYNNN",
+            "NNNNYYNYY",
             "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3928,11 +3930,11 @@
             "r U R' U R U2 r'"
           ],
           "state": [
-            "NYNYYNYNN",
-            "NYYNNNNNN",
+            "YYNNYYNNN",
             "NYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NYYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3943,11 +3945,11 @@
             "y2 l' U' L U' L' U2 l"
           ],
           "state": [
-            "YNNYYNNYN",
+            "NYYYYNNNN",
             "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3958,11 +3960,11 @@
             "r' R2 U2 R' U' R U' R' U' r R'"
           ],
           "state": [
-            "NNYYYNNYN",
+            "NYNYYNNNY",
             "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3973,11 +3975,11 @@
             "r R2 U2 R U R' U R U r' R"
           ],
           "state": [
-            "NYNYYNNNY",
+            "NYNNYYYNN",
             "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -3989,11 +3991,11 @@
             "y2 r U R' U R' x U R U' R x' U2 r'"
           ],
           "state": [
-            "NNNNYYYYN",
-            "NNYNNNNNN",
+            "YNNYYNNYN",
             "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4005,11 +4007,11 @@
             "y F R U R' U' F' U F R U R' U' F'"
           ],
           "state": [
-            "YYNNYYNNN",
+            "NNYNYYNYN",
             "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4019,11 +4021,11 @@
             "r U' r' U' r U r' y' R' U R"
           ],
           "state": [
-            "NNNYYYYNN",
+            "YYNNYNNYN",
             "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4033,11 +4035,11 @@
             "r' U r U r' U' r y R U' R'"
           ],
           "state": [
-            "YNNYYYNNN",
+            "NYYNYNNYN",
             "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4047,11 +4049,11 @@
             "r' U' r R' U' R U r' U r"
           ],
           "state": [
-            "NNNYYYNNY",
+            "NYNNYNYYN",
             "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4061,11 +4063,11 @@
             "r U r' R U R' U' r U' r'"
           ],
           "state": [
-            "NNYYYYNNN",
+            "NYNNYNNYY",
             "YNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4077,11 +4079,11 @@
             "y2 R U R' U x R' U R U' x' U2 x R' U R U'"
           ],
           "state": [
-            "YNNNYNNNY",
+            "NNYNYNYNN",
             "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4091,11 +4093,11 @@
             "r U R' U R U2 r2 U' R U' R' U2 r"
           ],
           "state": [
-            "YNYNYNNNN",
+            "NNYNYNNNY",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4105,11 +4107,11 @@
             "r' U2 R U R' U r2 U2 R' U' R U' r'"
           ],
           "state": [
-            "YNYNYNNNN",
+            "NNYNYNNNY",
             "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4122,9 +4124,9 @@
           "state": [
             "YNYNYNYNY",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4139,9 +4141,9 @@
           "state": [
             "NYNYYYNYN",
             "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4154,9 +4156,9 @@
           "state": [
             "NYNYYYNYN",
             "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4169,7 +4171,7 @@
             "y' R2 D R' U2 R D' R' U2 R'"
           ],
           "state": [
-            "NYYYYYNYY",
+            "NYNYYYYYY",
             "NNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
@@ -4185,11 +4187,11 @@
             "L' U' L2 U L2 U L2 U2 L' U L' U L"
           ],
           "state": [
-            "NYYYYYNYY",
+            "NYNYYYYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4200,11 +4202,11 @@
             "L' R U R' U' z U R z' R U' R'"
           ],
           "state": [
-            "YYNYYYNYY",
+            "NYYYYYYYN",
             "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4217,11 +4219,11 @@
             "y2 z U' R' U R' U' R2 U"
           ],
           "state": [
-            "YYNYYYNYN",
-            "YNNNNNNNN",
+            "NYYYYYNYN",
             "YNNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "YNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4234,11 +4236,11 @@
             "R U' z U' R z' R' U' L"
           ],
           "state": [
-            "NYNYYYYYN",
-            "NNYNNNNNN",
+            "YYNYYYNYN",
             "NNYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NNYNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4249,11 +4251,11 @@
             "r U R' U' M U R U' R'"
           ],
           "state": [
-            "YYYYYNYNY",
-            "NYNNNNNNN",
+            "YYYNYYYNY",
             "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4263,11 +4265,11 @@
             "R U R' U' R U' R' F' U' F R U R'"
           ],
           "state": [
-            "NYYYYNNNY",
+            "NYNNYYYNY",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4279,11 +4281,11 @@
             "F U R U2 R' U' R U2 R' U' F'"
           ],
           "state": [
-            "NYNYYNYNY",
+            "YYNNYYYNN",
             "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4293,11 +4295,11 @@
             "R' U' F U R U' R' F' R"
           ],
           "state": [
-            "NYYNYYNNY",
+            "NNNNYYYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4309,11 +4311,11 @@
             "z U R F' R' U' R U F U' z'"
           ],
           "state": [
-            "YYNYYNYNN",
+            "YYYNYYNNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4324,11 +4326,11 @@
             "y2 z U' R' U R U F' U' F"
           ],
           "state": [
-            "NNYYYYNNY",
+            "NYNNYNYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4339,11 +4341,11 @@
             "R U R' U' y' r' U' R U r R'"
           ],
           "state": [
-            "NNNYYYYNY",
+            "YYNNYNYYN",
             "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4355,11 +4357,11 @@
             "R U2 R' U' y' r' U r U' r' U' r"
           ],
           "state": [
-            "YNNNYYNYY",
+            "NNYYYNYYN",
             "NNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4370,11 +4372,11 @@
             "z U' R' U R' U' R U R U y' R' U' R"
           ],
           "state": [
-            "YNNYYNNYY",
+            "NYYYYNYNN",
             "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4384,11 +4386,11 @@
             "F R U' R' U' R U R' F'"
           ],
           "state": [
-            "YYNYYNNNY",
+            "NYYNYYYNN",
             "NYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4399,11 +4401,11 @@
             "R U R' U R U' R' U' R' F R F'"
           ],
           "state": [
-            "NYYYYNYNN",
+            "YYNNYYNNY",
             "YYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4413,11 +4415,11 @@
             "R U R' F' U' F U R U2 R'"
           ],
           "state": [
-            "NNYYYYYNN",
+            "YYNNYNNYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4427,11 +4429,11 @@
             "R' F R U R' U' F' U R"
           ],
           "state": [
-            "YNNYYYNNY",
+            "NYYNYNYYN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4442,11 +4444,11 @@
             "r R2 y' R' U' R U y R U' r' R"
           ],
           "state": [
-            "NYNYYNYNY",
-            "NYNNNNNNN",
+            "YYNNYYYNN",
             "NYNNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
+            "NYNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4456,11 +4458,11 @@
             "R' U' R U' R' U2 R F R U R' U' F'"
           ],
           "state": [
-            "YNYYYNNYN",
+            "NYYYYNNNY",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4470,11 +4472,11 @@
             "z F' R' U' R U F z'"
           ],
           "state": [
-            "NYYNYYNNY",
+            "NNNNYYYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4485,11 +4487,11 @@
             "y2 f R U R' U' f'"
           ],
           "state": [
-            "YYNYYNYNN",
+            "YYYNYYNNN",
             "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4500,11 +4502,11 @@
             "y2 z F' U' R' U R F z'"
           ],
           "state": [
-            "NNYYYYNNY",
+            "NYNNYNYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4515,7 +4517,7 @@
             "R' U' R' F R F' U R"
           ],
           "state": [
-            "YYNNYNYYN",
+            "YNYYYYNNN",
             "YYYNNNNNN",
             "NNNNNNNNN",
             "NNNNNNNNN",
@@ -4529,11 +4531,11 @@
             "z F' U' R' U R U' R' U R F z'"
           ],
           "state": [
-            "NYNNYYNNN",
+            "NNNNYYNYN",
             "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4543,11 +4545,11 @@
             "F R U R' U' R U R' U' F'"
           ],
           "state": [
-            "NYNYYNNNN",
+            "NYNNYYNNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4557,11 +4559,11 @@
             "r U' r2 U r2 U r2 U' r"
           ],
           "state": [
-            "NYNNYYNNN",
+            "NNNNYYNYN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4572,11 +4574,11 @@
             "y R u R' U R' U' R u' R2 U2 R"
           ],
           "state": [
-            "NNNNYYNYN",
+            "NNNYYNNYN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4588,11 +4590,11 @@
             "y2 f R U R' U' R U R' U' f'"
           ],
           "state": [
-            "NNNYYYNNN",
+            "NYNNYNNYN",
             "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4603,11 +4605,11 @@
             "y2 R' U2 R2 u R' U R U' R u' R'"
           ],
           "state": [
-            "NYNNYNNYN",
+            "NNNYYYNNN",
             "YYYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4618,11 +4620,11 @@
             "r' U2 R U R' U' R U R' U r"
           ],
           "state": [
-            "NNNYYNNYN",
+            "NYNYYNNNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YNYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4633,11 +4635,11 @@
             "r U2 R' U' R U R' U' R U' r'"
           ],
           "state": [
-            "NYNYYNNNN",
+            "NYNNYYNNN",
             "NYNNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4648,11 +4650,11 @@
             "R U2 R' U' R U' R' U' r' U' R U' R' U2 r"
           ],
           "state": [
-            "NNNYYYNNN",
+            "NYNNYNNYN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "YYYNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4663,11 +4665,11 @@
             "r U r' U R U' R' U R U' R' r U' r'"
           ],
           "state": [
-            "NNNYYYNNN",
+            "NYNNYNNYN",
             "YNYNNNNNN",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         },
@@ -4678,11 +4680,11 @@
             "R U R' U' M' U R U' r'"
           ],
           "state": [
-            "YNYYYYYNY",
+            "YYYNYNYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
             "NNNNNNNNN",
             "NYNNNNNNN",
-            "NNNNNNNNN",
-            "NNNNNNNNN",
             "NNNNNNNNN"
           ]
         }
@@ -4702,10 +4704,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "ORBNNNNNN",
-            "BBGNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "ORBRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBGBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4719,10 +4721,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "GRGNNNNNN",
-            "BBRNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "GRGRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBRBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4736,10 +4738,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "BRGNNNNNN",
-            "RBONNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "BRGRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RBOBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4753,10 +4755,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "ROGNNNNNN",
-            "BBBNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "ROGRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBBBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4769,10 +4771,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "OBRNNNNNN",
-            "RGGNNNNNN",
-            "GGGNNNNNN",
-            "GGGNNNNNN",
+            "OBRGGGGGG",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RGGRRRRRR",
             "NNNNNNNNN"
           ]
         },
@@ -4786,10 +4788,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "GBBNNNNNN",
-            "BGRNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "GBBRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BGRBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4803,10 +4805,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "BRGNNNNNN",
-            "GBONNNNNN",
-            "GGGNNNNNN",
-            "GGGNNNNNN",
+            "BRGGGGGGG",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "GBORRRRRR",
             "NNNNNNNNN"
           ]
         },
@@ -4819,10 +4821,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "OORNNNNNN",
-            "RBGNNNNNN",
-            "GGGNNNNNN",
-            "GGGNNNNNN",
+            "OORGGGGGG",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RBGRRRRRR",
             "NNNNNNNNN"
           ]
         },
@@ -4836,10 +4838,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "RORNNNNNN",
-            "BGBNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "RORRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BGBBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4853,10 +4855,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "GGBNNNNNN",
-            "BBRNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "GGBRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBRBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4870,10 +4872,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "GBBNNNNNN",
-            "BRRNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "GBBRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BRRBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4886,10 +4888,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "BGGNNNNNN",
-            "ROONNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "BGGRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "ROOBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4903,10 +4905,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "BBGNNNNNN",
-            "RRONNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "BBGRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RROBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4919,10 +4921,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "OOBNNNNNN",
-            "GRGNNNNNN",
-            "BBBNNNNNN",
-            "BBBNNNNNN",
+            "OOBBBBBBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "GRGOOOOOO",
             "NNNNNNNNN"
           ]
         },
@@ -4936,10 +4938,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "BORNNNNNN",
-            "OBONNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "BORRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "OBOBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4953,10 +4955,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "GOBNNNNNN",
-            "BBRNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "GOBRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBRBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4969,10 +4971,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "RORNNNNNN",
-            "BRBNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "RORRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BRBBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -4986,10 +4988,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "RBRNNNNNN",
-            "BOBNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "RBRRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BOBBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -5003,10 +5005,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "OGRNNNNNN",
-            "BBGNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "OGRRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBGBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -5020,10 +5022,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "ORRNNNNNN",
-            "BBGNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "ORRRRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBGBBBBBB",
             "NNNNNNNNN"
           ]
         },
@@ -5037,10 +5039,10 @@
           ],
           "state": [
             "YYYYYYYYY",
-            "OBONNNNNN",
-            "GRGNNNNNN",
-            "RRRNNNNNN",
-            "RRRNNNNNN",
+            "OBORRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "GRGBBBBBB",
             "NNNNNNNNN"
           ]
         }
@@ -5059,11 +5061,11 @@
             "R2 D R' U R D' R2 U R U' R'"
           ],
           "state": [
-            "YYYYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYYYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5073,11 +5075,11 @@
             "U R U' R'"
           ],
           "state": [
-            "YYNYYBYYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "YYYYYYBBN",
+            "RRYNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5088,11 +5090,11 @@
             "U' L U' R U L' U R'"
           ],
           "state": [
-            "YYNYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYYYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5102,11 +5104,11 @@
             "U R2 D R' U' R D' R2"
           ],
           "state": [
-            "NYYYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBY",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5119,11 +5121,11 @@
             "U R U' R' U R' U L U' R U L'"
           ],
           "state": [
-            "NYYYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5134,11 +5136,11 @@
             "U' R' D' R U2 R' D R2 U' R'"
           ],
           "state": [
-            "YYYYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBY",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5149,11 +5151,11 @@
             "R' U' R U R U' R' U' R' U R"
           ],
           "state": [
-            "YYYYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5163,11 +5165,11 @@
             "U2 R U' R' U R U2 R'"
           ],
           "state": [
-            "NYYYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5180,11 +5182,11 @@
             "U2 L' R U R' U' R U R' U' L U' R U' R'"
           ],
           "state": [
-            "NYYYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5196,11 +5198,11 @@
             "U2 F2 L' U L U L' U' L F2"
           ],
           "state": [
-            "NYYYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBY",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5210,11 +5212,11 @@
             "U2 R' U' R2 U' R2 U2 R"
           ],
           "state": [
-            "NYYYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBY",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5225,11 +5227,11 @@
             "U R U2 L U L' R' U2 L U L'"
           ],
           "state": [
-            "YYNYYBNYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5241,11 +5243,11 @@
             "U' F2 L' U L U' L' U' L F2"
           ],
           "state": [
-            "YYNYYBNYB",
-            "RRYNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5256,11 +5258,11 @@
             "U2 L' U R U' L U2 R'"
           ],
           "state": [
-            "YYNYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5272,11 +5274,11 @@
             "L' U R U' M' x'"
           ],
           "state": [
-            "YYNYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYYYYYBBN",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5289,11 +5291,11 @@
             "U2 M x U R' U' L R U2 R'"
           ],
           "state": [
-            "NYNYYBYYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5305,11 +5307,11 @@
             "U2 F2 L F2 L' U' L' U L"
           ],
           "state": [
-            "NYNYYBYYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5319,11 +5321,11 @@
             "U2 R U2 R'"
           ],
           "state": [
-            "NYNYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5334,11 +5336,11 @@
             "U2 L' U R U' R' L U' R U' R'"
           ],
           "state": [
-            "NYNYYBYYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "YYNYYYBBN",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5349,11 +5351,11 @@
             "U L' U2 L R U R' U L' U L"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBY",
             "NNNNNNNNN"
           ]
         },
@@ -5364,11 +5366,11 @@
             "U2 R U' R D R' U' R D' R2"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRNNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5379,11 +5381,11 @@
             "U R2 D R' U R D' R' U2 R'"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRYNNNNNN",
-            "YNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRYNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5396,11 +5398,11 @@
             "U2 R U' R' U L' U R U' R' L U' R U' R'"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5410,11 +5412,11 @@
             "U2 R U' R' U R U' R' U R U2 R'"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRYNNNNNN",
-            "NNBNNNNNN",
-            "YRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRYNRRYRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5425,11 +5427,11 @@
             "U2 R U' R' U R U' R D R' U' R D' R2"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRNNNNNNN",
-            "NNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5440,11 +5442,11 @@
             "U R U R' U F2 L' U L U' L' U' L F2"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRYNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRYNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBN",
             "NNNNNNNNN"
           ]
         },
@@ -5454,11 +5456,11 @@
             "U R U R' U' R U R' U' R U' R'"
           ],
           "state": [
-            "NYNYYBNYB",
-            "RRNNNNNNN",
-            "YNBNNNNNN",
-            "NRRNNNNNN",
-            "NRRNNNNNN",
+            "NYNYYYBBN",
+            "RRNNRRNRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YNWBBYBBY",
             "NNNNNNNNN"
           ]
         }
@@ -5477,11 +5479,11 @@
             "y U R U2 L' U L U2 R'"
           ],
           "state": [
-            "YYYYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "YYYBYYBYY",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5491,11 +5493,11 @@
             "y U' L' U L"
           ],
           "state": [
-            "YYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYYBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5507,11 +5509,11 @@
             "y U R' U L' U' R U' L"
           ],
           "state": [
-            "YYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYYBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5522,11 +5524,11 @@
             "y' R2 D' R U R' D R2"
           ],
           "state": [
-            "NYYYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYNBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5536,11 +5538,11 @@
             "y U' L' U L U2 L' U2 L U L' U L"
           ],
           "state": [
-            "NYYYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYNBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5550,11 +5552,11 @@
             "y L' U L U2 L' U L U2 L' U' L"
           ],
           "state": [
-            "YYNYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYYBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5564,11 +5566,11 @@
             "y U' L' U' L U L' U L"
           ],
           "state": [
-            "YYNYYYYBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYYBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5578,11 +5580,11 @@
             "y U2 M x U' L U R' L' U2 L"
           ],
           "state": [
-            "NYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5592,11 +5594,11 @@
             "y U' R U2 L' U L U2 R' U' L' U L"
           ],
           "state": [
-            "NYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBYNNNNNN",
+            "NYNBYYBYY",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5606,11 +5608,11 @@
             "y U2 R U' L' U L R' U L' U L"
           ],
           "state": [
-            "NYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYY",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5620,11 +5622,11 @@
             "y U2 L' U2 L"
           ],
           "state": [
-            "NYYYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "NYNBYYBYY",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5634,11 +5636,11 @@
             "y U2 L' U L U' L' U2 L"
           ],
           "state": [
-            "NYNYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYNBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5648,11 +5650,11 @@
             "y U' R U2 L' U' R' U R U' L U2 R'"
           ],
           "state": [
-            "NYNYYYYBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "YYNBYYBYN",
+            "WNYYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5662,11 +5664,11 @@
             "y U2 L U L2 U L2 U2 L'"
           ],
           "state": [
-            "NYNYYYYBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "YYNBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5676,11 +5678,11 @@
             "y U' L' U' L2 U L2 U L2 U2 L'"
           ],
           "state": [
-            "NYNYYYYBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "YYNBYYBYN",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5690,11 +5692,11 @@
             "y U' L' U2 R' U' R L U2 R' U' R"
           ],
           "state": [
-            "YYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYYBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5704,11 +5706,11 @@
             "y U2 L' U2 L2 U L' U L U2 L'"
           ],
           "state": [
-            "YYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBYNNNNNN",
+            "NYYBYYBYN",
+            "WNYYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5718,11 +5720,11 @@
             "y U2 R U' L' U R' U2 L"
           ],
           "state": [
-            "YYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "NYYBYYBYN",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5732,11 +5734,11 @@
             "y R U' L' U M' x'"
           ],
           "state": [
-            "YYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYYBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5746,11 +5748,11 @@
             "y U' R U2 R' L' U' L U' R U' R'"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBYNNNNNN",
+            "NYNBYYBYN",
+            "WNNYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5760,11 +5762,11 @@
             "y U' L2 D' L U' L' D L U2 L"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5774,11 +5776,11 @@
             "y U' L' U L2 U L' U L U2 L'"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5788,11 +5790,11 @@
             "y U2 L' U L U' L' U L U' L' U2 L"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBYNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "YOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5802,11 +5804,11 @@
             "y U2 L' U2 L2 U2 L' U' L U' L'"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5816,11 +5818,11 @@
             "y U' L' U L2 U2 L' U' L U' L'"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NNYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNNYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOOY",
             "NNNNNNNNN"
           ]
         },
@@ -5830,11 +5832,11 @@
             "y U2 L U' R' U L2 U' R U' L"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBNNNNNNN",
+            "NYNBYYBYN",
+            "WNYYBBNBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         },
@@ -5844,11 +5846,11 @@
             "y U' L' U' L U L' U' L U L' U L"
           ],
           "state": [
-            "NYNYYYNBB",
-            "NYYNNNNNN",
-            "OOONNNNNN",
-            "BBNNNNNNN",
-            "BBYNNNNNN",
+            "NYNBYYBYN",
+            "WNYYBBYBB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "NOOOONOON",
             "NNNNNNNNN"
           ]
         }

@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager             fragmentManager;
     DrawerLayout                mDrawerLayout;
 
+    private AlgSubsetListDialog algSubsetListDialog;
     private Drawer          mDrawer;
 
     // True if billing is initialized
@@ -264,12 +265,13 @@ public class MainActivity extends AppCompatActivity
     private AlgorithmDialogListener algorithmDialogListener = new AlgorithmDialogListener() {
         @Override
         public void onSubsetSelected(String puzzle, String subset) {
-            mDrawerToggle.runWhenIdle(() -> fragmentManager
+            fragmentManager
                     .beginTransaction()
                     .replace(R.id.main_activity_container,
                             AlgListFragment.newInstance(puzzle, subset), "algorithm_fragment")
-                    .commit());
-
+                    .commit();
+            if (algSubsetListDialog != null)
+                algSubsetListDialog.dismiss();
         }
     };
 
@@ -374,42 +376,27 @@ public class MainActivity extends AppCompatActivity
                             default:
                                 closeDrawer = false;
                             case TIMER_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container,
-                                                         TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                                .commit();
-                                    }
-                                });
+                                mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container,
+                                                 TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                        .commit());
                                 break;
 
                             case TRAINER_OLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container,
-                                                         TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
-                                                .commit();
-                                    }
-                                });
+                                mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container,
+                                                 TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
+                                        .commit());
                                 break;
 
                             case TRAINER_PLL_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        fragmentManager
-                                                .beginTransaction()
-                                                .replace(R.id.main_activity_container,
-                                                         TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                                .commit();
-                                    }
-                                });
+                                mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                        .beginTransaction()
+                                        .replace(R.id.main_activity_container,
+                                                 TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                        .commit());
                                 break;
 
                             case EXPORT_IMPORT_ID:
@@ -460,18 +447,13 @@ public class MainActivity extends AppCompatActivity
                                 break;
 
                             case SETTINGS_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivityForResult(new Intent(
-                                                                       getApplicationContext(), SettingsActivity.class),
-                                                               REQUEST_SETTING);
-                                    }
-                                });
+                                mDrawerToggle.runWhenIdle(() -> startActivityForResult(new Intent(
+                                                               getApplicationContext(), SettingsActivity.class),
+                                                                               REQUEST_SETTING));
                                 break;
 
                             case REFERENCE_ID:
-                                AlgSubsetListDialog algSubsetListDialog = AlgSubsetListDialog.newInstance();
+                                algSubsetListDialog = AlgSubsetListDialog.newInstance();
                                 algSubsetListDialog.setDialogListener(algorithmDialogListener);
                                 algSubsetListDialog.show(fragmentManager, "subset_list_dialog");
                                 break;

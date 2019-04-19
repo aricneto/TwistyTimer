@@ -23,7 +23,7 @@ public class IsometricView extends View {
         void onClick(@NonNull Isometric.Item item);
     }
 
-    private final Isometric isometric = new Isometric();
+    private Isometric isometric = new Isometric(70);
 
     private OnItemClickListener listener;
 
@@ -33,6 +33,11 @@ public class IsometricView extends View {
 
     public IsometricView(Context context) {
         super(context);
+    }
+
+    public IsometricView withIsometricScale(double scale) {
+        isometric = new Isometric(scale);
+        return this;
     }
 
     public void setSort(boolean sort) {

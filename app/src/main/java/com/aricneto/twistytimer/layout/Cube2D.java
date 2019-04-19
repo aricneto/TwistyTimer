@@ -24,8 +24,9 @@ public class Cube2D extends View {
     private HashMap<Character, Integer> mStickerColors;
     private String[]                      mCubeState;
 
-    private Paint mCubePaint;
+    private Paint mStickerStrokePaint;
     private Paint mStickerPaint;
+    private Paint mCubePaint;
 
     private RectF mStickerRect;
     private RectF mStickerStartRect;
@@ -63,13 +64,19 @@ public class Cube2D extends View {
     private void init(@Nullable AttributeSet attrs) {
         mPadding = 0;
         mCubeCornerRadius = ThemeUtils.dpToPix(8);
-        mStickerCornerRadius = ThemeUtils.dpToPix(2);
+        mStickerCornerRadius = ThemeUtils.dpToPix(1);
         initPaints();
         initRects();
     }
 
     private void initPaints() {
         mStickerColors = AlgUtils.getColorLetterHashMap();
+
+        mStickerStrokePaint = new Paint();
+        mStickerStrokePaint.setStyle(Paint.Style.STROKE);
+        mStickerStrokePaint.setColor(Color.parseColor("#282828"));
+        mStickerStrokePaint.setStrokeWidth(ThemeUtils.dpToPix(2));
+        mStickerStrokePaint.setAntiAlias(true);
 
         mCubePaint = new Paint();
         mCubePaint.setStyle(Paint.Style.FILL);
@@ -190,6 +197,7 @@ public class Cube2D extends View {
         int color = AlgUtils.getColorLetterHashMap().get(sticker);
         mStickerPaint.setColor(color);
         canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerPaint);
+        //canvas.drawRoundRect(mStickerRect, mStickerCornerRadius, mStickerCornerRadius, mStickerStrokePaint);
     }
 
     public String[] getCubeState() {

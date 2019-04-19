@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -115,19 +116,22 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (cube != null)
             holder.root.removeView(cube);
 
-        if (!mIsIsometricView)
-            cube = CubeIsometric.init(mContext, mCubePuzzleSize, pState);
+        if (mIsIsometricView)
+            cube = CubeIsometric.init(mContext, 70, mCubePuzzleSize, pState);
         else
             cube = new Cube2D(mContext).setCubeState(mCubePuzzleSize, pState);
 
         cube.setId(R.id.cube);
         holder.root.addView(cube, params);
 
-//         If the mSubset is PLL, it'll need to show the pll arrows.
-//        if (mSubset.equals("PLL")) {
-//            holder.pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, pName));
-//            holder.pllArrows.setVisibility(View.VISIBLE);
-//        }
+//         If mSubset is PLL, it'll need to show the pll arrows.
+        if (mSubset.equals("PLL")) {
+            ImageView pllArrows = new ImageView(mContext);
+            pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, pName));
+            pllArrows.setScaleX(0.65f);
+            pllArrows.setScaleY(0.65f);
+            holder.root.addView(pllArrows, params);
+        }
 
     }
 

@@ -16,10 +16,8 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
-import com.aricneto.twistytimer.layout.isometric.IsometricView;
 import com.aricneto.twistytimer.listener.DialogListener;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -163,13 +161,22 @@ public class AlgDialog extends DialogFragment {
         params.leftMargin = ThemeUtils.dpToPix(8);
 
         View cube;
-        if (!AlgUtils.isIsometricView(mSubset))
-            cube = CubeIsometric.init(mContext, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
+        if (AlgUtils.isIsometricView(mSubset))
+            cube = CubeIsometric.init(mContext, 70, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
         else
             cube = new Cube2D(mContext).setCubeState(AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
 
         cube.setId(R.id.cube);
         root.addView(cube, params);
+
+        //         If mSubset is PLL, it'll need to show the pll arrows.
+        if (mSubset.equals("PLL")) {
+            ImageView pllArrows = new ImageView(mContext);
+            pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, mCase.getName()));
+            pllArrows.setScaleX(0.65f);
+            pllArrows.setScaleY(0.65f);
+            root.addView(pllArrows, params);
+        }
 
         // List
         params = (RelativeLayout.LayoutParams) algList.getLayoutParams();
@@ -197,12 +204,6 @@ public class AlgDialog extends DialogFragment {
 //        revertButton.setOnClickListener(clickListener);
 //        progressButton.setOnClickListener(clickListener);
 //        editButton.setOnClickListener(clickListener);
-
-        // If the subset is PLL, it'll need to show the pll arrows.
-//        if (mSubset.equals("PLL")) {
-//            pllArrows.setImageDrawable(AlgUtils.getPllArrow(getContext(), mCase.getName()));
-//            pllArrows.setVisibility(View.VISIBLE);
-//        }
     }
 
     public void setDialogListener(DialogListener listener) {

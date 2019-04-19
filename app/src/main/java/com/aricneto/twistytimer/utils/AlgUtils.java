@@ -76,12 +76,14 @@ public final class AlgUtils {
      */
     public static boolean isIsometricView(String subset) {
         switch (subset) {
+            case "CMLL":
+            case "COLL":
+            case "ELL":
             case "OLL":
-                return true;
             case "PLL":
                 return false;
         }
-        return false;
+        return true;
         //throw new IllegalArgumentException("Invalid subset");
     }
 
@@ -108,7 +110,7 @@ public final class AlgUtils {
             colorLetterMap.put('B', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_back_color, "304FFE")));
             colorLetterMap.put('O', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_left_color, "FF8B24")));
             colorLetterMap.put('W', Color.parseColor("#" + Prefs.getString(R.string.pk_cube_top_color, "FFFFFF")));
-            colorLetterMap.put('N', Color.parseColor("#7c7c7c"));
+            colorLetterMap.put('N', Color.parseColor("#4c4c4c"));
             colorLetterMap.put('X', 0);
         }
 

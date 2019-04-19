@@ -65,8 +65,8 @@ public class CubeIsometric {
         }
     }
 
-    public static IsometricView init (Context context, int puzzleSize, String[] state) {
-        IsometricView cube = new IsometricView(context);
+    public static IsometricView init(Context context, double scale, int puzzleSize, String[] state) {
+        IsometricView cube = new IsometricView(context).withIsometricScale(scale);
         final double mCubeSize = 2;
         final double mPadding = mCubeSize * 0.06;
         final double mStickerSize = (mCubeSize - (mPadding * (puzzleSize + 1))) / puzzleSize;
