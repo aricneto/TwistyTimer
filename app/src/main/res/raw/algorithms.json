@@ -5855,6 +5855,2100 @@
           ]
         }
       ]
+    },
+    {
+      "subset": "CLL",
+      "puzzle":"222",
+      "cases": [
+        {
+          "name": "CLL AS 1",
+          "algorithms": [
+            "R' U' R U' R' U2 R",
+            "y R U2 R' U' R U' R'",
+            "y2 L' U' L U' L' U2 L"
+          ],
+          "state": [
+            "YORG",
+            "YONN",
+            "YBNN",
+            "YBNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL AS 2",
+          "algorithms": [
+            "R U2 R' F R' F' R U' R U' R'",
+            "y' R' U' R U' R' U R' F R F' U R",
+            "y2 R' U R U' R2 F R F' R U R' U' R",
+            "L' U' L U' L F' L' F L' U2 L"
+          ],
+          "state": [
+            "YORB",
+            "YRNN",
+            "YBNN",
+            "YGNN",
+            "OGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL AS 3",
+          "algorithms": [
+            "y2 F' L F L' U2 L' U2 L",
+            "y2 F' R U R' U2 R' F2 R"
+          ],
+          "state": [
+            "YRBG",
+            "YONN",
+            "YGNN",
+            "YONN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL AS 4",
+          "algorithms": [
+            "y2 R' F R F' R U R'",
+            "y2 L' U L F' R U R'",
+            "R' U L U' R U L'",
+            "y2 L' U R U' L U R'"
+          ],
+          "state": [
+            "YOBG",
+            "YONN",
+            "YBNN",
+            "YRNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL AS 5",
+          "algorithms": [
+            "y2 R U2 R' U2 R' F R F'"
+          ],
+          "state": [
+            "YGRB",
+            "YRNN",
+            "YONN",
+            "YONN",
+            "BGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL AS 6",
+          "algorithms": [
+            "y2 L' U2 L F' R' F2 R U' R' F R F'",
+            "R2 F R U2 R U' R' U2 F' R",
+            "y R U R' D R U' R U R' U R'",
+            "L' U L' U L U' L U y' L' U L"
+          ],
+          "state": [
+            "YOBR",
+            "YGNN",
+            "YBNN",
+            "YGNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL H 1",
+          "algorithms": [
+            "y R2 U2 R U2 R2",
+            "y R2 U2 R' U2 R2",
+            "y' R U2 R' U' R U R' U' R U' R'",
+            "R U R' U R U' R' U R U2 R'"
+          ],
+          "state": [
+            "GGBB",
+            "ORNN",
+            "YYNN",
+            "RONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL H 2",
+          "algorithms": [
+            "y F R U R' U' R U R' U' R U R' U' F'",
+            "y x' U2 R U2 R2 F2 R U2 x",
+            "y F2 R' F2 R2 U2 R' F2",
+            "R' F R F' R U R2 F R F' R U R'"
+          ],
+          "state": [
+            "BGBG",
+            "OONN",
+            "YYNN",
+            "RRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL H 3",
+          "algorithms": [
+            "R U R' U R U R' F R' F' R",
+            "R U R' U R U L' U R' U' L",
+            "y R U' R' F U2 R2 F R U' R",
+            "y2 R' F' R U' R' F' R F' R U R'"
+          ],
+          "state": [
+            "GRBR",
+            "OGNN",
+            "YYNN",
+            "BONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL H 4",
+          "algorithms": [
+            "F R2 U' R2 U' R2 U R2 F'",
+            "y' R' U2 R y R' U R' U' R U' R",
+            "y2 F R U R' U' R F' R U R' U' R'",
+            "F R U' R' U R U2 R' U' R U R' U' F'"
+          ],
+          "state": [
+            "ORGG",
+            "RONN",
+            "YYNN",
+            "BBNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 1",
+          "algorithms": [
+            "y2 F' R U R' U' R' F R",
+            "y F R U' R' U' R U R' F'",
+            "R U R U' L' U R' U'",
+            "y' F R F U' R' U F' R' U'"
+          ],
+          "state": [
+            "GYYB",
+            "ORNN",
+            "YONN",
+            "BYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 2",
+          "algorithms": [
+            "y F R' F' R U R U' R'",
+            "y x U R' U' L U R U' R'",
+            "y' R' F' L' F R F' L F",
+            "y F' U R U' R' F2 R U' R'"
+          ],
+          "state": [
+            "BYYG",
+            "GONN",
+            "YBNN",
+            "RYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 3",
+          "algorithms": [
+            "y R U2 R2 F R F' R U2 R'",
+            "y' R' U' R U R' F' R U R' U' R' F R2",
+            "y' L' U2 L F' R' F2 R2 U' R'",
+            "y' L' U2 R U' R' U2 L R U' R'"
+          ],
+          "state": [
+            "OYYB",
+            "GRNN",
+            "YONN",
+            "BYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 4",
+          "algorithms": [
+            "y2 R' U R' U2 R U' R' U R U' R2",
+            "y R U' R U' R U2 R' U R' U R'",
+            "y' R U R' U R U' R' U R U' R' U R U2 R'",
+            "y' R2 U R' U2 R U2 R' U R2"
+          ],
+          "state": [
+            "GYYO",
+            "OBNN",
+            "YBNN",
+            "RYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 5",
+          "algorithms": [
+            "y R U2 R' U' y' R2 U' R' U R2",
+            "R U' R' U R U' R' F R' F' R2 U R'",
+            "y R U R' U' R' F R2 U' R' U R U R' F'",
+            "y2 x' R' U2 R' U' R U2 R' F R2 x"
+          ],
+          "state": [
+            "BYYB",
+            "GRNN",
+            "YGNN",
+            "OYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL L 6",
+          "algorithms": [
+            "R' F' R U R' U' R' F R2 U' R' U2 R",
+            "y R' U' R U2 R' F R' F' R U' R",
+            "y R U2 R' F' R U2 R' U R' F2 R",
+            "y2 L' U2 L U y' R2 U R U' R2"
+          ],
+          "state": [
+            "GYYG",
+            "RONN",
+            "YONN",
+            "BYNN",
+            "RBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 1",
+          "algorithms": [
+            "F R U R' U' R U R' U' F'",
+            "R' U R2 U' R2 U' R2 U R'",
+            "R U2 R2 U' R2 U' R2 U2 R",
+            "R U' R2 U R2 U R2 U' R"
+          ],
+          "state": [
+            "GRBR",
+            "OYNN",
+            "BGNN",
+            "YONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 2",
+          "algorithms": [
+            "y' R' U' R' F R F' R U' R' U2 R",
+            "R2 U R' U' F R F' R U' R2",
+            "y2 R U R' U R D' R U' R' F'",
+            "y F R U R' U' F' U' R U2 R' U' R U' R'"
+          ],
+          "state": [
+            "GOGR",
+            "RYNN",
+            "BBNN",
+            "YONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 3",
+          "algorithms": [
+            "R U' R' F R' F R U R' F R",
+            "y2 R' F R F' R U' R' U' R U' R'",
+            "R U' L' U R' U L U L' U L",
+            "R U' R' U' R U R' U' L R U' R' U R'"
+          ],
+          "state": [
+            "OROR",
+            "GYNN",
+            "BGNN",
+            "YBNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 4",
+          "algorithms": [
+            "y' R U' R U' R' U R' F R2 F'",
+            "y F R2 U' R2 U R2 U R2 F'",
+            "y' R' F R U F U' R U R' U' F'",
+            "y' F R' F' R U' R U R' U R' F R F'"
+          ],
+          "state": [
+            "ROOR",
+            "GYNN",
+            "BBNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 5",
+          "algorithms": [
+            "R U2 R' U' R U R' U2 R' F R F'",
+            "R U2 R' U2 R' F R2 U R' U' F'",
+            "R2 U' R' U' F R2 U2 F' R2 F",
+            "R U R' U' R' F R2 U R' U' R U R' U' F'"
+          ],
+          "state": [
+            "OGGR",
+            "RYNN",
+            "BONN",
+            "YBNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL Pi 6",
+          "algorithms": [
+            "R' F2 R F' U2 R U' R' U' F",
+            "y2 L' U2 L U L' U' L U2 L F' L' F",
+            "y F R' F' R U2 R U' R' U R U2 R'",
+            "L' U2 L F' U2 L F' L' U' F"
+          ],
+          "state": [
+            "BROB",
+            "GYNN",
+            "OGNN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 1",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y' R' U2 R U R' U R",
+            "y L' U2 L U L' U L"
+          ],
+          "state": [
+            "RBYO",
+            "GYNN",
+            "GYNN",
+            "OYNN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 2",
+          "algorithms": [
+            "y' R' F R2 F' R U2 R' U' R2",
+            "y2 R U R' U R' F R F' R U2 R'",
+            "y' R' F R2 F' U' R' U' R2 U R'",
+            "R' F R F' U R U R' U2 F R' F' R"
+          ],
+          "state": [
+            "RGYO",
+            "BYNN",
+            "GYNN",
+            "RYNN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 3",
+          "algorithms": [
+            "F R' F' R U2 R U2 R'"
+          ],
+          "state": [
+            "BGYO",
+            "RYNN",
+            "GYNN",
+            "RYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 4",
+          "algorithms": [
+            "R U' R' F R' F' R",
+            "R U' R' F L' U' L",
+            "R U' L' U R' U' L",
+            "y2 L U' R' U L' U' R"
+          ],
+          "state": [
+            "GBYO",
+            "RYNN",
+            "GYNN",
+            "OYNN",
+            "RBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 5",
+          "algorithms": [
+            "y2 R U' R U' R' U R' U' y R U' R'",
+            "R U R' U' R' F R F' R U R' U R U2 R'",
+            "y' R' U' R D' R' U R' U' R U' R",
+            "y R' F' R2 U R' F' R' F R2 U' R'"
+          ],
+          "state": [
+            "BOYR",
+            "GYNN",
+            "BYNN",
+            "GYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL S 6",
+          "algorithms": [
+            "L' U2 L U2 L F' L' F",
+            "R' F2 R U2 R U' R' F",
+            "y2 R' U2 R U2 R B' R' B"
+          ],
+          "state": [
+            "OBYG",
+            "RYNN",
+            "RYNN",
+            "OYNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 1",
+          "algorithms": [
+            "y' R U R' U' R' F R F'"
+          ],
+          "state": [
+            "RBYY",
+            "RGNN",
+            "OYNN",
+            "OGNN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 2",
+          "algorithms": [
+            "y L' U' L U L F' L' F",
+            "y' F R F' R U R' U' R'",
+            "y R' F' R U R U' R' F",
+            "y' F R U' R' U R U R' F'"
+          ],
+          "state": [
+            "GRYY",
+            "BRNN",
+            "GYNN",
+            "BONN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 3",
+          "algorithms": [
+            "F U' R U2 R' U' F2 R U R'",
+            "y2 R' U' R U' R' U R U R' F' R U R' U' R' F R2",
+            "y R U2 R2 F R F' R U' R' U R U2 R'",
+            "R' U R2 D R' U2 R D' R2 U' R"
+          ],
+          "state": [
+            "ROYY",
+            "RONN",
+            "BYNN",
+            "GGNN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 4",
+          "algorithms": [
+            "y R' U R' F U' R U F2 R2",
+            "y2 R' U R' U2 R U2 R' U R2 U' R'",
+            "R U' R U' R U R' U R' U R'",
+            "y' R U R' U R U2 R' U2 R' U' R U' R' U2 R"
+          ],
+          "state": [
+            "BBYY",
+            "GGNN",
+            "OYNN",
+            "ORNN",
+            "YRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 5",
+          "algorithms": [
+            "y2 F R U R' U' R U' R' U' R U R' F'",
+            "y R U2 R' F2 R U2 R' U2 R' F2 R",
+            "y R U R' U2 R U R' U R' F R F'",
+            "R U2 R' U R U2 R' U R' F R F'"
+          ],
+          "state": [
+            "GGYY",
+            "RONN",
+            "BYNN",
+            "RONN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL T 6",
+          "algorithms": [
+            "R' U R U2 R2 F R F' R",
+            "y' z R U R' U' R' F R2 U' R' U' R U R' F'",
+            "y2 R' F R U2 R2 F R U' R",
+            "y2 R' F R' F' R2 U2 R' U' R"
+          ],
+          "state": [
+            "ORYY",
+            "GGNN",
+            "OYNN",
+            "BBNN",
+            "YRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 1",
+          "algorithms": [
+            "y' F R U R' U' F'",
+            "y F U R U' R' F'",
+            "y F' L' U' L U F",
+            "y R' U' R' F R F' U R"
+          ],
+          "state": [
+            "RRYY",
+            "BGNN",
+            "OGNN",
+            "YYNN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 2",
+          "algorithms": [
+            "y2 R2 F2 R U R' F U' R U R2",
+            "y R U' R U' R U' R' U R' U R'",
+            "R U' R' F' L F' L' F2 U' R U R'",
+            "y2 R U R2 U' R U2 R' U2 R U' R"
+          ],
+          "state": [
+            "GBYY",
+            "OONN",
+            "BRNN",
+            "YYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 3",
+          "algorithms": [
+            "y' z' U2 R' U' R2 U' R' U' R U' R' U' x2",
+            "y2 F R U R' U2 F' R U' R' F",
+            "R' F R U' R' U' R U R' F' R U R' U' R' F R F' R",
+            "y' L U2 R' U F' R U2 R' U R' F R"
+          ],
+          "state": [
+            "OOYY",
+            "RRNN",
+            "GBNN",
+            "YYNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 4",
+          "algorithms": [
+            "x R U' R U' R' U L' U' L x2",
+            "R2 F R F' R' F2 R U R' F R2",
+            "y' F R' F' R U' R U' R' U2 R U' R'",
+            "y' F U' R U R' U' y' R' U2 R U' R'"
+          ],
+          "state": [
+            "BGYY",
+            "GBNN",
+            "RONN",
+            "YYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 5",
+          "algorithms": [
+            "y2 R U2 R' U R' F2 R F' R' F2 R",
+            "R U' R2 F R F' R U R' U' R U R'",
+            "R2 D' R U2 R' D R U2 R",
+            "L U' L F' L' F L' U2 L U' L'"
+          ],
+          "state": [
+            "OBYY",
+            "GONN",
+            "BRNN",
+            "YYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "CLL U 6",
+          "algorithms": [
+            "R' U R' F R F' R U2 R' U R",
+            "y2 R2 U R' U' R2 U' y L' U2 L",
+            "y2 R2 D R' U2 R D' R' U2 R'"
+          ],
+          "state": [
+            "BRYY",
+            "RGNN",
+            "OGNN",
+            "YYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "EG-1",
+      "puzzle": "222",
+      "cases": [
+        {
+          "name": "EG-1 AS 1",
+          "algorithms": [
+            "y' B U' R2 F2 U' F x2",
+            "y R' F R2 U R' F' U' R U' R'"
+          ],
+          "state": [
+            "YORG",
+            "YONN",
+            "YBNN",
+            "YBNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 AS 2",
+          "algorithms": [
+            "y R U' R' F' U' F2 R U' R'",
+            "R U' F2 R U2 R U' F"
+          ],
+          "state": [
+            "YBGR",
+            "YGNN",
+            "YRNN",
+            "YONN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 AS 3",
+          "algorithms": [
+            "F' L F L' U' R U R' L' U' L",
+            "y' R U' R' U2 R' F R2 U2 R' F"
+          ],
+          "state": [
+            "YRBG",
+            "YONN",
+            "YGNN",
+            "YONN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 AS 4",
+          "algorithms": [
+            "R U' R' F' U' R U R' U' F"
+          ],
+          "state": [
+            "YRGB",
+            "YRNN",
+            "YGNN",
+            "YONN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 AS 5",
+          "algorithms": [
+            "y' R U R' F' U' R U R' U' R U R'"
+          ],
+          "state": [
+            "YOBR",
+            "YGNN",
+            "YBNN",
+            "YGNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 AS 6",
+          "algorithms": [
+            "y2 R U' R2 F R U' R' F R F'"
+          ],
+          "state": [
+            "YBOG",
+            "YONN",
+            "YRNN",
+            "YRNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 H 1",
+          "algorithms": [
+            "U' R' F R2 U' R' F R U R' F'",
+            "U' R' F R2 U' R2 U' F U R",
+            "F' R2 F' R F R' U R' U",
+            "U' R' F R' F U F' R2 F'"
+          ],
+          "state": [
+            "RROO",
+            "GBNN",
+            "YYNN",
+            "BGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 H 2",
+          "algorithms": [
+            "U' F' U R U' R2 F2 R U' F",
+            "F R U' R2 F U' F2 U R",
+            "y' R2 U' R U' R' U R' U' R U' R2",
+            "y R2 U2 R U' R2 U' R2 U R2 U' R2"
+          ],
+          "state": [
+            "RORO",
+            "BBNN",
+            "YYNN",
+            "GGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 H 3",
+          "algorithms": [
+            "R' U' R' F2 U F' R F'",
+            "U' F U2 R U' R' F2 R' F2 R F'",
+            "U R' F R F' U2 F R U2 R' F",
+            "U R U' R' F U2 x U' R' U2 R U'"
+          ],
+          "state": [
+            "RBOB",
+            "GRNN",
+            "YYNN",
+            "OGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 H 4",
+          "algorithms": [
+            "U' R U R' F' R U R' U' R U R' U'",
+            "F' U R' F R F' U F2",
+            "F' U2 F' U R' F' R F'"
+          ],
+          "state": [
+            "GBRR",
+            "BGNN",
+            "YYNN",
+            "OONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 1",
+          "algorithms": [
+            "y R U' R' U R U' R2 F' R F",
+            "y2 R U R' F' R U2 R' U2 R U R'"
+          ],
+          "state": [
+            "OYYR",
+            "BGNN",
+            "YBNN",
+            "RYNN",
+            "GONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 2",
+          "algorithms": [
+            "y' R' F R F' R' F R U R U2 R'",
+            "y2 L' U L U' L' U L2 F L' F'"
+          ],
+          "state": [
+            "OYYR",
+            "RGNN",
+            "YONN",
+            "BYNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 3",
+          "algorithms": [
+            "y R' U R2 U' R2 U' F R2 U' R'"
+          ],
+          "state": [
+            "RYYG",
+            "BONN",
+            "YRNN",
+            "GYNN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 4",
+          "algorithms": [
+            "y R' F R2 U R' F' R U2 R'"
+          ],
+          "state": [
+            "BYYR",
+            "RGNN",
+            "YGNN",
+            "OYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 5",
+          "algorithms": [
+            "y2 R U R' F' R U R' U' F R' F' R",
+            "y2 L' U L y' R U2 R U' R2"
+          ],
+          "state": [
+            "RYYR",
+            "OGNN",
+            "YONN",
+            "BYNN",
+            "BGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 L 6",
+          "algorithms": [
+            "y2 R' U2 F R U2 R U' R2 F",
+            "y R U' R' y' R' U2 R' U R2",
+            "y' R' F R F' U2 R U2 R' F R U' R'"
+          ],
+          "state": [
+            "RYYR",
+            "BGNN",
+            "YGNN",
+            "OYNN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 1",
+          "algorithms": [
+            "y2 R2 B2 R' U R' U' R U2 R U' R2",
+            "y2 F2 R U R' U2 R U R' U' F"
+          ],
+          "state": [
+            "RBOB",
+            "GYNN",
+            "ORNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 2",
+          "algorithms": [
+            "y' R' F R2 U' R2 F R",
+            "y' R U R2 F' R2 U R'",
+            "y' R' F' R2 U R2 F' R",
+            "y' R U' R2 F R2 U' R'"
+          ],
+          "state": [
+            "BRBO",
+            "OYNN",
+            "GGNN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 3",
+          "algorithms": [
+            "y' F R' F U' F2 R U R"
+          ],
+          "state": [
+            "RORO",
+            "BYNN",
+            "GBNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 4",
+          "algorithms": [
+            "y' R U' R' U R U' R' F R U' R'",
+            "U' R2 F U' F2 U' F U' R' F2 R U' R'"
+          ],
+          "state": [
+            "BGGB",
+            "RYNN",
+            "OONN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 5",
+          "algorithms": [
+            "y F U' R U2 R' F' R U R' F'",
+            "R U' R2 F R U R U' R' U' R' F R F'",
+            "R' U' R' F2 U' R U2 F2 R"
+          ],
+          "state": [
+            "RBBO",
+            "OYNN",
+            "GRNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 Pi 6",
+          "algorithms": [
+            "F R U' R' F R U2 R' U F'",
+            "y2 L U L F2 U L' U2 F2 L'"
+          ],
+          "state": [
+            "GORG",
+            "BYNN",
+            "RBNN",
+            "YONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 1",
+          "algorithms": [
+            "y' F' L U2 F2 R U' x'",
+            "z' R' U' R U2 x' U2 R U' z",
+            "y2 R U R' U F R U' R2 F' R"
+          ],
+          "state": [
+            "GRYB",
+            "OYNN",
+            "OYNN",
+            "BYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 2",
+          "algorithms": [
+            "R U R' F2 U F R U R'",
+            "y2 F R2 U' R2 F U' F2 U' R",
+            "y' R' F R2 U' R2 F U' R U' R' U2 R"
+          ],
+          "state": [
+            "OBYR",
+            "GYNN",
+            "BYNN",
+            "OYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 3",
+          "algorithms": [
+            "y2 F R' F' R U R' F' R2 U R'",
+            "y' R' F R U2 R U' R2 F2 R F'"
+          ],
+          "state": [
+            "ROYB",
+            "GYNN",
+            "OYNN",
+            "GYNN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 4",
+          "algorithms": [
+            "F' U R U' R' U F R U R'",
+            "y2 F U' R U2 R' F2 R' F R",
+            "y F' R' F R2 U R' U' F R' F' R"
+          ],
+          "state": [
+            "ORYB",
+            "GYNN",
+            "OYNN",
+            "BYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 5",
+          "algorithms": [
+            "y R U' R' U R U' R' U F R U' R'"
+          ],
+          "state": [
+            "GRYO",
+            "BYNN",
+            "GYNN",
+            "BYNN",
+            "RONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 S 6",
+          "algorithms": [
+            "R' F R2 U' R' U L F' L' F",
+            "R' F R2 U' R' U R U' R' F"
+          ],
+          "state": [
+            "RGYB",
+            "OYNN",
+            "OYNN",
+            "RYNN",
+            "BGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 1",
+          "algorithms": [
+            "y R2 U R U' R2 F R U2 R' F",
+            "F R U' R2 F' R U R' F' R",
+            "y' L' U L U2 R' F2 R F' L' U L",
+            "y2 x R' U R U' R' U' R U' R' U' R U' x'"
+          ],
+          "state": [
+            "OGYY",
+            "OBNN",
+            "RYNN",
+            "RBNN",
+            "YGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 2",
+          "algorithms": [
+            "F' R' F R2 U R' U' R U R'",
+            "y2 R U' R' F R U' R' F R U R' F'"
+          ],
+          "state": [
+            "RBYY",
+            "OBNN",
+            "RYNN",
+            "OGNN",
+            "YGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 3",
+          "algorithms": [
+            "y R U' R2 F R U R U2 R'",
+            "y' L' U L2 F' L' U' L' U2 L"
+          ],
+          "state": [
+            "BGYY",
+            "BGNN",
+            "OYNN",
+            "RRNN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 4",
+          "algorithms": [
+            "y' R2 B2 U' R' U' R U' R' U R'",
+            "U' R2 B2 U' R' U' R U' R' U R'"
+          ],
+          "state": [
+            "OOYY",
+            "RRNN",
+            "GYNN",
+            "GBNN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 5",
+          "algorithms": [
+            "y R U R2 x U' R U R' U' R x'",
+            "y' R' F' R2 U R' F' R U R'"
+          ],
+          "state": [
+            "RRYY",
+            "BGNN",
+            "OYNN",
+            "BGNN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 T 6",
+          "algorithms": [
+            "y2 R U' R' U2 F R U2 R' F",
+            "y' R U R' F R U R' F U' R U' R'"
+          ],
+          "state": [
+            "GBYY",
+            "RRNN",
+            "GYNN",
+            "OONN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 1",
+          "algorithms": [
+            "y' R U R' U R U R2 F R2 U' R'",
+            "R U2 R U2 R U R2",
+            "y' R U' R2 F R2 U R' U' R U' R'"
+          ],
+          "state": [
+            "OOYY",
+            "GBNN",
+            "RBNN",
+            "YYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 2",
+          "algorithms": [
+            "y x U' R' U R U' F R U R U' x'",
+            "y' F R U' R' F U' F' R' F' R",
+            "U F' R2 F' R2 F' U' F2 R2",
+            "y x U' R2 U' R2 U' x' U' F2 R2"
+          ],
+          "state": [
+            "GBYY",
+            "OONN",
+            "BRNN",
+            "YYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 3",
+          "algorithms": [
+            "F' U2 R U2 R' U2 F",
+            "R U R' U F' R U R' U' R' F2 R2 U' R'",
+            "R U R' U F' R U R' U' R U R2 F2 R"
+          ],
+          "state": [
+            "GGYY",
+            "BBNN",
+            "RONN",
+            "YYNN",
+            "RONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 4",
+          "algorithms": [
+            "y R' F R F' R' F R2 U' R'",
+            "y' L F' L' F L F' L2 U L"
+          ],
+          "state": [
+            "GBYY",
+            "BGNN",
+            "ORNN",
+            "YYNN",
+            "RONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 5",
+          "algorithms": [
+            "y R' F R F' U R U' R' F R U' R'",
+            "y2 R U' R' U R U' R' U' F R U' R'",
+            "F2 R U2 R' U' F2 U2 F'"
+          ],
+          "state": [
+            "OBYY",
+            "GONN",
+            "BRNN",
+            "YYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-1 U 6",
+          "algorithms": [
+            "y2 R' F R2 U' R' U y' R U R'"
+          ],
+          "state": [
+            "BRYY",
+            "RGNN",
+            "OGNN",
+            "YYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "EG-2",
+      "puzzle": "222",
+      "cases": [
+        {
+          "name": "EG-2 AS 1",
+          "algorithms": [
+            "x U' R2 F R2 F' U R' U2 R' U x'"
+          ],
+          "state": [
+            "YROB",
+            "YRNN",
+            "YGNN",
+            "YGNN",
+            "OBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 AS 2",
+          "algorithms": [
+            "R' U' R U' R' U2 R' F2 R2",
+            "y R U2 R' U' R U' R B2 R2"
+          ],
+          "state": [
+            "YROG",
+            "YONN",
+            "YGNN",
+            "YBNN",
+            "RBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 AS 3",
+          "algorithms": [
+            "y2 L' U L F' R U R B2 R2"
+          ],
+          "state": [
+            "YRBG",
+            "YONN",
+            "YGNN",
+            "YONN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 AS 4",
+          "algorithms": [
+            "y' R' U R' F R2 F R2 F'"
+          ],
+          "state": [
+            "YBRO",
+            "YBNN",
+            "YRNN",
+            "YGNN",
+            "OGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 AS 5",
+          "algorithms": [
+            "R' U' R U' R' U' R' F2 R F' R"
+          ],
+          "state": [
+            "YGOB",
+            "YRNN",
+            "YONN",
+            "YRNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 AS 6",
+          "algorithms": [
+            "R2 F2 R U L U' R U L'",
+            "y2 R2 F2 R F R F' R U R'"
+          ],
+          "state": [
+            "YBOG",
+            "YONN",
+            "YRNN",
+            "YRNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 H 1",
+          "algorithms": [
+            "y F2 R U2 R2 F2 R' F2",
+            "R2 F U2 F2 R2 F' R2"
+          ],
+          "state": [
+            "RROO",
+            "GBNN",
+            "YYNN",
+            "BGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 H 2",
+          "algorithms": [
+            "y R2 U2 R U2 B2 R2",
+            "y R2 U2 R' U2 F2 R2",
+            "y R2 F2 U2 R U2 R2"
+          ],
+          "state": [
+            "BGBG",
+            "OONN",
+            "YYNN",
+            "RRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 H 3",
+          "algorithms": [
+            "R U' R2 U' F U' F U' R2 F R",
+            "R' U' R U2 R2 F' R U' F R"
+          ],
+          "state": [
+            "OGRG",
+            "BONN",
+            "YYNN",
+            "RBNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 H 4",
+          "algorithms": [
+            "y' R U2 B2 R' U R U' F U' x'",
+            "y R U' R' F U2 R2 F' R F' R"
+          ],
+          "state": [
+            "BGOO",
+            "GBNN",
+            "YYNN",
+            "RRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 1",
+          "algorithms": [
+            "y R2 B2 R2 F R' F' R U R U' R'",
+            "y R' U' R' F' R U' R U' R' F R"
+          ],
+          "state": [
+            "OYYR",
+            "BGNN",
+            "YBNN",
+            "RYNN",
+            "GONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 2",
+          "algorithms": [
+            "y2 F2 R2 F R U R' U' R' F R"
+          ],
+          "state": [
+            "GYYB",
+            "BRNN",
+            "YGNN",
+            "OYNN",
+            "RONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 3",
+          "algorithms": [
+            "y2 R2 U' R U2 R' U2 R U' F2 R2",
+            "y2 R2 F2 R U R' U2 R U' R' U R U' R2"
+          ],
+          "state": [
+            "GYYO",
+            "RBNN",
+            "YGNN",
+            "OYNN",
+            "RBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 4",
+          "algorithms": [
+            "y' R' U L' U2 R' F R U' R' U' F' x2"
+          ],
+          "state": [
+            "BYYR",
+            "RGNN",
+            "YGNN",
+            "OYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 5",
+          "algorithms": [
+            "y F R' F' R U R U' R B2 R2"
+          ],
+          "state": [
+            "BYYB",
+            "GRNN",
+            "YGNN",
+            "OYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 L 6",
+          "algorithms": [
+            "y2 F' R U R' U' R' F R' F2 R2."
+          ],
+          "state": [
+            "BYYB",
+            "ORNN",
+            "YRNN",
+            "GYNN",
+            "OGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 1",
+          "algorithms": [
+            "F U' R U2 R U' R' U R' F'",
+            "y' F2 U' F2 R U2 R F2 U' R2",
+            "y2 R2 U' R2 F R2 F' R2 U R2"
+          ],
+          "state": [
+            "BOGO",
+            "RYNN",
+            "GBNN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 2",
+          "algorithms": [
+            "R' U2 R2 U' R' F2 R2 F'",
+            "R U' R2 U R2 U R2 U' R' F2 R2"
+          ],
+          "state": [
+            "BRBO",
+            "OYNN",
+            "GGNN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 3",
+          "algorithms": [
+            "y2 R' F' U R' F R2 U2’ R' U R"
+          ],
+          "state": [
+            "RORO",
+            "BYNN",
+            "GBNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 4",
+          "algorithms": [
+            "y R' F U' R U R' F2 U2 R",
+            "y R U' F U' F' R F2 U2 R'"
+          ],
+          "state": [
+            "BGGB",
+            "RYNN",
+            "OONN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 5",
+          "algorithms": [
+            "y' R U2 R F2 R2 U' R U' R'",
+            "y R' U' R' F2 R2 U R' F2 R"
+          ],
+          "state": [
+            "RBBO",
+            "OYNN",
+            "GRNN",
+            "YGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 Pi 6",
+          "algorithms": [
+            "y' R U R F2 R2 U' R U2 R'"
+          ],
+          "state": [
+            "BROB",
+            "GYNN",
+            "OGNN",
+            "YRNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 1",
+          "algorithms": [
+            "y' F U' R2 U' R' U2 R U' R2 F'",
+            "y' R' F R2 F' R U2 R' U' F2 R2",
+            "R' F R2 F' R U2 R' U' F2 R2"
+          ],
+          "state": [
+            "GRYB",
+            "OYNN",
+            "OYNN",
+            "BYNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 2",
+          "algorithms": [
+            "R U R' U R U2 R B2 R2"
+          ],
+          "state": [
+            "OBYR",
+            "GYNN",
+            "BYNN",
+            "OYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 3",
+          "algorithms": [
+            "R U' R' F2 R2 F' L' U' L"
+          ],
+          "state": [
+            "BGYO",
+            "RYNN",
+            "GYNN",
+            "RYNN",
+            "OBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 4",
+          "algorithms": [
+            "y F R2 F' R2 F' R U' R"
+          ],
+          "state": [
+            "ROYG",
+            "BYNN",
+            "RYNN",
+            "GYNN",
+            "BONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 5",
+          "algorithms": [
+            "y2 R' F R' F2 R U R U R' U R",
+            "R' U R' F R2 D' R U' R'"
+          ],
+          "state": [
+            "RBYG",
+            "OYNN",
+            "RYNN",
+            "OYNN",
+            "BGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 S 6",
+          "algorithms": [
+            "R2 B2 R' U' L' U R' U' L"
+          ],
+          "state": [
+            "OBYG",
+            "RYNN",
+            "RYNN",
+            "OYNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 1",
+          "algorithms": [
+            "y' F R F' R U R' U' R B2 R2",
+            "y R' F' R U R U' R' F' R2 F2"
+          ],
+          "state": [
+            "BOYY",
+            "BRNN",
+            "GYNN",
+            "GRNN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 2",
+          "algorithms": [
+            "y F R' U2 R' U' R U2 F'"
+          ],
+          "state": [
+            "RBYY",
+            "OBNN",
+            "RYNN",
+            "OGNN",
+            "YGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 3",
+          "algorithms": [
+            "y R' U R' F U' R U R2"
+          ],
+          "state": [
+            "BGYY",
+            "BGNN",
+            "OYNN",
+            "RRNN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 4",
+          "algorithms": [
+            "F2 R2 F' R U R' U' F'",
+            "F2 R2 F U' R' F R F",
+            "y2 R2 B2 R2 F R U R' U' F'"
+          ],
+          "state": [
+            "RRYY",
+            "OONN",
+            "BYNN",
+            "BGNN",
+            "YGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 5",
+          "algorithms": [
+            "y R' F2 R U' R' U R' F R U' R"
+          ],
+          "state": [
+            "RRYY",
+            "BGNN",
+            "OYNN",
+            "BGNN",
+            "YONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 T 6",
+          "algorithms": [
+            "y R' U2 R' F2 R F2 R",
+            "y z' U' R2 U' R2 U R2 U R2 z"
+          ],
+          "state": [
+            "GBYY",
+            "RRNN",
+            "GYNN",
+            "OONN",
+            "YBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 1",
+          "algorithms": [
+            "y' F U' R U2 R U' R' U2 R' U' F'",
+            "y' R' U R' F U' R U' R' U2 R2"
+          ],
+          "state": [
+            "OOYY",
+            "GBNN",
+            "RBNN",
+            "YYNN",
+            "GRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 2",
+          "algorithms": [
+            "y' F R U R' U' F R2 F2",
+            "y F U R U' R' F R2 F2"
+          ],
+          "state": [
+            "ORYY",
+            "BBNN",
+            "RGNN",
+            "YYNN",
+            "GONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 3",
+          "algorithms": [
+            "y2 R' U' R U R' F2 R U' R' U R"
+          ],
+          "state": [
+            "BBYY",
+            "GGNN",
+            "ORNN",
+            "YYNN",
+            "ORNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 4",
+          "algorithms": [
+            "R' F' U' F U2 L' U2 R U' L"
+          ],
+          "state": [
+            "ORYY",
+            "RONN",
+            "BGNN",
+            "YYNN",
+            "GBNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 5",
+          "algorithms": [
+            "y2 R2 B2 R' U R' U' R' F R F'"
+          ],
+          "state": [
+            "BRYY",
+            "OBNN",
+            "RGNN",
+            "YYNN",
+            "OGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "EG-2 U 6",
+          "algorithms": [
+            "y2 R2 F2 R F' R U L F' L' F"
+          ],
+          "state": [
+            "OBYY",
+            "BRNN",
+            "GRNN",
+            "YYNN",
+            "GONN",
+            "NNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "Ortega OLL",
+      "puzzle": "222",
+      "cases": [
+        {
+          "name": "OLL 1",
+          "algorithms": [
+            "R U R' U R U2 R'",
+            "y' R' U2 R U R' U R",
+            "y2 L U L' U L U2 L'",
+            "y L' U2 L U L' U L"
+          ],
+          "state": [
+            "RBYO",
+            "GYNN",
+            "GYNN",
+            "OYNN",
+            "BRNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 2",
+          "algorithms": [
+            "y R U2 R' U' R U' R'",
+            "R' U' R U' R' U2 R",
+            "y2 L' U' L U' L' U2 L",
+            "y' L U2 L' U' L U' L'"
+          ],
+          "state": [
+            "YORG",
+            "YONN",
+            "YBNN",
+            "YBNN",
+            "RGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 3",
+          "algorithms": [
+            "F R U R' U' R U R' U' F'",
+            "R U2 R2 U' R2 U' R2 U2 R",
+            "y' R' F R2 U' R2 F R",
+            "y2 F U R U' R' U R U' R' F'"
+          ],
+          "state": [
+            "GRBR",
+            "OYNN",
+            "BGNN",
+            "YONN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 4",
+          "algorithms": [
+            "F R U R' U' F'",
+            "y2 F U R U' R' F'",
+            "y2 F' L' U' L U F"
+          ],
+          "state": [
+            "RYRY",
+            "BONN",
+            "BGNN",
+            "OGNN",
+            "YYNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 5",
+          "algorithms": [
+            "F R U' R' U' R U R' F'",
+            "y F' R U R' U' R' F R",
+            "F R' F' R U R U' R'",
+            "y2 R U2 R' U' R U R' U' R U R' U' R U' R'"
+          ],
+          "state": [
+            "YBGY",
+            "YBNN",
+            "RYNN",
+            "ORNN",
+            "GONN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 6",
+          "algorithms": [
+            "R U R' U' R' F R F'",
+            "y2 L' U' L U L F' L' F",
+            "R U R' F2 R U R' U' F",
+            "y2 R' F' R U R U' R' F"
+          ],
+          "state": [
+            "BYRY",
+            "YBNN",
+            "RGNN",
+            "OYNN",
+            "OGNN",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "OLL 7",
+          "algorithms": [
+            "R2 U2 R' U2 R2",
+            "F R U R' U' R U R' U' R U R' U' F'",
+            "R2 U2 R U2 R2",
+            "R U2 R' U' R U R' U' R U' R'"
+          ],
+          "state": [
+            "GBGB",
+            "YYNN",
+            "ORNN",
+            "YYNN",
+            "RONN",
+            "NNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "Ortega PBL",
+      "puzzle": "222",
+      "cases": [
+        {
+          "name": "PBL 1",
+          "algorithms": [
+            "y R U R' U' R' F R2 U' R' U' R U R' F'",
+            "y R U R' F' R U R' U' R' F R2 U' R'",
+            "y R U2 R' U' R U2 L' U R' U' L",
+            "y2 R' F R' F2 R U' R' F2 R2"
+          ],
+          "state": [
+            "YYYY",
+            "BRRR",
+            "NNNN",
+            "NNNN",
+            "OOBB",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "PBL 2",
+          "algorithms": [
+            "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+            "R U' R' U' F2 U' R U R' D R2",
+            "R U' R' U' F2 U' R U R' U F2",
+            "x2 R U' R' U' F2 U' R U R' D F2 R2"
+          ],
+          "state": [
+            "YYYY",
+            "BGGG",
+            "NNNN",
+            "NNNN",
+            "RORR",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "PBL 3",
+          "algorithms": [
+            "R2 F2 R2",
+            "R2 B2 R2",
+            "x R2 U2 R2",
+            "R2 F2 R2"
+          ],
+          "state": [
+            "YYYY",
+            "RORO",
+            "NNNN",
+            "NNNN",
+            "GBGB",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "PBL 4",
+          "algorithms": [
+            "R2 U' B2 U2 R2 U' R2",
+            "y2 R2 U' R2 U2 y R2 U' R2",
+            "y2 R2 U' R2 U2 F2 U' R2",
+            "R2 U R2 U2 y' R2 U R2"
+          ],
+          "state": [
+            "YYYY",
+            "RGRG",
+            "NNNN",
+            "NNNN",
+            "BBBB",
+            "NNNN"
+          ]
+        },
+        {
+          "name": "PBL 5",
+          "algorithms": [
+            "R U' R F2 R' U R'",
+            "y2 R' U R' F2 R F' R",
+            "z2 L D' L F2 L' D L'",
+            "R' F R' F2 R U' R"
+          ],
+          "state": [
+            "YYYY",
+            "RGRO",
+            "NNNN",
+            "NNNN",
+            "BBGB",
+            "NNNN"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.AlgRecylerAdapter;
+import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
@@ -38,6 +39,9 @@ public class AlgListFragment extends BaseFragment {
 
     @BindView(R.id.root)
     LinearLayout rootLayout;
+
+    @BindView(R.id.puzzleSpinner)
+    View puzzleSpinner;
 
     @BindView(R.id.spinnerIcon)
     View spinnerIcon;
@@ -135,6 +139,8 @@ public class AlgListFragment extends BaseFragment {
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
         buttonSettings.setOnClickListener(v -> getMainActivity().openDrawer());
+
+        puzzleSpinner.setOnClickListener(v -> AlgUtils.showAlgSelectDialog(getFragmentManager()));
 
         setupRecyclerView();
 

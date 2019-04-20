@@ -1,6 +1,9 @@
 package com.aricneto.twistytimer.layout;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
+import android.util.AttributeSet;
 
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.isometric.Color;
@@ -10,8 +13,27 @@ import com.aricneto.twistytimer.layout.isometric.Point;
 import com.aricneto.twistytimer.layout.isometric.shapes.Prism;
 import com.aricneto.twistytimer.utils.AlgUtils;
 
-public class CubeIsometric {
+public class CubeIsometric extends IsometricView {
+
+    public CubeIsometric(Context context) {
+        super(context);
+    }
+
+    public CubeIsometric(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CubeIsometric(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public CubeIsometric(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
     private static Path[][][] stickerLocations = null;
+    private static int mPuzzleSize;
 
     private static Point[] translatePoints(Point[] startPoints, double dx, double dy, double dz) {
         Point[] newPoint = new Point[4];
@@ -21,8 +43,9 @@ public class CubeIsometric {
     }
 
     private static void cacheStickerLocations(int puzzleSize, double mCubeSize, double mPadding, double mStickerSize) {
-        if (stickerLocations == null) {
+        if (stickerLocations == null || mPuzzleSize != puzzleSize) {
             stickerLocations = new Path[3][puzzleSize][puzzleSize];
+            mPuzzleSize = puzzleSize;
 
             // Every start sticker starts at the top-left of the face
             Point[] rightStartPoint = new Point[]{
@@ -65,15 +88,15 @@ public class CubeIsometric {
         }
     }
 
-    public static IsometricView init(Context context, double scale, int puzzleSize, String[] state) {
-        IsometricView cube = new IsometricView(context).withIsometricScale(scale);
+    public IsometricView init(double scale, int puzzleSize, String[] state) {
+        this.setIsometricScale(scale);
         final double mCubeSize = 2;
         final double mPadding = mCubeSize * 0.06;
         final double mStickerSize = (mCubeSize - (mPadding * (puzzleSize + 1))) / puzzleSize;
 
         cacheStickerLocations(puzzleSize, mCubeSize, mPadding, mStickerSize);
 
-        cube.add(
+        this.add(
                 new Prism(Point.ORIGIN, 2, 2, 2),
                 new Color(40, 40, 40)
         );
@@ -88,19 +111,19 @@ public class CubeIsometric {
                 sFace = state[AlgorithmModel.Case.FACE_F].charAt((puzzleSize * i) + j);
                 sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 color = new Color(sColor[0], sColor[1], sColor[2]);
-                cube.add(stickerLocations[0][i][j], color);
+                this.add(stickerLocations[0][i][j], color);
 
                 sFace = state[AlgorithmModel.Case.FACE_L].charAt((puzzleSize * i) + j);
                 sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 color = new Color(sColor[0], sColor[1], sColor[2]);
-                cube.add(stickerLocations[1][i][j], color);
+                this.add(stickerLocations[1][i][j], color);
 
                 sFace = state[AlgorithmModel.Case.FACE_U].charAt((puzzleSize * i) + j);
                 sColor = AlgUtils.hexToRGBColor(AlgUtils.getColorLetterHashMapHex().get(sFace));
                 color = new Color(sColor[0], sColor[1], sColor[2]);
-                cube.add(stickerLocations[2][i][j], color);
+                this.add(stickerLocations[2][i][j], color);
             }
         }
-        return cube;
+        return this;
     }
 }

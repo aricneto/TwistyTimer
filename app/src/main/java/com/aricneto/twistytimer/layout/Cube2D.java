@@ -204,7 +204,7 @@ public class Cube2D extends View {
         return mCubeState;
     }
 
-    public Cube2D setCubeState(int puzzleSize, String[] cubeState) {
+    public Cube2D init(int puzzleSize, String[] cubeState) {
         this.mCubeState = cubeState;
         this.mPuzzleSize = puzzleSize;
         invalidate();

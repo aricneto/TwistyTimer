@@ -36,7 +36,6 @@ import static com.aricneto.twistytimer.items.AlgorithmModel.Case;
 public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DialogListener {
 
     private Context                     mContext;
-    private HashMap<Character, Integer> colorHash;
 
     private String          mSubset;
     private String          mPuzzle;
@@ -52,14 +51,13 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public AlgRecylerAdapter(Context context, FragmentManager manager, String puzzle, String subset) {
         this.mContext = context;
-        this.colorHash = AlgUtils.getColorLetterHashMap();
         this.mSubset = subset;
         this.mPuzzle = puzzle;
         this.fragmentManager = manager;
 
         this.cases = AlgUtils.getAlgJsonSubsetModel(puzzle, subset).getCases();
 
-        mIsIsometricView = AlgUtils.isIsometricView(subset);
+        mIsIsometricView = AlgUtils.isIsometricView(puzzle, subset);
         mCubePuzzleSize = AlgUtils.getPuzzleSize(puzzle);
     }
 
@@ -103,10 +101,10 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.name.setText(pName);
         //holder.progressBar.setProgress(pProgress);
-        //holder.cube.setCubeState(pState);
+        //holder.cube.init(pState);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ThemeUtils.dpToPix(108));
+                ThemeUtils.dpToPix(108), ThemeUtils.dpToPix(108));
         params.addRule(RelativeLayout.BELOW, R.id.progressBar);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         params.topMargin = ThemeUtils.dpToPix(4);
@@ -117,9 +115,9 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.root.removeView(cube);
 
         if (mIsIsometricView)
-            cube = CubeIsometric.init(mContext, 70, mCubePuzzleSize, pState);
+            cube = new CubeIsometric(mContext).init(70, mCubePuzzleSize, pState);
         else
-            cube = new Cube2D(mContext).setCubeState(mCubePuzzleSize, pState);
+            cube = new Cube2D(mContext).init(mCubePuzzleSize, pState);
 
         cube.setId(R.id.cube);
         holder.root.addView(cube, params);
@@ -158,7 +156,7 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @BindView(R.id.card)
         CardView       card;
 
-        public AlgHolder(View view) {
+        AlgHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

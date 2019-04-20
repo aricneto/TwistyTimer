@@ -161,15 +161,15 @@ public class AlgDialog extends DialogFragment {
         params.leftMargin = ThemeUtils.dpToPix(8);
 
         View cube;
-        if (AlgUtils.isIsometricView(mSubset))
-            cube = CubeIsometric.init(mContext, 70, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
+        if (AlgUtils.isIsometricView(mPuzzle, mSubset))
+            cube = new CubeIsometric(mContext).init(70, AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
         else
-            cube = new Cube2D(mContext).setCubeState(AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
+            cube = new Cube2D(mContext).init(AlgUtils.getPuzzleSize(mPuzzle), mCase.getState());
 
         cube.setId(R.id.cube);
         root.addView(cube, params);
 
-        //         If mSubset is PLL, it'll need to show the pll arrows.
+        // If mSubset is PLL, it'll need to show the pll arrows.
         if (mSubset.equals("PLL")) {
             ImageView pllArrows = new ImageView(mContext);
             pllArrows.setImageDrawable(AlgUtils.getPllArrow(mContext, mCase.getName()));
@@ -196,8 +196,6 @@ public class AlgDialog extends DialogFragment {
         nameText.setText(mCase.getName());
 
         algList.requestLayout();
-
-        //cube.setCubeState(mCase.getState());
 
         //progressBar.setProgress(algorithm.getProgress());
 

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.AlgorithmModel;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
 import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
@@ -36,12 +35,24 @@ public class AlgSubsetListDialog extends DialogFragment {
     private AlgorithmDialogListener mDialogListener;
     private Unbinder mUnbinder;
     private Context mContext;
+    private String mPuzzle;
 
     @BindView(R.id.list) RecyclerView recyclerView;
     @BindView(R.id.title) TextView title;
 
-    public static AlgSubsetListDialog newInstance() {
-        return new AlgSubsetListDialog();
+    public static AlgSubsetListDialog newInstance(String puzzle) {
+        AlgSubsetListDialog algDialog = new AlgSubsetListDialog();
+        Bundle args = new Bundle();
+        args.putString("puzzle", puzzle);
+        algDialog.setArguments(args);
+        return algDialog;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPuzzle = getArguments().getString("puzzle");
+        mContext = getContext();
     }
 
     @Nullable
@@ -50,10 +61,17 @@ public class AlgSubsetListDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_puzzle_select, container);
         mUnbinder = ButterKnife.bind(this, dialogView);
 
-        mContext = getContext();
-
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+        if (savedInstanceState != null)
+            dismiss();
+        return dialogView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         title.setText(R.string.algorithm_dialog_select);
 
@@ -62,16 +80,9 @@ public class AlgSubsetListDialog extends DialogFragment {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        AlgSubsetListAdapter listAdapter = new AlgSubsetListAdapter(mContext, mDialogListener);
+        AlgSubsetListAdapter listAdapter = new AlgSubsetListAdapter(mContext, mDialogListener, mPuzzle);
 
         recyclerView.setAdapter(listAdapter);
-
-        return dialogView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     public void setDialogListener(AlgorithmDialogListener listener) {
@@ -83,6 +94,7 @@ public class AlgSubsetListDialog extends DialogFragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
+
 }
 
 class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -90,15 +102,19 @@ class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final Context mContext;
     private final AlgorithmDialogListener mDialogListener;
     private final ArrayList<AlgorithmModel.Subset> subsets;
-    private final int cubePadding = ThemeUtils.dpToPix(4);
 
-    public AlgSubsetListAdapter(Context context, AlgorithmDialogListener listener) {
+    public AlgSubsetListAdapter(Context context, AlgorithmDialogListener listener, String puzzle) {
         this.mContext = context;
         this.mDialogListener = listener;
 
         AlgorithmModel model = AlgUtils.getAlgJsonModel();
         this.subsets = new ArrayList<>();
-        subsets.addAll(model.subsets);
+
+        // Only add subsets for the chosen puzzle
+        for (AlgorithmModel.Subset subset : model.subsets) {
+            if (subset.getPuzzle().equals(puzzle))
+                subsets.add(subset);
+        }
     }
 
     @NonNull
@@ -139,10 +155,10 @@ class AlgSubsetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (cube != null)
             holder.root.removeView(cube);
 
-        if (AlgUtils.isIsometricView(subset.getSubset())) {
-            cube = CubeIsometric.init(mContext, 45, puzzleSize, firstCase.getState());
+        if (AlgUtils.isIsometricView(subset.getPuzzle(), subset.getSubset())) {
+            cube = new CubeIsometric(mContext).init(45, puzzleSize, firstCase.getState());
         } else {
-            cube = new Cube2D(mContext).setCubeState(puzzleSize, firstCase.getState());
+            cube = new Cube2D(mContext).init(puzzleSize, firstCase.getState());
             cube.setScaleX(0.90f);
             cube.setScaleY(0.90f);
         }

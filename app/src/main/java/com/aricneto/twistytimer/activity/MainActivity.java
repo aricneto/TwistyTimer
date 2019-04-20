@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,12 +46,15 @@ import com.aricneto.twistytimer.fragment.dialog.AlgSubsetListDialog;
 import com.aricneto.twistytimer.fragment.dialog.DonateDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
+import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
+import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
+import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.ExportImportUtils;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
@@ -152,7 +156,9 @@ public class MainActivity extends AppCompatActivity
      * The loader ID for the loader that loads the list of algorithms for the algorithm list
      * fragment.
      */
-    public static final int ALG_LIST_LOADER_ID = 104;
+    public static final int ALG_LIST_LOADER_ID           = 104;
+    private static final String TAG_REFERENCE_PUZZLE_SELECT = "puzzle_select_subset_list_dialog";
+    private static final String TAG_REFERENCE_CASE_SELECT = "subset_list_dialog";
 
     BillingProcessor bp;
 
@@ -160,7 +166,6 @@ public class MainActivity extends AppCompatActivity
     FragmentManager             fragmentManager;
     DrawerLayout                mDrawerLayout;
 
-    private AlgSubsetListDialog algSubsetListDialog;
     private Drawer          mDrawer;
 
     // True if billing is initialized
@@ -212,8 +217,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -262,19 +265,6 @@ public class MainActivity extends AppCompatActivity
     }
    */
 
-    private AlgorithmDialogListener algorithmDialogListener = new AlgorithmDialogListener() {
-        @Override
-        public void onSubsetSelected(String puzzle, String subset) {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_activity_container,
-                            AlgListFragment.newInstance(puzzle, subset), "algorithm_fragment")
-                    .commit();
-            if (algSubsetListDialog != null)
-                algSubsetListDialog.dismiss();
-        }
-    };
-
     private void handleDrawer(Bundle savedInstanceState) {
         ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
 
@@ -296,26 +286,27 @@ public class MainActivity extends AppCompatActivity
                         new ExpandableDrawerItem()
                                 .withName(R.string.drawer_title_trainer)
                                 .withIcon(R.drawable.ic_outline_control_camera_24px)
-                                .withSelectable(false)
                                 .withIconTintingEnabled(true)
+                                .withSelectable(false)
                                 .withSubItems(
                                         new SecondaryDrawerItem()
                                                 .withName(R.string.drawer_title_oll)
                                                 .withLevel(2)
                                                 .withIcon(R.drawable.ic_oll_black_24dp)
+                                                .withSelectable(true)
                                                 .withIconTintingEnabled(true)
                                                 .withIdentifier(TRAINER_OLL_ID),
                                         new SecondaryDrawerItem()
                                                 .withName(R.string.drawer_title_pll)
                                                 .withLevel(2)
                                                 .withIcon(R.drawable.ic_pll_black_24dp)
+                                                .withSelectable(true)
                                                 .withIconTintingEnabled(true)
                                                 .withIdentifier(TRAINER_PLL_ID)),
 
                         new PrimaryDrawerItem()
                                 .withName(R.string.title_algorithms)
                                 .withIcon(R.drawable.ic_outline_library_books_24px)
-                                .withSelectable(false)
                                 .withIconTintingEnabled(true)
                                 .withIdentifier(REFERENCE_ID),
 
@@ -366,132 +357,115 @@ public class MainActivity extends AppCompatActivity
                                 .withSelectable(false)
                                 .withIdentifier(ABOUT_ID)
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
 
-                        boolean closeDrawer = true;
+                    boolean closeDrawer = true;
 
-                        switch ((int) drawerItem.getIdentifier()) {
-                            default:
-                                closeDrawer = false;
-                            case TIMER_ID:
-                                mDrawerToggle.runWhenIdle(() -> fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                 TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                        .commit());
-                                break;
+                    switch ((int) drawerItem.getIdentifier()) {
+                        default:
+                            closeDrawer = false;
+                        case TIMER_ID:
+                            mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                    .beginTransaction()
+                                    .replace(R.id.main_activity_container,
+                                             TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                    .commit());
+                            break;
 
-                            case TRAINER_OLL_ID:
-                                mDrawerToggle.runWhenIdle(() -> fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                 TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
-                                        .commit());
-                                break;
+                        case TRAINER_OLL_ID:
+                            mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                    .beginTransaction()
+                                    .replace(R.id.main_activity_container,
+                                             TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
+                                    .commit());
+                            break;
 
-                            case TRAINER_PLL_ID:
-                                mDrawerToggle.runWhenIdle(() -> fragmentManager
-                                        .beginTransaction()
-                                        .replace(R.id.main_activity_container,
-                                                 TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                        .commit());
-                                break;
+                        case TRAINER_PLL_ID:
+                            mDrawerToggle.runWhenIdle(() -> fragmentManager
+                                    .beginTransaction()
+                                    .replace(R.id.main_activity_container,
+                                             TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                    .commit());
+                            break;
 
-                            case EXPORT_IMPORT_ID:
-                                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                                                                      Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    != PackageManager.PERMISSION_GRANTED) {
+                        case EXPORT_IMPORT_ID:
+                            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                                                                  Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
 
-                                    // Should we show an explanation?
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                                            MainActivity.this,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                // Should we show an explanation?
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                        MainActivity.this,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                                        ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
-                                                .content(R.string.permission_denied_explanation)
-                                                .positiveText(R.string.action_ok)
-                                                .negativeText(R.string.action_cancel)
-                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                    @Override
-                                                    public void onClick(
-                                                            @NonNull MaterialDialog dialog,
-                                                            @NonNull DialogAction which) {
-                                                        ActivityCompat.requestPermissions(MainActivity.this,
-                                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                                                          STORAGE_PERMISSION_CODE);
-                                                    }
-                                                })
-                                                .build());
-
-                                    } else {
-                                        ActivityCompat.requestPermissions(MainActivity.this,
-                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                                          STORAGE_PERMISSION_CODE);
-                                    }
+                                    ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
+                                            .content(R.string.permission_denied_explanation)
+                                            .positiveText(R.string.action_ok)
+                                            .negativeText(R.string.action_cancel)
+                                            .onPositive((dialog, which) -> ActivityCompat.requestPermissions(MainActivity.this,
+                                                                                                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                                                     STORAGE_PERMISSION_CODE))
+                                            .build());
 
                                 } else {
-                                    ExportImportDialog.newInstance()
-                                            .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
+                                    ActivityCompat.requestPermissions(MainActivity.this,
+                                                                      new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                      STORAGE_PERMISSION_CODE);
                                 }
-                                break;
 
-                            case THEME_ID:
-                                ThemeSelectDialog.newInstance().show(fragmentManager, "theme_dialog");
-                                break;
+                            } else {
+                                ExportImportDialog.newInstance()
+                                        .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
+                            }
+                            break;
 
-                            case SCHEME_ID:
-                                SchemeSelectDialog.newInstance()
-                                        .show(fragmentManager, "scheme_dialog");
-                                break;
+                        case THEME_ID:
+                            ThemeSelectDialog.newInstance().show(fragmentManager, "theme_dialog");
+                            break;
 
-                            case SETTINGS_ID:
-                                mDrawerToggle.runWhenIdle(() -> startActivityForResult(new Intent(
-                                                               getApplicationContext(), SettingsActivity.class),
-                                                                               REQUEST_SETTING));
-                                break;
+                        case SCHEME_ID:
+                            SchemeSelectDialog.newInstance()
+                                    .show(fragmentManager, "scheme_dialog");
+                            break;
 
-                            case REFERENCE_ID:
-                                algSubsetListDialog = AlgSubsetListDialog.newInstance();
-                                algSubsetListDialog.setDialogListener(algorithmDialogListener);
-                                algSubsetListDialog.show(fragmentManager, "subset_list_dialog");
-                                break;
+                        case SETTINGS_ID:
+                            mDrawerToggle.runWhenIdle(() -> startActivityForResult(new Intent(
+                                                           getApplicationContext(), SettingsActivity.class),
+                                                                           REQUEST_SETTING));
+                            break;
 
-                            case DONATE_ID:
-                                if (readyToPurchase && BillingProcessor.isIabServiceAvailable(MainActivity.this))
-                                    DonateDialog.newInstance()
-                                            .show(fragmentManager, "donate_dialog");
-                                else
-                                    Toast.makeText(MainActivity.this, "Google Play not available",
-                                                   Toast.LENGTH_LONG).show();
-                                break;
+                        case REFERENCE_ID:
+                            AlgUtils.showAlgSelectDialog(fragmentManager);
+                            break;
 
-                            case ABOUT_ID:
-                                mDrawerToggle.runWhenIdle(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivityForResult(new Intent(getApplicationContext(),
-                                                                          AboutActivity.class), REQUEST_ABOUT);
-                                    }
-                                });
-                                break;
+                        case DONATE_ID:
+                            if (readyToPurchase && BillingProcessor.isIabServiceAvailable(MainActivity.this))
+                                DonateDialog.newInstance()
+                                        .show(fragmentManager, "donate_dialog");
+                            else
+                                Toast.makeText(MainActivity.this, "Google Play not available",
+                                               Toast.LENGTH_LONG).show();
+                            break;
 
-                            case DEBUG_ID:
-                                if (BuildConfig.DEBUG) {
-                                    Random rand = new Random();
-                                    DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
-                                    for (int i = 0; i < 10000; i++) {
-                                        dbHandler.addSolve(new Solve(30000 + rand.nextInt(6000), "333",
-                                                                     "|<<# DEBUG #>>|", 165165l+(i*10), "", 0, "", rand.nextBoolean()));
-                                    }
+                        case ABOUT_ID:
+                            mDrawerToggle.runWhenIdle(() -> startActivityForResult(new Intent(getApplicationContext(),
+                                                                                      AboutActivity.class), REQUEST_ABOUT));
+                            break;
+
+                        case DEBUG_ID:
+                            if (BuildConfig.DEBUG) {
+                                Random rand = new Random();
+                                DatabaseHandler dbHandler = TwistyTimer.getDBHandler();
+                                for (int i = 0; i < 10000; i++) {
+                                    dbHandler.addSolve(new Solve(30000 + rand.nextInt(6000), "333",
+                                                                 "|<<# DEBUG #>>|", 165165l+(i*10), "", 0, "", rand.nextBoolean()));
                                 }
-                                break;
-                        }
-                        if (closeDrawer)
-                            mDrawerLayout.closeDrawers();
-                        return false;
+                            }
+                            break;
                     }
+                    if (closeDrawer)
+                        mDrawerLayout.closeDrawers();
+                    return false;
                 })
                 .withSavedInstance(savedInstanceState);
 
@@ -514,7 +488,7 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout = mDrawer.getDrawerLayout();
         mDrawerToggle = new SmoothActionBarDrawerToggle(
                 this, mDrawerLayout, null, R.string.drawer_open, R.string.drawer_close);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
     }
 

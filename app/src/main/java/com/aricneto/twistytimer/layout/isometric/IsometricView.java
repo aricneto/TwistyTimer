@@ -35,7 +35,7 @@ public class IsometricView extends View {
         super(context);
     }
 
-    public IsometricView withIsometricScale(double scale) {
+    public IsometricView setIsometricScale(double scale) {
         isometric = new Isometric(scale);
         return this;
     }
