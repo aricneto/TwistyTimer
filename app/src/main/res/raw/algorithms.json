@@ -2491,7 +2491,6 @@
     {
       "subset": "OLL",
       "puzzle": "333",
-      "puzzle": "333",
       "cases": [
         {
           "name": "OLL 1",
@@ -3465,7 +3464,6 @@
     },
     {
       "subset": "PLL",
-      "puzzle": "333",
       "puzzle": "333",
       "cases": [
         {
@@ -5857,8 +5855,133 @@
       ]
     },
     {
+      "subset": "Patterns",
+      "puzzle": "333",
+      "cases": [
+        {
+          "name": "Cube³",
+          "algorithms": [
+            "F L F U' R U F2 L2 U' L' B D' B' L2 U"
+          ],
+          "state": [
+            "OOOYYOYYO",
+            "BBYBBYYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BOOBOOBBB",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Cube³³",
+          "algorithms": [
+            "F D F' D2 L' B' U L D R U L' F' U L U2"
+          ],
+          "state": [
+            "BBBYYBBYB",
+            "YRYRRYYYY",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RBRRBBRRR",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Superflip",
+          "algorithms": [
+            "U R2 F B R B2 R U2 L B2 R U' D' R2 F R' L B2 U2 F2"
+          ],
+          "state": [
+            "WGWRWOWBW",
+            "BWBRBOBYB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "RWRGRBRYR",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Dots",
+          "algorithms": [
+            "E S E' S'"
+          ],
+          "state": [
+            "YYYYGYYYY",
+            "RRRRWRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BBBBRBBBB",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Crosses",
+          "algorithms": [
+            "F' B L' E2 L2 S2 M' L' E' B' E2 F2 M2 F'"
+          ],
+          "state": [
+            "YBYBBBYBY",
+            "BRBRRRBRB",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "OWOWWWOWO",
+            "NNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Star",
+          "algorithms": [
+            "F B' U F U F U L B L2 B' U F' L U L' B"
+          ],
+          "state": [
+            "YYYBYYBBY",
+            "YYRYRRRRR",
+            "NNNNNNNNN",
+            "NNNNNNNNN",
+            "BRRBBRBBB",
+            "NNNNNNNNN"
+          ]
+        }
+      ]
+    },
+    {
+      "subset": "Patterns",
+      "puzzle": "444",
+      "cases": [
+        {
+          "name": "Checker Dot",
+          "algorithms": [
+            "2-3Dw' 2-3Rw' 2U' 2D2 2F' 2D' 2U' 2B 2U 2-3Fw 2-3Rw"
+          ],
+          "state": [
+            "WWWWWGRWWRGWWWWW",
+            "BBBBBOYBBYOBBBBB",
+            "NNNNNNNNNNNNNNNN",
+            "NNNNNNNNNNNNNNNN",
+            "RRRRRWGRRGWRRRRR",
+            "NNNNNNNNNNNNNNNN"
+          ]
+        },
+        {
+          "name": "Cube³",
+          "algorithms": [
+            "B' 2R2 2L2 U2 2R2 2L2 B F2 R U' R U R2 U R2 F' U F' u l u' f2 d r' u f d2 r2"
+          ],
+          "state": [
+            "YYYYGGGYRRGYWRGY",
+            "BYWOYYWOWWWOOOOO",
+            "NNNNNNNNNNNNNNNN",
+            "NNNNNNNNNNNNNNNN",
+            "RBOGRBOORBBBRRRR",
+            "NNNNNNNNNNNNNNNN"
+          ]
+        }
+
+      ]
+    },
+    {
       "subset": "CLL",
-      "puzzle":"222",
+      "puzzle": "222",
       "cases": [
         {
           "name": "CLL AS 1",

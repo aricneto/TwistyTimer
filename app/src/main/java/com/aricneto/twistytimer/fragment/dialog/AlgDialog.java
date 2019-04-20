@@ -4,17 +4,24 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.TwistyTimer;
+import com.aricneto.twistytimer.database.DatabaseHandler;
+import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
@@ -25,6 +32,7 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,11 +61,13 @@ public class AlgDialog extends DialogFragment {
 
     private Unbinder mUnbinder;
     private Context  mContext;
+
+    private Algorithm algorithm;
     private AlgorithmModel.Case mCase;
     private String              mSubset;
     private String              mPuzzle;
     private DialogListener      dialogListener;
-/*
+
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -67,10 +77,10 @@ public class AlgDialog extends DialogFragment {
                 case R.id.editButton:
                     MaterialDialog dialog = ThemeUtils.roundDialog(mContext, new MaterialDialog.Builder(mContext)
                             .title(R.string.edit_algorithm)
-                            .input("", algorithm.getAlgorithms(), (dialog1, input) -> {
-                                algorithm.setAlgs(input.toString());
-                                dbHandler.updateAlgorithmAlg(mId, input.toString());
-                                algList.setText(input.toString());
+                            .input("", algorithm.getCustomAlgs(), (dialog1, input) -> {
+                                algorithm.setCustomAlgs(input.toString());
+                                dbHandler.updateAlgorithmAlg(algorithm.getId(), input.toString());
+                                //algList.se(input.toString());
                                 updateList();
                             })
                             .inputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE)
@@ -98,29 +108,15 @@ public class AlgDialog extends DialogFragment {
                             .onPositive((dialog12, which) -> {
                                 int seekProgress = seekBar.getProgress();
                                 algorithm.setProgress(seekProgress);
-                                dbHandler.updateAlgorithmProgress(mId, seekProgress);
+                                dbHandler.updateAlgorithmProgress(algorithm.getId(), seekProgress);
                                 progressBar.setProgress(seekProgress);
                                 updateList();
                             })
                             .build());
                     break;
-
-                case R.id.revertButton:
-                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
-                            .title(R.string.dialog_revert_title_confirmation)
-                            .content(R.string.dialog_revert_content_confirmation)
-                            .positiveText(R.string.action_reset)
-                            .negativeText(R.string.action_cancel)
-                            .onPositive((dialog13, which) -> {
-                                algorithm.setAlgs(AlgUtils.getDefaultAlgs(algorithm.getSubset(), algorithm.getName()));
-                                dbHandler.updateAlgorithmAlg(mId, algorithm.getAlgs());
-                                algList.setText(algorithm.getAlgs());
-                            })
-                            .build());
-                    break;
             }
         }
-    };*/
+    };
 
     public static AlgDialog newInstance(String puzzle, String subset, AlgorithmModel.Case algCase) {
         AlgDialog timeDialog = new AlgDialog();
@@ -197,11 +193,12 @@ public class AlgDialog extends DialogFragment {
 
         algList.requestLayout();
 
-        //progressBar.setProgress(algorithm.getProgress());
+        algorithm = AlgUtils.getAlgFromDB(mPuzzle, mSubset, mCase.getName());
 
-//        revertButton.setOnClickListener(clickListener);
-//        progressButton.setOnClickListener(clickListener);
-//        editButton.setOnClickListener(clickListener);
+        progressBar.setProgress(algorithm.getProgress());
+
+        progressButton.setOnClickListener(clickListener);
+        editButton.setOnClickListener(clickListener);
     }
 
     public void setDialogListener(DialogListener listener) {

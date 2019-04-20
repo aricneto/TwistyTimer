@@ -10,6 +10,8 @@ import android.util.Log;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
+import com.aricneto.twistytimer.items.Algorithm;
+import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.stats.ChartStatistics;
 import com.aricneto.twistytimer.stats.Statistics;
@@ -54,10 +56,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final int IDX_HISTORY  = 8;
 
     // Algs table
-    public static final String TABLE_ALGS   = "algs";
+    public static final String TABLE_ALGS   = "table_algs";
+    public static final String KEY_PUZZLE   = "puzzle";
     public static final String KEY_SUBSET   = "subset";
     public static final String KEY_NAME     = "name";
-    public static final String KEY_STATE    = "state";
     public static final String KEY_ALGS     = "algs";
     public static final String KEY_PROGRESS = "progress";
 
@@ -72,7 +74,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String YEL                = "Y";
     private static final String NUL                = "N";
     // Database Version
-    private static final int    DATABASE_VERSION   = 10;
+    private static final int    DATABASE_VERSION   = 11;
     // Database Name
     private static final String DATABASE_NAME      = "databaseManager";
     private static final String CREATE_TABLE_TIMES =
@@ -90,9 +92,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_ALGS  =
         "CREATE TABLE " + TABLE_ALGS + "("
             + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_PUZZLE + " TEXT,"
             + KEY_SUBSET + " TEXT,"
             + KEY_NAME + " TEXT,"
-            + KEY_STATE + " TEXT,"
             + KEY_ALGS + " TEXT,"
             + KEY_PROGRESS + " INTEGER"
             + ")";
@@ -129,65 +131,73 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older tables if existed
-        Log.d("Database upgrade", "Upgrading from"
-            + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+        Log.d("Database upgrade", "Upgrading from" + oldVersion + " to " + newVersion);
         switch (oldVersion) {
             case 6:
                 db.execSQL("ALTER TABLE times ADD COLUMN " + KEY_HISTORY + " BOOLEAN DEFAULT 0");
                 // Fall through to the next upgrade step.
+            case 7:
             case 8:
                 Prefs.edit()
                         .putInt(R.string.pk_timer_text_size,
                                 Prefs.getInt(R.string.pk_timer_text_size, 10) * 10)
                         .apply();
+            case 9:
+            case 10:
+                db.execSQL(CREATE_TABLE_ALGS);
+                //db.execSQL("ALTER TABLE " + TABLE_ALGS + " ADD COLUMN " + KEY_PUZZLE + " TEXT");
+                break;
         }
     }
 
-    private void createAlg(SQLiteDatabase db, String subset, String name, String state, String algs) {
+    public long createAlg(String puzzle, String subset, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues values = new ContentValues();
+        values.put(KEY_PUZZLE, puzzle);
         values.put(KEY_SUBSET, subset);
         values.put(KEY_NAME, name);
-        values.put(KEY_STATE, state);
-        values.put(KEY_ALGS, algs);
         values.put(KEY_PROGRESS, 0);
-        db.insert(TABLE_ALGS, null, values);
+        return db.insert(TABLE_ALGS, null, values);
     }
 
     /**
-     * Loads an algorithm from the database for the given algorithm ID.
+     * Loads an algorithm from the database for the given algorithm puzzle and subset name.
      *
-     * @param algID
-     *     The ID of the algorithm to be loaded.
+     * @param puzzle
+     *     The puzzle of the algorithm to be loaded.
+     *
+     * @param subset
+     *     The subset of the algorithm to be loaded.
+     *
+     * @param caseName
+     *     The case name of the algorithm to be loaded.
      *
      * @return
      *     An {@link Algorithm} object created from the details loaded from the database for the
-     *     algorithm record matching the given ID, or {@code null} if no algorithm matching the
-     *     given ID was found.
+     *     algorithm record matching the given ID, or {@code null} if no algorithm matching
+     *     the given params was found.
      */
-//    public Algorithm getAlgorithm(long algID) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = db.query(TABLE_ALGS,
-//                new String[] { KEY_ID, KEY_SUBSET, KEY_NAME, KEY_STATE, KEY_ALGS, KEY_PROGRESS },
-//                KEY_ID + "=?", new String[] { String.valueOf(algID) }, null, null, null, null);
-//
-//        try {
-//            if (cursor.moveToFirst()) {
-//                return new Algorithm(
-//                        cursor.getLong(0),   // id
-//                        cursor.getString(1), // subset
-//                        cursor.getString(2), // name
-//                        cursor.getString(3), // state
-//                        cursor.getString(4), // algs
-//                        cursor.getInt(5));   // progress
-//            }
-//
-//            // No algorithm matched the given ID.
-//            return null;
-//        } finally {
-//            cursor.close();
-//        }
-//    }
+    public Algorithm getAlg(String puzzle, String subset, String caseName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        try (Cursor cursor = db.query(TABLE_ALGS,
+                                      new String[]{KEY_ID, KEY_ALGS, KEY_PROGRESS},
+                                       KEY_PUZZLE + "=? AND " + KEY_SUBSET + "=? AND " + KEY_NAME + "=?", new String[]{puzzle, subset, caseName}, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                return new Algorithm(
+                        cursor.getLong(0),   // id
+                        puzzle,                         // puzzle
+                        subset,                         // subset
+                        caseName,                       // case name
+                        cursor.getString(cursor.getColumnIndex(KEY_ALGS)), // custom algs
+                        cursor.getInt(cursor.getColumnIndex(KEY_PROGRESS))); // progress
+            }
+
+            // No algorithm matched the given ID.
+            return null;
+        }
+    }
 
     public int updateAlgorithmAlg(long id, String alg) {
         SQLiteDatabase db = this.getWritableDatabase();

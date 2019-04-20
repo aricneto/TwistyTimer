@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.fragment.dialog.AlgDialog;
+import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.layout.Cube2D;
 import com.aricneto.twistytimer.layout.CubeIsometric;
 import com.aricneto.twistytimer.listener.DialogListener;
@@ -100,8 +101,9 @@ public class AlgRecylerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         });
 
         holder.name.setText(pName);
-        //holder.progressBar.setProgress(pProgress);
-        //holder.cube.init(pState);
+
+        Algorithm algorithm = AlgUtils.getAlgFromDB(mPuzzle, mSubset, pName);
+        holder.progressBar.setProgress(algorithm.getProgress());
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ThemeUtils.dpToPix(108), ThemeUtils.dpToPix(108));

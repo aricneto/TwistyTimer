@@ -17,6 +17,7 @@ import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
 import com.aricneto.twistytimer.fragment.dialog.AlgSubsetListDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
+import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.AlgorithmModel.Case;
 import com.google.gson.Gson;
@@ -43,6 +44,8 @@ public final class AlgUtils {
                 return 3;
             case "222":
                 return 2;
+            case "444":
+                return 4;
         }
         throw new IllegalArgumentException("Invalid puzzle");
     }
@@ -109,7 +112,8 @@ public final class AlgUtils {
         PuzzleSelectDialog puzzleSubsetSelectDialog = PuzzleSelectDialog.newInstance();
         puzzleSubsetSelectDialog.setCustomPuzzleList(
                 Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_222), R.drawable.ic_2x2),
-                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_333), R.drawable.ic_3x3)
+                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_333), R.drawable.ic_3x3),
+                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_444), R.drawable.ic_4x4)
         );
 
         puzzleSubsetSelectDialog.setDialogListener(text -> {
@@ -129,6 +133,22 @@ public final class AlgUtils {
             algSubsetListDialog.show(fragmentManager, "reference_subset_case_select");
         });
         puzzleSubsetSelectDialog.show(fragmentManager, "reference_subset_puzzle_select");
+    }
+
+    /**
+     * Fetches and returns details from an algorithm from the database. Creates an entry for the
+     * algorithm if it doesn't already exist
+     * @param puzzle The puzzle name
+     * @param subset The algorithm subset
+     * @param caseName The algorithm case name
+     * @return An {@link Algorithm} object containing data relevant to the algorithm
+     */
+    public static Algorithm getAlgFromDB (String puzzle, String subset, String caseName) {
+        Algorithm algorithm = TwistyTimer.getDBHandler().getAlg(puzzle, subset, caseName);
+        if (algorithm == null)
+            algorithm = new Algorithm(TwistyTimer.getDBHandler().createAlg(puzzle, subset, caseName),
+                                      puzzle, subset, caseName);
+        return algorithm;
     }
 
     private static HashMap<Character, Integer> colorLetterMap;

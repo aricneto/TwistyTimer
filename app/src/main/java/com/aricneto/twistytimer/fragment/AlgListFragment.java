@@ -77,7 +77,7 @@ public class AlgListFragment extends BaseFragment {
         public void onReceiveWhileAdded(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case ACTION_ALGS_MODIFIED:
-                    //reloadList();
+                    setupRecyclerView();
                     break;
             }
         }

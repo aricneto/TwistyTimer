@@ -123,7 +123,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="?tabBarPadding"
-        android:scaleType="fitStart"
+        android:scaleType="fitCenter"
         tools:background="@color/red_material" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
