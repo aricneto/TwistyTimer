@@ -140,7 +140,7 @@ public class AlgListFragment extends BaseFragment {
         button2.setVisibility(View.GONE);
         buttonSettings.setOnClickListener(v -> getMainActivity().openDrawer());
 
-        puzzleSpinner.setOnClickListener(v -> AlgUtils.showAlgSelectDialog(getFragmentManager()));
+        puzzleSpinner.setOnClickListener(v -> AlgUtils.showAlgSelectDialog(getFragmentManager(), currentPuzzle));
 
         setupRecyclerView();
 

@@ -49,6 +49,7 @@ import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
+import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
@@ -81,6 +82,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -268,6 +270,25 @@ public class MainActivity extends AppCompatActivity
     private void handleDrawer(Bundle savedInstanceState) {
         ImageView headerView = (ImageView) View.inflate(this, R.layout.drawer_header, null);
 
+        // Get all unique puzzles. In a HashSet, all entries are unique
+        HashSet<String> puzzleHash = new HashSet();
+        for (AlgorithmModel.Subset subset : AlgUtils.getAlgJsonModel().subsets) {
+            puzzleHash.add(subset.getPuzzle());
+        }
+
+        List<IDrawerItem> referenceItems = new ArrayList<>();
+        for (String puzzle : puzzleHash) {
+            referenceItems.add(new SecondaryDrawerItem()
+                                       .withName(PuzzleUtils.getPuzzleNameFull(puzzle))
+                                       .withLevel(2)
+                                       .withSelectable(true)
+                                       .withIconTintingEnabled(true)
+                                       .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                                           AlgUtils.showAlgSelectDialog(fragmentManager, puzzle);
+                                           return true;
+                                       }));
+        }
+
         //headerView.setImageDrawable(
         //       ThemeUtils.fetchTintedDrawable(this, R.drawable.menu_header, R.attr.colorPrimary));
 
@@ -304,11 +325,12 @@ public class MainActivity extends AppCompatActivity
                                                 .withIconTintingEnabled(true)
                                                 .withIdentifier(TRAINER_PLL_ID)),
 
-                        new PrimaryDrawerItem()
+                        new ExpandableDrawerItem()
                                 .withName(R.string.title_algorithms)
                                 .withIcon(R.drawable.ic_outline_library_books_24px)
                                 .withIconTintingEnabled(true)
-                                .withIdentifier(REFERENCE_ID),
+                                .withSelectable(false)
+                                .withSubItems(referenceItems),
 
                         new SectionDrawerItem()
                                 .withName(R.string.drawer_title_other),
@@ -364,6 +386,8 @@ public class MainActivity extends AppCompatActivity
                     switch ((int) drawerItem.getIdentifier()) {
                         default:
                             closeDrawer = false;
+                            break;
+                            
                         case TIMER_ID:
                             mDrawerToggle.runWhenIdle(() -> fragmentManager
                                     .beginTransaction()
@@ -432,10 +456,6 @@ public class MainActivity extends AppCompatActivity
                             mDrawerToggle.runWhenIdle(() -> startActivityForResult(new Intent(
                                                            getApplicationContext(), SettingsActivity.class),
                                                                            REQUEST_SETTING));
-                            break;
-
-                        case REFERENCE_ID:
-                            AlgUtils.showAlgSelectDialog(fragmentManager);
                             break;
 
                         case DONATE_ID:

@@ -332,7 +332,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         if (currentTimerMode.equals(TIMER_MODE_TRAINER))
             puzzleNameText.setText(getString(R.string.title_trainer, currentPuzzleSubset.name()));
         else
-            puzzleNameText.setText(PuzzleUtils.getPuzzleNameFromType(currentPuzzle));
+            puzzleNameText.setText(PuzzleUtils.getPuzzleNameFull(currentPuzzle));
     }
 
     public TimerFragmentMain() {

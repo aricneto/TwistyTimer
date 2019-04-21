@@ -132,12 +132,11 @@ public class PuzzleUtils {
         }
     }
 
-    public static @StringRes int getPuzzleNameFromType(String puzzle) {
-        // IMPORTANT: Keep this in sync with the order in "R.array.puzzles".
+    public static @StringRes int getPuzzleNameFull(String puzzle) {
         switch (puzzle) {
             default:
-            case TYPE_333:     return R.string.cube_333;
             case TYPE_222:     return R.string.cube_222;
+            case TYPE_333:     return R.string.cube_333;
             case TYPE_444:     return R.string.cube_444;
             case TYPE_555:     return R.string.cube_555;
             case TYPE_666:     return R.string.cube_666;

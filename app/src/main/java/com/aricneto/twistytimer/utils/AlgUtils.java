@@ -108,31 +108,19 @@ public final class AlgUtils {
      * @param fragmentManager
      * @return
      */
-    public static void showAlgSelectDialog(FragmentManager fragmentManager) {
-        PuzzleSelectDialog puzzleSubsetSelectDialog = PuzzleSelectDialog.newInstance();
-        puzzleSubsetSelectDialog.setCustomPuzzleList(
-                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_222), R.drawable.ic_2x2),
-                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_333), R.drawable.ic_3x3),
-                Pair.create(TwistyTimer.getAppContext().getString(R.string.cube_444), R.drawable.ic_4x4)
-        );
-
-        puzzleSubsetSelectDialog.setDialogListener(text -> {
-            puzzleSubsetSelectDialog.dismiss();
-
-            AlgSubsetListDialog algSubsetListDialog = AlgSubsetListDialog.newInstance(text);
-            algSubsetListDialog.setDialogListener((puzzle, subset) -> {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_activity_container,
-                                 AlgListFragment.newInstance(puzzle, subset), "fragment_alg_list")
-                        .commit();
-                if (algSubsetListDialog != null)
-                    algSubsetListDialog.dismiss();
-            });
-
-            algSubsetListDialog.show(fragmentManager, "reference_subset_case_select");
+    public static void showAlgSelectDialog(FragmentManager fragmentManager, String puzzle) {
+        AlgSubsetListDialog algSubsetListDialog = AlgSubsetListDialog.newInstance(puzzle);
+        algSubsetListDialog.setDialogListener((selectedPuzzle, subset) -> {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_activity_container,
+                             AlgListFragment.newInstance(selectedPuzzle, subset), "fragment_alg_list")
+                    .commit();
+            if (algSubsetListDialog != null)
+                algSubsetListDialog.dismiss();
         });
-        puzzleSubsetSelectDialog.show(fragmentManager, "reference_subset_puzzle_select");
+
+        algSubsetListDialog.show(fragmentManager, "reference_subset_case_select");
     }
 
     /**
