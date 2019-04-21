@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity
                                        .withName(PuzzleUtils.getPuzzleNameFull(puzzle))
                                        .withLevel(2)
                                        .withSelectable(true)
-                                       .withIconTintingEnabled(true)
+                                       .withIcon(PuzzleUtils.getPuzzleIcon(puzzle))
                                        .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                                            AlgUtils.showAlgSelectDialog(fragmentManager, puzzle);
                                            return true;

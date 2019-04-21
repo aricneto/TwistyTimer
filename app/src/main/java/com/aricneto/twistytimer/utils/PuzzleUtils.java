@@ -2,27 +2,22 @@ package com.aricneto.twistytimer.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.solver.StringUtils;
 import com.aricneto.twistytimer.stats.AverageCalculator;
 import com.aricneto.twistytimer.stats.Statistics;
 
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
@@ -146,6 +141,23 @@ public class PuzzleUtils {
             case TYPE_PYRA:    return R.string.cube_pyra;
             case TYPE_SKEWB:   return R.string.cube_skewb;
             case TYPE_SQUARE1: return R.string.cube_sq1;
+        }
+    }
+
+    public static @DrawableRes int getPuzzleIcon(String puzzle) {
+        switch (puzzle) {
+            default:
+            case TYPE_222:     return R.drawable.ic_puzzle_2x2;
+            case TYPE_333:     return R.drawable.ic_puzzle_3x3;
+            case TYPE_444:     return R.drawable.ic_puzzle_4x4;
+            case TYPE_555:     return R.drawable.ic_puzzle_5x5;
+            case TYPE_666:     return R.drawable.ic_puzzle_6x6;
+            case TYPE_777:     return R.drawable.ic_puzzle_7x7;
+            case TYPE_CLOCK:   return R.drawable.ic_puzzle_clock;
+            case TYPE_MEGA:    return R.drawable.ic_puzzle_mega;
+            case TYPE_PYRA:    return R.drawable.ic_puzzle_pyra;
+            case TYPE_SKEWB:   return R.drawable.ic_puzzle_skewb;
+            case TYPE_SQUARE1: return R.drawable.ic_puzzle_sq1;
         }
     }
 
