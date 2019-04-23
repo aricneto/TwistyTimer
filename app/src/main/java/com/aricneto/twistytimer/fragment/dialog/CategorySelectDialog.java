@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
@@ -69,13 +67,11 @@ public class CategorySelectDialog extends DialogFragment {
     private View.OnClickListener mOnClickListener;
     private Context mContext;
 
-    public static CategorySelectDialog newInstance(String currentPuzzle, String currentPuzzleSubtype, String currentTimerMode, TrainerScrambler.TrainerSubset currentSubset) {
+    public static CategorySelectDialog newInstance(String puzzle, String category) {
         CategorySelectDialog dialog = new CategorySelectDialog();
         Bundle args = new Bundle();
-        args.putString("puzzle", currentPuzzle);
-        args.putString("subtype", currentPuzzleSubtype);
-        args.putString("mode", currentTimerMode);
-        args.putSerializable("subset", currentSubset);
+        args.putString("puzzle", puzzle);
+        args.putString("subtype", category);
         dialog.setArguments(args);
         return dialog;
     }
@@ -175,8 +171,6 @@ public class CategorySelectDialog extends DialogFragment {
                                         updateList(dbHandler);
 
                                         editor.putString(KEY_SAVEDSUBTYPE + currentPuzzle, currentSubtype);
-                                        if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
-                                            TrainerScrambler.renameCategory(currentSubset, currentEditSubtype, currentSubtype);
                                         editor.apply();
                                         dialogListenerMessage.onUpdateDialog(currentSubtype);
                                     })

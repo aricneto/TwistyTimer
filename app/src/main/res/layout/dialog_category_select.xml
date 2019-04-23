@@ -6,7 +6,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/outline_background_card"
+    android:background="@drawable/outline_background_card_smoother"
     android:orientation="vertical">
 
     <TextView

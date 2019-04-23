@@ -111,13 +111,6 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 public class                                                                                                                                                                               TimerFragment extends BaseFragment
         implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
 
-
-    // Specifies the timer mode
-    // i.e: Trainer mode generates only trainer scrambles, and changes the puzzle select spinner
-    // Can be used for other features in the future
-    public static final String TIMER_MODE_TIMER = "TIMER_MODE_TIMER";
-    public static final String TIMER_MODE_TRAINER = "TIMER_MODE_TRAINER";
-
     /**
      * Flag to enable debug logging for this class.
      */
@@ -471,13 +464,11 @@ public class                                                                    
         undoButton.setVisibility(hideUndoButton ? View.GONE : View.VISIBLE);
     }
 
-    public static TimerFragment newInstance(String puzzle, String puzzleSubType, String timerMode, TrainerScrambler.TrainerSubset subset) {
+    public static TimerFragment newInstance(String puzzle, String category) {
         TimerFragment fragment = new TimerFragment();
         Bundle args = new Bundle();
         args.putString(PUZZLE, puzzle);
-        args.putString(PUZZLE_SUBTYPE, puzzleSubType);
-        args.putString(TIMER_MODE, timerMode);
-        args.putSerializable(TRAINER_SUBSET, subset);
+        args.putString(PUZZLE_SUBTYPE, category);
         fragment.setArguments(args);
         if (DEBUG_ME) Log.d(TAG, "newInstance() -> " + fragment);
         return fragment;
@@ -1449,14 +1440,10 @@ public class                                                                    
      * Generates a new scramble and handles everything.
      */
     private void generateNewScramble() {
-        if (scrambleEnabled && currentTimerMode.equals(TIMER_MODE_TIMER)) {
+        if (scrambleEnabled) {
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
             scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else if (currentTimerMode.equals(TIMER_MODE_TRAINER)) {
-            setScramble(TrainerScrambler.generateTrainerCase(getContext(), currentSubset, currentPuzzleCategory));
-            canShowHint = false;
-            hideButtons(true, true);
         }
     }
 

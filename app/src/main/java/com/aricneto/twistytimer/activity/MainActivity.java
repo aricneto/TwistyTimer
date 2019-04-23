@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,20 +38,14 @@ import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.database.DatabaseHandler;
-import com.aricneto.twistytimer.fragment.AlgListFragment;
-import com.aricneto.twistytimer.fragment.TimerFragment;
 import com.aricneto.twistytimer.fragment.TimerFragmentMain;
-import com.aricneto.twistytimer.fragment.dialog.AlgSubsetListDialog;
 import com.aricneto.twistytimer.fragment.dialog.DonateDialog;
 import com.aricneto.twistytimer.fragment.dialog.ExportImportDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleChooserDialog;
-import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.SchemeSelectDialog;
 import com.aricneto.twistytimer.fragment.dialog.ThemeSelectDialog;
 import com.aricneto.twistytimer.items.AlgorithmModel;
 import com.aricneto.twistytimer.items.Solve;
-import com.aricneto.twistytimer.listener.AlgorithmDialogListener;
-import com.aricneto.twistytimer.listener.DialogListenerMessage;
 import com.aricneto.twistytimer.listener.OnBackPressedInFragmentListener;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.AlgUtils;
@@ -231,7 +224,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             fragmentManager
                 .beginTransaction()
-                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
+                .replace(R.id.main_activity_container, TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal"), "fragment_main")
                 .commit();
         }
 
@@ -392,23 +385,7 @@ public class MainActivity extends AppCompatActivity
                             mDrawerToggle.runWhenIdle(() -> fragmentManager
                                     .beginTransaction()
                                     .replace(R.id.main_activity_container,
-                                             TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal", TimerFragment.TIMER_MODE_TIMER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
-                                    .commit());
-                            break;
-
-                        case TRAINER_OLL_ID:
-                            mDrawerToggle.runWhenIdle(() -> fragmentManager
-                                    .beginTransaction()
-                                    .replace(R.id.main_activity_container,
-                                             TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.OLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.OLL), "fragment_main")
-                                    .commit());
-                            break;
-
-                        case TRAINER_PLL_ID:
-                            mDrawerToggle.runWhenIdle(() -> fragmentManager
-                                    .beginTransaction()
-                                    .replace(R.id.main_activity_container,
-                                             TimerFragmentMain.newInstance(TrainerScrambler.TrainerSubset.PLL.name(), "Normal", TimerFragment.TIMER_MODE_TRAINER, TrainerScrambler.TrainerSubset.PLL), "fragment_main")
+                                             TimerFragmentMain.newInstance(PuzzleUtils.TYPE_333, "Normal"), "fragment_main")
                                     .commit());
                             break;
 
