@@ -25,7 +25,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/launch_icon" />
+            android:src="@drawable/icon_launch" />
     </item>
 
 </layer-list>
