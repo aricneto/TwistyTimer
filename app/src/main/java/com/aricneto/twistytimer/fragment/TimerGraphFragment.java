@@ -194,6 +194,14 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         final View root = inflater.inflate(R.layout.fragment_timer_graph, container, false);
         mUnbinder = ButterKnife.bind(this, root);
 
+        return root;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // Drawables for the stats cards buttons
         buttonDrawable = ThemeUtils.createSquareDrawable(
                 mContext,
@@ -210,13 +218,13 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         // However, this may lead to the whole chart being squeezed into a few vertical pixels.
         // Therefore, set a fixed height for the chart that will force the statistics table to be
         // scrolled down to allow the chart to fit.
-        root.post(() -> statsCard.post(() -> {
+        statsCard.post(() -> {
             if (lineChartView != null) {
                 final ViewGroup.LayoutParams chartParams = lineChartView.getLayoutParams();
                 final int cardHeight = statsCard.getHeight();
                 // ATTENTION: 134dp is the sum of the actionBarPadding and tabBarPadding attributes,
                 // plus 16 dp for the view padding! Keep these in sync.
-                final int viewHeight = container.getHeight()
+                final int viewHeight = view.getHeight()
                                        - ThemeUtils.dpToPix(mContext, 134);
                 if (chartParams != null) {
                     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -241,15 +249,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
                     }
                 }
             }
-        }));
-
-        return root;
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        });
 
         // The color for the text in the legend and for the values along the chart's axes.
         final int chartTextColor = ThemeUtils.fetchAttrColor(mContext, R.attr.colorChartText);
