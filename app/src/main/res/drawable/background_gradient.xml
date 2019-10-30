@@ -13,13 +13,19 @@
         </shape>
     </item>
 
-
     <item>
 
         <bitmap
+            android:alpha="0.1"
+            android:src="@drawable/twisty_pattern"
+            android:tileMode="repeat" />
+
+    </item>
+
+    <item>
+        <bitmap
             android:gravity="center"
             android:src="@drawable/icon_launch" />
-
     </item>
 
 </layer-list>
