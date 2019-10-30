@@ -333,11 +333,9 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
         statsTabAverage.setOnClickListener(statTabClickListener);
         statsTabOther.setOnClickListener(statTabClickListener);
 
-        view.post(() -> {
-            highlightStatTab(statsTabFavorite);
-            fadeStatTab(statsTabOther);
-            fadeStatTab(statsTabAverage);
-        });
+        highlightStatTab(statsTabFavorite);
+        fadeStatTab(statsTabOther);
+        fadeStatTab(statsTabAverage);
 
 
     }

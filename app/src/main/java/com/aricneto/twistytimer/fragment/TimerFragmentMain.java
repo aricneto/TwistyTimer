@@ -12,9 +12,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.aricneto.twistytimer.adapter.BottomSheetSpinnerAdapter;
 import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
-import com.aricneto.twistytimer.fragment.dialog.BottomSheetSpinnerDialog;
 import com.aricneto.twistytimer.fragment.dialog.BottomSheetTrainerDialog;
 import com.aricneto.twistytimer.fragment.dialog.PuzzleSelectDialog;
 import com.aricneto.twistytimer.listener.DialogListenerMessage;
@@ -124,6 +122,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
     private static final String TRAINER_SUBSET    = "trainer_subset";
 
     private static final String TAG_CATEGORY_DIALOG = "select_category_dialog";
+    private static final String TAG_PUZZLE_DIALOG   = "puzzle_spinner_dialog_fragment";
 
     private Unbinder mUnbinder;
 
@@ -310,7 +309,6 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                 case ACTION_CHANGED_CATEGORY:
                     viewPager.setAdapter(viewPagerAdapter);
                     viewPager.setCurrentItem(currentPage);
-                    bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
                     updatePuzzleSpinnerHeader();
                     handleStatisticsLoader();
 
@@ -320,8 +318,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
             }
         }
     };
-    private BottomSheetTrainerDialog bottomSheetTrainerDialog;
-    private PuzzleSelectDialog puzzleSelectDialog;
+
     private Context mContext;
     private FragmentManager mFragmentManager;
 
@@ -394,6 +391,11 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
                     .findFragmentByTag(TAG_CATEGORY_DIALOG);
             if (categoryDialog != null)
                 categoryDialog.setDialogListener(categoryDialogListener);
+
+            PuzzleSelectDialog selectDialog = (PuzzleSelectDialog) mFragmentManager
+                    .findFragmentByTag(TAG_PUZZLE_DIALOG);
+            if (selectDialog != null)
+                selectDialog.setDialogListener(this);
         }
 
         mAnimationDuration = Prefs.getInt(R.string.pk_timer_animation_duration, mContext.getResources().getInteger(R.integer.defaultAnimationDuration));
@@ -647,18 +649,19 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     private void handleHeaderSpinner() {
 
-        // Setup spinner dialog and adapter
-        puzzleSelectDialog = PuzzleSelectDialog.newInstance();
-        puzzleSelectDialog.setDialogListener(this);
-
-        bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
 
         // Setup action bar click listener
         puzzleSpinnerLayout.setOnClickListener(v -> {
-            if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER))
+            if (currentTimerMode.equals(TimerFragment.TIMER_MODE_TRAINER)) {
+                BottomSheetTrainerDialog bottomSheetTrainerDialog = BottomSheetTrainerDialog.newInstance(currentPuzzleSubset, currentPuzzleCategory);
                 bottomSheetTrainerDialog.show(mFragmentManager, "trainer_dialog_fragment");
-            else
-                puzzleSelectDialog.show(mFragmentManager, "puzzle_spinner_dialog_fragment");
+            }
+            else {
+                // Setup spinner dialog and adapter
+                PuzzleSelectDialog puzzleSelectDialog = PuzzleSelectDialog.newInstance();
+                puzzleSelectDialog.setDialogListener(this);
+                puzzleSelectDialog.show(mFragmentManager, TAG_PUZZLE_DIALOG);
+            }
         });
 
         updatePuzzleSpinnerHeader();
@@ -674,9 +677,9 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(currentPage);
 
-        if (puzzleSelectDialog != null && puzzleSelectDialog.isVisible()) {
-            puzzleSelectDialog.dismiss();
-        }
+        PuzzleSelectDialog selectDialog = (PuzzleSelectDialog) mFragmentManager.findFragmentByTag(TAG_PUZZLE_DIALOG);
+        if (selectDialog != null)
+            selectDialog.dismiss();
 
         //// update titles
         updatePuzzleSpinnerHeader();
