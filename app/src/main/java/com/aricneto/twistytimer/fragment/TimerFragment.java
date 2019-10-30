@@ -121,7 +121,7 @@ public class                                                                    
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -866,13 +866,17 @@ public class                                                                    
                 return false;
             }
         });
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         // If the statistics are already loaded, the update notification will have been missed,
         // so fire that notification now. If the statistics are non-null, they will be displayed.
         // If they are null (i.e., not yet loaded), nothing will be displayed until this fragment,
         // as a registered observer, is notified when loading is complete. Post the firing of the
         // event, so that it is received after "onCreateView" returns.
-        new Handler().post(() -> onStatisticsUpdated(StatisticsCache.getInstance().getStatistics()));
+        onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
         StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
     }
 

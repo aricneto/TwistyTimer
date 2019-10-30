@@ -62,7 +62,7 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
     /**
      * Flag to enable debug logging for this class.
      */
-    private static final boolean DEBUG_ME = false;
+    private static final boolean DEBUG_ME = true;
 
     /**
      * A "tag" to identify this class in log messages.
@@ -339,18 +339,20 @@ public class TimerGraphFragment extends Fragment implements StatisticsCache.Stat
             fadeStatTab(statsTabAverage);
         });
 
-        // If the statistics are already loaded, the update notification will have been missed,
-        // so fire that notification now. If the statistics are non-null, they will be displayed.
-        // If they are null (i.e., not yet loaded), the progress bar will be displayed until this
-        // fragment, as a registered observer, is notified when loading is complete. Post the
-        // firing of the event, so that it is received after "onCreateView" returns.
-        view.post(() -> onStatisticsUpdated(StatisticsCache.getInstance().getStatistics()));
-        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // If the statistics are already loaded, the update notification will have been missed,
+        // so fire that notification now. If the statistics are non-null, they will be displayed.
+        // If they are null (i.e., not yet loaded), the progress bar will be displayed until this
+        // fragment, as a registered observer, is notified when loading is complete. Post the
+        // firing of the event, so that it is received after "onCreateView" returns.
+        onStatisticsUpdated(StatisticsCache.getInstance().getStatistics());
+        StatisticsCache.getInstance().registerObserver(this); // Unregistered in "onDestroyView".
 
         // "restartLoader" ensures that any old loader with the wrong puzzle type/subtype will not
         // be reused. For now, those arguments are just passed via their respective fields to
