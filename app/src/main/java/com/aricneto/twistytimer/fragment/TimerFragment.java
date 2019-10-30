@@ -1294,7 +1294,7 @@ public class                                                                    
                     .alpha(0)
                     .translationY(-scrambleBox.getHeight())
                     .setDuration(mAnimationDuration)
-                    .withEndAction(() -> scrambleBox.setVisibility(View.INVISIBLE));
+                    .withEndAction(() -> scrambleBox.setVisibility(View.INVISIBLE)); // FIXME: Attempt to invoke virtual method 'void androidx.cardview.widget.CardView.setVisibility(int)' on a null object reference
             if (scrambleImgEnabled) {
                 scrambleImg.setEnabled(false);
                 hideImage();
