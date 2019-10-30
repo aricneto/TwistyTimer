@@ -501,12 +501,14 @@ public class ChartStatistics {
         LineDataSet ds;
 
         ds = (LineDataSet) mChartData.getDataSetByIndex(DS_ALL);
+        if (ds == null) return; // FIXME: This is just a workaround to stop crashes
         legendEntries[DS_ALL] = new LegendEntry();
         legendEntries[DS_ALL].form = Legend.LegendForm.CIRCLE;
         legendEntries[DS_ALL].label = ds.getLabel();
         legendEntries[DS_ALL].formColor = mChartStyle.getAllTimesColor();
 
         ds = (LineDataSet) mChartData.getDataSetByIndex(DS_BEST);
+        if (ds == null) return; // FIXME: This is just a workaround to stop crashes
         legendEntries[DS_BEST] = new LegendEntry();
         legendEntries[DS_BEST].form = Legend.LegendForm.CIRCLE;
         legendEntries[DS_BEST].label = ds.getLabel();

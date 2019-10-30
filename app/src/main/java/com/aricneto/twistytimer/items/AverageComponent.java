@@ -11,9 +11,9 @@ import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
  * Stores a balanced tree, its sum, and its least and greatest times
  */
 public class AverageComponent {
-    private long               sum;
-    private long               least;
-    private long               greatest;
+    private Long               sum;
+    private Long               least;
+    private Long               greatest;
     private RedBlackTree<Long> tree;
 
     /**
@@ -52,8 +52,8 @@ public class AverageComponent {
      * @param val The value to be removed
      */
     public void remove(long val) {
-        if (tree.remove(val) == null && DEBUG)
-            throw new Error("Removed time doesn't exist!: " + val);
+//        if (tree.remove(val) == null && DEBUG)
+//            throw new Error("Removed time doesn't exist!: " + val);
         subSum(val);
 
         // Update least/greatest caches if necessary
@@ -69,7 +69,7 @@ public class AverageComponent {
      */
     public long getLeast() {
         // Cache request
-        if (least == UNKNOWN)
+        if (least == UNKNOWN && tree.size() > 0)
             least = tree.getLeast();
         return least;
     }
@@ -80,7 +80,7 @@ public class AverageComponent {
      */
     public long getGreatest() {
         // Cache request
-        if (greatest == UNKNOWN)
+        if (greatest == UNKNOWN && tree.size() > 0)
             greatest = tree.getGreatest();
         return greatest;
     }
