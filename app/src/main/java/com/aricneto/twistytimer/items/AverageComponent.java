@@ -1,5 +1,7 @@
 package com.aricneto.twistytimer.items;
 
+import android.util.Log;
+
 import com.aricneto.twistytimer.structures.RedBlackTree;
 
 import androidx.annotation.Nullable;
@@ -52,8 +54,11 @@ public class AverageComponent {
      * @param val The value to be removed
      */
     public void remove(long val) {
-//        if (tree.remove(val) == null && DEBUG)
-//            throw new Error("Removed time doesn't exist!: " + val);
+        try {
+            tree.remove(val);
+        } catch (Exception e) {
+            Log.d("AverageComponent", "Error while trying to remove value: " + val);
+        }
         subSum(val);
 
         // Update least/greatest caches if necessary
