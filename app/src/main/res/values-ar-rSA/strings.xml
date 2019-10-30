@@ -6,7 +6,7 @@
     <string name="action_cancel">إلغاء الأمر</string>
     <string name="action_choose">اختر</string>
     <string name="action_clear">مسح</string>
-    <string name="action_default">الافتراضي</string>
+    <string name="action_default">الوضع العادي</string>
     <string name="action_donate">تبرّع</string>
     <string name="action_done">تم</string>
     <string name="action_export">تصدير</string>
@@ -20,7 +20,7 @@
     <string name="action_settings">الإعدادات</string>
     <string name="action_update">تحديث</string>
     <string name="add_comment">إضافة تعليق</string>
-    <string name="add_time">إضافة زمن</string>
+    <string name="add_time">إضافة وقت</string>
     <string name="added_comment">تم إضافة التعليق</string>
     <string name="advanced_pref_summary">قد يؤدي تغيير هذه الإعدادات إلى حدوث بعض مشكلات القطع</string>
     <string name="backCancelEnabledSummary">الضغط على زر العودة أثناء حل سوف يلغيه</string>
@@ -77,7 +77,7 @@
     <string name="export_progress_complete">تم التصدير بنجاح إلى:</string>
     <string name="export_progress_error">لسوء الحظ، حدث خطأ أثناء التصدير.\nتحقق من أذوناتك</string>
     <string name="export_progress_title">جاري التصدير…</string>
-    <string name="fab_add_time">إضافة زمن</string>
+    <string name="fab_add_time">إضافة وقت</string>
     <string name="fab_share_ao12">متوسط١٢</string>
     <string name="fab_share_ao5">متوسط٥</string>
     <string name="fab_share_distribution">التوزيع</string>
@@ -270,6 +270,7 @@
     <string name="pref_dialog_dnf_percent">DNFs:%1$d</string>
     <string name="pref_dialog_acceptable_dnf">العدد الأقصى للـDNFs في المتوسط:</string>
     <string name="pref_screen_title_graph">الرسم البياني</string>
+    <string name="pref_title_discrete_graph">الرسم البياني المنفصل معناه رسم بياني دون خطوط متصلة مع النقاط</string>
     <string name="pref_summary_discrete_graph">رسم المخطط البياني للحلول بشكل نقاط منفردة بدلاً من خط مستمر</string>
     <string name="graph_stats_title_session">الجلسة</string>
     <string name="graph_stats_title_global">الإجمالي</string>

@@ -19,6 +19,7 @@ import com.aricneto.twistytimer.utils.LocaleUtils;
 import com.aricneto.twistytimer.utils.Prefs;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
@@ -83,12 +84,12 @@ public class LocaleSelectDialog extends DialogFragment implements DialogListener
 
 class LocaleSelectAdapter extends RecyclerView.Adapter<LocaleSelectAdapter.CardViewHolder> {
 
-    private FragmentActivity                        mActivity;
-    private String                                  oldLocale;
-    private String                                  newLocale;
-    private HashMap<String, Pair<Integer, Integer>> localeHash;
-    private String[]                                locales;
-    private DialogListener                          dialogListener;
+    private FragmentActivity                              mActivity;
+    private String                                        oldLocale;
+    private String                                        newLocale;
+    private LinkedHashMap<String, Pair<Integer, Integer>> localeHash;
+    private String[]                                      locales;
+    private DialogListener                                dialogListener;
 
     LocaleSelectAdapter(FragmentActivity mActivity, DialogListener listener) {
         this.mActivity = mActivity;

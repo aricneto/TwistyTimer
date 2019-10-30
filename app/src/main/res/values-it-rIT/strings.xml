@@ -5,7 +5,7 @@
     <string name="action_archive">Archivia</string>
     <string name="action_cancel">Annulla</string>
     <string name="action_choose">Scegli</string>
-    <string name="action_clear">Pulisci</string>
+    <string name="action_clear">Elimina</string>
     <string name="action_default">Predefinito</string>
     <string name="action_donate">Dona</string>
     <string name="action_done">Fatto</string>
@@ -23,7 +23,7 @@
     <string name="add_time">Aggiungi tempo</string>
     <string name="added_comment">Commento aggiunto</string>
     <string name="advanced_pref_summary">La modifica di queste impostazioni può causare problemi di ridimensionamento</string>
-    <string name="backCancelEnabledSummary">Premendo il pulsante indietro durante un soluzione, viene annullata</string>
+    <string name="backCancelEnabledSummary">Premendo il pulsante indietro durante un soluzione, viene cancellata</string>
     <string name="backCancelEnabledTitle">Indietro cancella la soluzione</string>
     <string name="backgroundEnabledSummary">Colora lo sfondo del timer con il colore del tema</string>
     <string name="backgroundEnabledTitle">Sfondo colorato</string>

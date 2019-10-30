@@ -388,6 +388,10 @@
     <string name="language_vietnamese" translatable="false">Tiếng Việt</string>
     <string name="language_arabic" translatable="false">العربية</string>
     <string name="language_tamil" translatable="false">தமிழ்</string>
+    <string name="language_hindi" translatable="false">हिन्दी</string>
+    <string name="language_ukranian" translatable="false">Україна</string>
+    <string name="language_chinese_hk" translatable="false">香港</string>
+    <string name="language_chinese_tw" translatable="false">臺語</string>
 
 
     <string name="about_translate_title">Help translate Twisty Timer!</string>

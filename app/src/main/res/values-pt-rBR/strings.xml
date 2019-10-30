@@ -197,7 +197,7 @@
     <string name="warning">Aviso</string>
     <string name="worstSolveEnabledSummary">Alertar quando você conseguir um recorde de pior tempo</string>
     <string name="worstSolveEnabledTitle">Alerta de pior tempo</string>
-    <string name="graph_stats_tab_title_improvement">Melhora</string>
+    <string name="graph_stats_tab_title_improvement">Melhoria</string>
     <string name="graph_stats_tab_title_average">Média</string>
     <string name="graph_stats_tab_title_other">Outros</string>
     <string name="graph_stats_title_best_all_time">Melhor de todos os tempos</string>

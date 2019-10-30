@@ -11,6 +11,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 /**
@@ -25,6 +26,8 @@ public class LocaleUtils {
     // English is separated into "normal" and "USA" since America has its own date format
     public static final String CZECH             = "cs_CZ";
     public static final String CHINESE           = "zh_CN";
+    public static final String CHINESE_HK        = "zh_HK";
+    public static final String CHINESE_TW        = "zh_TW";
     public static final String CATALAN           = "ca_ES";
     public static final String HUNGARIAN         = "hu_HU";
     public static final String VIETNAMESE        = "vi_VN";
@@ -51,6 +54,8 @@ public class LocaleUtils {
     public static final String TURKISH           = "tr_TR";
     public static final String SLOVAK            = "sk_SK";
     public static final String JAPANESE          = "ja_JP";
+    public static final String HINDI             = "hi_IN";
+    public static final String UKRANIAN          = "uk_UA";
 
 
 
@@ -73,15 +78,15 @@ public class LocaleUtils {
         return Prefs.getString(R.string.pk_locale, Locale.getDefault().getLanguage());
     }
 
-    private static HashMap<String, Pair<Integer, Integer>> localeHash = null;
+    private static LinkedHashMap<String, Pair<Integer, Integer>> localeHash = null;
 
     /**
      * Returns a HashMap containing {@link Pair} with each language name and flag resource ID.
      * The languages are keyed by the locale code
      */
-    public static HashMap getLocaleHashMap() {
+    public static LinkedHashMap getLocaleHashMap() {
         if (localeHash == null) {
-            localeHash = new HashMap<String, Pair<Integer, Integer>>() {
+            localeHash = new LinkedHashMap<String, Pair<Integer, Integer>>() {
                 {
                     put(ENGLISH, new Pair<>(R.string.language_english, R.drawable.flag_united_kingdom));
                     put(ENGLISH_USA, new Pair<>(R.string.language_english, R.drawable.flag_united_states));
@@ -89,11 +94,14 @@ public class LocaleUtils {
                     put(GERMAN, new Pair<>(R.string.language_german, R.drawable.flag_germany));
                     put(FRENCH, new Pair<>(R.string.language_french, R.drawable.flag_france));
                     put(RUSSIAN, new Pair<>(R.string.language_russian, R.drawable.flag_russia));
+                    put(UKRANIAN, new Pair<>(R.string.language_ukranian, R.drawable.flag_ukraine));
                     put(PORTUGUESE_BRAZIL, new Pair<>(R.string.language_portuguese_br, R.drawable.flag_brazil));
                     put(CZECH, new Pair<>(R.string.language_czech, R.drawable.flag_czech_republic));
                     put(LITHUANIAN, new Pair<>(R.string.language_lithuanian, R.drawable.flag_lithuania));
                     put(POLISH, new Pair<>(R.string.language_polish, R.drawable.flag_poland));
                     put(CHINESE, new Pair<>(R.string.language_chinese, R.drawable.flag_china));
+                    put(CHINESE_HK, new Pair<>(R.string.language_chinese_hk, R.drawable.flag_hongkong));
+                    put(CHINESE_TW, new Pair<>(R.string.language_chinese_tw, R.drawable.flag_taiwan));
                     put(CATALAN, new Pair<>(R.string.language_catalan, R.drawable.flag_spain));
                     put(INDONESIAN, new Pair<>(R.string.language_indonesian, R.drawable.flag_indonesia));
                     put(HEBREW, new Pair<>(R.string.language_hebrew, R.drawable.flag_israel));
@@ -111,6 +119,7 @@ public class LocaleUtils {
                     put(VIETNAMESE, new Pair<>(R.string.language_vietnamese, R.drawable.flag_vietnam));
                     put(ARABIC, new Pair<>(R.string.language_arabic, R.drawable.flag_sudan));
                     put(TAMIL, new Pair<>(R.string.language_tamil, R.drawable.flag_india));
+                    put(HINDI, new Pair<>(R.string.language_hindi, R.drawable.flag_india));
                 }
             };
         }
@@ -123,36 +132,7 @@ public class LocaleUtils {
      * @return
      */
     public static String[] getLocaleArray() {
-        return new String[] {
-                ENGLISH,
-                ENGLISH_USA,
-                SPANISH,
-                GERMAN,
-                FRENCH,
-                RUSSIAN,
-                PORTUGUESE_BRAZIL,
-                CZECH,
-                LITHUANIAN,
-                POLISH,
-                CHINESE,
-                CATALAN,
-                INDONESIAN,
-                HEBREW,
-                DUTCH,
-                SWEDISH,
-                VALENCIAN,
-                ESPERANTO,
-                ITALIAN,
-                CROATIAN,
-                SERBIAN_LATIN,
-                TURKISH,
-                SLOVAK,
-                JAPANESE,
-                HUNGARIAN,
-                VIETNAMESE,
-                ARABIC,
-                TAMIL
-        };
+        return (String[]) getLocaleHashMap().keySet().toArray(new String[0]);
     }
 
     /**

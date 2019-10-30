@@ -251,8 +251,19 @@
     <string name="pref_animation_duration_title">Animationsdauer</string>
     <string name="pref_animation_duration_summary">Steuert die Dauer in Millisekunden für alle Timer-Animationen</string>
     <string name="pref_screen_title_statistics">Statistiken</string>
+    <string name="pref_title_stat_trim">Durchschnittliches trimmen</string>
+    <string name="pref_summary_stat_trim">Kontrolliert die Anzahl der besten und schlechtesten Solves, die vom Durchschnitt ausgeschlossen werden</string>
+    <string name="pref_title_acceptable_dnf">Maximale DNF - Versuche</string>
+    <string name="pref_summary_acceptable_dnf">Kontrolliert die maximale Anzahl an DNFs, die ein Durchschnitt enthalten kann, bevor er disqualified wird</string>
+    <string name="pref_title_disqualify_dnf">DNFs disqualifizieren Durchschnitt</string>
+    <string name="pref_summary_disqualify_dnf">Wenn aktiviert werden Durchschnitte automatisch disqualifiziert wenn die Anzahl an DNFs zu hoch wird</string>
+    <string name="pref_dialog_included_solves">Anzahl der vom Durchschnitt ausgeschlossenen Solves:</string>
+    <string name="pref_dialog_trim_size">Trimmgröße: %1$d</string>
+    <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
+    <string name="pref_dialog_acceptable_dnf">Maximale Anzahl an DNFs pro Durchschnitt:</string>
     <string name="pref_screen_title_graph">Graph</string>
     <string name="graph_stats_title_session">Sitzung</string>
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Manueller Modus</string>
+    <string name="pref_summary_manual_mode">Fügt eine Schaltfläche auf dem Timer-Bildschirm hinzu, um die manuelle Zeiteingabe zu erleichtern</string>
 </resources>

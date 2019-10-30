@@ -254,12 +254,14 @@ Możesz również stworzyć własną kategorię z własnym zestawem sytuacji</st
     <string name="pref_animation_duration_title">Długość animacji</string>
     <string name="pref_animation_duration_summary">Określa czas w milisekundach dla wszystkich animacji timera</string>
     <string name="pref_screen_title_statistics">Statystyki</string>
+    <string name="pref_title_stat_trim">Zakres średniej</string>
     <string name="pref_summary_stat_trim">Określa liczbę najlepszych i najgorszych czasów ułożeń wyłączonych ze średnich</string>
     <string name="pref_title_acceptable_dnf">Maksymalna liczba nieudanych podejść</string>
     <string name="pref_summary_acceptable_dnf">Określa liczbę dyskwalifikacji, jaką może mieć średnia przed jej dyskwalifikacją</string>
     <string name="pref_title_disqualify_dnf">DNF-y dyskwalifikują średnią</string>
     <string name="pref_summary_disqualify_dnf">Jeśli włączone, średnie będą automatycznie dyskwalifikowane, gdy liczba DNF-ów będzie zbyt duża</string>
     <string name="pref_dialog_included_solves">Liczba ułożeń wyłączonych ze średnich:</string>
+    <string name="pref_dialog_trim_size">Wielkość zakresu: %1$d</string>
     <string name="pref_dialog_dnf_percent">Dyskwalifikacje: %1$d</string>
     <string name="pref_dialog_acceptable_dnf">Najwyższa liczba dyskwalifikacji w średnich:</string>
     <string name="pref_screen_title_graph">Wykres</string>

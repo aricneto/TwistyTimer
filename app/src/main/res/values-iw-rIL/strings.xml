@@ -20,10 +20,10 @@
     <string name="action_settings">הגדרות</string>
     <string name="action_update">עדכון</string>
     <string name="add_comment">הוסף הערה</string>
-    <string name="add_time">הוסף זמן</string>
-    <string name="added_comment">הערה נוספה</string>
+    <string name="add_time">הוסף תזמון</string>
+    <string name="added_comment">הערה הוספה</string>
     <string name="advanced_pref_summary">שינוי הגדרות אלו עלול לגרום לבעיות חיתוך מסך</string>
-    <string name="backCancelEnabledSummary">לחיצה על כפתור החזרה כאשר אתה פותר יגרום לביטול הפתרון</string>
+    <string name="backCancelEnabledSummary">לחיצה על כפתור החזרה בזמן פתירה יבטל אותה</string>
     <string name="backCancelEnabledTitle">חזור מבטל פתרון</string>
     <string name="backgroundEnabledSummary">שנה את גוון הטיימר ביחד עם צבע ערכת הנושא</string>
     <string name="backgroundEnabledTitle">צבע רקע</string>

@@ -12,6 +12,7 @@
     <string name="action_export">Exportovat</string>
     <string name="action_import">Importovat</string>
     <string name="action_move">Přesunout</string>
+    <string name="action_ok">OK</string>
     <string name="action_remove">Odstranit</string>
     <string name="action_rename">Přejmenovat</string>
     <string name="action_reset">Resetovat</string>
@@ -22,21 +23,31 @@
     <string name="add_time">Přidat čas</string>
     <string name="added_comment">Komentář přidán</string>
     <string name="advanced_pref_summary">Změna tohoto nastavení by mohla způsobit chyby v oříznutí</string>
+    <string name="backCancelEnabledSummary">Tlačítko zpět zruší solve</string>
+    <string name="backCancelEnabledTitle">Zpět zruší solve</string>
+    <string name="backgroundEnabledSummary">Zabarví pozadí primární barvou</string>
     <string name="backgroundEnabledTitle">Barevné pozadí</string>
     <string name="bestSolveEnabledSummary">Upozornit když překonáte svůj nejlepší čas</string>
     <string name="bestSolveEnabledTitle">Upozornění nejlepšího času</string>
+    <string name="averageRecordsEnabledSummary">Upozorní a zabarví statistiku, když vytvoříte nový nejlepší průměr</string>
+    <string name="averageRecordsEnabledTitle">Upozornění na nejlepší průměr</string>
     <string name="buttonsEnabledSummary">Zobrazit tlačítka, která se ukazují pod časovačem po jeho zastavení</string>
     <string name="buttonsEnabledTitle">Tlačítka rychlých akcí</string>
     <string name="choose_donation_amount">Vyberte částku k darování</string>
     <string name="clearEnabledSummary">Tlačítko \"Vyčistit\" se ukazuje v seznamu časů a umožňuje vyčistit všechny časy z aktuálního sezení</string>
     <string name="clearEnabledTitle">Zobrazit tlačítko \"Vyčistit\"</string>
     <string name="contact">Kontakt</string>
+    <string name="contributors">K vývoji přispěli</string>
+    <string name="contributors_content">Veliké poděkování těmto lidem, že přispěli k vývoji této aplikace: %1$s</string>
     <string name="cube_222">Kostka 2x2x2</string>
     <string name="cube_333">Kostka 3x3x3</string>
     <string name="cube_444">Kostka 4x4x4</string>
     <string name="cube_555">Kostka 5x5x5</string>
     <string name="cube_666">Kostka 6x6x6</string>
     <string name="cube_777">Kostka 7x7x7</string>
+    <string name="cube_clock">Clock</string>
+    <string name="cube_mega">Megaminx</string>
+    <string name="cube_pyra">Pyraminx</string>
     <string name="delete_dialog_cancel_button">Zrušit</string>
     <string name="delete_dialog_confirmation_button">Odstranit</string>
     <string name="delete_dialog_confirmation_title">Odstranit čas?</string>
@@ -170,4 +181,5 @@
     <!-- Full names for Average of... -->
     <string name="graph_stats_label_ao5_full">Průměr z 5</string>
     <string name="graph_stats_label_ao12_full">Průměr ze 12</string>
+    <string name="pref_inspection_alert_summary">Časovač vás upozorní, jakmile vyprší %1$d a %2$d sekund inspekce</string>
 </resources>
