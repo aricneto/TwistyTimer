@@ -427,5 +427,10 @@
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Manual mode</string>
     <string name="pref_summary_manual_mode">Adds a button on the timer screen for easier manual time entry</string>
+    <string name="list_sort_title">Sort by…</string>
+    <string name="list_sort_time">Time</string>
+    <string name="list_sort_date">Date</string>
+    <string name="list_sort_ascending">Ascending</string>
+    <string name="list_sort_descending">Descending</string>
 
 </resources>

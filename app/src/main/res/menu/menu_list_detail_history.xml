@@ -3,11 +3,11 @@
       tools:context="com.aricneto.twistify.ui.activity.ListDetailActivity">
     <item
         android:id="@+id/history_from"
-        android:icon="@drawable/ic_outline_unarchive_18px"
+        android:icon="@drawable/ic_outline_unarchive_24dp"
         android:title="@string/list_options_item_from_history" />
     <item
         android:id="@+id/share"
-        android:icon="@drawable/ic_outline_share_18px"
+        android:icon="@drawable/ic_outline_share_24dp"
         android:title="@string/list_options_item_share" />
     <item
         android:id="@+id/remove"

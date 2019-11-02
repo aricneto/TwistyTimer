@@ -54,7 +54,8 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
-            android:padding="8dp"
+            android:padding="6dp"
+            android:layout_marginRight="4dp"
             android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_cached_24px" />
 
@@ -66,8 +67,9 @@
             android:alpha=".85"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginRight="4dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:padding="8dp"
+            android:padding="6dp"
             android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
@@ -80,9 +82,10 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
-            android:padding="8dp"
+            android:padding="6dp"
             android:visibility="gone"
             tools:visibility="visible"
+            android:layout_marginLeft="4dp"
             android:tint="?colorItemListText"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px" />
 
@@ -96,11 +99,12 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
-            android:padding="8dp"
+            android:padding="6dp"
+            android:layout_marginLeft="4dp"
             android:visibility="gone"
             tools:visibility="visible"
             android:tint="?colorItemListText"
-            app:srcCompat="@drawable/ic_outline_alarm_add_24px" />
+            app:srcCompat="@drawable/ic_outline_alarm_add_24dp" />
 
 
     </RelativeLayout>

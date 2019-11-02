@@ -46,6 +46,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.TimeCursorAdapter;
+import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.database.TimeTaskLoader;
 import com.aricneto.twistytimer.fragment.dialog.AddTimeDialog;
 import com.aricneto.twistytimer.items.Theme;
@@ -105,6 +106,9 @@ public class TimerListFragment extends BaseFragment
     private String currentPuzzle;
     private String currentPuzzleCategory;
     private String currentScramble;
+
+    private String orderByKey = DatabaseHandler.KEY_DATE;
+    private String orderByDir = TimeTaskLoader.DIR_DESC;
 
     // Stores the current comment search query
     private String searchComment = "";
@@ -166,17 +170,34 @@ public class TimerListFragment extends BaseFragment
                             .build());
                     break;
                 case R.id.more_button:
+
+                    // Main popup
                     PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
                     popupMenu.getMenuInflater().inflate(R.menu.menu_list_more, popupMenu.getMenu());
 
                     MenuPopupHelper popupHelper = new MenuPopupHelper(mContext, (MenuBuilder) popupMenu.getMenu(), moreButton);
                     popupHelper.setForceShowIcon(true);
 
+                    // Share popup
                     PopupMenu shareMenu = new PopupMenu(getContext(), moreButton);
                     shareMenu.getMenuInflater().inflate(R.menu.menu_list_share, shareMenu.getMenu());
 
                     MenuPopupHelper sharePopupHelper = new MenuPopupHelper(mContext, (MenuBuilder) shareMenu.getMenu(), moreButton);
                     sharePopupHelper.setForceShowIcon(true);
+
+                    // Sort popup
+                    PopupMenu sortPopupMenu = new PopupMenu(getContext(), moreButton);
+                    sortPopupMenu.getMenuInflater().inflate(R.menu.menu_sort_items, sortPopupMenu.getMenu());
+
+                    MenuPopupHelper sortPopupHelper = new MenuPopupHelper(mContext, (MenuBuilder) sortPopupMenu.getMenu(), moreButton);
+                    sortPopupHelper.setForceShowIcon(true);
+
+                    // Sort popup options
+                    PopupMenu sortPopupOptionsMenu = new PopupMenu(getContext(), moreButton);
+                    sortPopupOptionsMenu.getMenuInflater().inflate(R.menu.menu_sort_options, sortPopupOptionsMenu.getMenu());
+
+                    MenuPopupHelper sortPopupOptionsHelper = new MenuPopupHelper(mContext, (MenuBuilder) sortPopupOptionsMenu.getMenu(), moreButton);
+                    sortPopupOptionsHelper.setForceShowIcon(true);
 
 
                     shareMenu.setOnMenuItemClickListener(item -> {
@@ -191,6 +212,32 @@ public class TimerListFragment extends BaseFragment
                                 PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
                                 break;
                         }
+                        return true;
+                    });
+
+                    sortPopupMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.sort_time:
+                                orderByKey = DatabaseHandler.KEY_TIME;
+                                break;
+                            case R.id.sort_date:
+                                orderByKey = DatabaseHandler.KEY_DATE;
+                                break;
+                        }
+                        sortPopupOptionsHelper.show();
+                        return true;
+                    });
+
+                    sortPopupOptionsMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.sort_asc:
+                                orderByDir = TimeTaskLoader.DIR_ASC;
+                                break;
+                            case R.id.sort_desc:
+                                orderByDir = TimeTaskLoader.DIR_DESC;
+                                break;
+                        }
+                        reloadList();
                         return true;
                     });
 
@@ -215,6 +262,11 @@ public class TimerListFragment extends BaseFragment
                             case R.id.share:
                                 sharePopupHelper.show();
                                 break;
+                            case R.id.sort:
+                                sortPopupHelper.show();
+                                break;
+                                default:
+                                    break;
                         }
                         return true;
                     });
@@ -451,7 +503,7 @@ public class TimerListFragment extends BaseFragment
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         if (DEBUG_ME) Log.d(TAG, "onCreateLoader()");
-        return new TimeTaskLoader(currentPuzzle, currentPuzzleCategory, history, searchComment);
+        return new TimeTaskLoader(currentPuzzle, currentPuzzleCategory, history, searchComment, orderByKey, orderByDir);
     }
 
     @Override

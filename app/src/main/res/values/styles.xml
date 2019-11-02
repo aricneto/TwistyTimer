@@ -567,11 +567,11 @@
     -->
 
     <style name="RoundedPopupMenu" parent="Base.Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">@drawable/outline_background_card_smoother</item>
+        <item name="android:popupBackground">@drawable/outline_background_card_menu</item>
     </style>
 
     <style name="RoundedPopupMenu.Text" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 

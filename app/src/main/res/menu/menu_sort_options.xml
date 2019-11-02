@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/sort_asc"
+        android:icon="@drawable/ic_arrow_upward_24dp"
+        android:title="@string/list_sort_ascending" />
+    <item
+        android:id="@+id/sort_desc"
+        android:icon="@drawable/ic_arrow_downward_24dp"
+        android:title="@string/list_sort_descending" />
+</menu>

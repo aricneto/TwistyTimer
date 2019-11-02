@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/sort_time"
+        android:icon="@drawable/ic_alarm_24dp"
+        android:title="@string/list_sort_time" />
+    <item
+        android:id="@+id/sort_date"
+        android:icon="@drawable/ic_outline_date_range_24dp"
+        android:title="@string/list_sort_date" />
+</menu>

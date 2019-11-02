@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/penalty"
-        android:icon="@drawable/ic_outline_flag_18px"
+        android:icon="@drawable/ic_outline_flag_24dp"
         android:title="@string/select_penalty" />
 
     <item android:id="@+id/comment"
-        android:icon="@drawable/ic_outline_insert_comment_18px"
+        android:icon="@drawable/ic_outline_insert_comment_24dp"
         android:title="@string/add_comment"/>
 
 </menu>

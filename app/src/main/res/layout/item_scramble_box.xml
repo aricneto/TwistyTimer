@@ -52,7 +52,8 @@
             android:background="?selectableItemBackgroundBorderless"
             android:layout_alignParentRight="true"
             android:alpha=".85"
-            android:padding="8dp"
+            android:padding="6dp"
+            android:layout_marginRight="4dp"
             android:tint="?colorItemListText"
             android:clickable="true"
             android:focusable="true"
@@ -66,10 +67,11 @@
             android:layout_toLeftOf="@id/scramble_button_reset"
             android:background="?selectableItemBackgroundBorderless"
             android:alpha=".85"
+            android:layout_marginRight="4dp"
             android:clickable="true"
             android:focusable="true"
             android:tint="?colorItemListText"
-            android:padding="8dp"
+            android:padding="6dp"
             app:srcCompat="@drawable/ic_outline_edit_24px" />
 
 
@@ -80,12 +82,13 @@
             android:layout_below="@id/scramble_text"
             android:layout_alignParentLeft="true"
             android:alpha=".85"
+            android:layout_marginLeft="4dp"
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_outline_wb_incandescent_24px"
             android:tint="?colorItemListText"
-            android:padding="8dp"
+            android:padding="6dp"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -95,13 +98,14 @@
             android:layout_height="36dp"
             android:layout_below="@id/scramble_text"
             android:layout_toLeftOf="@id/scramble_button_edit"
+            android:layout_marginRight="4dp"
             android:alpha=".85"
             android:clickable="true"
             android:focusable="true"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_outline_alarm_add_24px"
+            app:srcCompat="@drawable/ic_outline_alarm_add_24dp"
             android:tint="?colorItemListText"
-            android:padding="8dp"
+            android:padding="6dp"
             android:visibility="gone"
             tools:visibility="visible" />
 
