@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
 import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
@@ -21,7 +20,10 @@ import android.util.TypedValue;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.items.TextStyle;
 import com.aricneto.twistytimer.items.Theme;
+
+import java.util.LinkedHashMap;
 
 /**
  * Utility class to make themeing easier.
@@ -52,6 +54,7 @@ public final class ThemeUtils {
     public static final String THEME_PIXIE_FALLS = "pixie_falls";
     public static final String THEME_WANDERING_DUSK = "wandering_dusk";
     public static final String THEME_SPOTTY_GUY = "spotty_guy";
+    public static final String THEME_FAIRY_FROG = "fairy_frog";
 
 
     public static final String TEXT_DEFAULT   = "default";
@@ -83,168 +86,123 @@ public final class ThemeUtils {
      *
      * @return The user's chosen preferred theme.
      */
-    public static int getPreferredTheme() {
-        return getThemeStyleRes(Prefs.getString(R.string.pk_theme, "indigo"));
+    public static Theme getPreferredTheme() {
+        return getAllThemesHashmap().get(Prefs.getString(R.string.pk_theme, "indigo"));
     }
 
-    public static int getPreferredTextStyle() {
-        return getThemeStyleRes(Prefs.getString(R.string.pk_text_style, "default"));
+    public static TextStyle getPreferredTextStyle() {
+        return getAllTextStylesHashMap().get(Prefs.getString(R.string.pk_text_style, "default"));
     }
 
-    public static int getThemeStyleRes(String theme) {
-        switch (theme) {
-            default:
-            case THEME_INDIGO:
-                return R.style.DefaultTheme;
-            case THEME_PURPLE:
-                return R.style.PurpleTheme;
-            case THEME_TEAL:
-                return R.style.TealTheme;
-            case THEME_PINK:
-                return R.style.PinkTheme;
-            case THEME_RED:
-                return R.style.RedTheme;
-            case THEME_BROWN:
-                return R.style.BrownTheme;
-            case THEME_BLUE:
-                return R.style.BlueTheme;
-            case THEME_CYAN:
-                return R.style.CyanTheme;
-            case THEME_LIGHT_BLUE:
-                return R.style.LightBlueTheme;
-            case THEME_BLACK:
-                return R.style.BlackTheme;
-            case THEME_ORANGE:
-                return R.style.OrangeTheme;
-            case THEME_GREEN:
-                return R.style.GreenTheme;
-            case THEME_LIGHT_GREEN:
-                return R.style.LightGreenTheme;
-            case THEME_DEEPPURPLE:
-                return R.style.DeepPurpleTheme;
-            case THEME_BLUEGRAY:
-                return R.style.BlueGrayTheme;
-            case THEME_WHITE:
-                return R.style.WhiteTheme;
-            case THEME_YELLOW:
-                return R.style.YellowTheme;
-            case THEME_WHITE_GREEN:
-                return R.style.WhiteGreenTheme;
-            case THEME_DAWN:
-                return R.style.DawnTheme;
-            case THEME_BLUY_GRAY:
-                return R.style.BluyGray;
-            case THEME_TURTLY_SEA:
-                return R.style.TurtlySea;
-            case THEME_PIXIE_FALLS:
-                return R.style.PixieFalls;
-            case THEME_WANDERING_DUSK:
-                return R.style.WanderingDusk;
-            case THEME_SPOTTY_GUY:
-                return R.style.SpottyGuy;
-            case TEXT_DEFAULT:
-                return getPreferredTheme();
-            case TEXT_PESSOA:
-                return R.style.TextStylePessoa;
-            case TEXT_BURGESS:
-                return R.style.TextStyleBurgess;
-            case TEXT_LOU:
-                return R.style.TextStyleLou;
-            case TEXT_BOWIE:
-                return R.style.TextStyleBowie;
-            case TEXT_BRIE:
-                return R.style.TextStyleBrie;
-            case TEXT_MATSSON:
-                return R.style.TextStyleMatsson;
-            case TEXT_ISAKOV:
-                return R.style.TextStyleIsakov;
-            case TEXT_ADAMS:
-                return R.style.TextStyleAdams;
-            case TEXT_IRWIN:
-                return R.style.TextStyleIrwin;
-            case TEXT_TARKOVSKY:
-                return R.style.TextStyleTarkovsky;
-            case TEXT_EBERT:
-                return R.style.TextStyleEbert;
-            case TEXT_TOLKIEN:
-                return R.style.TextStyleTolkien;
-            case TEXT_ASIMOV:
-                return R.style.TextStyleAsimov;
-            case TEXT_KUBRICK:
-                return R.style.TextStyleKubrick;
+    private static LinkedHashMap<String, Theme> themesHashMap = null;
+    private static Theme[] themes = null;
+
+
+    public static LinkedHashMap<String, Theme> getAllThemesHashmap() {
+        if (themesHashMap == null) {
+            themesHashMap = new LinkedHashMap<>();
+            themesHashMap.put(THEME_INDIGO, new Theme("Hazy Blues",));
+            themesHashMap.put(THEME_GREEN, new Theme("What... Green?",));
+            themesHashMap.put(THEME_SPOTTY_GUY, new Theme("Spotty Guy",));
+            themesHashMap.put(THEME_BLACK, new Theme("Simply Black",));
+            themesHashMap.put(THEME_WHITE, new Theme("Simply White",));
+            themesHashMap.put(THEME_YELLOW, new Theme("Notably Yellow",));
+            themesHashMap.put(THEME_BLUY_GRAY, new Theme("Bluy Gray",));
+            themesHashMap.put(THEME_TURTLY_SEA, new Theme("Turtly Sea",));
+            themesHashMap.put(THEME_PIXIE_FALLS, new Theme("Pixie Falls",));
+            themesHashMap.put(THEME_RED, new Theme("Oof Hot",));
+            themesHashMap.put(THEME_WANDERING_DUSK, new Theme("Wandy Dusk",));
+            themesHashMap.put(THEME_DAWN, new Theme("Relaxing Dawn",));
+            themesHashMap.put(THEME_FAIRY_FROG, new Theme("Fairy Frog",));
+            themesHashMap.put(THEME_DEEPPURPLE, new Theme("Quite Purply",));
+            themesHashMap.put(THEME_BLUE, new Theme("Even Purplier",));
+            themesHashMap.put(THEME_PURPLE, new Theme("Definitely Purple",));
+            themesHashMap.put(THEME_ORANGE, new Theme("Tantalizing Torange",));
+            themesHashMap.put(THEME_PINK, new Theme("Pinky Promises",));
+            themesHashMap.put(THEME_BROWN, new Theme("Delicious Brownie",));
+            themesHashMap.put(THEME_TEAL, new Theme("Earthy Teal",));
+            themesHashMap.put(THEME_LIGHT_GREEN, new Theme("Greeny Gorilla",));
+            themesHashMap.put(THEME_LIGHT_BLUE, new Theme("Lightly Skyish",));
+            themesHashMap.put(THEME_CYAN, new Theme("Cyanic Teal",));
+            themesHashMap.put(THEME_BLUEGRAY, new Theme("Icy Hills",));
+            themesHashMap.put(THEME_WHITE_GREEN, new Theme("Greeny Everest",));
         }
+        return themesHashMap;
     }
 
-    /**
-     * Used to populate theme select dialogs.
-     *
-     * @return an array containing all available themes
-     */
     public static Theme[] getAllThemes() {
-        Theme[] themes = {
-                new Theme(THEME_INDIGO, "Hazy Blues"),
-                new Theme(THEME_GREEN, "What... Green?"),
-                new Theme(THEME_SPOTTY_GUY, "Spotty Guy"),
-                new Theme(THEME_BLACK, "Simply Black"),
-                new Theme(THEME_WHITE, "Simply White"),
-                new Theme(THEME_YELLOW, "Notably Yellow"),
-                new Theme(THEME_BLUY_GRAY, "Bluy Gray"),
-                new Theme(THEME_TURTLY_SEA, "Turtly Sea"),
-                new Theme(THEME_PIXIE_FALLS, "Pixie Falls"),
-                new Theme(THEME_RED, "Oof Hot"),
-                new Theme(THEME_WANDERING_DUSK, "Wandy Dusk"),
-                new Theme(THEME_DAWN, "Relaxing Dawn"),
-                new Theme(THEME_DEEPPURPLE, "Quite Purply"),
-                new Theme(THEME_BLUE, "Even Purplier"),
-                new Theme(THEME_PURPLE, "Definitely Purple"),
-                new Theme(THEME_ORANGE, "Tantalizing Torange"),
-                new Theme(THEME_PINK, "Pinky Promises"),
-                new Theme(THEME_BROWN, "Delicious Brownie"),
-                new Theme(THEME_TEAL, "Earthy Teal"),
-                new Theme(THEME_LIGHT_GREEN, "Greeny Gorilla"),
-                new Theme(THEME_LIGHT_BLUE, "Lightly Skyish"),
-                new Theme(THEME_CYAN, "Cyanic Teal"),
-                new Theme(THEME_BLUEGRAY, "Icy Hills"),
-                new Theme(THEME_WHITE_GREEN, "Greeny Everest")
-        };
+        if (themes == null)
+            themes = getAllThemesHashmap().values().toArray(new Theme[0]);
         return themes;
     }
 
-    public static Theme[] getAllTextStyles(Context context) {
-        Theme[] styles = {
-                new Theme(TEXT_DEFAULT, context.getString(R.string.action_default)),
-                new Theme(TEXT_PESSOA, "Pessoa"),
-                new Theme(TEXT_LOU, "Lou"),
-                new Theme(TEXT_BURGESS, "Burgess"),
-                new Theme(TEXT_BOWIE, "Bowie"),
-                new Theme(TEXT_BRIE, "Brie"),
-                new Theme(TEXT_MATSSON, "Matsson"),
-                new Theme(TEXT_ISAKOV, "Isakov"),
-                new Theme(TEXT_ADAMS, "Adams"),
-                new Theme(TEXT_IRWIN, "Irwin"),
-                new Theme(TEXT_TARKOVSKY, "Tarkovsky"),
-                new Theme(TEXT_EBERT, "Ebert"),
-                new Theme(TEXT_TOLKIEN, "Tolkien"),
-                new Theme(TEXT_ASIMOV, "Asimov"),
-                new Theme(TEXT_KUBRICK, "Kubrick"),
-        };
-        return styles;
+    private static LinkedHashMap<String, TextStyle> textStyleHashMap = null;
+    private static TextStyle[] textStyles = null;
+
+    public static LinkedHashMap<String, TextStyle> getAllTextStylesHashMap() {
+        if (textStyleHashMap == null) {
+            textStyleHashMap = new LinkedHashMap<>();
+            textStyleHashMap.put(TEXT_DEFAULT, new TextStyle(TEXT_DEFAULT, R.style.TextStyleDefault, "Default"));
+            textStyleHashMap.put(TEXT_PESSOA, new TextStyle(TEXT_PESSOA, R.style.TextStylePessoa, "Pessoa"));
+            textStyleHashMap.put(TEXT_LOU, new TextStyle(TEXT_LOU, R.style.TextStyleLou, "Lou"));
+            textStyleHashMap.put(TEXT_BURGESS, new TextStyle(TEXT_BURGESS, R.style.TextStyleBurgess, "Burgess"));
+            textStyleHashMap.put(TEXT_BOWIE, new TextStyle(TEXT_BOWIE, R.style.TextStyleBowie, "Bowie"));
+            textStyleHashMap.put(TEXT_BRIE, new TextStyle(TEXT_BRIE, R.style.TextStyleBrie, "Brie"));
+            textStyleHashMap.put(TEXT_MATSSON, new TextStyle(TEXT_MATSSON, R.style.TextStyleMatsson, "Matsson"));
+            textStyleHashMap.put(TEXT_ISAKOV, new TextStyle(TEXT_ISAKOV, R.style.TextStyleIsakov, "Isakov"));
+            textStyleHashMap.put(TEXT_ADAMS, new TextStyle(TEXT_ADAMS, R.style.TextStyleAdams, "Adams"));
+            textStyleHashMap.put(TEXT_IRWIN, new TextStyle(TEXT_IRWIN, R.style.TextStyleIrwin, "Irwin"));
+            textStyleHashMap.put(TEXT_TARKOVSKY, new TextStyle(TEXT_TARKOVSKY, R.style.TextStyleTarkovsky, "Tarkovsky"));
+            textStyleHashMap.put(TEXT_EBERT, new TextStyle(TEXT_EBERT, R.style.TextStyleEbert, "Ebert"));
+            textStyleHashMap.put(TEXT_TOLKIEN, new TextStyle(TEXT_TOLKIEN, R.style.TextStyleTolkien, "Tolkien"));
+            textStyleHashMap.put(TEXT_ASIMOV, new TextStyle(TEXT_ASIMOV, R.style.TextStyleAsimov, "Asimov"));
+            textStyleHashMap.put(TEXT_KUBRICK, new TextStyle(TEXT_KUBRICK, R.style.TextStyleKubrick, "Kubrick"));
+        }
+        return textStyleHashMap;
     }
+
+    public static TextStyle[] getAllTextStyles() {
+        if (textStyles == null)
+            textStyles = getAllTextStylesHashMap().values().toArray(new TextStyle[0]);
+        return textStyles;
+    }
+
+//    public static int getThemeGradientNumber(Theme theme) {
+//        switch (theme.getPrefName()) {
+//            case THEME_FAIRY_FROG:
+//                return 3;
+//            default:
+//                return 2;
+//        }
+//    }
 
     /**
      * Returns a {@link GradientDrawable} containing a linear gradient with the given style's colors
      *
      * @param context Context
-     * @param style The style resource contaning the background color definition (colorMainGradient[Start|End])
+     * @param theme The style resource contaning the background color definition (colorMainGradient[Start|End])
      * @return {@link GradientDrawable} containing a linear gradient with the given style's colors
      */
-    public static GradientDrawable fetchBackgroundGradient(Context context, @StyleRes int style) {
-        TypedArray gradientColors = context.obtainStyledAttributes(style, R.styleable.BaseTwistyTheme);
+    public static GradientDrawable fetchBackgroundGradient(Context context, Theme theme) {
+        TypedArray gradientColors = context.obtainStyledAttributes(theme.getResId(), R.styleable.BaseTwistyTheme);
+        GradientDrawable gradientDrawable;
 
-        GradientDrawable gradientDrawable = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientStart, Color.BLUE),
-                          gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientEnd, Color.BLUE)});
+//        switch (getThemeGradientNumber(theme)) {
+//            default:
+//            case 2:
+                gradientDrawable = new GradientDrawable(
+                        GradientDrawable.Orientation.TOP_BOTTOM,
+                        new int[]{gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientStart, Color.BLUE),
+                                  gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientEnd, Color.BLUE)});
+//                break;
+//            case 3:
+//                gradientDrawable = new GradientDrawable(
+//                    GradientDrawable.Orientation.TOP_BOTTOM,
+//                    new int[]{gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientStart, Color.BLUE),
+//                              gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientMiddle, Color.BLUE),
+//                              gradientColors.getColor(R.styleable.BaseTwistyTheme_colorMainGradientEnd, Color.BLUE)});
+//                break;
+//        }
 
         gradientColors.recycle();
 

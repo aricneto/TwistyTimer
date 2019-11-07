@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="BaseTwistyTheme">
         <attr format="color" name="colorMainGradientStart"/>
+        <attr format="color" name="colorMainGradientMiddle"/>
         <attr format="color" name="colorMainGradientEnd"/>
         <attr format="color" name="colorTimerText"/>
         

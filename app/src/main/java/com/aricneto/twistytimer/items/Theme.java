@@ -1,30 +1,29 @@
 package com.aricneto.twistytimer.items;
 
-import com.aricneto.twistytimer.utils.PuzzleUtils;
-import com.aricneto.twistytimer.utils.ThemeUtils;
-
-import androidx.annotation.StyleRes;
+import android.graphics.drawable.GradientDrawable;
 
 public class Theme {
-    // The name that is saved in preferences
-    private String prefName;
     // The name that is shown to the user
-    private String name;
-    // The style resource ID
-    private @StyleRes int resId;
+    private String                       name;
+    // The theme colors
+    private String[]                     colors;
+    // The theme style (radial, linear...)
+    private int                          style;
+    // The theme orientation (top-bottom, bottom-top...)
+    private GradientDrawable.Orientation orientation;
 
-    public Theme(String prefName, String name) {
-        this.prefName = prefName;
+    public Theme(String name, String... colors) {
         this.name = name;
-        this.resId = ThemeUtils.getThemeStyleRes(prefName);
+        this.style = GradientDrawable.LINEAR_GRADIENT;
+        this.colors = colors;
+        this.orientation = GradientDrawable.Orientation.TOP_BOTTOM;
     }
 
-    public String getPrefName() {
-        return prefName;
-    }
-
-    public void setPrefName(String prefName) {
-        this.prefName = prefName;
+    public Theme(String name, int style, GradientDrawable.Orientation orientation, String... colors) {
+        this.name = name;
+        this.style = style;
+        this.colors = colors;
+        this.orientation = orientation;
     }
 
     public String getName() {
@@ -35,11 +34,15 @@ public class Theme {
         this.name = name;
     }
 
-    public int getResId() {
-        return resId;
+    public String[] getColors() {
+        return colors;
     }
 
-    public void setResId(int resId) {
-        this.resId = resId;
+    public int getStyle() {
+        return style;
+    }
+
+    public GradientDrawable.Orientation getOrientation() {
+        return orientation;
     }
 }

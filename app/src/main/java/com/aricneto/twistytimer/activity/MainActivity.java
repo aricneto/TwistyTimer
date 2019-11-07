@@ -194,18 +194,18 @@ public class MainActivity extends AppCompatActivity
         if (DEBUG_ME) Log.d(TAG, "updateLocale(savedInstanceState="
                 + savedInstanceState + "): " + this);
 
-        setTheme(ThemeUtils.getPreferredTheme());
+        setTheme(ThemeUtils.getPreferredTheme().getResId());
 
         // Set text styling
         if (!Prefs.getString(R.string.pk_text_style, "default").equals("default")) {
-            getTheme().applyStyle(ThemeUtils.getPreferredTextStyle(), true);
+            getTheme().applyStyle(ThemeUtils.getPreferredTextStyle().getResId(), true);
         }
 
         // Set navigation bar tint
         if (Prefs.getBoolean(R.string.pk_tint_navigation_bar, false)) {
             getTheme().applyStyle(R.style.TintedNavigationBar, true);
             // Set navigation bar icon tint
-            if (ThemeUtils.fetchAttrBool(this, ThemeUtils.getPreferredTheme(), R.styleable.BaseTwistyTheme_isLightTheme)) {
+            if (ThemeUtils.fetchAttrBool(this, ThemeUtils.getPreferredTheme().getResId(), R.styleable.BaseTwistyTheme_isLightTheme)) {
                 getTheme().applyStyle(R.style.LightNavBarIconStyle, true);
             }
         }

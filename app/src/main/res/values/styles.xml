@@ -55,14 +55,14 @@
         <item name="android:fontFamily">?defaultFontFamily</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
-        <item name="colorMainGradientStart">#084dff</item>
-        <item name="colorMainGradientEnd">#3b12ff</item>
+        <item name="colorMainGradientStart">#05d</item>
+        <item name="colorMainGradientEnd">#0062ff</item>
 
-        <item name="colorTabBar">#2E0CD3</item>
+        <item name="colorActionBar">#004ecc</item>
+        <item name="colorTabBar">#005bee</item>
+
         <item name="colorTabIconSelected">?colorTimerText</item>
         <item name="colorTabIconFaded">@color/tabFadedDark</item>
-
-        <item name="colorActionBar">?colorMainGradientEnd</item>
         <item name="colorAccent">@color/md_amber_A200</item>
 
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
@@ -193,6 +193,17 @@
 
         <item name="colorActionBar">#5bfbfb</item>
         <item name="colorTabBar">#31F7C9</item>
+
+        <item name="colorAccent">#f76642</item>
+    </style>
+
+    <style name="BaseFairyFrog" parent="DefaultTheme.Light">
+        <item name="colorMainGradientStart">#4D92C9</item>
+        <item name="colorMainGradientMiddle">#83ffba</item>
+        <item name="colorMainGradientEnd">#fffc94</item>
+
+        <item name="colorActionBar">#67a2d1</item>
+        <item name="colorTabBar">#fffb61</item>
 
         <item name="colorAccent">#f76642</item>
     </style>
@@ -458,6 +469,9 @@
     <!--
     Custom text styles
     -->
+
+    <style name="TextStyleDefault">
+    </style>
 
     <style name="TextStylePessoa">
         <item name="colorTimerText">@color/md_red_A400</item>

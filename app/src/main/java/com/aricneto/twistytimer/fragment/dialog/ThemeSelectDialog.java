@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.aricneto.twistify.R;
+import com.aricneto.twistytimer.items.TextStyle;
 import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -21,8 +22,10 @@ import com.aricneto.twistytimer.utils.ThemeUtils;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.LinkedHashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -68,8 +71,8 @@ public class ThemeSelectDialog extends DialogFragment {
         themeRecycler.setLayoutManager(themeLayoutManager);
         textStyleRecycler.setLayoutManager(textLayoutManager);
 
-        ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemes(), mContext);
-        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStyles(mContext), mContext);
+        ThemeListAdapter themeListAdapter = new ThemeListAdapter(ThemeUtils.getAllThemesHashmap(), mContext);
+        TextStyleListAdapter textStyleListAdapter = new TextStyleListAdapter(ThemeUtils.getAllTextStylesHashMap(), mContext);
         themeRecycler.setAdapter(themeListAdapter);
         textStyleRecycler.setAdapter(textStyleListAdapter);
 
@@ -93,10 +96,11 @@ public class ThemeSelectDialog extends DialogFragment {
 
 class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHolder> {
 
-    private Theme[] themeSet;
-    private Context mContext;
-    private int cornerRadius;
-    private int strokeWidth;
+    private LinkedHashMap<String, Theme> themeHash;
+    private String[]                     themeNames;
+    private Context                      mContext;
+    private int                          cornerRadius;
+    private int                          strokeWidth;
 
     String currentTheme = Prefs.getString(R.string.pk_theme, "indigo");
 
@@ -113,8 +117,9 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
         }
     }
 
-    ThemeListAdapter(Theme[] themeSet, Context context) {
-        this.themeSet = themeSet;
+    ThemeListAdapter(LinkedHashMap<String, Theme> themeHash, Context context) {
+        this.themeHash = themeHash;
+        this.themeNames = themeHash.keySet().toArray(new String[0]);
         this.mContext = context;
         this.cornerRadius = ThemeUtils.dpToPix(context, 8);
         this.strokeWidth = ThemeUtils.dpToPix(context, 1);
@@ -132,15 +137,15 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         // Create gradient drawable
-        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, themeSet[position].getResId());
+        GradientDrawable gradientDrawable = ThemeUtils.fetchBackgroundGradient(mContext, themeHash.get(themeNames[position]));
         gradientDrawable.setCornerRadius(cornerRadius);
         gradientDrawable.setStroke(strokeWidth, Color.BLACK);
 
         // Set card title and background
-        holder.themeTitle.setText(themeSet[position].getName());
+        holder.themeTitle.setText(themeHash.get(themeNames[position]).getName());
         holder.themeCard.setBackground(gradientDrawable);
 
-        if (themeSet[position].getPrefName().equals(currentTheme)) {
+        if (themeNames[position].equals(currentTheme)) {
             holder.themeTitle.setBackgroundResource(R.drawable.outline_background_card_warn);
         } else {
             holder.themeTitle.setBackground(null);
@@ -152,7 +157,7 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
             public void onClick(View v) {
                 String newTheme;
 
-                newTheme = themeSet[position].getPrefName();
+                newTheme = themeNames[position];
 
                 if (!newTheme.equals(currentTheme)) {
                     Prefs.edit().putString(R.string.pk_theme, newTheme).apply();
@@ -167,7 +172,7 @@ class ThemeListAdapter extends RecyclerView.Adapter<ThemeListAdapter.CardViewHol
 
     @Override
     public int getItemCount() {
-        return themeSet.length;
+        return themeHash.size();
     }
 }
 
@@ -175,11 +180,12 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
 
     private final int cornerRadius;
     private final int strokeWidth;
-    private Theme[] themeSet;
+    private LinkedHashMap<String, TextStyle> textStyleHashMap;
+    private String[] textStyleNames;
     private Context mContext;
 
     private String currentTextStyle = Prefs.getString(R.string.pk_text_style, "default");
-    private @StyleRes int currentTheme = ThemeUtils.getPreferredTheme();
+    private TextStyle currentTheme = ThemeUtils.getPreferredTextStyle();
     int colorTimerText;
 
     static class CardViewHolder extends RecyclerView.ViewHolder {
@@ -195,8 +201,9 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         }
     }
 
-    TextStyleListAdapter(Theme[] themeSet, Context context) {
-        this.themeSet = themeSet;
+    TextStyleListAdapter(LinkedHashMap<String, TextStyle> textStyleHashMap, Context context) {
+        this.textStyleHashMap = textStyleHashMap;
+        this.textStyleNames = textStyleHashMap.keySet().toArray(new String[0]);
         this.mContext = context;
         colorTimerText = ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText);
         this.cornerRadius = ThemeUtils.dpToPix(context, 8);
@@ -221,14 +228,14 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
         gradientDrawable.setStroke(strokeWidth, colorTimerText);
 
         // Set card title and background
-        holder.themeTitle.setText(themeSet[position].getName());
+        holder.themeTitle.setText(textStyleHashMap.get(textStyleNames[position]).getName());
         holder.themeCard.setBackground(gradientDrawable);
-        holder.themeCard.setTextColor(ThemeUtils.fetchStyleableAttr(mContext, themeSet[position].getResId(),
+        holder.themeCard.setTextColor(ThemeUtils.fetchStyleableAttr(mContext, textStyleHashMap.get(textStyleNames[position]).getStyleRes(),
                                                                     R.styleable.BaseTwistyTheme,
                                                                     R.styleable.BaseTwistyTheme_colorTimerText,
                                                                     R.attr.colorTimerText));
 
-        if (themeSet[position].getPrefName().equals(currentTextStyle)) {
+        if (textStyleNames[position].equals(currentTextStyle)) {
             holder.themeTitle.setBackgroundResource(R.drawable.outline_background_card_warn);
             holder.themeTitle.setTextColor(Color.BLACK);
         } else {
@@ -242,7 +249,7 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
             public void onClick(View v) {
                 String newTheme;
 
-                newTheme = themeSet[position].getPrefName();
+                newTheme = textStyleNames[position];
 
                 if (!newTheme.equals(currentTextStyle)) {
                     Prefs.edit().putString(R.string.pk_text_style, newTheme).apply();
@@ -255,7 +262,7 @@ class TextStyleListAdapter extends RecyclerView.Adapter<TextStyleListAdapter.Car
 
     @Override
     public int getItemCount() {
-        return themeSet.length;
+        return textStyleHashMap.size();
     }
 }
 

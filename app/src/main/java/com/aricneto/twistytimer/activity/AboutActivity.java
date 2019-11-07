@@ -100,7 +100,7 @@ public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeUtils.getPreferredTheme());
+        setTheme(ThemeUtils.getPreferredTheme().getResId());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
