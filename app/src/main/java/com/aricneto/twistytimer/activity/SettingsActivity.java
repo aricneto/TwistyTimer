@@ -13,6 +13,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
@@ -364,8 +365,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         private void updateInspectionAlertText() {
             inspectionDuration = Prefs.getInt(R.string.pk_inspection_time, 15);
-            findPreference(getString(R.string.pk_inspection_alert_enabled))
-                    .setSummary(getString(R.string.pref_inspection_alert_summary,
+
+            Preference inspectionPreference = findPreference(getString(R.string.pk_inspection_alert_enabled));
+            if (inspectionPreference != null)
+                    inspectionPreference.setSummary(getString(R.string.pref_inspection_alert_summary,
                             inspectionDuration == 15 ? 8 : (int) (inspectionDuration * 0.5f),
                             inspectionDuration == 15 ? 12 : (int) (inspectionDuration * 0.8f)));
         }

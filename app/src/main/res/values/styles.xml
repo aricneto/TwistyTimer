@@ -55,14 +55,15 @@
         <item name="android:fontFamily">?defaultFontFamily</item>
 
         <!-- These items are those most commonly overridden for the color themes. -->
-        <item name="colorMainGradientStart">#084dff</item>
+        <item name="colorMainGradientStart">#1959ff</item>
         <item name="colorMainGradientEnd">#3b12ff</item>
 
-        <item name="colorTabBar">#2E0CD3</item>
+        <item name="colorActionBar">#0045f6</item>
+        <item name="colorTabBar">#2900ef</item>
+
         <item name="colorTabIconSelected">?colorTimerText</item>
         <item name="colorTabIconFaded">@color/tabFadedDark</item>
 
-        <item name="colorActionBar">?colorMainGradientEnd</item>
         <item name="colorAccent">@color/md_amber_A200</item>
 
         <item name="colorPrimaryDark">?colorMainGradientStart</item>
