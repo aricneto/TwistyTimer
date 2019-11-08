@@ -273,4 +273,9 @@
     <string name="graph_stats_title_global">Celkovo</string>
     <string name="pref_title_manual_mode">Manuálny režim</string>
     <string name="pref_summary_manual_mode">Pridá tlačidlo na obrazovku časovača pre jednoduchšie zadanie v manuálnom režime</string>
+    <string name="list_sort_title">Zoradiť podľa…</string>
+    <string name="list_sort_time">Čas</string>
+    <string name="list_sort_date">Dátum</string>
+    <string name="list_sort_ascending">Vzostupne</string>
+    <string name="list_sort_descending">Zostupne</string>
 </resources>

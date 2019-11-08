@@ -172,74 +172,8 @@ public class TimerListFragment extends BaseFragment
                 case R.id.more_button:
 
                     // Main popup
-                    PopupMenu popupMenu = new PopupMenu(getContext(), moreButton);
+                    PopupMenu popupMenu = new PopupMenu(getActivity(), moreButton);
                     popupMenu.getMenuInflater().inflate(R.menu.menu_list_more, popupMenu.getMenu());
-
-                    MenuPopupHelper popupHelper = new MenuPopupHelper(mContext, (MenuBuilder) popupMenu.getMenu(), moreButton);
-                    popupHelper.setForceShowIcon(true);
-
-                    // Share popup
-                    PopupMenu shareMenu = new PopupMenu(getContext(), moreButton);
-                    shareMenu.getMenuInflater().inflate(R.menu.menu_list_share, shareMenu.getMenu());
-
-                    MenuPopupHelper sharePopupHelper = new MenuPopupHelper(mContext, (MenuBuilder) shareMenu.getMenu(), moreButton);
-                    sharePopupHelper.setForceShowIcon(true);
-
-                    // Sort popup
-                    PopupMenu sortPopupMenu = new PopupMenu(getContext(), moreButton);
-                    sortPopupMenu.getMenuInflater().inflate(R.menu.menu_sort_items, sortPopupMenu.getMenu());
-
-                    MenuPopupHelper sortPopupHelper = new MenuPopupHelper(mContext, (MenuBuilder) sortPopupMenu.getMenu(), moreButton);
-                    sortPopupHelper.setForceShowIcon(true);
-
-                    // Sort popup options
-                    PopupMenu sortPopupOptionsMenu = new PopupMenu(getContext(), moreButton);
-                    sortPopupOptionsMenu.getMenuInflater().inflate(R.menu.menu_sort_options, sortPopupOptionsMenu.getMenu());
-
-                    MenuPopupHelper sortPopupOptionsHelper = new MenuPopupHelper(mContext, (MenuBuilder) sortPopupOptionsMenu.getMenu(), moreButton);
-                    sortPopupOptionsHelper.setForceShowIcon(true);
-
-
-                    shareMenu.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.share_ao5:
-                                PuzzleUtils.shareAverageOf(5, currentPuzzle, mRecentStatistics, getActivity());
-                                break;
-                            case R.id.share_ao12:
-                                PuzzleUtils.shareAverageOf(12, currentPuzzle, mRecentStatistics, getActivity());
-                                break;
-                            case R.id.share_histogram:
-                                PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
-                                break;
-                        }
-                        return true;
-                    });
-
-                    sortPopupMenu.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.sort_time:
-                                orderByKey = DatabaseHandler.KEY_TIME;
-                                break;
-                            case R.id.sort_date:
-                                orderByKey = DatabaseHandler.KEY_DATE;
-                                break;
-                        }
-                        sortPopupOptionsHelper.show();
-                        return true;
-                    });
-
-                    sortPopupOptionsMenu.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.sort_asc:
-                                orderByDir = TimeTaskLoader.DIR_ASC;
-                                break;
-                            case R.id.sort_desc:
-                                orderByDir = TimeTaskLoader.DIR_DESC;
-                                break;
-                        }
-                        reloadList();
-                        return true;
-                    });
 
                     popupMenu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
@@ -259,17 +193,39 @@ public class TimerListFragment extends BaseFragment
                                         .negativeText(R.string.action_cancel)
                                         .build());
                                 break;
-                            case R.id.share:
-                                sharePopupHelper.show();
+                            case R.id.share_ao5:
+                                PuzzleUtils.shareAverageOf(5, currentPuzzle, mRecentStatistics, getActivity());
                                 break;
-                            case R.id.sort:
-                                sortPopupHelper.show();
+                            case R.id.share_ao12:
+                                PuzzleUtils.shareAverageOf(12, currentPuzzle, mRecentStatistics, getActivity());
+                                break;
+                            case R.id.share_histogram:
+                                PuzzleUtils.shareHistogramOf(currentPuzzle, mRecentStatistics, getActivity());
+                                break;
+                            case R.id.sort_time:
+                                orderByKey = DatabaseHandler.KEY_TIME;
+                                break;
+                            case R.id.sort_date:
+                                orderByKey = DatabaseHandler.KEY_DATE;
+                                break;
+                            case R.id.sort_ascd:
+                            case R.id.sort_asc:
+                                orderByDir = TimeTaskLoader.DIR_ASC;
+                                reloadList();
+                                break;
+                            case R.id.sort_descd:
+                            case R.id.sort_desc:
+                                orderByDir = TimeTaskLoader.DIR_DESC;
+                                reloadList();
                                 break;
                                 default:
                                     break;
                         }
                         return true;
                     });
+
+                    MenuPopupHelper popupHelper = new MenuPopupHelper(getActivity(), (MenuBuilder) popupMenu.getMenu(), moreButton);
+                    popupHelper.setForceShowIcon(true);
 
                     popupHelper.show();
                     break;

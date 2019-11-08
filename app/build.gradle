@@ -5,15 +5,16 @@ android {
         config {
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 53
         versionName "4.6.5"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -45,16 +46,18 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.github.thewca:tnoodle:v0.12.0'
     implementation 'com.opencsv:opencsv:3.7'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.appcompat:appcompat-resources:1.1.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
-    implementation "androidx.annotation:annotation:1.0.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
     implementation 'com.takisoft.fix:preference-v7:26.0.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
     // Butterknife ("apt" dependency is defined in root "build.gradle" script).
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'

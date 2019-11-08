@@ -273,4 +273,9 @@
     <string name="graph_stats_title_global">Globalno</string>
     <string name="pref_title_manual_mode">Ručni režim</string>
     <string name="pref_summary_manual_mode">Dodaje dugme na ekran za lakše ručno upisivanje vremena</string>
+    <string name="list_sort_title">Poređaj po…</string>
+    <string name="list_sort_time">Vreme</string>
+    <string name="list_sort_date">Datum</string>
+    <string name="list_sort_ascending">Rastući</string>
+    <string name="list_sort_descending">Opadajući</string>
 </resources>

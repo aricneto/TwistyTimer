@@ -270,4 +270,9 @@
     <string name="graph_stats_title_global">Общее</string>
     <string name="pref_title_manual_mode">Ручной режим</string>
     <string name="pref_summary_manual_mode">Добавляет кнопку на экране таймера для облегчения ввода вручную</string>
+    <string name="list_sort_title">Сортировка по…</string>
+    <string name="list_sort_time">Время</string>
+    <string name="list_sort_date">Дата</string>
+    <string name="list_sort_ascending">По возрастанию</string>
+    <string name="list_sort_descending">По убыванию</string>
 </resources>

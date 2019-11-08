@@ -100,9 +100,9 @@ public class LocaleUtils {
                     put(LITHUANIAN, new Pair<>(R.string.language_lithuanian, R.drawable.flag_lithuania));
                     put(POLISH, new Pair<>(R.string.language_polish, R.drawable.flag_poland));
                     put(CHINESE, new Pair<>(R.string.language_chinese, R.drawable.flag_china));
-                    put(CHINESE_HK, new Pair<>(R.string.language_chinese_hk, R.drawable.flag_hongkong));
-                    put(CHINESE_TW, new Pair<>(R.string.language_chinese_tw, R.drawable.flag_taiwan));
-                    put(CATALAN, new Pair<>(R.string.language_catalan, R.drawable.flag_spain));
+                    //put(CHINESE_HK, new Pair<>(R.string.language_chinese_hk, R.drawable.flag_hongkong));
+                    //put(CHINESE_TW, new Pair<>(R.string.language_chinese_tw, R.drawable.flag_taiwan));
+                    //put(CATALAN, new Pair<>(R.string.language_catalan, R.drawable.flag_spain));
                     put(INDONESIAN, new Pair<>(R.string.language_indonesian, R.drawable.flag_indonesia));
                     put(HEBREW, new Pair<>(R.string.language_hebrew, R.drawable.flag_israel));
                     put(DUTCH, new Pair<>(R.string.language_dutch, R.drawable.flag_netherlands));
@@ -115,10 +115,10 @@ public class LocaleUtils {
                     put(TURKISH, new Pair<>(R.string.language_turkish, R.drawable.flag_turkey));
                     put(SLOVAK, new Pair<>(R.string.language_slovak, R.drawable.flag_slovakia));
                     put(JAPANESE, new Pair<>(R.string.language_japanese, R.drawable.flag_japan));
-                    put(HUNGARIAN, new Pair<>(R.string.language_hungarian, R.drawable.flag_hungary));
+                    //put(HUNGARIAN, new Pair<>(R.string.language_hungarian, R.drawable.flag_hungary));
                     put(VIETNAMESE, new Pair<>(R.string.language_vietnamese, R.drawable.flag_vietnam));
                     put(ARABIC, new Pair<>(R.string.language_arabic, R.drawable.flag_sudan));
-                    put(TAMIL, new Pair<>(R.string.language_tamil, R.drawable.flag_india));
+                    //put(TAMIL, new Pair<>(R.string.language_tamil, R.drawable.flag_india));
                     put(HINDI, new Pair<>(R.string.language_hindi, R.drawable.flag_india));
                 }
             };

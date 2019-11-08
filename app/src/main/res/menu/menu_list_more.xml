@@ -1,18 +1,72 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/unarchive"
         android:icon="@drawable/ic_outline_unarchive_24dp"
-        android:title="@string/list_options_item_from_history"/>
+        android:title="@string/list_options_item_from_history" />
 
     <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_filter_list_24dp"
-        android:title="@string/list_sort_title"/>
+        android:title="@string/list_sort_title">
+        <menu>
+            <item
+                android:id="@+id/sort_time"
+                android:icon="@drawable/ic_alarm_24dp"
+                android:title="@string/list_sort_time">
+
+                <menu>
+                    <item
+                        android:id="@+id/sort_asc"
+                        android:icon="@drawable/ic_arrow_upward_24dp"
+                        android:title="@string/list_sort_ascending" />
+                    <item
+                        android:id="@+id/sort_desc"
+                        android:icon="@drawable/ic_arrow_downward_24dp"
+                        android:title="@string/list_sort_descending" />
+                </menu>
+            </item>
+            <item
+                android:id="@+id/sort_date"
+                android:icon="@drawable/ic_outline_date_range_24dp"
+                android:title="@string/list_sort_date">
+                <menu>
+                    <item
+                        android:id="@+id/sort_ascd"
+                        android:icon="@drawable/ic_arrow_upward_24dp"
+                        android:title="@string/list_sort_ascending" />
+                    <item
+                        android:id="@+id/sort_descd"
+                        android:icon="@drawable/ic_arrow_downward_24dp"
+                        android:title="@string/list_sort_descending" />
+                </menu>
+            </item>
+
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_outline_share_24dp"
-        android:title="@string/fab_share_title"/>
+        android:title="@string/fab_share_title">
+
+        <menu>
+
+            <item
+                android:id="@+id/share_ao5"
+                android:title="@string/fab_share_ao5" />
+
+            <item
+                android:id="@+id/share_ao12"
+                android:title="@string/fab_share_ao12" />
+
+            <item
+                android:id="@+id/share_histogram"
+                android:title="@string/fab_share_distribution" />
+
+        </menu>
+
+    </item>
 
 </menu>

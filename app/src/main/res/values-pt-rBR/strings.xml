@@ -268,4 +268,9 @@
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Modo manual</string>
     <string name="pref_summary_manual_mode">Adiciona um botão na tela principal para facilitar a entrada manual de tempos</string>
+    <string name="list_sort_title">Ordenar por…</string>
+    <string name="list_sort_time">Tempo</string>
+    <string name="list_sort_date">Data</string>
+    <string name="list_sort_ascending">Crescente</string>
+    <string name="list_sort_descending">Decrescente</string>
 </resources>

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.aricneto.twistytimer.database.DatabaseHandler;
 import com.aricneto.twistytimer.utils.LocaleUtils;
 
@@ -12,7 +14,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 /**
  * Created by Ari on 28/07/2015.
  */
-public class TwistyTimer extends Application {
+public class TwistyTimer extends MultiDexApplication {
     /**
      * The singleton instance of the database access handler.
      */

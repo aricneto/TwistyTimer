@@ -272,4 +272,9 @@
     <string name="graph_stats_title_global">גלובלי</string>
     <string name="pref_title_manual_mode">מצב ידני</string>
     <string name="pref_summary_manual_mode">מוסיף כפתור על מסך הטיימר להכנסה קלה יותר של זמנים ידנית</string>
+    <string name="list_sort_title">מיין לפי…</string>
+    <string name="list_sort_time">זמן</string>
+    <string name="list_sort_date">תאריך</string>
+    <string name="list_sort_ascending">סדר עולה</string>
+    <string name="list_sort_descending">סדר יורד</string>
 </resources>

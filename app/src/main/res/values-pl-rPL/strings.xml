@@ -271,4 +271,9 @@ Możesz również stworzyć własną kategorię z własnym zestawem sytuacji</st
     <string name="graph_stats_title_global">Ogólne</string>
     <string name="pref_title_manual_mode">Tryb ręczny</string>
     <string name="pref_summary_manual_mode">Dodaje przycisk na ekranie timera dla łatwiejszego wprowadzenia czasu</string>
+    <string name="list_sort_title">Sortuj według…</string>
+    <string name="list_sort_time">Czas</string>
+    <string name="list_sort_date">Data</string>
+    <string name="list_sort_ascending">Rosnąco</string>
+    <string name="list_sort_descending">Malejąco</string>
 </resources>
