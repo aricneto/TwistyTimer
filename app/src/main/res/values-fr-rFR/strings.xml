@@ -270,4 +270,9 @@
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Mode manuel</string>
     <string name="pref_summary_manual_mode">Ajoute un bouton sur l’écran du chronomètre pour entrer des temps plus facilement</string>
+    <string name="list_sort_title">Trier par…</string>
+    <string name="list_sort_time">Temps</string>
+    <string name="list_sort_date">Date</string>
+    <string name="list_sort_ascending">Croissant</string>
+    <string name="list_sort_descending">Décroissant</string>
 </resources>

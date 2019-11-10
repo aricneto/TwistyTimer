@@ -64,6 +64,7 @@
     <string name="drawer_title_export_import">Xuất/nhập dữ liệu</string>
     <string name="drawer_title_other">Khác</string>
     <string name="drawer_title_reference">Tham khảo</string>
+    <string name="drawer_title_timer">Timer</string>
     <string name="edit_algorithm">Chỉnh sửa thuật toán</string>
     <string name="edit_comment">Sửa Bình luận</string>
     <string name="enable_advanced">Bật cài đặt nâng cao</string>
@@ -141,6 +142,7 @@
     <string name="pref_category_title_locale">Vị trí</string>
     <string name="pref_category_title_other">Khác</string>
     <string name="pref_category_title_scramble">Scramble</string>
+    <string name="pref_category_title_timer">Timer</string>
     <string name="pref_screen_title_inspection_behavior">Kiểm soát hành động</string>
     <string name="pref_screen_title_timer_behavior">Hoạt động của bộ đếm giờ</string>
     <string name="pref_screen_title_timer_appearance">Xuất hiện bộ đếm thời gian</string>
@@ -268,4 +270,9 @@
     <string name="graph_stats_title_global">Chung</string>
     <string name="pref_title_manual_mode">Chế độ thủ công</string>
     <string name="pref_summary_manual_mode">Thêm một nút trên màn hình hẹn giờ để nhập thời gian thủ công dễ dàng hơn</string>
+    <string name="list_sort_title">Sắp xếp theo…</string>
+    <string name="list_sort_time">Thời gian</string>
+    <string name="list_sort_date">Ngày tháng</string>
+    <string name="list_sort_ascending">Tăng dần</string>
+    <string name="list_sort_descending">Giảm dần</string>
 </resources>
