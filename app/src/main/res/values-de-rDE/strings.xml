@@ -262,8 +262,15 @@
     <string name="pref_dialog_dnf_percent">DNFs: %1$d</string>
     <string name="pref_dialog_acceptable_dnf">Maximale Anzahl an DNFs pro Durchschnitt:</string>
     <string name="pref_screen_title_graph">Graph</string>
+    <string name="pref_title_discrete_graph">Streudiagramm</string>
+    <string name="pref_summary_discrete_graph">Stellt den Graphen durch einzelne Punkte statt einer durchgezogenen Linie dar</string>
     <string name="graph_stats_title_session">Sitzung</string>
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Manueller Modus</string>
     <string name="pref_summary_manual_mode">Fügt eine Schaltfläche auf dem Timer-Bildschirm hinzu, um die manuelle Zeiteingabe zu erleichtern</string>
+    <string name="list_sort_title">Sortieren nach…</string>
+    <string name="list_sort_time">Zeit</string>
+    <string name="list_sort_date">Datum</string>
+    <string name="list_sort_ascending">Aufsteigend</string>
+    <string name="list_sort_descending">Absteigend</string>
 </resources>
