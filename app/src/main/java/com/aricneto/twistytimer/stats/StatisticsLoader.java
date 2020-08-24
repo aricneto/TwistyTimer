@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Solve;

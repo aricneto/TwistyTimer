@@ -6,9 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -18,11 +16,9 @@ import android.widget.TextView;
 
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
-import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
 import com.aricneto.twistytimer.adapter.TrainerCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
 import com.aricneto.twistytimer.fragment.AlgListFragment;
-import com.aricneto.twistytimer.items.Theme;
 import com.aricneto.twistytimer.puzzle.TrainerScrambler;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.TTIntent;
@@ -32,13 +28,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

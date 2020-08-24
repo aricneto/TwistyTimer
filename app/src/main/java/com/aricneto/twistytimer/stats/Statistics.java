@@ -11,7 +11,6 @@ import java.util.TreeSet;
 
 import static com.aricneto.twistytimer.stats.AverageCalculator.DNF;
 import static com.aricneto.twistytimer.stats.AverageCalculator.UNKNOWN;
-import static com.aricneto.twistytimer.stats.AverageCalculator.tr;
 
 /**
  * A collection of {@link AverageCalculator} instances that distributes solve times to each

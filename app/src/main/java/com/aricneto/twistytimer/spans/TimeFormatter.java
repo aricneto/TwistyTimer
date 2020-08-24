@@ -2,7 +2,6 @@ package com.aricneto.twistytimer.spans;
 
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 /**

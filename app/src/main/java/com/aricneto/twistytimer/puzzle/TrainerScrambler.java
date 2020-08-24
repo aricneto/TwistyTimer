@@ -2,28 +2,20 @@ package com.aricneto.twistytimer.puzzle;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aricneto.twistify.R;
-import com.aricneto.twistytimer.items.Algorithm;
 import com.aricneto.twistytimer.utils.AlgUtils;
 import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 
 import net.gnehzr.tnoodle.scrambles.InvalidScrambleException;
-import net.gnehzr.tnoodle.scrambles.Puzzle;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import puzzle.CubePuzzle;
 import puzzle.ThreeByThreeCubePuzzle;

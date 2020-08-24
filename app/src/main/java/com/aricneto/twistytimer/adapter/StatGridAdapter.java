@@ -1,8 +1,6 @@
 package com.aricneto.twistytimer.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,11 +9,8 @@ import android.widget.TextView;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.items.Stat;
 import com.aricneto.twistytimer.utils.ThemeUtils;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
-
-import androidx.core.content.res.ResourcesCompat;
 
 /**
  * Created by Ari Neto on 19-Aug-17.
