@@ -77,6 +77,13 @@
                     android:summary="@string/pref_summary_manual_mode" />
 
                 <SwitchPreferenceCompat
+                    android:dependency="@string/pk_enable_manual_entry"
+                    android:defaultValue="false"
+                    android:key="@string/pk_enable_multi_manual_entry"
+                    android:title="@string/pref_title_multi_manual_mode"
+                    android:summary="@string/pref_summary_multi_manual_mode" />
+
+                <SwitchPreferenceCompat
                     android:defaultValue="@bool/default_startCue"
                     android:key="@string/pk_start_cue_enabled"
                     android:summary="@string/startCueSummary"

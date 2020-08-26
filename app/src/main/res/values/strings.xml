@@ -423,5 +423,7 @@
     <string name="graph_stats_title_global">Global</string>
     <string name="pref_title_manual_mode">Manual mode</string>
     <string name="pref_summary_manual_mode">Adds a button on the timer screen for easier manual time entry</string>
+    <string name="pref_title_multi_manual_mode">Multi manual mode</string>
+    <string name="pref_summary_multi_manual_mode">Add time dialog stays visible to enable adding multiple manual times</string>
 
 </resources>

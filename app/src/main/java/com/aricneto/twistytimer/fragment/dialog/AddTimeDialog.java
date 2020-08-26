@@ -31,6 +31,7 @@ import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
 import com.aricneto.twistytimer.items.Solve;
 import com.aricneto.twistytimer.listener.DialogListener;
+import com.aricneto.twistytimer.utils.Prefs;
 import com.aricneto.twistytimer.utils.PuzzleUtils;
 import com.aricneto.twistytimer.utils.TTIntent;
 import com.aricneto.twistytimer.utils.ThemeUtils;
@@ -76,6 +77,7 @@ public class AddTimeDialog extends DialogFragment {
 
     private int mCurrentPenalty = PuzzleUtils.NO_PENALTY;
     private String mCurrentComment = "";
+    private boolean multiManualEntryEnabled;
 
     private Context mContext;
 
@@ -108,7 +110,12 @@ public class AddTimeDialog extends DialogFragment {
                         // Generate new scramble
                         broadcast(CATEGORY_UI_INTERACTIONS, ACTION_GENERATE_SCRAMBLE);
 
-                        dismiss();
+                        if(multiManualEntryEnabled) {
+                            timeEditText.setText("");
+                        }
+                        else {
+                            dismiss();
+                        }
                     } else {
                         dismiss();
                     }
@@ -187,6 +194,8 @@ public class AddTimeDialog extends DialogFragment {
         currentPuzzleSubtype = getArguments().getString("category");
         currentScramble = getArguments().getString("scramble");
         mContext = getContext();
+
+        multiManualEntryEnabled = Prefs.getBoolean(R.string.pk_enable_multi_manual_entry, false);
     }
 
     @Override
