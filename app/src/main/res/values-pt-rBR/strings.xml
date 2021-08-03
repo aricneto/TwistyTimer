@@ -58,6 +58,7 @@
     <string name="dialog_revert_content_confirmation">Restaurar os algoritmos deste caso de volta para o padrão?</string>
     <string name="dialog_revert_title_confirmation">Restaurar algoritmos</string>
     <string name="dialog_set_progress">Atualizar progresso</string>
+    <string name="dialog_filter_progress">Filtrar por progresso</string>
     <string name="drawer_about">Sobre e feedback</string>
     <string name="drawer_title_changeColorScheme">Cores do cubo</string>
     <string name="drawer_title_changeTheme">Tema do app</string>

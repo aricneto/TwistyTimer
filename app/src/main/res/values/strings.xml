@@ -87,6 +87,7 @@
     <string name="dialog_revert_content_confirmation">Reset the algorithms for this case back to the default?</string>
     <string name="dialog_revert_title_confirmation">Reset algorithms</string>
     <string name="dialog_set_progress">Set progress</string>
+    <string name="dialog_filter_progress">Filter by progress</string>
 
     <string name="donation_tier1" translatable="false">1 USD</string>
     <string name="donation_tier2" translatable="false">2 USD</string>

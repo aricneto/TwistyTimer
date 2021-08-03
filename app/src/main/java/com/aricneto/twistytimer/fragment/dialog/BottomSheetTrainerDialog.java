@@ -173,7 +173,7 @@ public class BottomSheetTrainerDialog extends BottomSheetDialogFragment implemen
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new AlgTaskLoader(currentSubset.name());
+        return new AlgTaskLoader(currentSubset.name(), 100);
     }
 
     @Override

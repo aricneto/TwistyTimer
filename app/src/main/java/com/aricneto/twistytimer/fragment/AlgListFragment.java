@@ -14,13 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.activity.MainActivity;
 import com.aricneto.twistytimer.adapter.AlgCursorAdapter;
 import com.aricneto.twistytimer.database.AlgTaskLoader;
+import com.aricneto.twistytimer.fragment.dialog.CategorySelectDialog;
 import com.aricneto.twistytimer.utils.TTIntent.TTFragmentBroadcastReceiver;
 import com.aricneto.twistytimer.utils.ThemeUtils;
 
+import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,14 +35,17 @@ import butterknife.Unbinder;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_ALGS_MODIFIED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_CATEGORY;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_CHANGED_THEME;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_HISTORY_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_OFF;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SELECTION_MODE_ON;
+import static com.aricneto.twistytimer.utils.TTIntent.ACTION_SESSION_TIMES_SHOWN;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STARTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIMER_STOPPED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_SELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TIME_UNSELECTED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_TOOLBAR_RESTORED;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_ALG_DATA_CHANGES;
+import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES;
 import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_UI_INTERACTIONS;
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 import static com.aricneto.twistytimer.utils.TTIntent.registerReceiver;
@@ -48,6 +54,8 @@ import static com.aricneto.twistytimer.utils.TTIntent.unregisterReceiver;
 public class AlgListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_SUBSET = "subset";
+    private Context mContext;
+    private int progress_filter = 100;
 
     @BindView(R.id.root)
     LinearLayout rootLayout;
@@ -67,6 +75,9 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
     @BindView(R.id.nav_button_category)
     View button2;
 
+    @BindView(R.id.nav_button_filter)
+    View navButtonFilter;
+
     @BindView(R.id.nav_button_settings)
     View buttonSettings;
 
@@ -84,6 +95,28 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
             switch (intent.getAction()) {
                 case ACTION_ALGS_MODIFIED:
                     reloadList();
+                    break;
+            }
+        }
+    };
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.nav_button_filter:
+                    final AppCompatSeekBar seekBar = (AppCompatSeekBar) LayoutInflater.from(mContext).inflate(R.layout.dialog_progress, null);
+                    seekBar.setProgress(100);
+                    ThemeUtils.roundAndShowDialog(mContext, new MaterialDialog.Builder(mContext)
+                            .title(R.string.dialog_filter_progress)
+                            .customView(seekBar, false)
+                            .positiveText(R.string.action_update)
+                            .negativeText(R.string.action_cancel)
+                            .onPositive((dialog12, which) -> {
+                                progress_filter = seekBar.getProgress();
+                                reloadList();
+                            })
+                            .build());
                     break;
             }
         }
@@ -133,7 +166,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alg_list, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
-
+        mContext = getContext();
         rootLayout.setBackground(ThemeUtils.fetchBackgroundGradient(getContext(), ThemeUtils.getPreferredTheme()));
 
         titleView.setText(R.string.title_algorithms);
@@ -142,6 +175,8 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
         spinnerIcon.setVisibility(View.GONE);
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
+        navButtonFilter.setVisibility(View.VISIBLE);
+        navButtonFilter.setOnClickListener(clickListener);
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +216,7 @@ public class AlgListFragment extends BaseFragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new AlgTaskLoader(currentSubset);
+        return new AlgTaskLoader(currentSubset, progress_filter);
     }
 
     @Override

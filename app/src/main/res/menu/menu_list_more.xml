@@ -7,22 +7,18 @@
 
     <item
         android:id="@+id/sort"
-        android:icon="@drawable/ic_filter_list_24dp"
         android:title="@string/list_sort_title">
         <menu>
             <item
                 android:id="@+id/sort_time"
-                android:icon="@drawable/ic_alarm_24dp"
                 android:title="@string/list_sort_time">
 
                 <menu>
                     <item
                         android:id="@+id/sort_asc"
-                        android:icon="@drawable/ic_arrow_upward_24dp"
                         android:title="@string/list_sort_ascending" />
                     <item
                         android:id="@+id/sort_desc"
-                        android:icon="@drawable/ic_arrow_downward_24dp"
                         android:title="@string/list_sort_descending" />
                 </menu>
             </item>
@@ -33,11 +29,9 @@
                 <menu>
                     <item
                         android:id="@+id/sort_ascd"
-                        android:icon="@drawable/ic_arrow_upward_24dp"
                         android:title="@string/list_sort_ascending" />
                     <item
                         android:id="@+id/sort_descd"
-                        android:icon="@drawable/ic_arrow_downward_24dp"
                         android:title="@string/list_sort_descending" />
                 </menu>
             </item>

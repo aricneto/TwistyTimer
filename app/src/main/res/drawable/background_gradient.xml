@@ -17,7 +17,7 @@
 
         <bitmap
             android:alpha="0.1"
-            android:src="@drawable/twisty_pattern"
+            android:src="@drawable/icon_launch"
             android:tileMode="repeat" />
 
     </item>
