@@ -120,7 +120,7 @@
     <string name="pagerEnabledSummary">Jika pengaturan ini dimatikan, Anda harus mengetuk label untuk berpindah di antara mereka.</string>
     <string name="pagerEnabledTitle">Perbolehkan menggeser antara label</string>
     <string name="panel_swipe_down_to_hide">Geser ke bawah untuk menyembunyikan</string>
-    <string name="permission_denied_explanation">Agar fitur ekspor/impor bekerja, Anda perlu memberi izin Twisty Timer untuk mengakses penyimpanan eksternal Anda.</string>
+    <string name="permission_denied_explanation">Agar fitur ekspor/impor bekerja, Anda perlu memberi izin Cubic Timer untuk mengakses penyimpanan eksternal Anda.</string>
     <string name="personal_best_message">Selamat!\nAnda telah mengalahkan waktu terbaik Anda sebelumnya untuk %1$s</string>
     <string name="personal_worst_message">Selamat!\nTadi adalah penyelesaian terburuk Anda sejauh ini, mengalahkan rekor Anda sebelumnya untuk %1$s</string>
     <string name="pref_category_title_inspection">Inspeksi</string>

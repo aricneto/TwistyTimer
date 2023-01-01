@@ -118,7 +118,7 @@
     <string name="pagerEnabledSummary">Om denna inställning är inaktiverad, måste du trycka på flikarna för att växla mellan dem.</string>
     <string name="pagerEnabledTitle">Tillåt svepning mellan flikar</string>
     <string name="panel_swipe_down_to_hide">Svep ner för att dölja</string>
-    <string name="permission_denied_explanation">För att export/import funktion ska fungera måste du ge Twisty Timer åtkomstbehörighet till din externa lagring.</string>
+    <string name="permission_denied_explanation">För att export/import funktion ska fungera måste du ge Cubic Timer åtkomstbehörighet till din externa lagring.</string>
     <string name="personal_best_message">Grattis!\nDu har just slagit ditt personbästa med %1$s</string>
     <string name="personal_worst_message">Grattis!\nDet där var den sämsta tiden du har fått hittills, som slår ditt rekord med %1$s</string>
     <string name="pref_category_title_inspection">Inspektion</string>

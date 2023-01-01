@@ -128,7 +128,7 @@
     <string name="pagerEnabledSummary">Si esta opción está desactivada, deberás tocar las páginas para cambiar entre ellas.</string>
     <string name="pagerEnabledTitle">Permitir deslizar entre páginas</string>
     <string name="panel_swipe_down_to_hide">Deslizar hacia abajo para esconder</string>
-    <string name="permission_denied_explanation">Para que la función de exportar/importar funcione, es necesario otorgar a Twisty Timer permisos de acceso al almacenamiento externo.</string>
+    <string name="permission_denied_explanation">Para que la función de exportar/importar funcione, es necesario otorgar a Cubic Timer permisos de acceso al almacenamiento externo.</string>
     <string name="personal_best_message">¡Felicidades!\nHas batido tu anterior mejor tiempo por %1$s</string>
     <string name="personal_worst_message">¡Felicidades!\nEsta es la peor resolución que has hecho hasta ahora, batiendo récord por %1$s</string>
     <string name="pref_category_title_advanced">Avanzado</string>
@@ -236,7 +236,7 @@
     <string name="trainer_help_message">Para empezar a entrenar, seleccione los casos que desea entrenar pulsando el título arriba\nTambién puede crear categorías con diferentes casos</string>
     <string name="trainer_spinner_title">Seleccione los casos para entrenar</string>
     <string name="trainer_select_all">Seleccionar todo</string>
-    <string name="about_translate_title">¡Ayuda a traducir Twisty Timer!</string>
+    <string name="about_translate_title">¡Ayuda a traducir Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Guardar la mezcla actual</string>
     <string name="pref_summary_new">Preferencias añadidas recientemente</string>
     <string name="pref_summary_tint_navigation">Experimental. La barra de navegación va con el tema del cronómetro. \n ¡Solo funciona para Android Lollipop y superior!</string>
@@ -247,7 +247,7 @@
     <string name="pref_screen_title_general">General</string>
     <string name="pref_screen_title_list">Lista</string>
     <string name="unarchive_dialog_summary">Actualmente tienes %1$d solves archivadas.\n\n¿Cuántas soluciones deseas desarchivar? Se desarchivarán primero a las soluciones más recientes.</string>
-    <string name="donation_message">Tu donación me ayuda a hacer que el Twisty Timer sea aún mejor para todos :)</string>
+    <string name="donation_message">Tu donación me ayuda a hacer que el Cubic Timer sea aún mejor para todos :)</string>
     <string name="pref_animation_duration_title">Duración de la animación</string>
     <string name="pref_animation_duration_summary">Controla la duración en milisegundos de todas las animaciones de temporizador</string>
     <string name="pref_screen_title_statistics">Estatísticas</string>

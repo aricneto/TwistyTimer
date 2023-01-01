@@ -236,7 +236,7 @@
     <string name="trainer_help_message">Для початку тренування виберіть випадки які ви хочете тренувати натиском на назви вище\n Також ви можете створювати категорії з різними наборами випадків</string>
     <string name="trainer_spinner_title">Оберіть випадки для тренування</string>
     <string name="trainer_select_all">Вибрати все</string>
-    <string name="about_translate_title">Допоможіть з перекладом Twisty Timer!</string>
+    <string name="about_translate_title">Допоможіть з перекладом Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Зберегти поточний скрамбл</string>
     <string name="pref_summary_new">Нещодавно додані уподобання</string>
     <string name="pref_summary_tint_navigation">Експериментально. Фарбує навігаційну панель кольорами теми.\n Працює тільки на Android Lollipop і вище!</string>
@@ -247,7 +247,7 @@
     <string name="pref_screen_title_general">Загальне</string>
     <string name="pref_screen_title_list">Список</string>
     <string name="unarchive_dialog_summary">На даний момент ви маєте %1$d архівованих збірок. \n\n Скільки збірок ви бажаєте розархівувати? Це розархівує ваші останні збірки.</string>
-    <string name="donation_message">Ваше пожертвування допомагає мені робити Twisty Timer краще для всіх :)</string>
+    <string name="donation_message">Ваше пожертвування допомагає мені робити Cubic Timer краще для всіх :)</string>
     <string name="pref_animation_duration_title">Тривалість анімації</string>
     <string name="pref_animation_duration_summary">Контролює тривалість всіх анімацій таймера в мілісекундах</string>
     <string name="pref_screen_title_statistics">Статистика</string>

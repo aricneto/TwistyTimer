@@ -205,7 +205,7 @@
 
     <string name="panel_swipe_down_to_hide">Swipe down to hide</string>
 
-    <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Twisty Timer permission to access your external storage.</string>
+    <string name="permission_denied_explanation">For the export/import feature to work, you need to grant Cubic Timer permission to access your external storage.</string>
 
     <string name="personal_best_message">Congratulations!\nYou\'ve just beaten your previous personal best by %1$s</string>
     <string name="personal_worst_message">Congratulations!\nThat\'s the worst solve you\'ve done so far, beating your record by %1$s</string>
@@ -394,7 +394,7 @@
     <string name="language_chinese_tw" translatable="false">臺語</string>
 
 
-    <string name="about_translate_title">Help translate Twisty Timer!</string>
+    <string name="about_translate_title">Help translate Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Save current scramble</string>
     <string name="pref_summary_new">Recently added preferences</string>
     <string name="pref_summary_tint_navigation">Experimental. Tints the navigation bar with the theme colors.\nOnly works on Android Lollipop and up!</string>
@@ -406,7 +406,7 @@
     <string name="pref_screen_title_list">List</string>
     <string name="unarchive_dialog_summary">You currently have %1$d solves archived.\n\nHow many solves do you wish to unarchive? This will unarchive the most recent solves first.</string>
     <string translatable="false" name="title_activity_donate">DonateActivity</string>
-    <string name="donation_message">Your donation helps me make Twisty Timer even better for everyone :)</string>
+    <string name="donation_message">Your donation helps me make Cubic Timer even better for everyone :)</string>
     <string name="pref_animation_duration_title">Animation duration</string>
     <string name="pref_animation_duration_summary">Controls the duration in milliseconds for all timer animations</string>
     <string name="pref_screen_title_statistics">Statistics</string>

@@ -30,7 +30,7 @@
             android:textSize="10sp"
             android:textStyle="normal" />
 
-        <com.aricneto.twistytimer.layout.Cube
+        <com.hatopigeon.cubictimer.layout.Cube
             android:id="@+id/cube"
             android:layout_width="72dp"
             android:layout_height="72dp"

@@ -128,7 +128,7 @@
     <string name="pagerEnabledSummary">如果禁用这个设置，需要点击标签来切换。</string>
     <string name="pagerEnabledTitle">允许标签页之间的滑动</string>
     <string name="panel_swipe_down_to_hide">向下滑动以隐藏</string>
-    <string name="permission_denied_explanation">为了使用导入/导出功能，你需要授权给Twisty Timer使用外部存储器的权限。</string>
+    <string name="permission_denied_explanation">为了使用导入/导出功能，你需要授权给Cubic Timer使用外部存储器的权限。</string>
     <string name="personal_best_message">恭喜！\n你刚刚打破了你先前的最好成绩，进步了%1$s</string>
     <string name="personal_worst_message">抱歉！\n这是你的最差成绩，比先前还慢了%1$s</string>
     <string name="pref_category_title_advanced">高级设置</string>
@@ -235,7 +235,7 @@
     <string name="trainer_help_message">开始训练前，请点击顶部按钮选定你想要练习的情况</string>
     <string name="trainer_spinner_title">选择你想练习的情况</string>
     <string name="trainer_select_all">全选</string>
-    <string name="about_translate_title">帮助翻译Twisty Timer</string>
+    <string name="about_translate_title">帮助翻译Cubic Timer</string>
     <string name="dialog_add_time_use_scramble">保存当前打乱</string>
     <string name="pref_summary_new">最近添加的首选项</string>
     <string name="pref_summary_tint_navigation">测试中！导航栏显示主题颜色，仅支持安卓5.0以上版本！</string>
@@ -246,7 +246,7 @@
     <string name="pref_screen_title_general">通用</string>
     <string name="pref_screen_title_list">列表</string>
     <string name="unarchive_dialog_summary">你已经归档了 %1$d 次还原。\n\n你想要取消多少次归档？（会优先取消最近的归档成绩）</string>
-    <string name="donation_message">感谢你的慷慨捐助让Twisty Timer变得更好！</string>
+    <string name="donation_message">感谢你的慷慨捐助让Cubic Timer变得更好！</string>
     <string name="pref_animation_duration_title">动画时长</string>
     <string name="pref_animation_duration_summary">控制计时器动画的持续时间（毫秒）</string>
     <string name="pref_screen_title_statistics">统计</string>

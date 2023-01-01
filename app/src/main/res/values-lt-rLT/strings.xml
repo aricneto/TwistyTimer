@@ -123,7 +123,7 @@
     <string name="pagerEnabledSummary">Jei šis nustatymas išjungtas, jūs turėsite paliesti kortėlę, kad ją perjungtūte.</string>
     <string name="pagerEnabledTitle">Leisti braukti tarp kortų</string>
     <string name="panel_swipe_down_to_hide">Braukite žemyn, kad paslėptumėte</string>
-    <string name="permission_denied_explanation">Kad eksportavimas/importavimas veiktų, jums reikia suteikti Twisty Timer leidimą pasiekti išorinę saugyklą (SD kortą).</string>
+    <string name="permission_denied_explanation">Kad eksportavimas/importavimas veiktų, jums reikia suteikti Cubic Timer leidimą pasiekti išorinę saugyklą (SD kortą).</string>
     <string name="personal_best_message">Sveikinimai!\nJūs įveikėte savo asmeninį rekordą %1$s</string>
     <string name="personal_worst_message">Sveikinimai!\nTai prasčiausis jūsų sprendimas kol kas, įveikiant jūsų rekordą %1$s</string>
     <string name="pref_category_title_advanced">Plačiau</string>
@@ -233,7 +233,7 @@
     <string name="trainer_help_message">Kad pradėti treniruotis, pasirinkite atvejus kuriuos norite treniruotis paspaudus užrašą viršuje\nTaip pat galite sukurti kategorijas su skirtingais atvejais</string>
     <string name="trainer_spinner_title">Pasirinkite kuriuos atvejus treniruotis</string>
     <string name="trainer_select_all">Pasirinkti viską</string>
-    <string name="about_translate_title">Padėkite išversti Twisty Timer!</string>
+    <string name="about_translate_title">Padėkite išversti Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Išsaugoti mišinį</string>
     <string name="pref_summary_new">Ne seniai pridėti nustatymai</string>
     <string name="pref_summary_tint_navigation">Eksperimentinis. Atspindi naršymo juostą su temos spalva.\nVeikia tik su \"Android Lollipop\" ir aukštesnėmis versijomis!</string>

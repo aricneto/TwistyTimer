@@ -128,7 +128,7 @@
     <string name="pagerEnabledSummary">Si esta opció està desactivada, deuràs esgolar les pàgines per a canviar entre elles.</string>
     <string name="pagerEnabledTitle">Permetre esgolar entre pàgines</string>
     <string name="panel_swipe_down_to_hide">Esgolar cap avall per a amagar</string>
-    <string name="permission_denied_explanation">Per a que la funció d\'exportar/importar funcione, es necessari otorgar a Twisty Timer permissos d\'accés a l\'almagacenament extern.</string>
+    <string name="permission_denied_explanation">Per a que la funció d\'exportar/importar funcione, es necessari otorgar a Cubic Timer permissos d\'accés a l\'almagacenament extern.</string>
     <string name="personal_best_message">¡Felicitats!\nHas batut el teu anterior millor temps per %1$s</string>
     <string name="personal_worst_message">¡Felicitats!\nEste és el pijor temps resolt que has fet fins ara, batent el récort per %1$s</string>
     <string name="pref_category_title_advanced">Alvançat</string>
@@ -236,7 +236,7 @@
     <string name="trainer_help_message">Per a començar l\'entrenament, trie els casos que vulga practicar prement el títul al damunt\nTambé pots crear categories amb distintes col·leccions de casos</string>
     <string name="trainer_spinner_title">Trie casos per a practicar</string>
     <string name="trainer_select_all">Triar tots</string>
-    <string name="about_translate_title">Ajuda\'ns a traduir Twisty Timer!</string>
+    <string name="about_translate_title">Ajuda\'ns a traduir Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Guardar la mescla actual</string>
     <string name="pref_summary_new">Configuracions afegides recentment</string>
     <string name="pref_summary_tint_navigation">Experimental. Acoloreix la barra de navegació amb els colors del tema.\nNomés funciona a Android Lollipop i superiors!</string>
@@ -247,7 +247,7 @@
     <string name="pref_screen_title_general">General</string>
     <string name="pref_screen_title_list">Llistat</string>
     <string name="unarchive_dialog_summary">Actualment tens %1$d resolucions arxivades.\n\nQuantes resolucions vols treure de l\'arxiu? Açò treurà les resolucions més noves primer.</string>
-    <string name="donation_message">La teua donació m\'ajuda fer Twisty Timer millor per tothom :)</string>
+    <string name="donation_message">La teua donació m\'ajuda fer Cubic Timer millor per tothom :)</string>
     <string name="pref_animation_duration_title">Duració de l\'animació</string>
     <string name="pref_animation_duration_summary">Controla la duració de l\'animació en milisegons per a totes les animacions del cronòmetre</string>
     <string name="pref_screen_title_statistics">Estadístiques</string>

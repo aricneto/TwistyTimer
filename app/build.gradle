@@ -8,7 +8,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.aricneto.twistytimer"
+        applicationId "com.hatopigeon.cubictimer"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 53
@@ -21,13 +21,13 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
-            resValue "string", "app_name", "Twisty Timer"
-            resValue "string", "file_provider_authority", "com.aricneto.twistytimer.fileprovider"
+            resValue "string", "app_name", "Cubic Timer"
+            resValue "string", "file_provider_authority", "com.hatopigeon.cubictimer.fileprovider"
         }
         debug {
             applicationIdSuffix ".debug"
-            resValue "string", "app_name", "Twisty Timer (Debug)"
-            resValue "string", "file_provider_authority", "com.aricneto.twistytimer.debug.fileprovider"
+            resValue "string", "app_name", "Cubic Timer (Debug)"
+            resValue "string", "file_provider_authority", "com.hatopigeon.cubictimer.debug.fileprovider"
         }
     }
     productFlavors {

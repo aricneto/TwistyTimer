@@ -131,7 +131,7 @@
     <string name="pagerEnabledSummary">この設定をオフにするとスワップでタブの切り替えができなくなります</string>
     <string name="pagerEnabledTitle">スワップでのタブの切り替えを許可する</string>
     <string name="panel_swipe_down_to_hide">下にスワップしてヒントを隠す</string>
-    <string name="permission_denied_explanation">エクスポート/インポート機能を実行するには、twisty timerに、外部ストレージにアクセスする権限を付与する必要があります。</string>
+    <string name="permission_denied_explanation">エクスポート/インポート機能を実行するには、Cubic Timerに、外部ストレージにアクセスする権限を付与する必要があります。</string>
     <string name="personal_best_message">おめでとうございます‼ \n自己ベストから %1$sの更新です</string>
     <string name="personal_worst_message">残念！\n ワーストタイムを%1$s更新！</string>
     <string name="pref_category_title_advanced">詳細</string>
@@ -249,7 +249,7 @@
     <string name="pref_screen_title_general">基本設定</string>
     <string name="pref_screen_title_list">一覧</string>
     <string name="unarchive_dialog_summary">%1$d 件アーカイブされています。\n もとに戻したい個数を入力してください。\n ただし、一番最新のものから処理されます。</string>
-    <string name="donation_message">あなたの支援によってTwisty Timer は使用者皆様により質の高いサービスを提供できます。</string>
+    <string name="donation_message">あなたの支援によってCubic Timer は使用者皆様により質の高いサービスを提供できます。</string>
     <string name="pref_animation_duration_title">アニメーション速度</string>
     <string name="pref_animation_duration_summary">ミリ秒単位でタイマーのアニメーション速度を制御する</string>
     <string name="pref_screen_title_statistics">統計</string>
