@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     tools:background="?colorPrimary"
-    tools:context="com.aricneto.twistytimer.fragment.TimerFragment">
+    tools:context="com.hatopigeon.cubictimer.fragment.TimerFragment">
 
     <!-- The margin is there so that opening the drawer doesn't start the timer -->
     <FrameLayout
@@ -56,7 +56,7 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <com.aricneto.twistytimer.layout.ChronometerMilli
+    <com.hatopigeon.cubictimer.layout.ChronometerMilli
         android:id="@+id/chronometer"
         android:layout_width="match_parent"
         android:layout_height="140dp"

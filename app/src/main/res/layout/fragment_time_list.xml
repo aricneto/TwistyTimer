@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingTop="?actionBarPadding"
     android:paddingBottom="?tabBarSize"
-    tools:context="com.aricneto.twistytimer.fragment.TimerListFragment">
+    tools:context="com.hatopigeon.cubictimer.fragment.TimerListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"

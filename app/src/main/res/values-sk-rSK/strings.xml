@@ -131,7 +131,7 @@
     <string name="pagerEnabledSummary">Ak je toto nastavenie vypnuté, musíte kliknúť na karty aby ste sa medzi nimi prepli.</string>
     <string name="pagerEnabledTitle">Povoliť potiahnutie medzi kartami</string>
     <string name="panel_swipe_down_to_hide">Skryte potiahnutím dole</string>
-    <string name="permission_denied_explanation">Aby funkcia exportovania/importovania fungovala, musíte prideliť aplikácií Twisty Timer povolenie pre prístup na úložisko.</string>
+    <string name="permission_denied_explanation">Aby funkcia exportovania/importovania fungovala, musíte prideliť aplikácií Cubic Timer povolenie pre prístup na úložisko.</string>
     <string name="personal_best_message">Gratulujeme!\nPráve ste pokorili svoj predošlý osobný rekord o %1$s</string>
     <string name="personal_worst_message">Gratulujeme!\nToto je zatiaľ vaše najhoršie zloženie, pokorili ste svoj rekord o %1$s</string>
     <string name="pref_category_title_advanced">Rozšírené</string>
@@ -241,7 +241,7 @@
     <string name="trainer_help_message">Na začatie trénovania vyberte situáciu, ktorú chcete trénovať kliknutím na text vyššie\nTaktiež môžete vytvárať kategórie s rozličnými sadami prípadov</string>
     <string name="trainer_spinner_title">Vyberte prípad na trénovanie</string>
     <string name="trainer_select_all">Vybrať všetky</string>
-    <string name="about_translate_title">Pomôžte preložiť Twisty Timer!</string>
+    <string name="about_translate_title">Pomôžte preložiť Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Uložiť aktuálne rozloženie</string>
     <string name="pref_summary_new">Nedávno pridané funkcie</string>
     <string name="pref_summary_tint_navigation">Experimentálne. Sfarbí panel navigácie podľa farieb témy.\nFunguje len na Androide Lollipop a vyššom!</string>
@@ -252,7 +252,7 @@
     <string name="pref_screen_title_general">Všeobecné</string>
     <string name="pref_screen_title_list">Zoznam</string>
     <string name="unarchive_dialog_summary">Aktuálne máte %1$d archivovaných zložení.\n\nKoľkým zloženiam chcete zrušiť archiváciu? Táto operácia zruší archiváciu posledným zloženiam.</string>
-    <string name="donation_message">Vaše príspevky mi pomáhajú robiť Twisty Timer pre každého ešte lepší :)</string>
+    <string name="donation_message">Vaše príspevky mi pomáhajú robiť Cubic Timer pre každého ešte lepší :)</string>
     <string name="pref_animation_duration_title">Dĺžka animácie</string>
     <string name="pref_animation_duration_summary">Ovláda dĺžku animácie v milisekundách pre všetky animácie v časovači</string>
     <string name="pref_screen_title_statistics">Štatistiky</string>

@@ -7,3 +7,5 @@ Sorashi
 druidalek
 freundTech
 aswna
+Doug Melton
+hatoya

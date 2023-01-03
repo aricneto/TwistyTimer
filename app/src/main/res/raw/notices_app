@@ -75,6 +75,11 @@
         <copyright>Country flag icons designed by Freepik from Flaticon</copyright>
     </notice>
     <notice>
+        <name>usb-serial-for-android</name>
+        <url>https://github.com/mik3y/usb-serial-for-android</url>
+        <copyright>Copyright (c) 2022 Kai Morich - MIT License</copyright>
+    </notice>
+    <notice>
         <name>Apache Software License 2.0</name>
         <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         <license>Apache Software License 2.0</license>

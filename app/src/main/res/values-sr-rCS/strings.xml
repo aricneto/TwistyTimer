@@ -132,7 +132,7 @@
     <string name="pagerEnabledSummary">Ako je ova opcija omogućena, moraćete da dodirnete tab kako biste ih menjali međusobno.</string>
     <string name="pagerEnabledTitle">Dozvoli menjanje izmedju tabova</string>
     <string name="panel_swipe_down_to_hide">Povuci dole da sakriješ</string>
-    <string name="permission_denied_explanation">Kako bi izvoz/uvoz opcija radila, moraćete da date Twisty timer-u dozvolu da pristupi vašoj memoriji telefona.</string>
+    <string name="permission_denied_explanation">Kako bi izvoz/uvoz opcija radila, moraćete da date Cubic Timer-u dozvolu da pristupi vašoj memoriji telefona.</string>
     <string name="personal_best_message">Svaka čast! \nUpravo si oborio svoj rekord za %1$s</string>
     <string name="personal_worst_message">Svaka čast!\nTo je najgore slaganje do sada i time obaraš rekord za %1$s</string>
     <string name="pref_category_title_advanced">Napredno</string>
@@ -241,7 +241,7 @@
     <string name="trainer_help_message">Da biste započeli obuku, izaberite slučajeve koje želite da vežbate tako što ćete tapnuti na naslov iznad\nMožete takodje kreirati kategorije sa različitim grupama slučajeva</string>
     <string name="trainer_spinner_title">Odaberite slučajeve da biste vežbali</string>
     <string name="trainer_select_all">Izaberi sve</string>
-    <string name="about_translate_title">Pomozi u prevodu Twisty Timer-a!</string>
+    <string name="about_translate_title">Pomozi u prevodu Cubic Timer-a!</string>
     <string name="dialog_add_time_use_scramble">Sačuvaj trenutni scramble</string>
     <string name="pref_summary_new">Nedavno dodate preference</string>
     <string name="pref_summary_tint_navigation">Eksperimentalno. Oboji traku za navigaciju sa bojama.\nRadi samo na Android Lollipop i naviše!</string>
@@ -252,7 +252,7 @@
     <string name="pref_screen_title_general">Opšte</string>
     <string name="pref_screen_title_list">Lista</string>
     <string name="unarchive_dialog_summary">Trenutno imate %1$d slaganja arhivirano.\n\n Koliko slaganja želite li da unarhivirate? Ovo će unarhivirati najskorija slaganja prvo.</string>
-    <string name="donation_message">Vaša donacija mi pomaze da učinim Twisty Timer jos bolji za sve :)</string>
+    <string name="donation_message">Vaša donacija mi pomaze da učinim Cubic Timer jos bolji za sve :)</string>
     <string name="pref_animation_duration_title">Trajanje animacije</string>
     <string name="pref_animation_duration_summary">Kontroliše trajanje u milisekundama za sve animacije tajmera</string>
     <string name="pref_screen_title_statistics">Statistika</string>

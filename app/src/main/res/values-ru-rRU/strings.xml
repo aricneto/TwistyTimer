@@ -128,7 +128,7 @@
     <string name="pagerEnabledSummary">Если этот параметр выключен, вам нужно будет нажимать на вкладки, чтобы переключаться между ними.</string>
     <string name="pagerEnabledTitle">Пролистывание вкладок</string>
     <string name="panel_swipe_down_to_hide">Проведите вниз, чтобы спрятать</string>
-    <string name="permission_denied_explanation">Чтобы экспорт/импорт заработал, вам нужно принять разрешение от Twisty Timer для записи во внешнеее хранилище.</string>
+    <string name="permission_denied_explanation">Чтобы экспорт/импорт заработал, вам нужно принять разрешение от Cubic Timer для записи во внешнеее хранилище.</string>
     <string name="personal_best_message">Поздравляем!\nВы побили свой предудущий личный рекорд на: %1$s</string>
     <string name="personal_worst_message">Поздравляем!\nЭто худшая сборка за все время, хуже предудущей на: %1$s</string>
     <string name="pref_category_title_advanced">Дополнительно</string>
@@ -238,7 +238,7 @@
     <string name="trainer_help_message">Чтобы начать тренировку, выберите ситуации, нажав на их название\nВы так же можете создавать сессии с разрыми наборами ситуаций</string>
     <string name="trainer_spinner_title">Выюкрите случаи для тренировки</string>
     <string name="trainer_select_all">Выбрать все</string>
-    <string name="about_translate_title">Помогите перевести Twisty Timer!</string>
+    <string name="about_translate_title">Помогите перевести Cubic Timer!</string>
     <string name="dialog_add_time_use_scramble">Сохранить текущий скрамбл</string>
     <string name="pref_summary_new">Недавно добавленные настройки</string>
     <string name="pref_summary_tint_navigation">Экспериментально. Нарисует панель навигации с цветом темы.\nРаботает только на Android Lollipop и новее!</string>
@@ -249,7 +249,7 @@
     <string name="pref_screen_title_general">Общее</string>
     <string name="pref_screen_title_list">Список</string>
     <string name="unarchive_dialog_summary">У вас в настоящее время архивировано %1$d сборок.\n\nСколько разрешений вы хотите разархивировать? Это приведет к отсрочке последних сборок.</string>
-    <string name="donation_message">Ваше пожертвование помогает мне сделать Twisty Timer еще лучше для всех :)</string>
+    <string name="donation_message">Ваше пожертвование помогает мне сделать Cubic Timer еще лучше для всех :)</string>
     <string name="pref_animation_duration_title">Длительность анимации</string>
     <string name="pref_animation_duration_summary">Управление длительностью в миллисекундах для всех анимаций таймера</string>
     <string name="pref_screen_title_statistics">Статистика</string>

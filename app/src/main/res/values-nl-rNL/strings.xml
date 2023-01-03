@@ -130,7 +130,7 @@
     <string name="pagerEnabledSummary">Als deze instelling uitgeschakeld is, moet je op de tabbladen tikken om tussen deze te wisselen.</string>
     <string name="pagerEnabledTitle">Sta swipe tussen tabbladen toe</string>
     <string name="panel_swipe_down_to_hide">Swipe naar beneden om te verbergen</string>
-    <string name="permission_denied_explanation">Om de export/import functie te gebruiken moet je Twisty Timer toegang verlenen om je uitwendige opslagruimte te gebruiken.</string>
+    <string name="permission_denied_explanation">Om de export/import functie te gebruiken moet je Cubic Timer toegang verlenen om je uitwendige opslagruimte te gebruiken.</string>
     <string name="personal_best_message">Gefeliciteerd!\nJe heb je vorig persoonlijk record verbeterd met %1$s</string>
     <string name="personal_worst_message">Gefeliciteerd!\nDit is je slechtste solve tot nu toe, het verslaat je record met%1$s</string>
     <string name="pref_category_title_advanced">Geavanceerd</string>
@@ -238,7 +238,7 @@
     <string name="trainer_help_message">Selecteer de situaties die je wilt oefenen door op bovenstaande\n titel te tikken om de training te beginnen. Je kan ook categorieën maken met verschillende groepen</string>
     <string name="trainer_spinner_title">Selecteer een situatie om te oefenen</string>
     <string name="trainer_select_all">Alles selecteren</string>
-    <string name="about_translate_title">Help Twisty Timer te vertalen!</string>
+    <string name="about_translate_title">Help Cubic Timer te vertalen!</string>
     <string name="dialog_add_time_use_scramble">Huidige scramble opslaan</string>
     <string name="pref_summary_new">Recent toegevoegde voorkeuren</string>
     <string name="pref_summary_tint_navigation">Experimenteel. De navigatiebalk met het thema meekleuren.\nWerkt alleen op Android Lollipop en hoger!</string>
@@ -249,7 +249,7 @@
     <string name="pref_screen_title_general">Algemeen</string>
     <string name="pref_screen_title_list">Lijst</string>
     <string name="unarchive_dialog_summary">Je hebt op dit moment %1$d oplossingen gearchiveerd.\n\nHoeveel oplossingen wil je dearchiveren? Dit zal eerst de meest recente oplossingen eerst dearchiveren.</string>
-    <string name="donation_message">Jouw donatie helpt me om Twisty Timer nog beter te maken voor iedereen :)</string>
+    <string name="donation_message">Jouw donatie helpt me om Cubic Timer nog beter te maken voor iedereen :)</string>
     <string name="pref_animation_duration_title">Animatieduur</string>
     <string name="pref_animation_duration_summary">Het aantal milliseconden dat alle timer animaties duren</string>
     <string name="pref_screen_title_statistics">Statistieken</string>

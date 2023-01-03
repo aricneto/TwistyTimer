@@ -7,7 +7,7 @@
     android:background="?colorPrimary"
     android:orientation="vertical">
 
-    <com.aricneto.twistytimer.layout.LockedViewPager
+    <com.hatopigeon.cubictimer.layout.LockedViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -34,7 +34,7 @@
             android:layout_alignParentBottom="true"
             android:layout_height="42dp"/>
 
-        <com.aricneto.twistytimer.layout.TimerTabLayout
+        <com.hatopigeon.cubictimer.layout.TimerTabLayout
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="?tabBarSize"
