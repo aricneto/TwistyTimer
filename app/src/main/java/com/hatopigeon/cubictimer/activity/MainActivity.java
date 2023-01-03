@@ -350,13 +350,6 @@ public class MainActivity extends AppCompatActivity
                                 .withIdentifier(SETTINGS_ID),
 
                         new PrimaryDrawerItem()
-                                .withName(R.string.action_donate)
-                                .withIcon(R.drawable.ic_outline_favorite_border_24px)
-                                .withIconTintingEnabled(true)
-                                .withSelectable(false)
-                                .withIdentifier(DONATE_ID),
-
-                        new PrimaryDrawerItem()
                                 .withName(R.string.drawer_about)
                                 .withIcon(R.drawable.ic_outline_help_outline_24px)
                                 .withIconTintingEnabled(true)

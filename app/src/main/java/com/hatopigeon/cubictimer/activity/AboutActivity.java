@@ -43,7 +43,7 @@ public class AboutActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.feedbackButton:
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "aricnetodev@gmail.com"));
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "akira.hatoya@gmail.com"));
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
                     startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_title)));
                     break;
@@ -54,11 +54,13 @@ public class AboutActivity extends AppCompatActivity {
                         .show();
                     break;
                 case R.id.rateButton:
+/*
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+*/
                     break;
                 case R.id.testersButton:
                     ThemeUtils.roundAndShowDialog(AboutActivity.this, new MaterialDialog.Builder(AboutActivity.this)
@@ -82,12 +84,14 @@ public class AboutActivity extends AppCompatActivity {
                             .build());
                     break;
                 case R.id.sourceButton:
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/aricneto/CubicTimer"));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/hato-ya/CubicTimer"));
                     startActivity(browserIntent);
                     break;
                 case R.id.translateButton:
+/*
                     Intent translateBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://crwd.in/twisty-timer"));
                     startActivity(translateBrowserIntent);
+ */
                     break;
             }
         }
@@ -123,5 +127,8 @@ public class AboutActivity extends AppCompatActivity {
         translatorsButton.setOnClickListener(clickListener);
         contributorsButton.setOnClickListener(clickListener);
         translateButton.setOnClickListener(clickListener);
+
+        rateButton.setVisibility(View.GONE);
+        translateButton.setVisibility(View.GONE);
     }
 }
