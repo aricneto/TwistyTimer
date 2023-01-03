@@ -250,6 +250,7 @@
         </PreferenceScreen>
 
         <PreferenceScreen
+            android:icon="@drawable/ic_baseline_back_hand_24"
             android:key="@string/pk_open_stack_timer_settings"
             android:title="@string/pref_screen_title_stack_timer">
 
