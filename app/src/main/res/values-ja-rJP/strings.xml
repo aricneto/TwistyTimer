@@ -146,6 +146,7 @@
     <string name="pref_screen_title_inspection_behavior">インスペクション時の動作</string>
     <string name="pref_screen_title_timer_behavior">タイマーの動作</string>
     <string name="pref_screen_title_timer_appearance">タイマーの設定</string>
+    <string name="pref_screen_title_stack_timer">スタックタイマー</string>
     <string name="pref_scramble_box_title">スクランブルの背景</string>
     <string name="pref_scramble_box_description">スクランブルの背景を白にする</string>
     <string name="preference_application_language_title">言語</string>
@@ -164,6 +165,12 @@
     <string name="scrambleImageEnabledTitle">スクランブルイメージ</string>
     <string name="scrambleImageSize_summary">スクランブルイメージのサイズを調整する</string>
     <string name="scrambleImageSize_text">スクランブルイメージのサイズ</string>
+    <string name="stackTimerEnabledSummary">RS232C-USB変換ケーブルで接続された外部スタックタイマーを使用する</string>
+    <string name="stackTimerEnabledTitle">スタックタイマーの使用</string>
+    <string name="serialStatusEnabledSummary">シリアルステータスとスタックタイマーの文字列を表示する</string>
+    <string name="serialStatusEnabledTitle">シリアルステータスの表示</string>
+    <string name="inspectionByResetEnabledSummary">リセットボタンが押されたときにインスペクションを開始する</string>
+    <string name="inspectionByResetEnabledTitle">リセットでインスペクション開始</string>
     <string name="scramble_text_size">スクランブルのサイズ</string>
     <string name="scramble_text_size_summary">スクランブルのサイズを調整する</string>
     <string name="scramble_text_tap_hint">ここをタップしてスクランブルを表示</string>
@@ -217,6 +224,16 @@
     <string name="graph_stats_label_ao50_full">Ao50</string>
     <string name="graph_stats_label_ao100_full">Ao100</string>
     <string name="timer_detail_average_record_message">平均タイム更新！</string>
+    <string name="timer_serial_status_message">"シリアル : "</string>
+    <string name="timer_serial_status_disabled_message">無効</string>
+    <string name="timer_serial_status_disconnect_message">切断</string>
+    <string name="timer_serial_status_disconnect_no_connection_message">接続なし</string>
+    <string name="timer_serial_status_disconnect_null_message">driver null</string>
+    <string name="timer_serial_status_disconnect_no_permission_message">no permission</string>
+    <string name="timer_serial_status_disconnect_permission_denied_message">permission denied</string>
+    <string name="timer_serial_status_disconnect_open_failed_message">open failed</string>
+    <string name="timer_serial_status_disconnect_open_exception_message">open exception</string>
+    <string name="timer_serial_status_connect_message">接続</string>
     <string name="pref_inspection_alert_type_title">アラートの種類</string>
     <string name="pref_inspection_alert_type_summary">インスペクションタイムのアラート方法を選択</string>
     <string name="pref_inspection_alert_vibration">バイブレーション</string>

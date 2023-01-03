@@ -47,6 +47,10 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_scramble_text_size">scrambleTextSize</string>
     <string translatable="false" name="pk_scramble_image_size">scrambleImageSize</string>
 
+    <string translatable="false" name="pk_stack_timer_enabled">stackTimerEnabled</string>
+    <string translatable="false" name="pk_show_serial_status">showSerialStatus</string>
+    <string translatable="false" name="pk_inspection_by_reset_enabled">inspectionByResetEnabled</string>
+
     <string translatable="false" name="pk_stat_trim_size">pk_stat_trim_size</string>
     <string translatable="false" name="pk_stat_acceptable_dnf_size">pk_stat_acceptable_dnf_size</string>
     <string translatable="false" name="pk_stat_disqualify_dnf">pk_stat_disqualify_dnf</string>
@@ -58,6 +62,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pref_screen_other_statistics">prefScreenOtherStatistics</string>
     <string translatable="false" name="pk_open_timer_behavior_settings">timerBehavior</string>
     <string translatable="false" name="pk_open_inspection_behavior_settings">inspectionBehavior</string>
+    <string translatable="false" name="pk_open_stack_timer_settings">stackTimerBehavior</string>
 
     <string translatable="false" name="pk_timer_bg_enabled">backgroundEnabled</string>
     <string translatable="false" name="pk_enable_manual_entry">pk_enable_manual_entry</string>
