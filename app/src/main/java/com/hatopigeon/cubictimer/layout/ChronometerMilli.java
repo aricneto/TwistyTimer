@@ -101,6 +101,19 @@ public class ChronometerMilli extends AppCompatTextView {
      */
     private int mNormalColor;
 
+    // Stack Timer Support
+    private boolean mIsExternal;
+    private long mExternalTime;
+
+    public void setExternalTime(String str) {
+        int timeRaw = 0;
+        mIsExternal = true;
+        try {
+            timeRaw = Integer.parseInt(str.substring(1, 7));
+            mExternalTime = (timeRaw / 100000) * 60 * 1000 + (timeRaw % 100000);
+        } catch (Exception e) {}
+    }
+
     public ChronometerMilli(Context context) {
         this(context, null, 0);
     }
@@ -190,7 +203,7 @@ public class ChronometerMilli extends AppCompatTextView {
         // "mStartedAt". If the chronometer has never been started, has been stopped, or has been
         // reset, then the difference between "mStoppedAt" and "mStartedAt" is used. This ensures
         // that the initial state or reset state will display "0.00".
-        return (mIsStarted ? SystemClock.elapsedRealtime() : mStoppedAt) - mStartedAt;
+        return mIsExternal ? mExternalTime : ((mIsStarted ? SystemClock.elapsedRealtime() : mStoppedAt) - mStartedAt);
     }
 
     /**
@@ -326,6 +339,8 @@ public class ChronometerMilli extends AppCompatTextView {
         mStartedAt = 0L;
         mStoppedAt = 0L;
         mPenalty = NO_PENALTY;
+
+        mIsExternal = false;
 
         // If we were holding for a start, stop doing that now and discard any saved text.
         endHoldForStart();

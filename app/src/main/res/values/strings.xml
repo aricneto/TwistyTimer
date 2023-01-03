@@ -222,6 +222,7 @@
     <string name="pref_screen_title_inspection_behavior">Inspection behavior</string>
     <string name="pref_screen_title_timer_behavior">Timer behavior</string>
     <string name="pref_screen_title_timer_appearance">Timer appearance</string>
+    <string name="pref_screen_title_stack_timer">Stack timer</string>
 
     <string name="pref_scramble_box_title">Scramble background</string>
     <string name="pref_scramble_box_description">Show a white background behind the scramble</string>
@@ -251,6 +252,15 @@
 
     <string name="scrambleImageSize_summary">Controls the size of the scramble image</string>
     <string name="scrambleImageSize_text">Scramble image size</string>
+
+    <string name="stackTimerEnabledSummary">Use external stack timer that connected by RS232C-USB convert cable</string>
+    <string name="stackTimerEnabledTitle">Use stack timer</string>
+
+    <string name="serialStatusEnabledSummary">Show serial status and stack timer strings</string>
+    <string name="serialStatusEnabledTitle">Show serial status</string>
+
+    <string name="inspectionByResetEnabledSummary">Start inspection when the reset button is pressed</string>
+    <string name="inspectionByResetEnabledTitle">Inspection start by reset</string>
 
     <string name="scramble_text_size">Scramble text size</string>
     <string name="scramble_text_size_summary">Controls the size of the scramble sequence text shown in the timer</string>
@@ -335,6 +345,17 @@
     <string name="graph_stats_label_ao100_full">Ao100</string>
 
     <string name="timer_detail_average_record_message">New average best!</string>
+
+    <string name="timer_serial_status_message">"Serial : "</string>
+    <string name="timer_serial_status_disabled_message">disabled</string>
+    <string name="timer_serial_status_disconnect_message">disconnected</string>
+    <string name="timer_serial_status_disconnect_no_connection_message">no connection</string>
+    <string name="timer_serial_status_disconnect_null_message">driver null</string>
+    <string name="timer_serial_status_disconnect_no_permission_message">no permission</string>
+    <string name="timer_serial_status_disconnect_permission_denied_message">permission denied</string>
+    <string name="timer_serial_status_disconnect_open_failed_message">open failed</string>
+    <string name="timer_serial_status_disconnect_open_exception_message">open exception</string>
+    <string name="timer_serial_status_connect_message">connected</string>
 
     <string name="pref_inspection_alert_type_title">Alert type</string>
     <string name="pref_inspection_alert_type_summary">Choose how the timer will alert you</string>

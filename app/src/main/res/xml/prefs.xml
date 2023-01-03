@@ -249,6 +249,30 @@
 
         </PreferenceScreen>
 
+        <PreferenceScreen
+            android:key="@string/pk_open_stack_timer_settings"
+            android:title="@string/pref_screen_title_stack_timer">
+
+            <SwitchPreferenceCompat
+                android:defaultValue="@bool/default_buttonEnabled"
+                android:key="@string/pk_stack_timer_enabled"
+                android:summary="@string/stackTimerEnabledSummary"
+                android:title="@string/stackTimerEnabledTitle" />
+
+            <SwitchPreferenceCompat
+                android:defaultValue="@bool/default_buttonEnabled"
+                android:key="@string/pk_show_serial_status"
+                android:summary="@string/serialStatusEnabledSummary"
+                android:title="@string/serialStatusEnabledTitle" />
+
+            <SwitchPreferenceCompat
+                android:defaultValue="@bool/default_buttonEnabled"
+                android:key="@string/pk_inspection_by_reset_enabled"
+                android:summary="@string/inspectionByResetEnabledSummary"
+                android:title="@string/inspectionByResetEnabledTitle" />
+
+        </PreferenceScreen>
+
     </PreferenceCategory>
 
     <Preference android:layout="@layout/divider_preference_category" />

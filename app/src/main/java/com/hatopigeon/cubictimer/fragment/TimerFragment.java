@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,12 +17,15 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
@@ -53,6 +57,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.hatopigeon.cubicify.R;
+import com.hatopigeon.cubicify.BuildConfig;
 import com.hatopigeon.cubictimer.CubicTimer;
 import com.hatopigeon.cubictimer.database.DatabaseHandler;
 import com.hatopigeon.cubictimer.fragment.dialog.AddTimeDialog;
@@ -72,8 +77,15 @@ import com.hatopigeon.cubictimer.utils.PuzzleUtils;
 import com.hatopigeon.cubictimer.utils.ScrambleGenerator;
 import com.hatopigeon.cubictimer.utils.TTIntent;
 import com.hatopigeon.cubictimer.utils.ThemeUtils;
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
+import com.hoho.android.usbserial.util.SerialInputOutputManager;
 import com.skyfishjy.library.RippleBackground;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -109,7 +121,7 @@ import static com.hatopigeon.cubictimer.utils.TTIntent.registerReceiver;
 import static com.hatopigeon.cubictimer.utils.TTIntent.unregisterReceiver;
 
 public class                                                                                                                                                                               TimerFragment extends BaseFragment
-        implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver {
+        implements OnBackPressedInFragmentListener, StatisticsCache.StatisticsObserver, SerialInputOutputManager.Listener {
 
 
     // Specifies the timer mode
@@ -211,6 +223,15 @@ public class                                                                    
     // Ao5, Ao12, Ao50, Ao100, Deviation, Mean, Best, Count
     private String detailTextNamesArray[] = new String[8];
 
+    // Stack Timer support
+    private static final String INTENT_ACTION_GRANT_USB = BuildConfig.APPLICATION_ID + ".GRANT_USB";
+    private SerialInputOutputManager usbIoManager;
+    private UsbSerialPort usbSerialPort;
+    private StringBuilder stackTimerString;
+    private final Handler mainLooper;
+    private boolean isExternalTimer;
+    private String previousTimerString = "";
+
     @BindView(R.id.sessionDetailTextAverage) TextView detailTextAvg;
 
     @BindView(R.id.sessionDetailTextOther) TextView detailTextOther;
@@ -245,6 +266,8 @@ public class                                                                    
 
     @BindView(R.id.congratsText) TextView congratsText;
 
+    @BindView(R.id.serial_status_message) TextView serialStatusMessage;
+
     private boolean buttonsEnabled;
     private boolean scrambleImgEnabled;
     private boolean sessionStatsEnabled;
@@ -258,6 +281,9 @@ public class                                                                    
     private boolean showHintsEnabled;
     private boolean showHintsXCrossEnabled;
     private boolean averageRecordsEnabled;
+    private boolean stackTimerEnabled;
+    private boolean serialStatusEnabled;
+    private boolean inspectionByResetEnabled;
 
     /**
      * True if manual entry is enabled
@@ -345,6 +371,10 @@ public class                                                                    
 
     public TimerFragment() {
         // Required empty public constructor
+
+        // Stack Timer support
+        mainLooper = new Handler(Looper.getMainLooper());
+        stackTimerString = new StringBuilder();
     }
 
     private final View.OnClickListener buttonClickListener = new View.OnClickListener() {
@@ -602,6 +632,10 @@ public class                                                                    
 
         scrambleBackgroundEnabled = Prefs.getBoolean(R.string.pk_show_scramble_background, false);
 
+        stackTimerEnabled = Prefs.getBoolean(R.string.pk_stack_timer_enabled, true);
+        serialStatusEnabled = Prefs.getBoolean(R.string.pk_show_serial_status, true);
+        inspectionByResetEnabled = Prefs.getBoolean(R.string.pk_inspection_by_reset_enabled, true);
+
         inspectionAlertEnabled = Prefs.getBoolean(R.string.pk_inspection_alert_enabled, false);
         final String vibrationAlert = getString(R.string.pk_inspection_alert_vibration);
         final String soundAlert = getString(R.string.pk_inspection_alert_sound);
@@ -664,6 +698,11 @@ public class                                                                    
             detailTextAvg.setVisibility(View.INVISIBLE);
             detailTextOther.setVisibility(View.INVISIBLE);
         }
+
+        if (!serialStatusEnabled) {
+            serialStatusMessage.setVisibility(View.GONE);
+        }
+
         // Preferences //
 
         // Manual entry
@@ -891,6 +930,14 @@ public class                                                                    
                 setScramble(realScramble);
             }
         }
+        mainLooper.post(this::connect);
+    }
+
+    @Override
+    public void onPause() {
+        if (DEBUG_ME) Log.d(TAG, "onPause()");
+        super.onPause();
+        disconnect();
     }
 
     /**
@@ -1797,6 +1844,215 @@ public class                                                                    
             });
             set1.start();
             mCurrentAnimator = set1;
+        });
+    }
+
+    // Stack Timer Support
+    private void connect() {
+        if (!stackTimerEnabled) {
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disabled_message));
+            return;
+        }
+
+        Log.d(TAG, "UART connect : start");
+        serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                + getString(R.string.timer_serial_status_disconnect_message));
+        // Find all available drivers from attached devices.
+        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(usbManager);
+        if (availableDrivers.isEmpty()) {
+            Log.d(TAG, "UART connect : empty");
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disconnect_no_connection_message));
+            return;
+        }
+
+        // Open a connection to the first available driver.
+        UsbSerialDriver driver = availableDrivers.get(0);
+        if (driver == null) {
+            Log.d(TAG, "UART connect : driver null");
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disconnect_null_message));
+            return;
+        }
+        UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
+        if(usbConnection == null && !usbManager.hasPermission(driver.getDevice())) {
+            Log.d(TAG, "UART connect : no permission");
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disconnect_no_permission_message));
+            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+            usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
+            return;
+        }
+        if (usbConnection == null) {
+            if (!usbManager.hasPermission(driver.getDevice())) {
+                Log.d(TAG, "UART connect : permission denied");
+                serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                        + getString(R.string.timer_serial_status_disconnect_permission_denied_message));
+            } else {
+                Log.d(TAG, "UART connect : open failed");
+                serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                        + getString(R.string.timer_serial_status_disconnect_open_failed_message));
+            }
+            return;
+        }
+
+        usbSerialPort = driver.getPorts().get(0); // Most devices have just one port (port 0)
+        try {
+            usbSerialPort.open(usbConnection);
+            usbSerialPort.setParameters(1200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+            usbIoManager = new SerialInputOutputManager(usbSerialPort, this);
+            usbIoManager.start();
+            Log.d(TAG, "UART connect : connected");
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_connect_message));
+        } catch(Exception e) {
+            Log.d(TAG, "UART connect : open exception");
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disconnect_open_exception_message));
+            disconnect();
+        }
+    }
+
+    private void disconnect() {
+        if (!stackTimerEnabled) {
+            serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                    + getString(R.string.timer_serial_status_disabled_message));
+            return;
+        }
+
+        Log.d(TAG, "UART disconnect");
+        serialStatusMessage.setText(getString(R.string.timer_serial_status_message)
+                + getString(R.string.timer_serial_status_disconnect_message));
+
+        if(usbIoManager != null) {
+            usbIoManager.setListener(null);
+            usbIoManager.stop();
+        }
+        usbIoManager = null;
+
+        if (usbSerialPort != null) {
+            try {
+                usbSerialPort.close();
+            } catch (IOException ignored) {
+            }
+        }
+        usbSerialPort = null;
+    }
+
+    private void updateStackTimer(String str) {
+        final boolean inspectionEnabled = Prefs.getBoolean(R.string.pk_inspection_enabled, false);
+        final int inspectionTime = Prefs.getInt(R.string.pk_inspection_time, 15);
+
+        // update debug string
+        serialStatusMessage.setText(str);
+
+        // detect reset trigger
+        boolean isReset = (!previousTimerString.isEmpty() && !previousTimerString.contains("000000")
+                && str.contains("000000"));
+        previousTimerString = str;
+
+        // set time from stack timer to chronometer
+        if (!isReset && isRunning && isExternalTimer) {
+            chronometer.setExternalTime(str);
+        }
+
+        // start/stop timer
+        if (str.charAt(0) == ' ') {
+            if (countingDown) { // "countingDown == true" => "inspectionEnabled == true"
+                stopInspectionCountdown();
+                isExternalTimer = true;
+                startChronometer(); // Tool-bar is already hidden and remains so.
+            } else if (! isRunning) { // Not running and not counting down.
+                if (holdingDNF) {
+                    // Checks if the user was holding the screen when the inspection
+                    // timed out and saved a DNF
+                    holdingDNF = false;
+                }
+
+                if (!inspectionEnabled) {
+                    // Inspection disabled. Hold-for-start disabled, or hold-for-start
+                    // enabled, but the hold time was long enough. In the latter case,
+                    // the tool-bar will already have been hidden. Start timing!
+                    hideToolbar();
+                    isExternalTimer = true;
+                    startChronometer();
+                }
+            }
+        } else if (str.charAt(0) == 'I' || str.charAt(0) == 'S') {
+            if (isRunning && isExternalTimer && chronometer.getElapsedTime() >= 80) { // => "isRunning == true"
+                // Chronometer is timing a solve (running, not counting down inspection period).
+                // Stop the timer if it has been running for long enough (80 ms) for this not to
+                // be an accidental touch as the user lifted up the touch to start the timer.
+                if (!isReset) {
+                    // stop timer
+                    animationDone = false;
+                    isExternalTimer = false;
+                    stopChronometer();
+                    if (currentPenalty == PuzzleUtils.PENALTY_PLUSTWO) {
+                        // If a user has inspection on and went past his inspection time, he has
+                        // two extra seconds do start his time, but with a +2 penalty. This penalty
+                        // is recorded above (see plusTwoCountdown), and the timer checks if it's true here.
+                        chronometer.setPenalty(PuzzleUtils.PENALTY_PLUSTWO);
+                    }
+                    addNewSolve();
+                } else {
+                    cancelChronometer();
+                }
+            } else if (isReset && !isRunning && inspectionEnabled && !countingDown && inspectionByResetEnabled) {
+                hideToolbar();
+                startInspectionCountdown(inspectionTime);
+            }
+        }
+    }
+
+    @Override
+    public void onNewData(byte[] data) {
+        for (int i = 0; i < data.length; i++) {
+            if (' ' <= data[i] && data[i] <= '~') {
+                stackTimerString.append(new String(data, i, 1));
+            } else if (data[i] == 0x0A) {
+                if (stackTimerString.length() > 8) {
+                    String org = stackTimerString.toString();
+                    stackTimerString.delete(0, stackTimerString.length()-8);
+                    Log.d(TAG, "UART str       : " + org + " -> " + stackTimerString.toString());
+                }
+
+                String str = stackTimerString.toString();
+                stackTimerString.setLength(0);
+
+                String valid_status = "IA SLRC";
+                if (str.length() == 8) {
+                    byte[] bytes = str.getBytes(StandardCharsets.US_ASCII);
+                    int check_sum = 64;
+                    for (int j = 1; j < 7; j++) {
+                        check_sum += bytes[j] - '0';
+                    }
+                    if (bytes[7] == check_sum && valid_status.contains(str.substring(0,1))) {
+                        mainLooper.post(() -> {
+                            updateStackTimer(str);
+                        });
+                    } else {
+                        Log.d(TAG, "UART str       : " + str);
+                        Log.d(TAG, "UART raw       : " + bytes[0] + bytes[1] + bytes[2] + bytes[3] + bytes[4] + bytes[5] + bytes[6] + bytes[7]);
+                        Log.d(TAG, "UART Check sum : " + check_sum + " " + bytes[7]);
+                    }
+                } else {
+                    Log.d(TAG, "UART str       : " + str);
+                }
+            } else if (data[i] == 0x0D) {
+            } else {
+                stackTimerString.append("_");
+            }
+        }
+    }
+
+    @Override
+    public void onRunError(Exception e) {
+        Log.d(TAG, "onRunError");
+        mainLooper.post(() -> {
+            disconnect();
         });
     }
 }
