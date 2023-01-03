@@ -1,26 +1,38 @@
-<p align="center">
-  <img src="https://i.imgur.com/OLlZRiO.png?1"/>
-</p>
+Cubic Timer is a fork project from Twisty Timer by Ari Neto that support external stack timer.
+I really appreciate Ariovaldo Neto that making original Twisty Timer.
 
-<a href="https://play.google.com/store/apps/details?id=com.aricneto.twistytimer" target="_blank">
-  <img alt="Get it on Google Play"
-       src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60"/>
-</a>
+Original description of Twisty Timer is following.
 
-Twisty Timer is a Material Design twisty puzzle timer for Android. It uses the TNoodle library to generate scramble sequences for all current official speedsolving puzzles.  
+> Twisty Timer is a Material Design twisty puzzle timer for Android. It uses the TNoodle library to generate scramble sequences for all current official speedsolving puzzles.  
+> If you would like to add a new feature or fix something, just send a pull request.  
+> Special thanks to Prisma Puzzle Timer, TNoodle and PlusTimer for being my inspirations to create this project :).
 
-If you would like to add a new feature or fix something, just send a pull request.  
+# Stack timer suppot
+## How to connect external stack timer
+Prepare RS232C to USB convert cable (IMPORTANT!! IT IS NOT AUDIO CABLE used by csTimer).
+Output voltage level of G4 stack timer is lower than the specification of RS232C.
+Therefore, sometimes there are compatibility problems.
 
-Special thanks to Prisma Puzzle Timer, TNoodle and PlusTimer for being my inspirations to create this project :).
+## Supported stack timer
+- Speed Stacks Pro Timer G4
+- Speed Stacks Pro Timer G3 (not confirmed, maybe)
 
-# I want to translate this app! [![Crowdin](https://d322cqt584bo4o.cloudfront.net/twisty-timer/localized.svg)](https://crowdin.com/project/twisty-timer)
-If you're interested in translating Twisty Timer, just go to <a href="https://crowdin.com/project/twisty-timer">this page</a> and select your language. If it's not on the list, just contact me and I'll add it.
+## Supported RS232C to USB converter device
+It depends on usb-serial-for-android.
+I confirmed USB-RS232 cable using FT232R.
+(https://www.amazon.co.jp/gp/product/B08F7GVJH3/)
 
-If you spot a problem in any of the translations, please correct it on the Crowdin page and send me a message, don't open a request here! This makes it easier to manage the localizations.
+# About translation
+TBD
+
+# How to fork this project
+This project is licensed by GPL. So, you can fork this project and re-distribute/publish it as anoter application.
+But I would like you to change application name, icon and ID to distinguish it from Cubic Timer.
 
 # License (GNU GPL v3)
 
     Copyright (C) 2016  Ariovaldo Neto
+    Copyright (C) 2023  hatoya
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
