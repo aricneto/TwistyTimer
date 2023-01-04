@@ -21,6 +21,7 @@
         <activity
             android:name="com.hatopigeon.cubictimer.activity.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/BaseDefaultTheme.Launcher"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
@@ -29,6 +30,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
         </activity>
         <activity
             android:name="com.hatopigeon.cubictimer.activity.SettingsActivity"
