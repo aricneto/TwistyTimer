@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
@@ -31,7 +30,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.PurchaseInfo;
 import com.aricneto.twistify.BuildConfig;
@@ -68,12 +66,13 @@ import com.opencsv.CSVReader;
 import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -93,8 +92,8 @@ import static com.aricneto.twistytimer.utils.TTIntent.CATEGORY_TIME_DATA_CHANGES
 import static com.aricneto.twistytimer.utils.TTIntent.broadcast;
 
 public class MainActivity extends AppCompatActivity
-        implements BillingProcessor.IBillingHandler, FileChooserDialog.FileCallback,
-                   ExportImportDialog.ExportImportCallbacks, PuzzleChooserDialog.PuzzleCallback {
+        implements BillingProcessor.IBillingHandler, ExportImportDialog.ExportImportCallbacks,
+        PuzzleChooserDialog.PuzzleCallback {
     /**
      * Flag to enable debug logging for this class.
      */
@@ -122,6 +121,11 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_SETTING           = 42;
     private static final int REQUEST_ABOUT             = 23;
     private static final int STORAGE_PERMISSION_CODE   = 11;
+
+    private static final int EXPORT_BACKUP      = 50;
+    private static final int EXPORT_EXTERNAL    = 51;
+    private static final int IMPORT_BACKUP      = 60;
+    private static final int IMPORT_EXTERNAL    = 61;
 
     /**
      * The fragment tag identifying the export/import dialog fragment.
@@ -163,6 +167,9 @@ public class MainActivity extends AppCompatActivity
 
     // True if billing is initialized
     private boolean readyToPurchase = false;
+
+    private String mExportPuzzleType = "";
+    private String mExportPuzzleCategory = "";
 
     /**
      * Sets drawer lock mode
@@ -440,41 +447,8 @@ public class MainActivity extends AppCompatActivity
                                 break;
 
                             case EXPORT_IMPORT_ID:
-                                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                                                                      Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    != PackageManager.PERMISSION_GRANTED) {
-
-                                    // Should we show an explanation?
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                                            MainActivity.this,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                                        ThemeUtils.roundAndShowDialog(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
-                                                .content(R.string.permission_denied_explanation)
-                                                .positiveText(R.string.action_ok)
-                                                .negativeText(R.string.action_cancel)
-                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                    @Override
-                                                    public void onClick(
-                                                            @NonNull MaterialDialog dialog,
-                                                            @NonNull DialogAction which) {
-                                                        ActivityCompat.requestPermissions(MainActivity.this,
-                                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                                                          STORAGE_PERMISSION_CODE);
-                                                    }
-                                                })
-                                                .build());
-
-                                    } else {
-                                        ActivityCompat.requestPermissions(MainActivity.this,
-                                                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                                          STORAGE_PERMISSION_CODE);
-                                    }
-
-                                } else {
-                                    ExportImportDialog.newInstance()
-                                            .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
-                                }
+                                ExportImportDialog.newInstance()
+                                        .show(fragmentManager, FRAG_TAG_EXIM_DIALOG);
                                 break;
 
                             case THEME_ID:
@@ -605,8 +579,36 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_SETTING) {
-            if (DEBUG_ME) Log.d(TAG, "  Returned from 'Settings'. Will recreate activity.");
-                onRecreateRequired();
+            if (DEBUG_ME) {
+                Log.d(TAG, "  Returned from 'Settings'. Will recreate activity.");
+            }
+            onRecreateRequired();
+        } else if ((requestCode == EXPORT_BACKUP || requestCode == EXPORT_EXTERNAL)
+                && resultCode == Activity.RESULT_OK) {
+            if (data.getData() != null) {
+                Uri uri = data.getData();
+                Log.d(TAG, "EXPORT : " + uri.toString());
+                Log.d(TAG, "EXPORT : " + mExportPuzzleType + "," + mExportPuzzleCategory);
+
+                new ExportSolves(this,
+                        (requestCode == EXPORT_BACKUP ? ExportImportDialog.EXIM_FORMAT_BACKUP
+                                : ExportImportDialog.EXIM_FORMAT_EXTERNAL),
+                        uri, mExportPuzzleType, mExportPuzzleCategory)
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        } else if ((requestCode == IMPORT_BACKUP || requestCode == IMPORT_EXTERNAL)
+                && resultCode == Activity.RESULT_OK) {
+            if (data.getData() != null) {
+                Uri uri = data.getData();
+                Log.d(TAG, "IMPORT : " + uri.toString());
+                Log.d(TAG, "IMPORT : " + mExportPuzzleType + "," + mExportPuzzleCategory);
+
+                new ImportSolves(this,
+                        (requestCode == IMPORT_BACKUP ? ExportImportDialog.EXIM_FORMAT_BACKUP
+                                : ExportImportDialog.EXIM_FORMAT_EXTERNAL),
+                        uri, mExportPuzzleType, mExportPuzzleCategory)
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
     }
 
@@ -692,10 +694,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onImportSolveTimes(File file, int fileFormat,
-                                   String puzzleType, String puzzleCategory) {
-        new ImportSolves(this, file, fileFormat, puzzleType, puzzleCategory)
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    public void onImportSolveTimes(int fileFormat, String puzzleType, String puzzleCategory) {
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+
+        mExportPuzzleType = puzzleType;
+        mExportPuzzleCategory = puzzleCategory;
+
+        if (fileFormat == ExportImportDialog.EXIM_FORMAT_BACKUP) {
+            startActivityForResult(intent, IMPORT_BACKUP);
+        } else if (fileFormat == ExportImportDialog.EXIM_FORMAT_EXTERNAL) {
+            startActivityForResult(intent, IMPORT_EXTERNAL);
+        }
     }
 
     @Override
@@ -710,65 +722,34 @@ public class MainActivity extends AppCompatActivity
                 throw new RuntimeException("Bug in the export code for the back-up format!");
             }
 
-            final File file = ExportImportUtils.getBackupFileForExport();
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TITLE, ExportImportUtils.getBackupFileNameForExport());
 
-            if (ExportImportUtils.ensureBackupExportDir()) {
-                new ExportSolves(this, file, fileFormat, null, null)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                // Unlikely, so just log it for now.
-                Log.e(TAG, "Could not create output directory for back-up file: " + file);
-            }
+            mExportPuzzleType = "";
+            mExportPuzzleCategory = "";
+
+            startActivityForResult(intent, EXPORT_BACKUP);
         } else if (fileFormat == ExportImportDialog.EXIM_FORMAT_EXTERNAL) {
             // Expect that all other parameters are non-null, otherwise something is very wrong.
             if (puzzleType == null || puzzleCategory == null) {
                 throw new RuntimeException("Bug in the export code for the external format!");
             }
 
-            final File file = ExportImportUtils.getExternalFileForExport(puzzleType, puzzleCategory);
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TITLE,
+                    ExportImportUtils.getExternalFileNameForExport(puzzleType, puzzleCategory));
 
-            if (ExportImportUtils.ensureExternalExportDir()) {
-                new ExportSolves(this, file, fileFormat, puzzleType, puzzleCategory)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                // Unlikely, so just log it for now.
-                Log.e(TAG, "Could not create output directory for back-up file: " + file);
-            }
+            mExportPuzzleType = puzzleType;
+            mExportPuzzleCategory = puzzleCategory;
+
+            startActivityForResult(intent, EXPORT_EXTERNAL);
         } else {
             Log.e(TAG, "Unknown export file format: " + fileFormat);
         }
-    }
-
-    /**
-     * Handles the call-back from a file chooser dialog when a file is selected. This is used for
-     * communication between the {@code FileChooserDialog} and the export/import fragments. The
-     * originating fragment that opened the file chooser dialog should set the "tag" of the file
-     * chooser dialog to the value of the fragment tag that this activity uses to identify that
-     * originating fragment. This activity will then forward this notification to that fragment,
-     * which is expected to implement this same interface method.
-     *
-     * @param dialog
-     *     The file chooser dialog that has reported the file selection.
-     * @param file
-     *     The file that was chosen.
-     */
-    @Override
-    public void onFileSelection(@NonNull FileChooserDialog dialog, @NonNull File file) {
-        // This "relay" scheme ensures that this activity is not embroiled in the gory details of
-        // what the "destinationFrag" wanted with the file.
-        final Fragment destinationFrag = fragmentManager.findFragmentByTag(FRAG_TAG_EXIM_DIALOG);
-
-        if (destinationFrag instanceof FileChooserDialog.FileCallback) {
-            ((FileChooserDialog.FileCallback) destinationFrag).onFileSelection(dialog, file);
-        } else {
-            // This is not expected unless there is a bug to be fixed.
-            Log.e(TAG, "onFileSelection(): Unknown or incompatible fragment: " + destinationFrag.getTag());
-        }
-    }
-
-    @Override
-    public void onFileChooserDismissed(@NonNull FileChooserDialog dialog) {
-
     }
 
     /**
@@ -797,10 +778,10 @@ public class MainActivity extends AppCompatActivity
     private static class ExportSolves extends AsyncTask<Void, Integer, Boolean> {
 
         private final Activity  mContext;
+        private final int      mFileFormat;
+        private final Uri      mUri;
         private final String   mPuzzleType;
         private final String   mPuzzleCategory;
-        private final File     mFile;
-        private final int      mFileFormat;
 
         private MaterialDialog mProgressDialog;
 
@@ -809,11 +790,11 @@ public class MainActivity extends AppCompatActivity
          *
          * @param context
          *     The context required to access resources and to report progress.
-         * @param file
-         *     The file to which to export the solve times.
          * @param fileFormat
          *     The solve file format, must be {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL}, or
          *     {@link ExportImportDialog#EXIM_FORMAT_BACKUP}.
+         * @param uri
+         *     The uri to which to export the solve times.
          * @param puzzleType
          *     The type of the puzzle whose times will be exported. This is required when
          *     {@code fileFormat} is {@code EXIM_FORMAT_EXTERNAL}. For {@code EXIM_FORMAT_BACKUP},
@@ -823,13 +804,13 @@ public class MainActivity extends AppCompatActivity
          *     {@code fileFormat} is {@code EXIM_FORMAT_EXTERNAL}. For {@code EXIM_FORMAT_BACKUP},
          *     it may be {@code null}, as it will not be used.
          */
-        public ExportSolves(Activity context, File file, int fileFormat,
+        public ExportSolves(Activity context, int fileFormat, Uri uri,
                             String puzzleType, String puzzleCategory) {
             mContext = context;
+            mFileFormat = fileFormat;
+            mUri = uri;
             mPuzzleType = puzzleType;
             mPuzzleCategory = puzzleCategory;
-            mFile = file;
-            mFileFormat = fileFormat;
         }
 
         @Override
@@ -862,7 +843,8 @@ public class MainActivity extends AppCompatActivity
 
             try {
                 final DatabaseHandler handler = TwistyTimer.getDBHandler();
-                final Writer out = new BufferedWriter(new FileWriter(mFile));
+                final OutputStream os = mContext.getContentResolver().openOutputStream(mUri);
+                final OutputStreamWriter out = new OutputStreamWriter(os);
 
                 if (mFileFormat == ExportImportDialog.EXIM_FORMAT_BACKUP) {
                     String csvHeader
@@ -938,26 +920,21 @@ public class MainActivity extends AppCompatActivity
 
                 if (isExported) {
                     mProgressDialog.setContent(
-                            Html.fromHtml(mContext.getString(R.string.export_progress_complete)
-                                          + "<br><br>" + "<small><tt>" + mFile.getAbsolutePath()
-                                          + "</tt></small>"));
+                            Html.fromHtml(mContext.getString(R.string.export_progress_complete_wo_to)));
                     // Optional share action
                     mProgressDialog.setActionButton(DialogAction.NEUTRAL, R.string.list_options_item_share);
                     mProgressDialog.getBuilder().onNeutral((dialog, which) -> {
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
-                        Uri fileUri = FileProvider.getUriForFile(mContext,
-                                mContext.getString(R.string.file_provider_authority), mFile);
-
                         shareIntent.setAction(Intent.ACTION_SEND);
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, mUri);
                         shareIntent.setType("application/octet-stream");
 
                         // FileProvider can sometimes crash devices lower than Lollipop
                         // due to permission issues, so we have to do some magic to the intent
                         // This is explained in a Medium post by @quiro91
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                            shareIntent.setClipData(ClipData.newRawUri("", fileUri));
+                            shareIntent.setClipData(ClipData.newRawUri("", mUri));
                             shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         }
 
@@ -973,8 +950,8 @@ public class MainActivity extends AppCompatActivity
     private static class ImportSolves extends AsyncTask<Void, Integer, Void> {
 
         private final Context  mContext;
-        private final File     mFile;
         private final int      mFileFormat;
+        private final Uri      mUri;
         private final String   mPuzzleType;
         private final String   mPuzzleCategory;
 
@@ -988,8 +965,8 @@ public class MainActivity extends AppCompatActivity
          *
          * @param context
          *     The context required to access resources and to report progress.
-         * @param file
-         *     The file from which to import the solve times.
+         * @param uri
+         *     The file uri from which to import the solve times.
          * @param fileFormat
          *     The solve file format, must be {@link ExportImportDialog#EXIM_FORMAT_EXTERNAL}, or
          *     {@link ExportImportDialog#EXIM_FORMAT_BACKUP}.
@@ -1002,11 +979,11 @@ public class MainActivity extends AppCompatActivity
          *     {@code fileFormat} is {@code EXIM_FORMAT_EXTERNAL}. For {@code EXIM_FORMAT_BACKUP},
          *     it may be {@code null}, as it will not be used.
          */
-        public ImportSolves(Context context, File file, int fileFormat,
+        public ImportSolves(Context context, int fileFormat, Uri uri,
                             String puzzleType, String puzzleCategory) {
             mContext = context;
-            mFile = file;
             mFileFormat = fileFormat;
+            mUri = uri;
             mPuzzleType = puzzleType;
             mPuzzleCategory = puzzleCategory;
         }
@@ -1038,8 +1015,9 @@ public class MainActivity extends AppCompatActivity
             List<Solve> solveList = new ArrayList<>();
 
             try {
-
-                BufferedReader br = new BufferedReader(new FileReader(mFile));
+                InputStream is = mContext.getContentResolver().openInputStream(mUri);
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
                 CSVReader csvReader = new CSVReader(br, ';', '"', true);
                 String[] line;
 

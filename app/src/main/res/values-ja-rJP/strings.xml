@@ -75,6 +75,7 @@
     <string name="export_import_dialog_from_backup">バックアップからインポート</string>
     <string name="export_import_dialog_from_txt_file">.txt ファイルからインポート</string>
     <string name="export_progress_complete">エクスポートに成功</string>
+    <string name="export_progress_complete_wo_to">エクスポートに成功</string>
     <string name="export_progress_error">エラーが発生しました。\n確認し直してください。</string>
     <string name="export_progress_title">エクスポート中</string>
     <string name="fab_add_time">タイムを入力する</string>

@@ -119,6 +119,7 @@
     <string name="export_import_dialog_from_backup">From backup</string>
     <string name="export_import_dialog_from_txt_file">From .txt file</string>
     <string name="export_progress_complete">Successfully exported to:</string>
+    <string name="export_progress_complete_wo_to">Successfully exported</string>
     <string name="export_progress_error">Unfortunately, an error occurred while exporting.\nCheck your permissions</string>
     <string name="export_progress_title">Exporting…</string>
 
