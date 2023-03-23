@@ -135,6 +135,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
 
     @BindView(R.id.nav_button_settings) View      navButtonSettings;
     @BindView(R.id.nav_button_category) View      navButtonCategory;
+    @BindView(R.id.nav_button_filter) View      navButtonFilter;
     @BindView(R.id.nav_button_history) ImageView navButtonHistory;
 
     @BindView(R.id.puzzleCategory) TextView puzzleCategoryText;
@@ -420,6 +421,7 @@ public class TimerFragmentMain extends BaseFragment implements OnBackPressedInFr
         navButtonCategory.setOnClickListener(clickListener);
         navButtonHistory.setOnClickListener(clickListener);
         navButtonSettings.setOnClickListener(clickListener);
+        navButtonFilter.setVisibility(View.GONE);
 
         if (savedInstanceState == null) {
             // Remember last used puzzle

@@ -91,6 +91,22 @@
             app:srcCompat="@drawable/ic_outline_category_24" />
 
         <ImageView
+            android:id="@+id/nav_button_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="1"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:tint="?colorActionBarText"
+            app:srcCompat="@drawable/ic_outline_filter_24" />
+        <ImageView
             android:id="@+id/nav_button_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
