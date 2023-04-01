@@ -5,14 +5,14 @@ android {
         config {
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 33
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 53
-        versionName "4.6.5"
+        targetSdkVersion 33
+        versionCode 55
+        versionName "4.6.6"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

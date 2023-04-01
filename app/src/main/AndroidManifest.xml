@@ -20,6 +20,7 @@
         <activity
             android:name="com.aricneto.twistytimer.activity.MainActivity"
             android:label="@string/app_name"
+            android:exported="true"
             android:theme="@style/BaseDefaultTheme.Launcher"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
@@ -34,7 +35,9 @@
             android:label="@string/title_activity_settings"></activity>
         <activity android:name="com.aricneto.twistytimer.activity.AboutActivity"></activity>
 
-        <receiver android:name="com.aricneto.twistytimer.OnUpgradeReceiver">
+        <receiver
+            android:name="com.aricneto.twistytimer.OnUpgradeReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
