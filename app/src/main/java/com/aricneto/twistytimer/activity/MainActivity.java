@@ -33,7 +33,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FileChooserDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.TransactionDetails;
+import com.anjlab.android.iab.v3.PurchaseInfo;
 import com.aricneto.twistify.BuildConfig;
 import com.aricneto.twistify.R;
 import com.aricneto.twistytimer.TwistyTimer;
@@ -566,11 +566,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
+    public void onProductPurchased(String productId, PurchaseInfo purchaseInfo) {
         /*
          * Called when requested PRODUCT ID was successfully purchased
          */
-        bp.consumePurchase(productId);
+        bp.consumePurchaseAsync(productId, new BillingProcessor.IPurchasesResponseListener() {
+            @Override
+            public void onPurchasesSuccess() {
+                Log.d(TAG, "onPurchasesSuccess: ");
+            }
+
+            @Override
+            public void onPurchasesError() {
+                Log.d(TAG, "onPurchasesError: ");
+            }
+        });
     }
 
     @Override
@@ -592,13 +602,11 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (DEBUG_ME) Log.d(TAG, "onActivityResult(requestCode=" + requestCode
                 + ", resultCode=" + resultCode + ", data=" + data + "): " + this);
-        if (! bp.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == REQUEST_SETTING) {
-                if (DEBUG_ME) Log.d(TAG, "  Returned from 'Settings'. Will recreate activity.");
+        if (requestCode == REQUEST_SETTING) {
+            if (DEBUG_ME) Log.d(TAG, "  Returned from 'Settings'. Will recreate activity.");
                 onRecreateRequired();
-            }
         }
     }
 

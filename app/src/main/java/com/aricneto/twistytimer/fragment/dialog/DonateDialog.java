@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,10 +91,23 @@ public class DonateDialog extends DialogFragment {
 
         ArrayList<String> donationTiers = new ArrayList<>(
                 Arrays.asList("donation_tier1", "donation_tier2", "donation_tier3", "donation_tier4", "donation_tier5"));
-        List<SkuDetails> tiers = bp.getPurchaseListingDetails(donationTiers);
+
+        List<SkuDetails> tiers = new ArrayList();
+        bp.getPurchaseListingDetailsAsync(donationTiers, new BillingProcessor.ISkuDetailsResponseListener() {
+            @Override
+            public void onSkuDetailsResponse(@Nullable List<SkuDetails> products) {
+                Log.d("DonateDialog","onSkuDetailsResponse: ");
+                tiers.addAll(products);
+            }
+
+            @Override
+            public void onSkuDetailsError(String error) {
+
+            }
+        });
 
         // If size < 5, the app was not able to fetch all value info
-        if (tiers.size() == 5) {
+        if (tiers != null && tiers.size() == 5) {
             tier5.setText(tiers.get(4).currency + " " + String.valueOf(tiers.get(4).priceValue));
             tier4.setText(tiers.get(3).currency + " " + String.valueOf(tiers.get(3).priceValue));
             tier3.setText(tiers.get(2).currency + " " + String.valueOf(tiers.get(2).priceValue));
