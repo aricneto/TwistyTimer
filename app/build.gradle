@@ -11,8 +11,8 @@ android {
         applicationId "com.aricneto.twistytimer"
         minSdkVersion 16
         targetSdkVersion 33
-        versionCode 58
-        versionName "4.6.7"
+        versionCode 59
+        versionName "4.6.8"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }

@@ -274,6 +274,7 @@
         <item name="colorPrimary">#000</item>
 
         <item name="colorTimerText">@color/md_white_1000</item>
+        <item name="colorActionBar">#000</item>
         <item name="colorTabBar">#000</item>
 
         <item name="colorBackgroundList">#000</item>
