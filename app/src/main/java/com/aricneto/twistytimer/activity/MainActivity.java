@@ -1037,6 +1037,8 @@ public class MainActivity extends AppCompatActivity
         protected Void doInBackground(Void... voids) {
             List<Solve> solveList = new ArrayList<>();
 
+            boolean importIntoArchive = Prefs.getBoolean(R.string.pk_import_archive, true);
+
             try {
 
                 BufferedReader br = new BufferedReader(new FileReader(mFile));
@@ -1051,7 +1053,7 @@ public class MainActivity extends AppCompatActivity
                         try {
                             solveList.add(new Solve(
                                 Integer.parseInt(line[2]), line[0], line[1], Long.parseLong(line[3]),
-                                line[4], Integer.parseInt(line[5]), line[6], true));
+                                line[4], Integer.parseInt(line[5]), line[6], importIntoArchive));
                         } catch (Exception e) {
                             parseErrors++;
                         }
@@ -1088,7 +1090,7 @@ public class MainActivity extends AppCompatActivity
 
                                 solveList.add(new Solve(
                                         time, mPuzzleType, mPuzzleCategory,
-                                        date, scramble, penalty, "", true));
+                                        date, scramble, penalty, "", importIntoArchive));
                             } catch (Exception e) {
                                 parseErrors++;
                             }

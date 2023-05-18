@@ -280,6 +280,12 @@
                     android:summary="@string/pref_summary_menu_background"
                     android:title="@string/pref_title_menu_background" />
 
+                <SwitchPreferenceCompat
+                    android:defaultValue="true"
+                    android:key="@string/pk_import_archive"
+                    android:summary="@string/pref_summary_import_archive"
+                    android:title="@string/pref_title_import_archive" />
+
             </PreferenceCategory>
 
         </PreferenceScreen>
