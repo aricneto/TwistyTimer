@@ -41,6 +41,7 @@ public class PuzzleUtils {
     public static final String TYPE_SKEWB   = "skewb";
     public static final String TYPE_CLOCK   = "clock";
     public static final String TYPE_SQUARE1 = "sq1";
+    public static final String TYPE_VARIOUS = "var";
 
     public static final int NO_PENALTY       = 0;
     public static final int PENALTY_PLUSTWO  = 1;
@@ -77,6 +78,7 @@ public class PuzzleUtils {
             case  8: return TYPE_PYRA;
             case  9: return TYPE_SQUARE1;
             case 10: return TYPE_CLOCK;
+            case 11: return TYPE_VARIOUS;
         }
     }
 
@@ -128,6 +130,7 @@ public class PuzzleUtils {
             case TYPE_PYRA:    return R.string.cube_pyra;
             case TYPE_SKEWB:   return R.string.cube_skewb;
             case TYPE_SQUARE1: return R.string.cube_sq1;
+            case TYPE_VARIOUS: return R.string.cube_various;
             default:           return 0;
         }
     }
@@ -147,6 +150,7 @@ public class PuzzleUtils {
             case TYPE_PYRA:    return R.string.cube_pyra;
             case TYPE_SKEWB:   return R.string.cube_skewb;
             case TYPE_SQUARE1: return R.string.cube_sq1;
+            case TYPE_VARIOUS: return R.string.cube_various;
         }
     }
 
