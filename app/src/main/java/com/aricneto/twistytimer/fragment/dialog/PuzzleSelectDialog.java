@@ -71,7 +71,8 @@ public class PuzzleSelectDialog extends DialogFragment {
                 Pair.create(getString(R.string.cube_mega), R.drawable.ic_mega),
                 Pair.create(getString(R.string.cube_pyra), R.drawable.ic_pyra),
                 Pair.create(getString(R.string.cube_sq1), R.drawable.ic_sq1),
-                Pair.create(getString(R.string.cube_clock), R.drawable.ic_clock)
+                Pair.create(getString(R.string.cube_clock), R.drawable.ic_clock),
+                Pair.create(getString(R.string.cube_various), R.drawable.ic_various)
                 );
 
         puzzleRecycler.setAdapter(puzzleAdapter);
