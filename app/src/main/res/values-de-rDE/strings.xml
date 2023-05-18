@@ -240,8 +240,10 @@
     <string name="dialog_add_time_use_scramble">Aktuelles Schema speichern</string>
     <string name="pref_summary_new">Kürzlich hinzugefügte Einstellungen</string>
     <string name="pref_summary_tint_navigation">Experimentelle. Färbt die Navigationsleiste in den Designfarben.\nFunktioniert nur auf Android Lollipop und besser!</string>
+    <string name="pref_summary_import_archive">Importiert Zeiten ins Archiv, deaktiviert in die Session</string>
     <string name="pref_title_tint_navigation">Farbige Navigationsleiste</string>
     <string name="pref_title_menu_background">Menü-Hintergrund deaktivieren</string>
+    <string name="pref_title_import_archive">Importiere Zeiten in Archiv</string>
     <string name="pref_summary_menu_background">Deaktiviert den getönten Hintergrund der oberen Menüleiste</string>
     <string name="dialog_theme_text_style">Textstil</string>
     <string name="pref_screen_title_general">Allgemeines</string>

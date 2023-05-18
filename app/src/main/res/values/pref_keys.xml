@@ -30,6 +30,7 @@ THESE KEYS MUST NOT BE LOCALIZED!
     <string translatable="false" name="pk_show_clear_button">clearEnabled</string>
     <string translatable="false" name="pk_tint_navigation_bar">pkTintNavigationBar</string>
     <string translatable="false" name="pk_menu_background">pkMenuBackground</string>
+    <string translatable="false" name="pk_import_archive">pkImportArchive</string>
 
     <string translatable="false" name="pk_scramble_enabled">scrambleEnabled</string>
     <string translatable="false" name="pk_show_scramble_hints">showHints</string>
