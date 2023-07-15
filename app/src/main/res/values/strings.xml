@@ -402,6 +402,8 @@
     <string name="pref_title_tint_navigation">Tint navigation bar</string>
     <string name="pref_title_menu_background">Disable menu background</string>
     <string name="pref_summary_menu_background">Disables the tinted background behind the top menu bar</string>
+    <string name="pref_title_import_archive">Import times into archive</string>
+    <string name="pref_summary_import_archive">Import times into archive, inactive into the session</string>
     <string name="dialog_theme_text_style">Text style</string>
     <string name="pref_screen_title_general">General</string>
     <string name="pref_screen_title_list">List</string>
