@@ -89,6 +89,7 @@ import static com.aricneto.twistytimer.utils.PuzzleUtils.NO_PENALTY;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_DNF;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.PENALTY_PLUSTWO;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_333;
+import static com.aricneto.twistytimer.utils.PuzzleUtils.TYPE_VARIOUS;
 import static com.aricneto.twistytimer.utils.PuzzleUtils.convertTimeToString;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_COMMENT_ADDED;
 import static com.aricneto.twistytimer.utils.TTIntent.ACTION_GENERATE_SCRAMBLE;
@@ -620,7 +621,7 @@ public class                                                                    
             }
         }
         
-        if (!scrambleEnabled) {
+        if (!isScrambleEnabled()) {
             // CongratsText is by default aligned to below the scramble box. If it's missing, we have
             // to add an extra margin to account for the title header
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
@@ -628,7 +629,7 @@ public class                                                                    
             congratsText.requestLayout();
         }
 
-        if (!scrambleEnabled) {
+        if (!isScrambleEnabled()) {
             // CongratsText is by default aligned to below the scramble box. If it's missing, we have
             // to add an extra margin to account for the title header
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) congratsText.getLayoutParams();
@@ -646,13 +647,13 @@ public class                                                                    
             scrambleButtonManualEntry.setColorFilter(ThemeUtils.fetchAttrColor(mContext, R.attr.colorTimerText));
         }
 
-        if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled) {
+        if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && isScrambleEnabled()) {
             scrambleButtonHint.setVisibility(View.VISIBLE);
             optimalCross = new RubiksCubeOptimalCross(getString(R.string.optimal_cross));
             optimalXCross = new RubiksCubeOptimalXCross(getString(R.string.optimal_x_cross));
         }
 
-        if (!scrambleEnabled) {
+        if (!isScrambleEnabled()) {
             scrambleBox.setVisibility(View.GONE);
             scrambleImg.setVisibility(View.GONE);
             isLocked = false;
@@ -868,6 +869,10 @@ public class                                                                    
         });
     }
 
+    private boolean isScrambleEnabled() {
+        return scrambleEnabled && currentPuzzle != PuzzleUtils.TYPE_VARIOUS;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -884,7 +889,7 @@ public class                                                                    
     public void onResume() {
         if (DEBUG_ME) Log.d(TAG, "onResume()");
         super.onResume();
-        if (scrambleEnabled) {
+        if (isScrambleEnabled()) {
             if (realScramble == null) {
                 generateNewScramble();
             } else {
@@ -991,6 +996,8 @@ public class                                                                    
                 return (multiplier / 4) * 3;
             case PuzzleUtils.TYPE_SQUARE1: // Square-1
                 return multiplier;
+            case PuzzleUtils.TYPE_VARIOUS: // Various
+                return multiplier; //should never be called because VARIOUS have no scramble
         }
         return multiplier;
     }
@@ -1209,7 +1216,7 @@ public class                                                                    
                 .translationY(0)
                 .setDuration(mAnimationDuration);
 
-        if (scrambleEnabled) {
+        if (isScrambleEnabled()) {
             scrambleBox.setVisibility(View.VISIBLE);
             scrambleBox.animate()
                     .alpha(1)
@@ -1288,7 +1295,7 @@ public class                                                                    
         params.leftMargin = 0;
         startTimerLayout.requestLayout();
 
-        if (scrambleEnabled) {
+        if (isScrambleEnabled()) {
             scrambleBox.setEnabled(false);
             scrambleBox.animate()
                     .alpha(0)
@@ -1342,7 +1349,7 @@ public class                                                                    
         // the spinner to visible.
         isRunning = true;
 
-        if (scrambleEnabled) {
+        if (isScrambleEnabled()) {
             currentScramble = realScramble;
             generateNewScramble();
         }
@@ -1453,7 +1460,7 @@ public class                                                                    
      * Generates a new scramble and handles everything.
      */
     private void generateNewScramble() {
-        if (scrambleEnabled && currentTimerMode.equals(TIMER_MODE_TIMER)) {
+        if (isScrambleEnabled() && currentTimerMode.equals(TIMER_MODE_TIMER)) {
             scrambleGeneratorAsync.cancel(true);
             scrambleGeneratorAsync = new GenerateScrambleSequence();
             scrambleGeneratorAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1524,7 +1531,7 @@ public class                                                                    
         @Override
         protected void onPreExecute() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
-            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && scrambleEnabled && scrambleDialog != null) {
+            if (showHintsEnabled && currentPuzzle.equals(PuzzleUtils.TYPE_333) && isScrambleEnabled() && scrambleDialog != null) {
                 scrambleDialog.setHintVisibility(View.GONE);
                 scrambleDialog.dismiss();
             }
