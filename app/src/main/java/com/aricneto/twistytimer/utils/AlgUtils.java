@@ -93,14 +93,29 @@ public final class AlgUtils {
      * Converts a case name to its specific id reference in the reference_states.xml file
      * @return
      */
-    public static int caseNameToSubsetId(String subset, String name) {
-        switch (subset) {
-            case "PLL":
-                return getSubsetCases().indexOf(name);
-            case "OLL":
-                return Integer.valueOf(name.substring(4)) - 1;
+    public static int caseNameToSubsetId(String subset, String name){
+        //Do query
+        Cursor cursor = TwistyTimer.getReadableDB().query(
+                DatabaseHandler.TABLE_ALGS,
+                new String[] {DatabaseHandler.KEY_NAME},
+                DatabaseHandler.KEY_SUBSET + " = ? ",
+                new String[] {subset},
+                null,
+                null,
+                null,
+                null
+        );
+
+        //Iterate over results to get the alg id. Had to do this because using the id from database does not work as reference_states uses other indexes
+        while(cursor.moveToNext()) {
+            String currentName = cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_NAME));
+
+            if (currentName.equals(name)) {
+                break;
+            }
         }
-        return 0;
+
+        return cursor.getInt(cursor.getColumnIndex(DatabaseHandler.KEY_NAME));
     }
 
     /**
